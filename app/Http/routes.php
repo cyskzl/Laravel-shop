@@ -78,6 +78,7 @@ Route::resource('/adminjurisdiction', 'Admin\AdminJurisdictionCateController');
 //系统设置
 Route::any('/settings', 'Admin\SystemSettingsController@index');
 
+//友情链接
 Route::resource('/link', 'Admin\LinkController');
 
 //系统日志
