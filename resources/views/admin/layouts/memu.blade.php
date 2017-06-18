@@ -118,7 +118,7 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd class="">
-                            <a href="javascript:;" _href="./category.html">
+                            <a href="javascript:;" _href="{{url('goodscategory')}}">
                                 <cite>分类列表</cite>
                             </a>
                         </dd>
