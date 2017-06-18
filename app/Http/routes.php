@@ -82,4 +82,4 @@ Route::any('/settings', 'Admin\SystemSettingsController@index');
 Route::resource('/link', 'Admin\LinkController');
 
 //系统日志
-Route::get('systemlog', 'Admin\AdminController@SystemLog');
+Route::get('/systemlog', 'Admin\AdminController@SystemLog');
