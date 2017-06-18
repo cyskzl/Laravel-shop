@@ -1,20 +1,6 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <title>商品分类修改</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="{{asset('templates/admin/css/x-admin.css')}}" media="all">
-</head>
-
-<body>
-<div class="x-body">
+@extends('admin.layouts.layout')
+@yield('title','修改分类')
+@section('x-body')
     <form class="layui-form">
         <div class="layui-form-item">
             <label for="cname" class="layui-form-label">
@@ -57,9 +43,8 @@
             </button>
         </div>
     </form>
-</div>
-<script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
-<script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
+@endsection
+@section('js')
 <script>
     layui.use(['form','layer'], function(){
         $ = layui.jquery;
@@ -83,7 +68,4 @@
 
     });
 </script>
-
-</body>
-
-</html>
+@endsection

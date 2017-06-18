@@ -11,11 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
+//DB::listen(function($sql) {
+////dump($sql);
+//echo $sql->sql;
+//// dump($sql->bindings);
+//});
+//
 
 
 

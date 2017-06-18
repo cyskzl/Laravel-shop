@@ -1,25 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>商品分类列表</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="{{asset('templates/admin/css/x-admin.css')}}" media="all">
-</head>
-<body>
-<div class="x-nav">
+@extends('admin.layouts.layout')
+@yield('title','商品分类')
+@section('x-nav')
             <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
               <a><cite>商品分类管理</cite></a>
             </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
-</div>
-<div class="x-body">
+@endsection
+@section('x-body')
     <form class="layui-form x-center" action="" style="width:50%">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
@@ -27,12 +15,6 @@
                 <div class="layui-input-inline" style="width:120px;text-align: left">
                     <select name="fid">
                         <option value="0">顶级分类</option>
-                        <option value="新闻">新闻</option>
-                        <option value="新闻子类1">--新闻子类1</option>
-                        <option value="新闻子类2">--新闻子类2</option>
-                        <option value="产品">产品</option>
-                        <option value="产品子类1">--产品子类1</option>
-                        <option value="产品子类2">--产品子类2</option>
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width:120px">
@@ -92,9 +74,8 @@
         </tr>
         </tbody>
     </table>
-</div>
-<script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
-<script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
+@endsection
+@section('js')
 <script>
     layui.use(['element','layer','form'], function(){
         $ = layui.jquery;//jquery
@@ -139,6 +120,4 @@
         });
     }
 </script>
-
-</body>
-</html>
+@endsection
