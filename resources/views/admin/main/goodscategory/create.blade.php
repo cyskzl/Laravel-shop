@@ -8,7 +8,7 @@
         .uploadify-button{border:none;border-radius:5px;margin-top:8px;}
         /*table.add_tab */
     </style>
-    @endsection
+@endsection
 @section('x-nav')
     <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
@@ -26,6 +26,7 @@
                 <div class="layui-input-block">
                     <select lay-verify="required" name="pid">
                         <option value="">-请选择-</option>
+                        <option value="0">顶级分类</option>
                         @foreach($cates as $v)
                             <option value="{{$v->id}}">{{$v->name}}</option>
                         @endforeach
@@ -40,7 +41,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-                <div id="queue"></div>
+            <div id="queue"></div>
             <div class="layui-form-item">
                 <label class="layui-form-label">图片</label>
                 <div class="layui-input-inline">
@@ -48,12 +49,16 @@
                 </div>
                 <input id="file_upload"  type="file" multiple="true">
                 <script type="text/javascript">
-                    <?php $timestamp = time();?>
+                    <?php 
+                        $timestamp = time();
+                      ?>
                     $(function() {
                         $('#file_upload').uploadify({
                             'buttonText' : '图片上传',
                             'formData'     : {
-                                'timestamp' : '<?php echo $timestamp;?>',
+                                'timestamp' : '<?php
+                                    echo $timestamp;
+                                              ?>',
                                 '_token'     : "{{csrf_token()}}"
                             },
                             'swf'      : "/org/uploadify/uploadify.swf",
@@ -64,29 +69,29 @@
                                 //将目录的路径加到img中
                                 $('input[name=img]').val(data);
                                 //缩略图
-                                $('#thumbnail').attr('src','/'+data);//根目录下找
+                                $('#thumbnail').attr('src',data);//根目录下找
                             }
                         });
                     });
                 </script>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">缩略图
-            </label>
-            <img id="thumbnail"  src="" alt="" style="max-height: 200px;max-width: 200px">
-        </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">描述</label>
-            <div class="layui-input-block">
-                <textarea name="describe" placeholder="请输入描述" class="layui-textarea"></textarea>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <div class="layui-form-item">
+                <label class="layui-form-label">缩略图
+                </label>
+                <img id="thumbnail"  src="" alt="" style="max-height: 200px;max-width: 200px">
             </div>
-        </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-block">
+                    <textarea name="describe" placeholder="请输入描述" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
         {{csrf_field()}}
     </form>
 
@@ -98,15 +103,6 @@
             var form = layui.form()
                 , layer = layui.layer
                 , layedit = layui.layedit;
-//            if(data == 1) {
-//                layer.alert("增加成功", {icon: 6},function () { // 获得frame索引
-//                    var index = parent.layer.getFrameIndex(window.name);
-//                    //关闭当前frame
-//                    parent.layer.close(index);
-//                });
-
-//            }
-
         });
     </script>
 @endsection
