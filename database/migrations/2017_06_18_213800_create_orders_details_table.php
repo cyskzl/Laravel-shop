@@ -29,7 +29,7 @@ class CreateOrdersDetailsTable extends Migration
             $table->softDeletes()->comment('删除时间');
 
 
-            $table->foreign('order_guid')->references('id')->on('orders')->comment('订单表id键');
+            $table->foreign('order_guid')->references('guid')->on('orders')->comment('订单表id键');
             $table->foreign('user_id')->references('id')->on('users_register')->comment('用户表id外键');
             $table->foreign('goods_id')->references('id')->on('goods')->comment('商品表id外键');
             $table->foreign('cargo_id')->references('id')->on('goods_cargo')->comment('货品表id外键');
