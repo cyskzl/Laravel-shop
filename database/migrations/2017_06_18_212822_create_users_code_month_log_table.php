@@ -16,10 +16,12 @@ class CreateUsersCodeMonthLogTable extends Migration
         Schema::create('users_code_month_log', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('主键');
-            $table->integer('user_id')->comment('用户ID');
+            $table->unsignedInteger('user_id')->comment('用户ID');
             $table->integer('get_code')->comment('当月获得积分');
             $table->integer('leave_code')->comment('当月剩余积分');
             $table->timestamps();
+
+            $table->foreign('users_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
         });
     }
 

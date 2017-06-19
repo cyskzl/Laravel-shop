@@ -16,7 +16,7 @@ class CreateReceivingAddressTable extends Migration
         Schema::create('receiving_address', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('主键');
-            $table->integer('user_id')->references('id')->on('users_register')->comment('用户ID');
+            $table->unsignedInteger('user_id')->comment('用户ID');
             $table->string('consignee')->comment('收货人');
             $table->string('tel')->comment('收货人手机号码');
             $table->string('province')->comment('省份');
@@ -27,6 +27,7 @@ class CreateReceivingAddressTable extends Migration
             $table->softDeletes()->comment('删除时间');
             $table->timestamps();
 
+            $table->foreign('users_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
         });
     }
 

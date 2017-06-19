@@ -16,9 +16,11 @@ class CreateUsersCodeInfoTable extends Migration
         Schema::create('users_code_info', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('主键');
-            $table->integer('user_id')->comment('用户ID');
+            $table->unsignedInteger('user_id')->comment('用户ID');
             $table->integer('code_num')->comment('获取和消耗积分');
             $table->timestamps();
+
+            $table->foreign('users_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
         });
     }
 

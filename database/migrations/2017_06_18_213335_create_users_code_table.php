@@ -16,11 +16,13 @@ class CreateUsersCodeTable extends Migration
         Schema::create('users_code', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('主键');
-            $table->integer('user_id')->comment('用户ID');
+            $table->unsignedInteger('user_id')->comment('用户ID');
             $table->integer('code')->comment('会员总积分');
             $table->integer('cost_num')->comment('消耗积分总和');
             $table->tinyInteger('status')->comment('积分状态');
             $table->timestamps();
+
+            $table->foreign('users_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
         });
     }
 

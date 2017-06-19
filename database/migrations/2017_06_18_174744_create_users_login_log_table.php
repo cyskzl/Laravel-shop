@@ -16,7 +16,7 @@ class CreateUsersLoginLogTable extends Migration
         Schema::create('users_login_log', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('主键');
-            $table->integer('user_id')->references('id')->on('users_register')->index()->comment('用户注册表ID');
+            $table->unsignedInteger('user_id')->comment('用户注册表ID');
             $table->string('login_name')->comment('登录账号');
             $table->tinyInteger('third_party')->comment('第三方登陆: 1 网站 2 微信 3 微博 4 QQ');
             $table->string('login_ip')->comment('登录IP');
@@ -24,6 +24,7 @@ class CreateUsersLoginLogTable extends Migration
             $table->softDeletes()->comment('删除时间');
             $table->timestamps();
 
+            $table->foreign('users_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
         });
     }
 

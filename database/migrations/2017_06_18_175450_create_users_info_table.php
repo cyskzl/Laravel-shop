@@ -16,7 +16,7 @@ class CreateUsersInfoTable extends Migration
         Schema::create('users_info', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('主键');
-            $table->integer('user_id')->references('id')->on('users_register')->unique()->comment('用户注册表ID');
+            $table->unsignedInteger('user_id')->comment('用户注册表ID');
             $table->string('nickname')->nullable()->comment('用户昵称');
             $table->string('realname')->nullable()->comment('真实姓名');
             $table->string('eamil')->comment('用户邮箱');
@@ -30,6 +30,7 @@ class CreateUsersInfoTable extends Migration
             $table->softDeletes()->comment('删除时间');
             $table->timestamps();
 
+            $table->foreign('users_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
         });
     }
 
