@@ -1,49 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>商品分类列表</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="{{asset('templates/admin/css/x-admin.css')}}" media="all">
-</head>
-<body>
-<div class="x-nav">
+@extends('admin.layouts.layout')
+@section('x-nav')
             <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
               <a><cite>商品分类管理</cite></a>
             </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
-</div>
-<div class="x-body">
-    <form class="layui-form x-center" action="" style="width:50%">
-        <div class="layui-form-pane" style="margin-top: 15px;">
-            <div class="layui-form-item">
-                <label class="layui-form-label" style="width:60px">所属分类</label>
-                <div class="layui-input-inline" style="width:120px;text-align: left">
-                    <select name="fid">
-                        <option value="0">顶级分类</option>
-                        <option value="新闻">新闻</option>
-                        <option value="新闻子类1">--新闻子类1</option>
-                        <option value="新闻子类2">--新闻子类2</option>
-                        <option value="产品">产品</option>
-                        <option value="产品子类1">--产品子类1</option>
-                        <option value="产品子类2">--产品子类2</option>
-                    </select>
-                </div>
-                <div class="layui-input-inline" style="width:120px">
-                    <input type="text" name="name"  placeholder="分类名" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-input-inline" style="width:80px">
-                    <button class="layui-btn"  lay-submit="" lay-filter="add"><i class="layui-icon">&#xe608;</i>增加</button>
-                </div>
-            </div>
-        </div>
-    </form>
+@endsection
+@section('x-body')
     <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
     <table class="layui-table">
         <thead>
@@ -55,10 +18,10 @@
                 ID
             </th>
             <th>
-                排序
+                父类名称
             </th>
             <th>
-                分类名
+                分类名称
             </th>
             <th>
                 操作
@@ -66,35 +29,38 @@
         </tr>
         </thead>
         <tbody id="x-link">
-        <tr>
-            <td>
-                <input type="checkbox" value="1" name="">
-            </td>
-            <td>
-                1
-            </td>
-            <td>
-                1
-            </td>
-            <td>
-                新闻
-            </td>
-            <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','{{ url('goodscategory/1/edit') }}','4','','510')"
-                   class="ml-5" style="text-decoration:none">
-                    <i class="layui-icon">&#xe642;</i>
-                </a>
-                <a title="删除" href="javascript:;" onclick="cate_del(this,'1')"
-                   style="text-decoration:none">
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
-            </td>
-        </tr>
+        @foreach($cates as $v)
+            <tr>
+
+                <td>
+                    <input type="checkbox" value="1" name="">
+                </td>
+                <td>
+
+                    {{ $v->id }}
+                </td>
+                <td>
+                    {{ $v->pid }}
+                </td>
+                <td>
+                    {{ $v->name }}
+                </td>
+                <td class="td-manage">
+                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/category/{{$v->id}}/edit','4','','510')"
+                       class="ml-5" style="text-decoration:none">
+                        <i class="layui-icon">&#xe642;</i>
+                    </a>
+                    <a title="删除" href="javascript:;" onclick="cate_del(this,'{{$v->id}}')"
+                       style="text-decoration:none">
+                        <i class="layui-icon">&#xe640;</i>
+                    </a>
+                </td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
-</div>
-<script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
-<script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
+@endsection
+@section('js')
 <script>
     layui.use(['element','layer','form'], function(){
         $ = layui.jquery;//jquery
@@ -106,6 +72,19 @@
         form.on('submit(add)', function(data){
             console.log(data);
             //发异步，把数据提交给php
+            $.ajax({
+                type: 'POST',
+                url:  '{{url('/goodscategory')}}',
+                dataType: 'json',
+                data: {'pid': data.field.pid, 'name':data.field.name, '_token':'{{csrf_token()}}'},
+                success:function (data){
+
+                    var id = data.id;
+
+                    $('#x-link').append('<tr><td><input type="checkbox"value="1"name=""></td><td>'+data.id+'</td><td>'+data.parent_id+'</td><td>'+data.cate_name+'</td><td class="td-manage"><a title="编辑"href="javascript:;"onclick="cate_edit(\'编辑\',\'cate-edit.html\',\'4\',\'\',\'510\')"class="ml-5"style="text-decoration:none"><i class="layui-icon">&#xe642;</i></a><a title="删除"href="javascript:;"onclick="cate_del(this,\'1\')"style="text-decoration:none"><i class="layui-icon">&#xe640;</i></a></td></tr>');
+
+                }
+            });
             layer.alert("增加成功", {icon: 6});
             $('#x-link').prepend('<tr><td><input type="checkbox"value="1"name=""></td><td>1</td><td>1</td><td>'+data.field.name+'</td><td class="td-manage"><a title="编辑"href="javascript:;"onclick="cate_edit(\'编辑\',\'cate-edit.html\',\'4\',\'\',\'510\')"class="ml-5"style="text-decoration:none"><i class="layui-icon">&#xe642;</i></a><a title="删除"href="javascript:;"onclick="cate_del(this,\'1\')"style="text-decoration:none"><i class="layui-icon">&#xe640;</i></a></td></tr>');
             return false;
@@ -139,6 +118,4 @@
         });
     }
 </script>
-
-</body>
-</html>
+@endsection
