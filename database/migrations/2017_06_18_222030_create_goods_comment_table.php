@@ -27,7 +27,7 @@ class CreateGoodsCommentTable extends Migration
             $table->softDeletes()->comment('删除时间');
 
             $table->foreign('goods_id')->references('id')->on('goods')->comment('商品表id外键');
-            $table->foreign('orders_details')->references('id')->on('orders')->comment('订单表id键');
+            $table->foreign('order_id')->references('id')->on('orders_details')->comment('订单详情表id键');
             $table->foreign('cargo_id')->references('id')->on('goods_cargo')->comment('货品表id外键');
             $table->foreign('user_id')->references('id')->on('users_register')->comment('用户表id外键');
         });
