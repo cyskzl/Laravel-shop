@@ -1,6 +1,6 @@
 @extends('admin.layouts.layout')
-@yield('title','修改分类')
 @section('x-body')
+
     <form class="layui-form">
         <div class="layui-form-item">
             <label for="cname" class="layui-form-label">
