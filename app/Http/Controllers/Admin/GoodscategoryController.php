@@ -16,8 +16,40 @@ class GoodscategoryController extends Controller
      */
     public function index()
     {
-       $cates = self::getCates();
+        $cates = self::getCates();
         return view('admin.main.goodscategory.index', ['cates' => $cates]);
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->all();
+//        dd($data);
+        //如果顶级分类，pid和level都是0
+        if($data['pid'] == 0){
+            $data['level'] = '0';
+        } else {
+            //如果不是顶级分类
+            //读取父级分类的信息
+            $info = Category::find($data['pid']);
+
+            $data['level'] = $info->level.','.$info->id;
+        }
+
+        //插入数据
+        $category = new Category;
+        //dd($category);
+        $category -> pid = $data['pid'];
+        $category -> level = $data['level'];
+        $category -> name =  $data['name'];
+        $category -> img =  $data['img'];
+        $category -> describe =  $data['describe'];
+
+        if( $category->save() ){
+            return redirect('admin.goodscategory.index');
+        } else {
+            return back();
+        }
+
     }
 
     /**
@@ -27,6 +59,8 @@ class GoodscategoryController extends Controller
     public function create(Request $request)
     {
         //商品分类添加
+        $cates = self::getCates();
+        return view('admin.main.goodscategory.create', ['cates' => $cates]);
     }
 
 
@@ -70,7 +104,7 @@ class GoodscategoryController extends Controller
         foreach($cates as $key => $value){
             //判断当前的分类是几级分类
             $tmp = count(explode(',', $value->level))-1;
-            $prefix = str_repeat('|--', $tmp);
+            $prefix = str_repeat('├──', $tmp);
             $value->name = $prefix . $value->name;
         }
 

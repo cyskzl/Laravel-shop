@@ -16,7 +16,7 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header header header-demo">
         <div class="layui-main">
-            <a class="logo" href="./index.html">
+            <a class="logo" href="{{url('/admin/admin')}}">
                 X-admin v1.0
             </a>
             <ul class="layui-nav" lay-filter="">
@@ -48,14 +48,14 @@
                     <dl class="layui-nav-child">
                         <dd class="">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('goodscategory') }}">
+                            <a href="javascript:;" _href="{{ url('admin/goodscategory') }}">
                                 <cite>商品分类</cite>
                             </a>
                         </dd>
                         </dd>
                         <dd class="">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('goods') }}">
+                            <a href="javascript:;" _href="{{ url('admin/goods') }}">
                                 <cite>商品列表</cite>
                             </a>
                         </dd>
@@ -69,7 +69,7 @@
                     <dl class="layui-nav-child">
                         <dd class="">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('activity') }}">
+                            <a href="javascript:;" _href="{{ url('admin/activity') }}">
                                 <cite>活动管理</cite>
                             </a>
                         </dd>
@@ -91,7 +91,7 @@
                     <dl class="layui-nav-child">
                         <dd class="">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('carousel') }}">
+                            <a href="javascript:;" _href="{{ url('admin/carousel') }}">
                                 <cite>轮播图列表</cite>
                             </a>
                         </dd>
@@ -105,7 +105,7 @@
                     <dl class="layui-nav-child">
                         <dd class="">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('orders') }}">
+                            <a href="javascript:;" _href="{{ url('admin/orders') }}">
                                 <cite>订单列表</cite>
                             </a>
                         </dd>
@@ -118,8 +118,15 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd class="">
-                            <a href="javascript:;" _href="{{url('goodscategory')}}">
+                            <a href="javascript:;" _href="{{url('admin/goodscategory')}}">
                                 <cite>分类列表</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{{url('admin/goodscategory/create')}}">
+                                <cite>添加分类</cite>
                             </a>
                         </dd>
                     </dl>
@@ -130,12 +137,12 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('comment') }}">
+                            <a href="javascript:;" _href="{{ url('admin/comment') }}">
                                 <cite>评论列表</cite>
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('feedback') }}">
+                            <a href="javascript:;" _href="{{ url('admin/feedback') }}">
                                 <cite>意见反馈</cite>
                             </a>
                         </dd>
@@ -147,32 +154,32 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('member') }}">
+                            <a href="javascript:;" _href="{{ url('admin/member') }}">
                                 <cite>会员列表</cite>
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('memberrecyclebin') }}">
+                            <a href="javascript:;" _href="{{ url('admin/memberrecyclebin') }}">
                                 <cite>删除会员</cite>
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('memberlevel') }}">
+                            <a href="javascript:;" _href="{{ url('admin/memberlevel') }}">
                                 <cite>等级管理</cite>
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('memberintegral') }}">
+                            <a href="javascript:;" _href="{{ url('admin/memberintegral') }}">
                                 <cite>积分管理</cite>
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('memberbrowselog') }}">
+                            <a href="javascript:;" _href="{{ url('admin/memberbrowselog') }}">
                                 <cite>浏览记录</cite>
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('membercollection') }}">
+                            <a href="javascript:;" _href="{{ url('admin/membercollection') }}">
                                 <cite>商品收藏</cite>
                             </a>
                         </dd>
@@ -184,22 +191,22 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('adminlist') }}">
+                            <a href="javascript:;" _href="{{ url('admin/adminlist') }}">
                                 <cite>管理员列表</cite>
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('adminrole') }}">
+                            <a href="javascript:;" _href="{{ url('admin/adminrole') }}">
                                 <cite>角色管理</cite>
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('adminjurisdiction') }}">
+                            <a href="javascript:;" _href="{{ url('admin/adminjurisdiction') }}">
                                 <cite>权限分类</cite>
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('adminrule') }}">
+                            <a href="javascript:;" _href="{{ url('admin/adminrule') }}">
                                 <cite>权限管理</cite>
                             </a>
                         </dd>
@@ -263,7 +270,7 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('settings') }}">
+                            <a href="javascript:;" _href="{{ url('admin/settings') }}">
                                 <cite>系统设置</cite>
                             </a>
                         </dd>
@@ -278,12 +285,12 @@
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('systemlog') }}">
+                            <a href="javascript:;" _href="{{ url('admin/systemlog') }}">
                                 <cite>系统日志</cite>
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('link') }}">
+                            <a href="javascript:;" _href="{{ url('admin/link') }}">
                                 <cite>友情链接</cite>
                             </a>
                         </dd>
@@ -310,7 +317,7 @@
         </ul>
         <div class="layui-tab-content site-demo site-demo-body">
             <div class="layui-tab-item layui-show">
-                <iframe frameborder="0" src="{{ url('welcome') }}" class="x-iframe"></iframe>
+                <iframe frameborder="0" src="{{ url('admin/welcome') }}" class="x-iframe"></iframe>
             </div>
         </div>
     </div>
