@@ -25,7 +25,7 @@ class CommonController extends Controller
 
             $path = $file -> move(public_path().'/Uploads', $newName);
 
-            $filepath = 'Uploads/'.$newName;
+            $filepath = '/Uploads/'.$newName;
 
             return $filepath;
         }
