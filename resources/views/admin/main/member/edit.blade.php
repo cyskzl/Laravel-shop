@@ -22,7 +22,7 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text" id="L_email" name="email" required lay-verify="email"
-                       autocomplete="off" value="113664000@qq.com" class="layui-input">
+                       autocomplete="off" value="{{$userinfo->email}}" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">
                 如果您在邮箱已激活的情况下，变更了邮箱，需

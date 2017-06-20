@@ -13,7 +13,7 @@
 
 //DB::listen(function($sql) {
 ////dump($sql);
-//echo $sql->sql;
+//    echo $sql->sql;
 //// dump($sql->bindings);
 //});
 //prefix => 前缀
