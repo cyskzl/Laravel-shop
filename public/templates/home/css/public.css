@@ -1,0 +1,78 @@
+body,div,h1,h2,h3,h4,h5,h6,a,p,b,span,img,header,footer,aside,nav,ul,li,input{
+    padding: 0;
+    margin: 0;
+}
+body{
+    width: 1350px;
+    margin: auto;
+}
+a{
+    text-decoration: none;
+}
+li{
+    list-style: none;
+}
+.clearfix:before{
+    content: "";
+    display: table;
+}
+.clearfix:after{
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.flex{
+    display: flex;
+}
+.fix{
+    position: fixed;
+}
+.rela{
+    position: relative;
+}
+.abso{
+    position: absolute;
+}
+.black li:hover{
+    color: black;
+}
+.red li:hover{
+    background: #F54B73;
+}
+.blue li:hover{
+    background: lightblue;
+}
+.cur{
+    cursor: pointer;
+}
+.Black{
+    color: black;
+    font-size: 21px;
+    font-weight: 800;
+    cursor: pointer;
+}
+.B4d{
+    color: #4D4D4D;
+    font-size: 21px;
+    font-weight: 600;
+}
+.S3c{
+    color: #cccccc;
+    font-size: 12px;
+}
+.comWidth{
+    width: 1100px;
+    margin: 0 auto;
+}
+input{
+    outline: none;
+    border: none;
+}

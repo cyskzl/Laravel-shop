@@ -16,7 +16,22 @@
 //    echo $sql->sql;
 //// dump($sql->bindings);
 //});
+
+Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
+    // 注册页面
+    Route::get('/register', 'RegisterController@register');
+    // 验证码生成
+    Route::get('/register/code', 'RegisterController@createCode');
+    // 邮箱发送注册
+    Route::post('/register', 'RegisterController@toRegister');
+    // 邮箱验证是否注册
+    Route::post('/register/validate', 'RegisterController@validateEmail');
+    // 邮箱激活
+    Route::get('/register/validate_email', 'RegisterController@validateEmailCode');
+});
+
 //prefix => 前缀
+    // 后台首页
 Route::group(['prefix' => 'admin'], function (){
         //后台首页
 

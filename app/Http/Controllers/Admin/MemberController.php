@@ -35,9 +35,12 @@ class MemberController extends Controller
         // 获取会员注册信息
         $user = UserRegister::find($id);
         // 获取会员详细信息
-        $userinfo = $user->userinfo;
-
-        return view('admin.main.member.show',compact('userinfo'));
+        $userinfo = $user->userInfo;
+//        dd($userinfo);
+        // 获取积分详情
+        $usercode = $user->userCode;
+//        dd($usercode);
+        return view('admin.main.member.show',compact('userinfo','user','usercode'));
     }
 
     /**
@@ -76,9 +79,10 @@ class MemberController extends Controller
      */
     public function edit($id)
     {
-        $userinfo = UserRegister::find($id);
+        $user = UserRegister::find($id);
+        $userinfo = $user->userInfo;
 //        dd($userinfo);
-        return view('admin.main.member.edit', compact('userinfo'));
+        return view('admin.main.member.edit', compact('userinfo','user'));
     }
 
     /**

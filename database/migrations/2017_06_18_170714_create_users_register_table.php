@@ -20,6 +20,7 @@ class CreateUsersRegisterTable extends Migration
             $table->string('email')->unique()->comment('会员邮箱地址');
             $table->string('password')->comment('会员密码');
             $table->string('third_party_id')->nullable()->comment('第三方 ID');
+            $table->string('status')->default(0)->comment('用户状态|0未激活 1激活');
             $table->string('register_ip')->comment('注册ip');
             $table->timestamps();
         });
