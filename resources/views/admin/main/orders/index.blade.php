@@ -10,6 +10,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="{{asset('templates/admin/css/x-admin.css')}}" media="all">
+    <link rel="stylesheet" href="{{asset('templates/admin/css/orders/header.css')}}" media="all">
+    <link rel="stylesheet" href="{{asset('templates/admin/css/orders/order.css')}}" media="all">
+    <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
 </head>
 <body>
 <div class="x-nav">
@@ -40,75 +43,56 @@
         </div>
     </form>
     <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="question_add('添加订单','{{ url('orders/create') }}','800','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
-    <table class="layui-table">
-        <thead>
-        <tr>
-            <th>
-                <input type="checkbox" name="" value="">
-            </th>
-            <th>
-                ID
-            </th>
-            <th>
-                标题
-            </th>
-            <th>
-                分类
-            </th>
-            <th>
-                来源
-            </th>
-            <th>
-                更新时间
-            </th>
-            <th>
-                浏览次数
-            </th>
-            <th>
-                操作
-            </th>
+
+    <!-- 订单管理table -->
+
+    <table class="table table-bordered table-hover">
+        <thead >
+        <tr class="active">
+            <th>订单编号</th>
+            <th>收货人</th>
+            <th>总金额</th>
+            <th>应付金额</th>
+            <th>订单状态</th>
+            <th>支付状态</th>
+            <th>支付方式</th>
+            <th>下单时间</th>
+            <th>操作</th>
+        </tr>
+        <tr style="height: 10px;">
         </tr>
         </thead>
+        @foreach($ordersList as $value)
         <tbody>
         <tr>
-            <td>
-                <input type="checkbox" value="1" name="">
-            </td>
-            <td>
-                1
-            </td>
-            <td>
-                <u style="cursor:pointer" onclick="question_show()">
-                    问题标题
-                </u>
-            </td>
-            <td >
-                新闻子类1
-            </td>
-            <td >
-                xuebingsi
-            </td>
-            <td >
-                2017-01-01 11:11:42
-            </td>
-            <td >
-                34
-            </td>
-            <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="question_edit('编辑','{{ url('orders/1/edit') }}','1','','510')"
-                   class="ml-5" style="text-decoration:none">
-                    <i class="layui-icon">&#xe642;</i>
-                </a>
-                <a title="删除" href="javascript:;" onclick="question_del(this,'1')"
-                   style="text-decoration:none">
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
+            <th scope="row">{{$value->guid}}</th>
+            <td>{{$value->name_message}}</td>
+            <td>{{$value->total_amount}}</td>
+            <td>{{$value->total_amount}}</td>
+            <td>{{$value->order_status}}</td>
+            <td>{{$value->pay_status}}</td>
+            <td>{{$value->pay_type}}</td>
+            <td>{{$value->created_at}}</td>
+            <td style="width: 160px;">
+                <a class="btn btn-primary btn-xs" role="button" href="javascript:;" onclick="question_edit('编辑','{{ url('admin/orders/').'/'.$value->id}}','1','','800')">查看</a>
+                <a class="btn btn-success btn-xs" role="button" href="javascript:;" >发货</a>
+                <a class="btn btn-danger btn-xs" role="button" href="javascript:;" >关闭订单</a>
             </td>
         </tr>
         </tbody>
+        @endforeach
+
     </table>
 
-    <div id="page"></div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+{{--                {{$ordersList->links()}}--}}
+            </div>
+        </div>
+    </div>
 </div>
 <script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
 <script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
