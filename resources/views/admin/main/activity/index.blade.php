@@ -39,7 +39,10 @@
             </div>
         </div>
     </form>
-    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="question_add('添加活动','{{ url('activity/create') }}','800','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
+    <xblock>
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
+        <a href="{{url('admin/activity/create')}}"><button class="layui-btn" ><i class="layui-icon">&#xe608;</i>增加</button></a>
+        <span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>

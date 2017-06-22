@@ -70,6 +70,7 @@
             'uploader': uploadPath, //上传处理路由
             //成功返回回调函数
             'onUploadSuccess': function (file, data, response) {
+                console.log(data);
             //判断php，return回来的值
             if (data) {
                 //添加到缩略图

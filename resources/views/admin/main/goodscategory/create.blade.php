@@ -73,7 +73,7 @@
                 <div id='layer-photos-demo' class='layer-photos-demo' style='width: 660px;margin-left: 95px'>
                 </div>
             </div>
-            </div>
+        </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">描述</label>
                 <div class="layui-input-block">
