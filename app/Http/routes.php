@@ -34,7 +34,6 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 后台首页
 Route::group(['prefix' => 'admin'], function (){
         //后台首页
-
         Route::get('/', 'Admin\AdminController@index');
 
         Route::get('/welcome', 'Admin\AdminController@welcome');

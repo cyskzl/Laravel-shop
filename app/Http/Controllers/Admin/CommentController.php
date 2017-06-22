@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\GoodsComment;
+use App\Models\GoodsCommentReply;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -14,7 +16,10 @@ class CommentController extends Controller
      */
     public function index()
     {
-        return view('admin.main.comment.index');
+        $data = GoodsComment::all();
+
+//        dd($data);
+        return view('admin.main.comment.index',compact('data'));
     }
 
     /**
@@ -26,6 +31,15 @@ class CommentController extends Controller
     public function destroy(Request $request)
     {
         //删除id
+    }
+
+    public function show($id)
+    {
+
+       $data =  GoodsCommentReply::where('comment_id', '=', $id)->get();
+
+       dd($data);
+
     }
 
 }

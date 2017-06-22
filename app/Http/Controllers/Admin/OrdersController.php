@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Orders;
+use App\Models\OrdersDetails;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -14,7 +16,29 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        return view('admin.main.orders.index');
+
+        $ordersList = Orders::all();
+
+//        $ordersList = OrdersDetails::all();
+
+//        dd($ordersList->ordersDetails->guid);
+
+        return view('admin.main.orders.index',compact('ordersList'));
+    }
+
+
+    /**
+     * @return  view    订单详情页
+     */
+    public function show($id)
+    {
+        $orderdata = Orders::find($id);
+
+        $detaildata = $orderdata->ordersDetails;
+
+//        dd($detaildata);
+
+        return view('admin.main.orders.show',compact('orderdata','detaildata'));
     }
 
     /**

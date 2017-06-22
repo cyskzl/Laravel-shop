@@ -20,9 +20,12 @@ class CreateGoodsCommentTable extends Migration
             $table->unsignedInteger('order_id')->index()->comment('订单编号|订单表GUID');
             $table->unsignedInteger('cargo_id')->index()->comment('商品ID,cargo表的主键');
             $table->unsignedInteger('user_id')->index()->comment('用户ID,user表的主键');
+            $table->varchar('ip_address',4)->comment('IP地址');
+            $table->varchar('img',255)->nullable()->comment('晒单图片');
             $table->tinyInteger('comment_type')->default(0)->comment('匿名评价  0:匿名评价 1:显示用户名| 默认为0');
             $table->tinyInteger('star')->comment('1 好评 2 中评 3 差评');
-            $table->text('comment_info')->comment('评价内容');
+            $table->varchar('comment_info',255)->comment('评价内容');
+            $table->tinyInteger('is_show')->default(0)->comment('是否显示评论 0显示，1不显示');
             $table->timestamps();
             $table->softDeletes()->comment('删除时间');
 

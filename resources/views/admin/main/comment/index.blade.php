@@ -12,6 +12,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
+    <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
 </head>
 <body>
 <div class="x-nav">
@@ -33,58 +34,67 @@
                 ID
             </th>
             <th>
-                回复者
+                用户
             </th>
             <th>
-                回复内容
+                评论内容
             </th>
             <th>
-                问题
+                商品名称
             </th>
             <th>
-                回复时间
+                显示
             </th>
             <th>
-                状态
+                评论时间
+            </th>
+            <th>
+                ip地址
             </th>
             <th>
                 操作
             </th>
+
         </tr>
         </thead>
+
+        @foreach($data as $v)
         <tbody id="x-link">
         <tr>
             <td>
                 <input type="checkbox" value="1" name="">
             </td>
             <td>
-                1
+                {{$v->id}}
             </td>
             <td>
-                xuebingsi
+                {{$v->user_id}}
             </td>
             <td >
-                这个很简单，你自己测试下就可以
+                {{$v->comment_info}}
             </td>
             <td >
-                怎么在Windows下运行PHP
+                {{$v->goods_id}}
             </td>
             <td >
-                2017-01-10 16:14:34
+                {{$v->is_show}}
             </td>
             <td >
-                            <span class="layui-btn layui-btn-normal layui-btn-mini">
-                                被采纳
-                            </span>
+                {{$v->created_at}}
             </td>
-            <td class="td-manage">
-                <a title="删除" href="javascript:;" onclick="commemt_del(this,'1')"
-                   style="text-decoration:none">
-                    <i class="layui-icon">&#xe640;</i>
+            <td >
+                {{$v->ip_address}}
+            </td>
+            <td >
+                <a class="btn btn-primary btn-xs" href="javascript:;" onclick="question_edit('编辑','{{ url('admin/comment/').'/'.$v->id}}','1','','800')">
+                    查看
                 </a>
+                <a class="btn btn-danger btn-xs" role="button" href="javascript:;" id="btn-delete">删除</a>
             </td>
         </tr>
         </tbody>
+
+            @endforeach
     </table>
 
     <div id="page"></div>
@@ -122,6 +132,11 @@
             $(obj).parents("tr").remove();
             layer.msg('已删除!',{icon:1,time:1000});
         });
+    }
+
+    //编辑
+    function question_edit (title,url,id,w,h) {
+        x_admin_show(title,url,w,h);
     }
 </script>
 
