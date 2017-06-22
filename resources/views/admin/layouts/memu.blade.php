@@ -17,7 +17,7 @@
     <div class="layui-header header header-demo">
         <div class="layui-main">
             <a class="logo" href="{{url('/admin/admin')}}">
-                X-admin v1.0
+                Hello Word
             </a>
             <ul class="layui-nav" lay-filter="">
                 <li class="layui-nav-item"><img src="{{asset('templates/admin/images/logo.png')}}" class="layui-circle" style="border: 2px solid #A9B7B7;" width="35px" alt=""></li>
@@ -26,7 +26,7 @@
                     <dl class="layui-nav-child"> <!-- 二级菜单 -->
                         <dd><a href="">个人信息</a></dd>
                         <dd><a href="">切换帐号</a></dd>
-                        <dd><a href="./login.html">退出</a></dd>
+                        <dd><a href="{{ url('admin/loginout') }}">退出</a></dd>
                     </dl>
                 </li>
                 <!-- <li class="layui-nav-item">
@@ -206,8 +206,8 @@
                             </a>
                         </dd>
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('admin/adminrule') }}">
-                                <cite>权限管理</cite>
+                            <a href="javascript:;" _href="{{ url('admin/permission') }}">
+                                <cite>权限列表</cite>
                             </a>
                         </dd>
                     </dl>

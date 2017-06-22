@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Role;
+use App\Permission;
 
 class AdminController extends Controller
 {
@@ -13,9 +15,11 @@ class AdminController extends Controller
     /**
      * @return  view    后台首页
      */
-    public function index()
+    public function index(Request $request)
     {
+
         return view('admin.index');
+
     }
 
     /**

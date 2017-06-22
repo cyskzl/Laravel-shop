@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\AdminUser;
+use App\Permission;
+use App\Role;
 
 class AdminListController extends Controller
 {
@@ -14,6 +17,8 @@ class AdminListController extends Controller
      */
     public function index()
     {
+        $admin = AdminUser::join('roles', 'roles.id', '=', 'admin_users.id')->get();
+        dd($admin);
         return view('admin.main.administrator.index');
     }
 

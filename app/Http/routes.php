@@ -17,9 +17,18 @@
 //// dump($sql->bindings);
 //});
 //prefix => 前缀
-Route::group(['prefix' => 'admin'], function (){
-        //后台首页
 
+
+
+
+
+Route::group(['prefix' => 'admin'],function (){
+
+        Route::get('/login', 'Admin\LoginController@index');
+        Route::post('/login', 'Admin\LoginController@login');
+        Route::get('/loginout', 'Admin\LoginController@loginout');
+
+        //后台首页
         Route::get('/', 'Admin\AdminController@index');
 
         Route::get('/welcome', 'Admin\AdminController@welcome');
@@ -75,8 +84,8 @@ Route::group(['prefix' => 'admin'], function (){
         //角色列表
         Route::resource('/adminrole', 'Admin\AdminRoleController');
 
-        //权限规则
-        Route::resource('/adminrule', 'Admin\AdminRuleController');
+        //权限列表
+        Route::resource('/permission', 'Admin\PermissionController');
 
         //权限分类
         Route::resource('/adminjurisdiction', 'Admin\AdminJurisdictionCateController');
