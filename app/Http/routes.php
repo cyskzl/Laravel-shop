@@ -47,8 +47,12 @@ Route::group(['prefix' => 'admin'], function (){
 
         //商品列表
         Route::resource('/goods', 'Admin\GoodsController');
+        //商品类型
+        Route::resource('/type', 'Admin\GoodsTypeController');
+        //商品规格
+        Route::resource('/spec', 'Admin\SpecController');
 
-        //活动管理
+            //活动管理
         Route::resource('/activity', 'Admin\ActivityController');
 
         //轮播图管理

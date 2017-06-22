@@ -15,3 +15,14 @@
 			 return $cate->name;
 		 }
 	}
+
+    //提示规格类型
+    function getSpecType($id){
+
+	    $spec = \App\Models\Spec::find($id);
+        if(empty($spec)){
+            return '无';
+        }else{
+            return $spec->name;
+        }
+    }

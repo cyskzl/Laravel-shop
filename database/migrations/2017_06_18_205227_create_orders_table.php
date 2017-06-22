@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('user_id')->index()->comment('用户ID');
             $table->char('guid', 32)->index()->comment('订单编号');
             $table->json('cargo_message')->comment('下单商品信息 :单价、数量、商品ID');
-            $table->varchar('name_message',52)->comment('收货人姓名');
+            $table->string('name_message',52)->comment('收货人姓名');
             $table->json('address_message')->comment('收货地址信息');
             $table->string('pay_transaction', 64)->comment('支付交易号');
             $table->tinyInteger('pay_type')->comment('支付方式 1:支付宝 2:微信 3:其他');

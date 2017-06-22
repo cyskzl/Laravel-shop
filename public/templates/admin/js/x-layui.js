@@ -28,12 +28,21 @@ function x_admin_show(title,url,w,h){
 		shadeClose: true,
 		shade:0.4,
 		title: title,
+<<<<<<< HEAD
 		content: url
         end: function () {
             location.href = location.href;
         }
 
     });
+=======
+		content: url,
+		end: function () {
+            // location.reload();
+			location.href = location.href;
+        }
+	});
+>>>>>>> origin/chenys
 }
 
 /*关闭弹出框口*/

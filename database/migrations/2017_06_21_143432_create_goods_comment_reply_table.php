@@ -18,7 +18,7 @@ class CreateGoodsCommentReplyTable extends Migration
             $table->unsignedInteger('comment_id')->index()->comment('商品评论表ID');
             $table->unsignedInteger('user_id')->index()->comment('用户ID');
             $table->unsignedInteger('admin_id')->index()->comment('管理员ID');
-            $table->varvhar('reply_info',255)->comment('回复的内容');
+            $table->string('reply_info',255)->comment('回复的内容');
             $table->timestamps();
             $table->softDeletes()->comment('删除时间');
 

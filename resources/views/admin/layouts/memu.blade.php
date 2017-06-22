@@ -48,8 +48,15 @@
                     <dl class="layui-nav-child">
                         <dd class="">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('admin/goodscategory') }}">
-                                <cite>商品分类</cite>
+                            <a href="javascript:;" _href="{{ url('admin/type') }}">
+                                <cite>商品类别</cite>
+                            </a>
+                        </dd>
+                        </dd>
+                        <dd class="">
+                        <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/spec') }}">
+                                <cite>商品规格</cite>
                             </a>
                         </dd>
                         </dd>
