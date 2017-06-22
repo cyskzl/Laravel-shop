@@ -28,6 +28,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::post('/register/validate', 'RegisterController@validateEmail');
     // 邮箱激活
     Route::get('/register/validate_email', 'RegisterController@validateEmailCode');
+
 });
 
 //prefix => 前缀
@@ -64,6 +65,9 @@ Route::group(['prefix' => 'admin'], function (){
 
         //会员管理
         Route::resource('/member', 'Admin\MemberController');
+
+        // 收货地址管理
+        Route::get('/address','Admin\MemberController@getAddress');
 
         //会员密码修改
         Route::get('/memberpassword', 'Admin\MemberController@memberPassword');

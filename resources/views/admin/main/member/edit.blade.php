@@ -87,14 +87,7 @@
             }
         };
 
-//        console.log(start.choose);
-//        console.log(data);
 
-//        start(function (data) {
-//            console.log(data);
-//        })
-//        demo(start.choose);
-//        console.log(demo(start.choose()));
 
         document.getElementById('LAY_demorange_s').onclick = function () {
             start.elem = this;

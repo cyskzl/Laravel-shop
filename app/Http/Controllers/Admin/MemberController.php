@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\ReceivingAddress;
+use App\Models\UserInfo;
 use App\Models\UserRegister;
 use Illuminate\Http\Request;
 
@@ -102,15 +104,26 @@ class MemberController extends Controller
      *
      * @param   $request    array   获取请求头信息
      *
+     * 暂时只删除会员详情表与收货地址表，后续其他与用户表关联表的信息也的进行删除
      */
     public function destroy($id)
     {
+
+        UserInfo::where('user_id','=',$id)->delete();
+        ReceivingAddress::where('user_id','=',$id)->delete();
         if (UserRegister::destroy($id))
         {
             return 1;
         }
     }
 
+
+    public function getAddress(Request $request)
+    {
+        $id = $request->input('id');
+        $userAddress = ReceivingAddress::where('user_id','=',$id)->get();
+        return view('admin.main.member.receivingaddress',compact('userAddress'));
+    }
     /**
      * @return  view    会员密码修改页
      */

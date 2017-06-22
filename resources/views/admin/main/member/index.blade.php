@@ -60,7 +60,7 @@
                 <td >{{$v->third_party_id}}</td>
                 <td >{{$v->register_ip}}</td>
                 <td >{{$v->created_at}}</td>
-                <td ><a href="javascript:;" class="layui-btn layui-btn-mini">收货地址</a></td>
+                <td ><a href="javascript:;" onclick="member_show('{{$v->id}}','{{'./address'.'?id='.$v->id }}','800','800')" class="layui-btn layui-btn-mini">收货地址</a></td>
                 <td class="td-manage">
                     <a title="编辑" href="javascript:;" onclick="member_edit('编辑','{{url('admin/member/'.$v->id.'/edit')}}','{{$v->id}}','','510')"
                        class="ml-5" style="text-decoration:none">

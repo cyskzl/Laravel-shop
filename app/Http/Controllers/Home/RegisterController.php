@@ -38,10 +38,17 @@ class RegisterController extends Controller
         return $validateCode->doimg();
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * 进行服务器端端的邮箱注册填写信息验证
+     * 完成验证将信息存入users_register
+     * 发送邮件给注册用户邮箱
+     */
     public function toRegister(Request $request)
     {
 
-        // 邮箱验证
+        // 邮箱注册填写信息验证
         $this->validate($request,[
             'email'=>'required | email',
             'password'=>'required | between:6,16',
@@ -107,8 +114,15 @@ class RegisterController extends Controller
                 ->subject($m3_email->subject);
         });
 
+        return view('home.validatefail',['info'=>'注册成功，请到邮箱激活']);
+
     }
 
+    /**
+     * @param Request $request
+     * @return int
+     * 注册页的邮箱名ajax验证
+     */
     public function validateEmail(Request $request)
     {
         $email = $request->input('email');
@@ -124,6 +138,15 @@ class RegisterController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * 处理邮件内部的信息
+     * 信息对应则修改用户注册表的状态
+     * 删除临时存储的验证信息
+     * 增加用户详情表的片段信息
+     * 返回视图提示注册成功并跳转到网站首页（暂时缺少将信息存入SESSION中实现登录）
+     */
     public function validateEmailCode(Request $request)
     {
         $uuid = $request->input('code');
@@ -152,7 +175,7 @@ class RegisterController extends Controller
             if(!$delTemp){
                 return view('home.validatefail');
             }
-            return view('home.validatefail',compact('uinfo'));
+            return view('home.validatefail',['info'=>'用户名已激活，3秒后跳转到网站首页或者点击立即跳转']);
 
         }else{
             return view('home.validatefail');
