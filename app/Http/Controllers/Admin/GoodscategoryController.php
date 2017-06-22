@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use DB;
+use Storage;
 use App\Http\Requests;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
@@ -26,7 +27,10 @@ class GoodscategoryController extends Controller
 
         //遍历数组 调整分类名称
         $cates =  self::trer($cate);
-        return view('admin.main.goodscategory.index', ['cates' => $cates, 'request' => $request]);
+        if(!empty($cates)){
+            return view('admin.main.goodscategory.index', ['cates' => $cates, 'request' => $request]);
+        }
+
     }
 
     /**
@@ -59,13 +63,12 @@ class GoodscategoryController extends Controller
     }
 
     /**
-     * 显示页面
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show()
     {
-        $cates = self::getCates();
-        return view('admin.main.goodscategory.index', ['cates' => $cates]);
+
     }
 
     /**
@@ -76,7 +79,8 @@ class GoodscategoryController extends Controller
         $info = Category::find($id);
         //pid路径添加
         $cates = self::getCates();
-        return view('admin.main.goodscategory.edit', ['cates' => $cates, 'info' => $info]);
+        $img = rtrim($info->img, ',');
+        return view('admin.main.goodscategory.edit', ['cates' => $cates, 'info' => $info, 'img' => $img]);
     }
 
     /**
@@ -88,6 +92,14 @@ class GoodscategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+//        //插入数据
+//        $data = self::tree($request);
+//        //保存
+//        if (DB::table('goods_category')->where('id', $id)->update($data)) {
+//            return 1;
+//        } else {
+//            return 2;
+//        }
         //插入数据
         $data = self::tree($request);
         //保存
@@ -114,7 +126,7 @@ class GoodscategoryController extends Controller
         if(!$row->count()){
             $img = $cates->img;
             if(!empty($img)){
-                dd($request->deleteFile($img));
+                @unlink('./'.date('Ymd').$img);
             }
             Category::destroy([$id]);
             //没数据返回给页面ajax
