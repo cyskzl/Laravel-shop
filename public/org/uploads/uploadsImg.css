@@ -1,0 +1,18 @@
+   /* .uploadify{ display: inline-block;} */
+        /* .uploadify-button{border:none;border-radius:5px;margin-top:8px;} */
+        .type-file-button{
+            border-color: rgb(215, 215, 215);
+            border-radius:0px 5px 5px 0px;
+            color: rgb(255, 255, 255);
+            display: inline-block;
+            border-style: solid;
+            vertical-align: top;
+            border-width: 1px;
+            border:none;
+            width: 99px;
+            height: 38px;
+            background-color: #009688;;
+        }
+        .backclose{
+            background:url({{asset('org/uploadify/uploadify-cancel.png')}});display: inline-block;height: 15px;width: 15px; position:relative;left: 95px;top:-36px;
+        }

@@ -13,7 +13,7 @@
                 <label class="layui-form-label">搜索</label>
                 <div class="layui-input-inline">
                     <input type="text" name="keyword" value="{{$request->input('keyword')}}" placeholder="标题" autocomplete="off" class="layui-input">
-                </div>
+            </div>
                 <div class="layui-input-inline" style="width:80px">
                     <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
                 </div>
@@ -24,7 +24,7 @@
 
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
         <a href="{{url('admin/goodscategory/create')}}"><button class="layui-btn" ><i class="layui-icon">&#xe608;</i>增加</button></a>
-        <span class="x-right" style="line-height:40px">共有数据：{{$cates->total()}} 条</span></xblock>
+        <span class="x-right" style="line-height:40px">共有数据：{{ $cates->total()}}  条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -48,8 +48,8 @@
             </th>
         </tr>
         </thead>
-        <tbody id="x-link">
-        @foreach($cates as $v)
+        <center id="x-link">
+                @foreach($cates as $v)
             <tr>
                 <td>
                     <input type="checkbox" value="1" name="">
@@ -68,7 +68,7 @@
                    {{$v->describe =  $v->describe?:"无描述"}}
                 </td>
                 <td class="td-manage">
-                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','{{url('admin/goodscategory/'.$v->id.'/edit')}}','{{$v->id}}','','510')"
+                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/goodscategory/{{$v->id}}/edit','{{$v->id}}','','510')"
                        class="ml-5" style="text-decoration:none">
                         <i class="layui-icon">&#xe642;</i>
                     </a>
@@ -79,7 +79,6 @@
                 </td>
             </tr>
         @endforeach
-        </tbody>
     </table>
     <div class="container">
         <div class="row">
@@ -109,6 +108,7 @@
 
         //-编辑
         function cate_edit (title,url,id,w,h) {
+//            console.log(url);
             x_admin_show(title,url,w,h);
         }
 

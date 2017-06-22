@@ -43,7 +43,7 @@ Route::group(['prefix' => 'admin'], function (){
         Route::resource('/goodscategory', 'Admin\GoodscategoryController');
 
         //图片上传
-        Route::any('/upload', 'Admin\CommonController@upload');
+        Route::any('/upload/{uploadname}', 'Admin\CommonController@upload');
 
         //商品列表
         Route::resource('/goods', 'Admin\GoodsController');
