@@ -9,8 +9,10 @@
 </head>
 <body>
 
-    @if ($name)
-            {{ dd($name['one']) }}
+    @if ($uinfo)
+            {{ dd($uinfo) }}
+    @else
+        注册失败
     @endif
 
 

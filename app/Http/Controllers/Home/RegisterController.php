@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Home;
 
 use App\Models\M3Email;
 use App\Models\TempEmail;
+use App\Models\UserInfo;
 use App\Models\UserRegister;
 use App\Tool\Validate\ValidateCode;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
@@ -74,7 +76,7 @@ class RegisterController extends Controller
 
         $userregister = new UserRegister();
         $userregister -> email = $email;
-        $userregister -> password = $pass;
+        $userregister -> password = Hash::make($pass);
         $userregister -> register_ip = $request->ip();
 
         if(!($userregister->save())){
@@ -124,14 +126,33 @@ class RegisterController extends Controller
 
     public function validateEmailCode(Request $request)
     {
-        $uid = $request->input('user_id');
         $uuid = $request->input('code');
         $temp = TempEmail::where('uuid','=',$uuid)->get()->toArray();
-        $name = ['one'=>'qwewqe'];
-        
+//        $name = ['one'=>'qwewqe'];
+//        dd($temp);
+        $uid = $temp[0]['user_id'];
+
         if(count($temp)){
-            UserRegister::where('id','=',$temp[0]['user_id'])->update(['status'=>1]);
-            return view('home.validatefail',compact('name'));
+            // 修改注册表信息
+            $register = UserRegister::where('id','=',$uid)->update(['status'=>1]);
+            if(!$register){
+                return view('home.validatefail');
+            }
+            // 对应增加users_info表的信息
+            $uinfo = UserRegister::find($uid);
+            $userinfo = new UserInfo();
+            $userinfo->user_id = $uid;
+            $userinfo->email = $uinfo->email;
+            $infoId = $userinfo->save();
+            if(!$infoId){
+                return view('home.validatefail');
+            }
+            // 删除邮箱注册的临时信息
+            $delTemp = TempEmail::where('user_id','=',$uid)->delete();
+            if(!$delTemp){
+                return view('home.validatefail');
+            }
+            return view('home.validatefail',compact('uinfo'));
 
         }else{
             return view('home.validatefail');
