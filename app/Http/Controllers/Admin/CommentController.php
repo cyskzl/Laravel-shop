@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
@@ -16,10 +17,15 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $data = GoodsComment::all();
+        $data = GoodsComment::
+                    join('users_register','goods_comment.user_id','=','users_register.id')
+                    ->join('goods','goods_comment.goods_id','=','goods.id')
+                    ->select('goods_comment.*','users_register.email','goods.goods_title')
+                    ->get();
 
-//        dd($data);
-        return view('admin.main.comment.index',compact('data'));
+        $sum = count($data);
+
+        return view('admin.main.comment.index',compact('data','sum'));
     }
 
     /**
@@ -38,8 +44,41 @@ class CommentController extends Controller
 
        $data =  GoodsCommentReply::where('comment_id', '=', $id)->get();
 
-       dd($data);
+       return view('admin.main.comment.show');
 
+    }
+
+    public function store(Request $request)
+    {
+
+
+    }
+
+    public function edit($id)
+    {
+        $data = GoodsComment::findOrfail($id);
+
+        $show = $data->is_show;
+
+        switch ($show){
+            case 0:
+                $show = 1;
+                break;
+            case 1:
+                $show = 0;
+                break;
+            default:
+                return '{"error":"1"}';
+                break;
+        }
+
+        $result = GoodsComment::where('id','=',$id)->update(['is_show'=>$show]);
+
+        if($result == 0){
+            return '{"error":"2"}';
+        }
+
+        return '{"error":"0"}';
     }
 
 }

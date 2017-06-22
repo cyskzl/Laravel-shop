@@ -13,6 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
     <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
+    <script src="{{asset('templates/admin/js/jquery.min.js')}}" charset="utf-8"></script>
 </head>
 <body>
 <div class="x-nav">
@@ -23,7 +24,7 @@
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
 <div class="x-body">
-    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
+    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><span class="x-right" style="line-height:40px">共有数据：{{$sum}} 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -31,7 +32,7 @@
                 <input type="checkbox" name="" value="">
             </th>
             <th>
-                ID
+                序号
             </th>
             <th>
                 用户
@@ -59,7 +60,7 @@
         </thead>
 
         @foreach($data as $v)
-        <tbody id="x-link">
+        <tbody id="x-link" data-id="{{$v->id}}">
         <tr>
             <td>
                 <input type="checkbox" value="1" name="">
@@ -68,16 +69,20 @@
                 {{$v->id}}
             </td>
             <td>
-                {{$v->user_id}}
+                {{$v->email}}
             </td>
             <td >
                 {{$v->comment_info}}
             </td>
             <td >
-                {{$v->goods_id}}
+                {{$v->goods_title}}
             </td>
             <td >
-                {{$v->is_show}}
+                @if($v->is_show == 1)
+                    <button class="layui-btn layui-btn-mini layui-btn-normal" id="is_show" value="1">是</button>
+                    @else
+                    <button class="layui-btn layui-btn-mini layui-btn-primary" id="is_show" value="0">否</button>
+                @endif
             </td>
             <td >
                 {{$v->created_at}}
@@ -86,7 +91,7 @@
                 {{$v->ip_address}}
             </td>
             <td >
-                <a class="btn btn-primary btn-xs" href="javascript:;" onclick="question_edit('编辑','{{ url('admin/comment/').'/'.$v->id}}','1','','800')">
+                <a class="btn btn-primary btn-xs" href="javascript:;" onclick="question_edit('评论回复','{{ url('admin/comment/').'/'.$v->id}}','1','','800')">
                     查看
                 </a>
                 <a class="btn btn-danger btn-xs" role="button" href="javascript:;" id="btn-delete">删除</a>
@@ -138,6 +143,34 @@
     function question_edit (title,url,id,w,h) {
         x_admin_show(title,url,w,h);
     }
+
+
+    $('#is_show').on('click',function () {
+
+        var than = $(this);
+
+        var val = $(this).val();
+
+        var mid = $(this).parent().parent().parent().attr('data-id');
+
+        $.ajax({
+            type:'GET',
+            url:'./comment/' + mid + '/edit',
+            success:function (data){
+
+                var obj = JSON.parse(data);
+
+                if(obj.error == 0){
+
+                    if(val == 0){
+                        than.removeClass('layui-btn-primary').addClass('layui-btn-normal').text('是').val('1');
+                    }else{
+                        than.removeClass('layui-btn-normal').addClass('layui-btn-primary').text('否').val('0');
+                    }
+                }
+            }
+        });
+    });
 </script>
 
 </body>
