@@ -40,9 +40,11 @@ class AdminRoleController extends Controller
         return view('admin.main.adminrole.add', compact('roles', 'perms'));
     }
 
+
     /**
      * 添加新角色
      * @param Request $request
+     * @return int
      */
     public function store(Request $request)
     {
@@ -68,15 +70,14 @@ class AdminRoleController extends Controller
                 if ($perms) {
 
                     $roles->attachPermissions($perms);
-                    echo 1;
+                    return 1;
                 }
             }
 
         } else {
 
-            echo 0;
+            return 0;
         }
-
 
     }
 
@@ -103,7 +104,9 @@ class AdminRoleController extends Controller
 
     /**
      * 更新角色权限列表
-     * @param Request $request
+     *
+     * @param   Request $request
+     * @return  int
      */
     public function update(Request $request, $id)
     {
@@ -127,7 +130,6 @@ class AdminRoleController extends Controller
             ->where('permission_role.role_id', '=', $id)
             ->delete();
 
-
         //修改为新的权限
         foreach ($perms as $value) {
 
@@ -136,16 +138,30 @@ class AdminRoleController extends Controller
 
     }
 
-    /**删除指定角色
+
+    /**
+     * 删除指定角色
      * @param $id
+     * @return int  0 => false  1 => true
      */
     public function destroy($id)
     {
 
-        $role = Role::where('id', '=', $id)->delete();
+//        $role = Role::where('id', '=', $id)->delete();
+//        $data = DB::table('permission_role')
+//              ->where('role_id', '=', $id)
+//              ->delete();
+
+        $role = Role::findOrFail($id); // 获取给定权限
+
+        // 正常删除
+        $role->delete();
+
         if ($role) {
+            //删除成功 return 返回给 Ajax
             return 1;
         } else {
+            //删除失败
             return 0;
         }
 

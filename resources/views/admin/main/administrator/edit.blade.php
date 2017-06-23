@@ -16,12 +16,13 @@
     <body>
         <div class="x-body">
             <form class="layui-form">
+                <input type="hidden" name="id" value="{{ $res->id }}">
                 <div class="layui-form-item">
                     <label for="username" class="layui-form-label">
-                        <span class="x-red">*</span>登录名
+                        <span class="x-red">*</span>用户名
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="username" name="username" required="" lay-verify="required" value="admin" 
+                        <input type="text" id="username" name="nickname" required="" lay-verify="required" value="{{ $res->nickname }}"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
@@ -33,7 +34,7 @@
                         <span class="x-red">*</span>手机
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="phone" value="18925139194" name="phone" required="" lay-verify="phone"
+                        <input type="text" id="phone" value="18898551596"  lay-verify="phone"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
@@ -45,7 +46,7 @@
                         <span class="x-red">*</span>邮箱
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="L_email" name="email" required="" lay-verify="email" value="113664000@qq.com" 
+                        <input type="text" id="L_email" name="email" required="" lay-verify="email" value="{{ $res->email }}"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
@@ -57,21 +58,21 @@
                         <span class="x-red">*</span>角色
                     </label>
                     <div class="layui-input-inline">
-                      <select name="role">
-                        <option value="">请选择角色</option>
-                        <option value="超级管理员" selected="">超级管理员</option>
-                        <option value="编辑人员">编辑人员</option>
-                        <option value="问题维护">问题维护</option>
+                      <select name="role_id">
+                          <option value="">请选择角色</option>
+                        @foreach($role as $row)
+                            <option value="{{ $row->id }}" {{ $res->role_id == $row->id?'selected':'' }}>{{ $row->display_name }}</option>
+                        @endforeach
+
                       </select>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label for="L_pass" class="layui-form-label">
-                        <span class="x-red">*</span>密码
+                        密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
-                        autocomplete="off" class="layui-input" value="123456">
+                        <input type="password" id="L_pass" name="password" lay-verify="pass"  class="layui-input" >
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         6到16个字符
@@ -79,11 +80,17 @@
                 </div>
                 <div class="layui-form-item">
                     <label for="L_repass" class="layui-form-label">
-                        <span class="x-red">*</span>确认密码
+                        确认密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_repass" name="repass" required="" lay-verify="repass" value="123456" 
-                        autocomplete="off" class="layui-input">
+                        <input type="password" id="L_repass" lay-verify="repass" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="status" value="{{ $res->status }}"  title="启用" {{ $res->status == '1'?'checked':'' }}>
+                        <input type="radio" name="status" value="{{ $res->status }}" title="禁用" {{ $res->status == '0'?'checked':'' }}>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -104,7 +111,8 @@
                 $ = layui.jquery;
               var form = layui.form()
               ,layer = layui.layer;
-            
+
+
               //自定义验证规则
               form.verify({
                 nikename: function(value){
@@ -112,7 +120,9 @@
                     return '昵称至少得5个字符啊';
                   }
                 }
-                ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+                ,pass:function (value){
+                      [/(.+){6,12}$/, '密码必须6到12位']
+                  }
                 ,repass: function(value){
                     if($('#L_pass').val()!=$('#L_repass').val()){
                         return '两次密码不一致';
@@ -124,12 +134,35 @@
               form.on('submit(save)', function(data){
                 console.log(data);
                 //发异步，把数据提交给php
-                layer.alert("保存成功", {icon: 6},function () {
-                    // 获得frame索引
-                    var index = parent.layer.getFrameIndex(window.name);
-                    //关闭当前frame
-                    parent.layer.close(index);
-                });
+                  $.ajax({
+                      url:'{{ url('admin/adminlist/') }}' + '/'+ data.field.id,
+                      type:'PUT',
+                      datatype:'json',
+                      data:{
+                          'json_edit':JSON.stringify(data.field),
+                          '_token':"{{ csrf_token() }}",
+                      },
+                      success:function (res){
+                          if (res == '1') {
+                              layer.alert("保存成功", {icon: 6},function () {
+                                  // 获得frame索引
+                                  var index = parent.layer.getFrameIndex(window.name);
+                                  //关闭当前frame
+                                  parent.layer.close(index);
+                              });
+
+                          } else {
+                              layer.alert("保存失败", {icon: 6},function () {
+                                  // 获得frame索引
+                                  var index = parent.layer.getFrameIndex(window.name);
+                                  //关闭当前frame
+                                  parent.layer.close(index);
+                              });
+                          }
+                      }
+                  });
+
+
                 return false;
               });
               

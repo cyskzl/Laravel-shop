@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Permission;
+use App\Models\PermissionClass;
 
 class PermissionController extends Controller
 {
@@ -15,22 +16,34 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return view('admin.main.permission.index');
+        $perms = Permission::join('permission_class', 'permissions.class_id', '=', 'permission_class.id')
+                            ->select('permissions.*', 'permission_class.class_name')
+                            ->get();
+        $class = PermissionClass::get();
+        return view('admin.main.permission.index', compact('perms','class'));
     }
 
     /**
      * @return  view    权限规则修改页
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('admin.main.permission.edit');
+        $perms  = Permission::find($id);
+        $class = PermissionClass::get();
+        return view('admin.main.permission.edit', compact('perms', 'class'));
+
+    }
+
+    public function update(Request $request, $id)
+    {
+
     }
 
     /**
      * @param Request $request  获取Ajax传参
      */
     public function store(Request $request)
-    {
+    {   dd($request->all());
         //JSON数据转为对象
         $req = json_decode($request->json);
 
@@ -41,13 +54,14 @@ class PermissionController extends Controller
 
         if (!$res) {
             //执行添加
-            $perms = Permission::create([
-                'name' => $req->name,
-                'display_name' => $req->display_name,
-                'description' => $req->description,
-            ]);
+            $perms = new Permission;
 
-            if ($perms){
+            $perms->name         = $req->name;
+            $perms->display_name = $req->display_name;
+            $perms->description  = $req->description;
+
+
+            if ($perms->save()){
                 //添加成功则返回json格式数据
                 $perms['success'] = 1;
                return  json_encode($perms);

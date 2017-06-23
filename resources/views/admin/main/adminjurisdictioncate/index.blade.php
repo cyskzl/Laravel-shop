@@ -15,7 +15,7 @@
         <div class="x-nav">
             <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
-              <a><cite>会员管理</cite></a>
+              <a><cite>分类管理</cite></a>
               <a><cite>权限分类</cite></a>
             </span>
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
@@ -26,7 +26,7 @@
                   <div class="layui-form-item">
                     <label class="layui-form-label">分类名</label>
                     <div class="layui-input-inline">
-                      <input type="text" name="name"  placeholder="分类名" autocomplete="off" class="layui-input">
+                      <input type="text" name="class_name"  placeholder="分类名" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-input-inline" style="width:80px">
                         <button class="layui-btn"  lay-submit="" lay-filter="*"><i class="layui-icon">&#xe608;</i>添加</button>
@@ -94,8 +94,37 @@
               form.on('submit(*)', function(data){
                 console.log(data);
                 //发异步，把数据提交给php
-                layer.alert("增加成功", {icon: 6});
-                $('#x-link').prepend('<tr><td><input type="checkbox"value="1"name=""></td><td>1</td><td>'+data.field.name+'</td><td class="td-manage"><a title="编辑"href="javascript:;"onclick="cate_edit(\'编辑\',\'link-edit.html\',\'4\',\'\',\'510\')"class="ml-5"style="text-decoration:none"><i class="layui-icon">&#xe642;</i></a><a title="删除"href="javascript:;"onclick="cate_del(this,\'1\')"style="text-decoration:none"><i class="layui-icon">&#xe640;</i></a></td></tr>');
+                  $.ajax({
+                      url:'{{ url('admin/adminjurisdiction') }}',
+                      type:'post',
+                      datatype:'json',
+                      data:{
+                          'class_name':data.field.class_name,
+                          '_token':"{{ csrf_token() }}"
+                      },
+                      success:function (data){
+                          data = JSON.parse(data);
+
+                          if (data.success == '1') {
+
+
+                              layer.alert("增加成功", {icon: 6});
+
+                              var str = '<tr><td>';
+                                  str += '<input type="checkbox"value="'+ data.id +'"name=""></td>';
+                                  str += '<td>'+ data.id +'</td>';
+                                  str += '<td>'+data.class_name+'</td>';
+                                  str += '<td class="td-manage">';
+                                  str += '<a title="编辑"href="javascript:;"onclick="cate_edit(\'编辑\',\'{{ url('adminjurisdiction/') }}'+ '/' + data.id +'/edit\',\''+ data.id +'\',\'\',\'510\')"class="ml-5"style="text-decoration:none">';
+                                  str += '<i class="layui-icon">&#xe642;</i></a>';
+                                  str += '<a title="删除"href="javascript:;"onclick="cate_del(this,\''+ data.id +'\')"style="text-decoration:none"><i class="layui-icon">&#xe640;</i></a></td></tr>';
+
+                              $('#x-link').prepend(''+ str +'');
+
+                          }
+                      }
+                  });
+
                 return false;
               });
             })

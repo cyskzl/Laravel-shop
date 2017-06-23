@@ -15,7 +15,7 @@
 <div class="x-nav">
             <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
-              <a><cite>会员管理</cite></a>
+              <a><cite>权限列表</cite></a>
               <a><cite>权限规则</cite></a>
             </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
@@ -23,18 +23,19 @@
                                                                         style="line-height:30px">ဂ</i></a>
 </div>
 <div class="x-body">
-    <form class="layui-form x-center" action="" style="width:70%">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <form class="layui-form x-center" action="" style="width:80%">
+
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
-                {{--<div class="layui-input-inline">--}}
-                    {{--<select name="cname">--}}
-                        {{--<option value="">请选择角色</option>--}}
-                        {{--<option value="评论相关">评论相关</option>--}}
-                        {{--<option value="评论相关">评论相关</option>--}}
-                        {{--<option value="会员相关">会员相关</option>--}}
-                    {{--</select>--}}
-                {{--</div>--}}
+                <div class="layui-input-inline">
+                    <select name="class_name">
+                        <option value="">请选择角色</option>
+                        @foreach($class as $value)
+
+                            <option value="{{ $value->id }}">{{ $value->class_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="layui-input-inline">
                     <input type="text" name="name" placeholder="模块/控制器/方法" autocomplete="off" class="layui-input" lay-verify="required" required="">
                 </div>
@@ -61,50 +62,40 @@
     <table class="layui-table">
         <thead>
         <tr>
-            <th>
-                <input type="checkbox" name="" value="">
-            </th>
-            <th>
-                ID
-            </th>
-            <th>
-                权限规则
-            </th>
-            <th>
-                权限名称
-            </th>
-
-            <th>
-                操作
-            </th>
+            <th><input type="checkbox" name="" value=""></th>
+            <th>ID</th>
+            <th>权限分类</th>
+            <th>权限规则</th>
+            <th>权限名称</th>
+            <th>描述</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody id="x-link">
-        <tr>
-            <td>
-                <input type="checkbox" value="1" name="">
-            </td>
-            <td>
-                1
-            </td>
-            <td>
-                admin/user/userlist
-            </td>
-            <td>
-                会员列表
-            </td>
+        @foreach($perms as $row)
 
-            <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="rule_edit('编辑','{{ url('admin/permission/1/edit') }}','4','','510')"
-                   class="ml-5" style="text-decoration:none">
-                    <i class="layui-icon">&#xe642;</i>
-                </a>
-                <a title="删除" href="javascript:;" onclick="rule_del(this,'1')"
-                   style="text-decoration:none">
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" value="{{ $row->id }}" name="id">
+                </td>
+                <td>{{ $row->id }}</td>
+                <td>{{ $row->class_name }}</td>
+                <td>{{ $row->name }}</td>
+                <td>{{ $row->display_name }}</td>
+                <td>{{ $row->description }}</td>
+
+                <td class="td-manage">
+                    <a title="编辑" href="javascript:;" onclick="rule_edit('编辑','{{ url('admin/permission/'.$row->id.'/edit') }}','{{ $row->id }}','','510')"
+                       class="ml-5" style="text-decoration:none">
+                        <i class="layui-icon">&#xe642;</i>
+                    </a>
+                    <a title="删除" href="javascript:;" onclick="rule_del(this, {{ $row->id }})"
+                       style="text-decoration:none">
+                        <i class="layui-icon">&#xe640;</i>
+                    </a>
+                </td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
 
@@ -129,7 +120,10 @@
                 url:'/admin/permission',
                 type:'POST',
                 datatype:'json',
-                data:{'json':JSON.stringify(data.field),'_token':data.field._token},
+                data: {
+                    'json': JSON.stringify(data.field),
+                    '_token': "{{ csrf_token() }}"
+                },
                 success:function (res){
 //                    console.log(res.parseJSON());
                     if (res) {

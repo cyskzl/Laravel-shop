@@ -15,40 +15,47 @@
     
     <body>
         <div class="x-body">
-            <form class="layui-form">
+            <form class="layui-form" action="">
+
                 <div class="layui-form-item">
-                    <label for="name" class="layui-form-label">
-                        <span class="x-red">*</span>链接名
-                    </label>
+                    <label class="layui-form-label">所属分类</label>
+                    <div class="layui-input-inline" >
+                        <select name="class_id">
+                            <option value="0">请选择分类</option>
+                            @foreach($class as $value)
+                                <option value="{{ $value->id }}" {{ $perms->class_id == $value->id ? 'selected' : '' }}>{{ $value->class_name }}</option>
+
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">权限名称</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="name" name="name" required="" lay-verify="required"
-                        autocomplete="off"  value="百度" class="layui-input">
+                        <input type="text" name="display_name" required  lay-verify="required" placeholder="请输入权限名称" autocomplete="off" class="layui-input" value="{{ $perms->display_name }}">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label for="link" class="layui-form-label">
-                        <span class="x-red">*</span>URL
-                    </label>
+                    <label class="layui-form-label">权限规则</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="link" name="link" required="" lay-verify="required"
-                        autocomplete="off" value="http://www.baidu.com" class="layui-input">
+                        <input type="text" name="name" required lay-verify="required" placeholder="请输入权限规则" autocomplete="off" class="layui-input" value="{{ $perms->name }}">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">如: admin/adminlist</div>
+                </div>
+
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">描述</label>
+                    <div class="layui-input-inline">
+                        <textarea name="description" placeholder="请输入内容" class="layui-textarea">{{ $perms->description }}</textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label for="sort" class="layui-form-label">
-                        <span class="x-red">*</span>排序
-                    </label>
-                    <div class="layui-input-inline">
-                        <input type="number" id="sort" name="sort" required="" lay-verify="required"
-                        autocomplete="off" value="5" class="layui-input">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_repass" class="layui-form-label">
-                    </label>
-                    <button  class="layui-btn" lay-filter="save" lay-submit="">
-                        保存
-                    </button>
                 </div>
             </form>
         </div>
