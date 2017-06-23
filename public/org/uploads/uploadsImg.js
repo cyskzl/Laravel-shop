@@ -2,7 +2,7 @@
  * 引入文件
  * <script src="{{asset('templates/admin/js/jquery.min.js')}}" type="text/javascript"></script>
  * <script src="{{asset('org/uploadify/jquery.uploadify.min.js')}}" type="text/javascript"></script>
- * <link rel="stylesheet" type="text/css" href="{{asset('org/uploadify.css')}}">
+ * <link rel="stylesheet" type="text/css" href="{{asset('org/uploadify/uploadify.css')}}">
  * <script src="{{asset('org/uploads/uploadsImg.js')}}" type="text/javascript"></script>
  * @param uploadPath
  * @param token

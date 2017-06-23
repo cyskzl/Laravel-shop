@@ -29,13 +29,19 @@ Route::group(['prefix' => 'admin'], function (){
         //图片上传
         Route::any('/upload/{uploadname}', 'Admin\CommonController@upload');
 
+        //处理ajax
+        Route::any('/ajax/{fieldname}/{tablename}', 'Admin\CommonController@ajax');
+
         //商品列表
         Route::resource('/goods', 'Admin\GoodsController');
         //商品类型
         Route::resource('/type', 'Admin\GoodsTypeController');
         //商品规格
         Route::resource('/spec', 'Admin\SpecController');
-
+        //商品属性
+        Route::resource('/goodsattr', 'Admin\GoodsAttributeController');
+        //商品品牌
+        Route::resource('/brand', 'Admin\BrandController');
             //活动管理
         Route::resource('/activity', 'Admin\ActivityController');
 

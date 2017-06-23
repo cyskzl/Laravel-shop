@@ -92,14 +92,6 @@ class GoodscategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        //插入数据
-//        $data = self::tree($request);
-//        //保存
-//        if (DB::table('goods_category')->where('id', $id)->update($data)) {
-//            return 1;
-//        } else {
-//            return 2;
-//        }
         //插入数据
         $data = self::tree($request);
         //保存

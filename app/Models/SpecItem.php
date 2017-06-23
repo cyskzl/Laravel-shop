@@ -8,5 +8,13 @@ class SpecItem extends Model
 {
    protected  $table = 'spec_item';
 
-    public $timestamps = false;
+    /**
+     * 获取spec表内容
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function spec()
+    {
+        return $this->belongsTo('App\Models\Spec','id','spec_id');
+    }
+
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-
+use App\Models\Brand;
+use App\Models\Spec;
 use App\Http\Requests;
+use Illuminate\Http\Request;
+use App\Models\GoodsAttribute;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 
@@ -67,4 +69,46 @@ class CommonController extends Controller
 
     }
 
+    /**
+     *  ajax请求一个字段修改数据库值
+     * 字段名就是路由的名字/ajax/{fieldname}/{tablename}
+     * @param Request $request
+     * @param $tablename  表名
+     * @param $fieldname 传入字段名
+     * @return array
+     */
+    public function ajax(Request $request, $fieldname, $tablename)
+    {
+        $fieldname = $request->route('fieldname');
+        $tablename = $request->route('tablename');
+//        dd($tablename);
+        $data = $request->all();
+//        dd($data);
+        //判断表名
+        switch($tablename){
+            case 'spec':
+                $specdata = spec::findOrFail($request->id);
+                break;
+            case 'goods_attribute':
+                $specdata = GoodsAttribute::findOrFail($request->id);
+                break;
+            case 'brand':
+                $specdata = Brand::findOrFail($request->id);
+                break;
+        }
+
+        $specdata->$fieldname = $request->value;
+        if ( $specdata->save() ){
+            $data = [
+                'status' => 1,
+                'msg'    => '插入成功'
+            ];
+        } else {
+            $data = [
+                'status' => 0,
+                'msg' => '插入失败'
+            ];
+        }
+        return $data;
+    }
 }

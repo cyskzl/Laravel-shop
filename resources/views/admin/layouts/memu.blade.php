@@ -62,6 +62,20 @@
                         </dd>
                         <dd class="">
                         <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/goodsattr') }}">
+                                <cite>商品属性</cite>
+                            </a>
+                        </dd>
+                        </dd>
+                        <dd class="">
+                        <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/brand') }}">
+                                <cite>商品品牌</cite>
+                            </a>
+                        </dd>
+                        </dd>
+                        <dd class="">
+                        <dd class="">
                             <a href="javascript:;" _href="{{ url('admin/goods') }}">
                                 <cite>商品列表</cite>
                             </a>

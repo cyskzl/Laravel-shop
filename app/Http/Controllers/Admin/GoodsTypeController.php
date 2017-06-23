@@ -103,11 +103,13 @@ class GoodsTypeController extends Controller
                 'status' => 1,
                 'msg'    => '删除成功'
             ];
+        } else {
+            $data = [
+                'status' => 0,
+                'msg'    => '删除失败'
+            ];
         }
-        $data = [
-            'status' => 0,
-            'msg'    => '删除失败'
-        ];
+
         return $data;
     }
 }
