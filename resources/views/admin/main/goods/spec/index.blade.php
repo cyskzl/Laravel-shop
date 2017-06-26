@@ -1,4 +1,8 @@
 @extends('admin.layouts.layout')
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{asset('org/ajax/ajax.css')}}">
+    <script src="{{asset('org/ajax/ajax.js')}}" type="text/javascript"></script>
+@endsection
 @section('x-nav')
     <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
@@ -71,15 +75,17 @@
                     {{$spec->name}}
                 </td>
                 <td>
-                    <form class="layui-form" action="">
-                        <input type="checkbox" lay-submit lay-filter="search_index" name="{{$spec->id}}"  value="{{$spec->search_index}}" title="是" @if($spec->search_index == 1) checked @endif>
-                    </form>
+                    <div style="text-align: center; width: 50px;">
+                     <span class="@if($spec->search_index == '0') no @else yes @endif"   onclick="changeTableVal('search_index' , 'spec', '{{$spec->id}}' ,'{{url('/admin/ajax')}}',this)">
+                     @if($spec->search_index == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
+                     </span>
+                    </div>
+
                 </td>
                 <td>
-                    <form class="layui-form" action="">
-                        <input type="text" id="order" name="order" value="{{$spec->order}}" specid="{{$spec->id}}" size="1">
+                    <form class="layui-form" action="" >
+                        <input onkeyup="this.value=this.value.replace(/[^\d]/g,'')" type="text"  name="order" onchange="changeTableVal('order','spec','{{$spec->id}}','{{url('/admin/ajax')}}',this)" value="{{$spec->order}}"  size="1">
                     </form>
-
                 </td>
                 <td class="td-manage">
                     <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/spec/{{$spec->id}}/edit','{{$spec->id}}','','510')"
@@ -104,7 +110,6 @@
         </div>
     </div>
 @endsection
-
 @section('js')
     <script src="{{asset('templates/admin/js/jquery.min.js')}}" type="text/javascript"></script>
     <script>
@@ -113,28 +118,6 @@
             lement = layui.element();//面包导航
             layer = layui.layer;//弹出层
             form = layui.form();
-            //筛选
-            form.on('checkbox(search_index)', function(data){
-//                alert(1);
-//                console.log(data.elem); //得到checkbox原始DOM对象
-//                console.log(data.elem.checked); //是否被选中，true或者false
-//                console.log(data.elem.name); //复选框value值，也可以通过data.elem.value得到
-//                console.log(data.othis); //得到美化后的DOM对象
-                if(data.elem.checked == true){
-                    data.elem.value = 1;
-                } else {
-                     data.elem.value = 0;
-                }
-                $.ajax({
-                    type: 'post',
-                    url:  '/admin/ajax/search_index/spec',
-                    dataType: 'json',
-                    data: { '_token':'{{csrf_token()}}',  'id': data.elem.name, 'value':data.elem.value },
-                    success:function (data){
-//                           console.log(data);
-                    }
-            });
-            })
 
             //监听提交
             form.on('submit(add)', function(data){
@@ -203,27 +186,6 @@
                 });
             });
         }
-
-        //排序
-        $('#order').on('change ', function(){
-            var order = $(this).val();
-            var id = $(this).attr('specid');
-//            console.log( order);
-//            console.log(id);
-            $.ajax({
-                type: 'post',
-                url:  '/admin/ajax/order/spec',
-                dataType: 'json',
-                data: { '_token':'{{csrf_token()}}',  'id': id, 'value':order },
-                success:function (data){
-                        if(data.status == 0){
-                            layer.msg('更新失败', {icon: 5,time:1000});
-                        }
-                       layer.msg('更新成功' ,{icon:1,time:1000});
-                }
-            });
-        })
-
 
     </script>
 

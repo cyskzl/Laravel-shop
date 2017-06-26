@@ -28,10 +28,10 @@ Route::group(['prefix' => 'admin'], function (){
 
         //图片上传
         Route::any('/upload/{uploadname}', 'Admin\CommonController@upload');
-
+        //返回3级分类
+        Route::any('/ajaxCate','Admin\CommonController@ajaxCate');
         //处理ajax
-        Route::any('/ajax/{fieldname}/{tablename}', 'Admin\CommonController@ajax');
-
+        Route::any('/ajax', 'Admin\CommonController@ajax');
         //商品列表
         Route::resource('/goods', 'Admin\GoodsController');
         //商品类型

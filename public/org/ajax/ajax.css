@@ -1,0 +1,19 @@
+	/*ajax对错样式*/
+	.no {
+            color: #cccccc;
+            cursor: default;
+            /* display: flex; */
+        }
+        .yes {
+            color: #5FB878;
+        }
+         .Wrong{
+            display: inline-block;
+            font-size: 15px;
+             padding-right:4px;
+        }
+         .fanyes{
+            display: inline-block;
+            font-size: 15px;
+             padding-right:4px;
+        }

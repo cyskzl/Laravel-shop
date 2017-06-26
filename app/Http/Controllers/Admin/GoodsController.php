@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-
+use DB;
+use App\Models\Goods;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class GoodsController extends Controller
@@ -12,9 +13,19 @@ class GoodsController extends Controller
     /**
      * @return  view    商品列表页
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.main.goods.index');
+        //分页查询以keyword为搜索关键字
+        $goods= Goods::orderBy('sort', 'desc')
+            ->where(function($query) use ($request){
+                //关键字
+                $keyword = $request->input('keyword');
+                //检测参数
+                if(!empty($keyword)){
+                    $query->where('goods_name','like','%'.$keyword.'%');
+                }
+            })->paginate(10);
+        return view('admin.main.goods.index', ['request' => $request, 'goods' =>$goods ]);
     }
 
     /**
@@ -22,7 +33,9 @@ class GoodsController extends Controller
      */
     public function create()
     {
-        return view('admin.main.goods.add');
+        $fatcates   =  DB::table('goods_category')->where('pid', '=', '0')->select()->get();
+        $brands  =  DB::table('brand')->select()->get();
+        return view('admin.main.goods.create', ['brands' => $brands, 'fatcates' => $fatcates]);
     }
 
     /**
@@ -31,7 +44,8 @@ class GoodsController extends Controller
      */
     public function store(Request $request)
     {
-        //商品添加
+
+        dd($request->all());
     }
 
     /**
@@ -64,6 +78,7 @@ class GoodsController extends Controller
     {
         //删除id
     }
+
 
 
 

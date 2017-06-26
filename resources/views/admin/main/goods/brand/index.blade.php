@@ -1,4 +1,8 @@
 @extends('admin.layouts.layout')
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{asset('org/ajax/ajax.css')}}">
+    <script src="{{asset('org/ajax/ajax.js')}}" type="text/javascript"></script>
+    @endsection
 @section('x-nav')
     <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
@@ -69,13 +73,15 @@
                     {{$brand->url}}
                 </td>
                 <td>
-                    <form class="layui-form" action="">
-                        <input type="checkbox" lay-submit lay-filter="is_hot" name="{{$brand->id}}"  value="{{$brand->is_hot}}" title="是" @if($brand->is_hot == 1) checked @endif>
-                    </form>
+                    <div style="text-align: center; width: 50px;">
+                     <span class="@if($brand->is_hot == '0') no @else yes @endif"   onclick="changeTableVal('is_hot' , 'brand', '{{$brand->id}}' ,'{{url('/admin/ajax')}}',this)">
+                     @if($brand->is_hot == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
+                     </span>
+                    </div>
                 </td>
                 <td>
                     <form class="layui-form" action="" id="orderid">
-                        <input type="text" id="order" name="order" value="{{$brand->sort}}" specid="{{$brand->id}}" size="1">
+                        <input onkeyup="this.value=this.value.replace(/[^\d]/g,'')" type="text"  name="sort" onchange="changeTableVal('sort','brand','{{$brand->id}}','{{url('/admin/ajax')}}',this)" value="{{$brand->sort}}"  size="1">
                     </form>
 
                 </td>
@@ -111,27 +117,6 @@
             lement = layui.element();//面包导航
             layer = layui.layer;//弹出层
             form = layui.form();
-            //筛选
-            form.on('checkbox(is_hot)', function(data){
-//                console.log(data.elem); //得到checkbox原始DOM对象
-//                console.log(data.elem.checked); //是否被选中，true或者false
-//                console.log(data.elem.name); //复选框value值，也可以通过data.elem.value得到
-//                console.log(data.othis); //得到美化后的DOM对象
-                if(data.elem.checked == true){
-                    data.elem.value = 1;
-                } else {
-                    data.elem.value = 0;
-                }
-                $.ajax({
-                    type: 'post',
-                    url:  '/admin/ajax/is_hot/brand',
-                    dataType: 'json',
-                    data: { '_token':'{{csrf_token()}}',  'id': data.elem.name, 'value':data.elem.value },
-                    success:function (data){
-//                           console.log(data);
-                    }
-                });
-            })
 
         })
 
@@ -176,26 +161,6 @@
             });
         }
 
-        //排序
-        $('#order').on('change ', function(){
-
-            var order = $(this).val();
-            var id = $(this).attr('specid');
-            console.log( 123);
-            console.log(id);
-            $.ajax({
-                type: 'post',
-                url:  '/admin/ajax/order/goods_attribute',
-                dataType: 'json',
-                data: { '_token':'{{csrf_token()}}',  'id': id, 'value':order },
-                success:function (data){
-                    if(data.status == 0){
-                        layer.msg('更新失败', {icon: 5,time:1000});
-                    }
-                    layer.msg('更新成功' ,{icon:1,time:1000});
-                }
-            });
-        })
 
 
     </script>

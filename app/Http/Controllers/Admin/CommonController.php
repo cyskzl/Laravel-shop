@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DB;
 use App\Models\Brand;
+use App\Models\Goods;
 use App\Models\Spec;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -45,7 +47,6 @@ class CommonController extends Controller
             //get请求
            if( $request->isMethod('get') ){
                //获取文件名
-
                $uppaths = $request->all();
                 $upname = $uppaths['data'];
                 //删除文件
@@ -70,38 +71,54 @@ class CommonController extends Controller
     }
 
     /**
-     *  ajax请求一个字段修改数据库值
-     * 字段名就是路由的名字/ajax/{fieldname}/{tablename}
+     * 是否切换ajax请求
      * @param Request $request
-     * @param $tablename  表名
-     * @param $fieldname 传入字段名
      * @return array
+     * 详细看org/ajax/ajax.js
      */
-    public function ajax(Request $request, $fieldname, $tablename)
+    public function ajax(Request $request)
     {
-        $fieldname = $request->route('fieldname');
-        $tablename = $request->route('tablename');
-//        dd($tablename);
         $data = $request->all();
-//        dd($data);
         //判断表名
-        switch($tablename){
+//        dd($data);
+        switch($data['tablename']){
             case 'spec':
-                $specdata = spec::findOrFail($request->id);
+                $specdata = spec::findOrFail($data['id']);
                 break;
             case 'goods_attribute':
-                $specdata = GoodsAttribute::findOrFail($request->id);
+                $specdata = GoodsAttribute::findOrFail($data['id']);
                 break;
             case 'brand':
-                $specdata = Brand::findOrFail($request->id);
+                $specdata = Brand::findOrFail($data['id']);
+                break;
+            case 'goods':
+                $specdata = Goods::findOrFail($data['id']);
                 break;
         }
 
-        $specdata->$fieldname = $request->value;
+        $fieldname = $data['fieldname'];
+
+        //获取数据库值，并修改
+        if($data['val'] == ''){
+            switch( $specdata->$fieldname ){
+                //成功
+                case '1':
+                    $specdata->$fieldname = 0;
+                    break;
+                case '0':
+                    $specdata->$fieldname = 1;
+                    break;
+            }
+        } else {
+            //onchange 修改排序
+            $specdata->$fieldname = $data['val'] ;
+        }
+        //保存并返回
         if ( $specdata->save() ){
             $data = [
                 'status' => 1,
-                'msg'    => '插入成功'
+                'msg'    => '插入成功',
+                'val'    => $specdata->$fieldname
             ];
         } else {
             $data = [
@@ -110,5 +127,18 @@ class CommonController extends Controller
             ];
         }
         return $data;
+    }
+    //返回ajax
+    public function ajaxCate(Request $request)
+    {
+        $fatcate = $request->input('fatcate');
+        if($fatcate){
+            $second  =  DB::table('goods_category')->where('level', 'like', '0,%'.$fatcate)->select()->get();
+            return $second;
+        }
+       if($request->input('three')){
+           $three  =  DB::table('goods_category')->where('level', 'like', '0,%'.$fatcate.',%')->select()->get();
+           return $three;
+       }
     }
 }
