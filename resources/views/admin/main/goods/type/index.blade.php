@@ -13,7 +13,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label" style="width:100px">类型名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="name" required lay-verify="required" placeholder="类型名称" autocomplete="off" class="layui-input">
+                    <input type="text" name="name" lay-verify="required" placeholder="类型名称" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-input-inline" style="width:80px">
                     <button class="layui-btn"  lay-submit="" lay-filter="add"><i class="layui-icon">&#xe608;</i>增加</button>
@@ -94,10 +94,15 @@
                     success:function (data){
 //                            console.log();
                         if(data.status == 1){
-                            layer.msg(data.msg,{icon:1,time:1000});
+                            layer.msg(data.msg,{icon:5,time:1000});
+                        } else if(data.status == 3){
+                            layer.msg(data.msg,{icon:5,time:1000});
+                        } else if(data.status == 0) {
+                            layer.alert(data.msg, {icon: 6});
+                            $('#x-link').prepend('<tr><td><input type="checkbox"value="1"name=""></td><td>' + data.id + '</td><td>' + data.name + '</td><td class="td-manage"><a title="编辑"href="javascript:;"onclick="cate_edit(\'编辑\',\'/admin/type/' + data.id + '/edit\',\'4\',\'\',\'510\')"class="ml-5"style="text-decoration:none"><i class="layui-icon">&#xe642;</i></a><a title="删除"href="javascript:;"onclick="cate_del(this,\'' + data.id + '\')"style="text-decoration:none"><i class="layui-icon">&#xe640;</i></a></td></tr>');
                         }
-                        layer.alert(data.msg, {icon: 6});
-                        $('#x-link').prepend('<tr><td><input type="checkbox"value="1"name=""></td><td>'+data.id+'</td><td>'+data.name+'</td><td class="td-manage"><a title="编辑"href="javascript:;"onclick="cate_edit(\'编辑\',\'/admin/type/'+data.id+'/edit\',\'4\',\'\',\'510\')"class="ml-5"style="text-decoration:none"><i class="layui-icon">&#xe642;</i></a><a title="删除"href="javascript:;"onclick="cate_del(this,\''+data.id+'\')"style="text-decoration:none"><i class="layui-icon">&#xe640;</i></a></td></tr>');                        }
+                    }
+
                 });
                 return false;
             });

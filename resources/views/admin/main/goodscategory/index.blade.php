@@ -23,7 +23,10 @@
     <xblock>
 
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
-        <a href="{{url('admin/goodscategory/create')}}"><button class="layui-btn" ><i class="layui-icon">&#xe608;</i>增加</button></a>
+        {{--<a href="{{url('admin/goodscategory/create')}}"><button class="layui-btn" ><i class="layui-icon">&#xe608;</i>增加</button></a>--}}
+        <button class="layui-btn" onclick="question_add('添加商品','{{ url('admin/goodscategory/create') }}','800','500')"><i
+                    class="layui-icon">&#xe608;</i>添加
+        </button>
         <span class="x-right" style="line-height:40px">共有数据：{{ $cates->total()}}  条</span></xblock>
     <table class="layui-table">
         <thead>
@@ -96,7 +99,12 @@
             lement = layui.element();//面包导航
             layer = layui.layer;//弹出层
 
-        })
+        });
+
+        /*添加*/
+        function question_add(title, url, w, h) {
+            x_admin_show(title, url, w, h);
+        }
 
         //批量删除提交
         function delAll () {

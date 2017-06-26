@@ -60,7 +60,7 @@
                 //发异步，把数据提交给php
                 $.ajax({
                     type: 'post',
-                    url:  "/admin/goodsattr/"+data.field.id,
+                    url:  "/admin/spec/"+data.field.id,
                     dataType: 'json',
                     data: {
                         '_token':'{{csrf_token()}}',

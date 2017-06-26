@@ -27,7 +27,7 @@
     </style>
 @endsection
 @section('x-body')
-    <form class="layui-form layui-form-pane" action="" method="post"  enctype="multipart/form-data" style="width:50%">
+    <form class="layui-form layui-form-pane" action=""  style="width:50%">
         {{--{{csrf_field()}}--}}
         {{--{{ method_field('PUT') }}--}}
         <input type="hidden" value="{{$info->id}}" name="id">
@@ -93,32 +93,29 @@
                 , layer = layui.layer
                 , layedit = layui.layedit;
             form.on('submit(save)', function(data){
-//            console.log(data);
-                //发异步，把数据提交给php
-                {{--var url = '{{url('admin/goodscategory/')}}'+'/'+data.field.id;--}}
+                console.log(data);
                 $.ajax({
                     type: 'post',
                     url:  "/admin/goodscategory/"+data.field.id,
                     dataType: 'json',
-                    data: {
-                        '_token':'{{csrf_token()}}',
-                        '_method': 'PUT',
-                        'name': data.field.name,
-                        'describe': data.field.describe,
-                        'pid' :data.field.pid,
-                        'img' : data.field.img,
-                    },
+                    data: { '_token':'{{csrf_token()}}', '_method':'PUT' ,  'json': JSON.stringify(data.field) },
                     success:function (data){
-                        if(data == 1){
-                            layer.alert("保存成功", {icon: 6},function () {
-                                // 获得frame索引
-                                var index = parent.layer.getFrameIndex(window.name);
-                                //关闭当前frame
-                                parent.layer.close(index);
-                            });
-                        } else {
-                            layer.msg('保存失败啦！稍后再试', {icon: 5});
+                        //失败
+                        console.log(data);
+                        if(data.status == 1){
+                            layer.msg(data.msg, {icon: 5,time:1000});
+                        } else if(data.status == 3){
+                            layer.msg(data.msg, {icon: 5,time:1000});
+                        } else if(data.status == 4 ){
+                            layer.msg(data.msg, {icon: 5,time:1000});
                         }
+                        //成功
+                        layer.alert(data.msg, {icon: 6},function () {
+                            //获得frame索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //关闭当前frame
+                            parent.layer.close(index);
+                        });
 
                     }
                 });

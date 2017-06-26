@@ -50,38 +50,39 @@ class SpecController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->json);
-//        //规格名称
-//        $specname = $data->name;
-//        //所属类型
-//        $type_id = $data->type_id;
-        //规格项
-//        $order = $data->order;
-        //排序
-//        $item = $data->item;
 
         $spec = new Spec;
         $spec_item = new SpecItem;
         //写入规格表spec
-        $spec->name =  $data->name;
-        $spec->type_id =  $data->type_id;
+        //判断规格名称不能为空
+        if($data->name){
+            $spec->name =  $data->name;
+        } else {
+            return self::errorNumb(2,'规格名称不能为空');
+        }
+        //判断所属于类型为空
+        if($data->type_id){
+            $spec->type_id =  $data->type_id;
+        } else {
+            return self::errorNumb(3,'所属于类型为空');
+        }
         $spec->order =  $data->order;
         //成功后获取id
         if( $spec->save()){
             //写入规格项表spec_item
             $spec_item->spec_id = $spec->id;
-            $spec_item->item = $data->item;
-            //成功返回信息
-            if(  $spec_item->save() ){
-                $data = [
-                    'status' => 0,
-                    'msg'    => '添加成功'
-                ];
+            //判断规格项不能为空
+            if($data->item){
+                $spec_item->item = $data->item;
             } else {
 
-                $data = [
-                    'status' => 1,
-                    'msg'    => '添加失败'
-                ];
+                return self::errorNumb(4,'规格项不能为空');
+            }
+            //成功返回信息
+            if(  $spec_item->save() ){
+                $data = self::errorNumb(0,'添加成功');
+            } else {
+                $data = self::errorNumb(1,'添加失败');
             }
         }
         //返回给ajax
@@ -112,7 +113,6 @@ class SpecController extends Controller
 
         //先获取type_Id的字段再通过远程一对多访问下面spec_item，就获取到3个表的内容
 //        $goodstype = GoodsType::find($info->type_id);
-//
 //        $specitem = $info->specitem->item
 
         return view('admin.main.goods.spec.edit', ['typeinfos' => $typeinfos , 'info' => $info]);
@@ -127,11 +127,11 @@ class SpecController extends Controller
     public function update(Request $request, $id)
     {
         $data = json_decode($request->json);
+//        dd($data)
         //spec 表内容
         $spec = Spec::find($data->id);
         //goods_type表内容
         $goods_type = $spec->spec;
-
         $spec->order = $data->order;
         $spec->name = $data->name;
         $spec->type_id = $data->type_id;
@@ -140,15 +140,9 @@ class SpecController extends Controller
         if( $spec->save() ){
             //更新成功
             if(SpecItem::where('spec_id', $id)->update(['item'=>$data->item])){
-                $data = [
-                    'status' => 1,
-                    'msg'    => '修改成功'
-                ];
+                $data = self::errorNumb(1,'修改成功');
             }else {
-                $data = [
-                    'status' => 0,
-                    'msg'    => '修改失败'
-                ];
+                $data = self::errorNumb(0,'修改失败');
             }
         }
         return $data;
@@ -166,26 +160,30 @@ class SpecController extends Controller
         $spec_item = GoodsType::find($spec->type_id)->spec_item;
         //进行判断item规格项是否有无值
             if(!empty($spec->specitem->item)){
-                $data = [
-                    'status' => 2,
-                    'msg'    => '请清除规格项内容，在尝试删除'
-                ];
+                $data = self::errorNumb(2,'请清除规格项内容，在尝试删除');
             } else {
                 //有的话同时删除
                 if(Spec::destroy([$id]) && SpecItem::destroy([$spec->specitem->id])){
-                    $data = [
-                        'status' => 1,
-                        'msg'    => '删除成功'
-                    ];
+                    $data = self::errorNumb(1,'删除成功');
                 } else {
-                    $data = [
-                        'status' => 0,
-                        'msg'    => '删除失败'
-                    ];
+                    $data = self::errorNumb(0,'删除失败');
                 }
 
             }
              return $data;
     }
-
+    /**
+     * 错误信息
+     * @param $status
+     * @param $msg
+     * @return array
+     */
+    public function errorNumb( $status ,$msg)
+    {
+        $data = [
+            'status' => $status,
+            'msg'    => $msg
+        ];
+         return $data;
+    }
 }

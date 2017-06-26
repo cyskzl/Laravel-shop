@@ -2,7 +2,7 @@
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{asset('org/ajax/ajax.css')}}">
     <script src="{{asset('org/ajax/ajax.js')}}" type="text/javascript"></script>
-    @endsection
+@endsection
 @section('x-nav')
     <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
@@ -43,7 +43,7 @@
                 Logo
             </th>
             <th>
-               品牌URl
+                品牌URl
             </th>
             <th>
                 是否推荐

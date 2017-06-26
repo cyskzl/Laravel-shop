@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\GoodsType;
-use DB;
 
 class GoodsTypeController extends Controller
 {
@@ -30,6 +29,14 @@ class GoodsTypeController extends Controller
     {
         $goodstype = new GoodsType;
         $goodstype->name = $request->input('name');
+        if(empty($request->input('name'))){
+            $data = [
+                'status' => 3,
+                'msg'    => '名称不能为空'
+            ];
+            return $data;
+            return false;
+        }
         if( $goodstype->save() ){
             $data = [
                 'id'     => $goodstype->id,
@@ -77,7 +84,16 @@ class GoodsTypeController extends Controller
     {
         $data = $request->except(['_method', '_token']);
 
-        if (DB::table('goods_type')->where('id', $id)->update($data)) {
+        if(empty($request->input('name'))){
+            $data = [
+                'status' => 3,
+                'msg'    => '名称不能为空'
+            ];
+            return $data;
+            return false;
+        }
+
+        if (GoodsType::where('id', $id)->update($data)) {
             $data = [
                 'status' => 0,
                 'msg'    => '修改成功'
