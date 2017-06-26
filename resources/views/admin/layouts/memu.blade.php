@@ -83,8 +83,8 @@
                         </dd>
                         <dd class="">
                         <dd class="">
-                            <a href="javascript:;" _href="./welcome.html">
-                                <cite>活动管理</cite>
+                            <a href="javascript:;" _href="{{url('admin/activity/create')}}">
+                                <cite>添加活动</cite>
                             </a>
                         </dd>
                         </dd>

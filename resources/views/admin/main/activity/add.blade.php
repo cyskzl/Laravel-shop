@@ -52,15 +52,20 @@
 @endsection
 @section('x-body')
     <div class="x-body">
-        <form class="layui-form layui-form-pane">
+        <form class="layui-form layui-form-pane" action="{{url('admin/activity')}}" method="post">
             {{csrf_field()}}
+            @if(session('fail'))
+                <div class="alert alert-fail" style="color:red;">
+                    {{session('fail')}}
+                </div>
+            @endif
             <div class="layui-form-item">
                 <label for="L_name" class="layui-form-label">
                     名称
                 </label>
                 <div class="layui-input-block">
                     <input type="text" id="L_name" name="name" required lay-verify="name"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="{{old('name')}}">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -80,29 +85,27 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_start" class="layui-form-label">
+                <label for="L_start" class="layui-form-label" style="width:100px">
                     开始时间
                 </label>
-                <div class="layui-input-block">
-                    <input type="date" id="L_start" name="start_time" required lay-verify="start_time"
-                           autocomplete="off" class="layui-input">
+                <div class="layui-input-block" id="end_time">
+                    <input type="date" id="L_start" name="start_time" required lay-verify="start_time"  autocomplete="off" class="layui-input" style="width:20%;"  value="{{old('start_time')}}"><span></span>
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="L_start" class="layui-form-label">
+                <label for="L_start" class="layui-form-label" style="width:100px">
                     结束时间
                 </label>
                 <div class="layui-input-block">
-                    <input type="date" id="L_end" name="end_time" required lay-verify="end_time"
-                           autocomplete="off" class="layui-input">
+                    <input type="date" id="L_end" name="end_time" required lay-verify="end_time" autocomplete="off" class="layui-input" style="width:20%;"  value="{{old('end_time')}}"><span></span>
                 </div>
             </div>
             <div class="layui-form-item" >
                 <div id="queue"></div>
                 <div class="layui-form-item" >
-                    <label class="layui-form-label">图片</label>
+                    <label class="layui-form-label" style="width:100px">图片</label>
                     <div class="layui-input-inline" style="margin-left:30px;">
-                        <input type="text" name="img" id="img" autocomplete="off" class="layui-input">
+                        <input type="text" name="img" id="img" autocomplete="off" class="layui-input" lay-verify="required">
                     </div>
                     <input id="file_upload"  type="file" multiple="true">
 
@@ -118,7 +121,7 @@
             <div class="layui-form-item layui-form-text">
                 <div class="layui-input-block">
                     <!-- 加载编辑器的容器 -->
-                    <script id="container" name="content" type="text/plain"></script>
+                    <script id="container" name="desc" lay-verify="required"  value="{{old('desc')}}" type="text/plain"></script>
                     <!-- 配置文件 -->
                     <script type="text/javascript" src="{{asset('templates/admin/ueditor/ueditor.config.js')}}"></script>
                     <!-- 编辑器源码文件 -->
@@ -142,79 +145,43 @@
     </div>
 @endsection
 @section('js')
-
     <script>
-        function upload(uploadPath,token ){
-            $('#file_upload').uploadify({
-                'uploadLimit': 5,                               //上传文件设置
-                'fileSizeLimit': '20000KB',                     //上传大小
-                'fileTypeDesc': 'Image Files',                  //上传文件备注
-                'multi': true,                                  //开启多文件
-                'preventCaching': true,                         //不允许缓存
-                'fileTypeExts': '*.jpeg; *.jpg; *.png; *.gif',  //文件格式
-                'buttonText': '图片上传',                       //按钮名
-                'formData': {                                   //请求token值
-                    '_token': token
-                },
-                'swf': "/org/uploadify/uploadify.swf",
-                //请求路径
-                'uploader': uploadPath, //上传处理路由
-                //成功返回回调函数
-                'onUploadSuccess': function (file, data, response) {
-                    console.log(data);
-                    //判断php，return回来的值
-                    if (data) {
-                        //添加到缩略图
-                        var str = "";
-                        str += "<a id='delimg' href='javascript:;' class='backclose'></a>";
-                        str += "<img id='photos'class='photos'  src='" + data + "' layer-src='" + data + "' style='height: 100px;width: 100px;padding-left: 1px'>";
-                        //将目录的路径加到img中
-                        $("#layer-photos-demo").append($(str));
-                        //查找动态生成的img标签
-                        var imgsrc = $('#layer-photos-demo').find('img');
-                        //生成第一张图片时候，走判断
-                        if (imgsrc.attr('src') !== null) {
-                            //定义一个空数组
-                            var array = new Array();
-                            //找出所有的src的地址
-                            for (var i = 0; i < imgsrc.length; i++) {
-                                //压入数组，并以最后一个为，分隔
-                                array.push($(imgsrc[i]).attr('src') + ',');
-                                //计算数据有多少条，并拼接
-                                // for (var j = 0; j < array.length; j++) {
-                                //判断长度，最多5张
-                                switch (array.length) {
-                                    case 1:
-                                        $('#img').attr('value', array[0]);
-                                        break;
-                                    case 2:
-                                        $('#img').attr('value', array[0] + array[1]);
-                                        break;
-                                    case 3:
-                                        $('#img').attr('value', array[0] + array[1] + array[2]);
-                                        break;
-                                    case 4:
-                                        $('#img').attr('value', array[0] + array[1] + array[2] + array[3]);
-                                        break;
-                                    case 5:
-                                        $('#img').attr('value', array[0] + array[1] + array[2] + array[3] + array[4]);
-                                        break;
-                                    default:
-                                        $('#img').attr('value','');
-                                        break;
-                                }
-                                // }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        layui.use(['form', 'layer', 'layedit'], function () {
+
+        layui.use(['form', 'layer', 'laydate','layedit'], function () {
             $ = layui.jquery;
             var form = layui.form()
                 , layer = layui.layer
                 , layedit = layui.layedit;
+
+                //自定义验证规则
+                form.verify({
+                    name: function(value){
+                        if(value.length < 3){
+                            return '活动至少得3个字符啊';
+                        }
+                    },
+                    type: function(value){
+                        if(value.length == 0){
+                            return '请选择活动类型';
+                        }
+                    }
+                });
+
+            // 判断活动开始时间
+            var nowtime = laydate.now('Y-m-d H:i:s');
+            $('#L_start').on('change',function (){
+                if($(this).val()<nowtime){
+                    layer.msg('活动时间不能低于目前时间',{icon:5});
+                }
+            });
+            // 判断活动结束时间是否大于开始时间
+            $('#L_end').on('change',function (){
+                var start_time = $(this).parent().parent().prev().children('#end_time').children('#L_start').val();
+//                console.log(start_time);
+                if($(this).val()<start_time){
+                    layer.msg('结束时间不能低于开始时间',{icon:5});
+                }
+            });
 
 
             layedit.set({
@@ -226,20 +193,6 @@
 
             //创建一个编辑器
             editIndex = layedit.build('L_content');
-
-
-            //监听提交
-            form.on('submit(add)', function (data) {
-                console.log(data);
-                //发异步，把数据提交给php
-                layer.alert("增加成功", {icon: 6}, function () {
-                    // 获得frame索引
-                    var index = parent.layer.getFrameIndex(window.name);
-                    //关闭当前frame
-                    parent.layer.close(index);
-                });
-                return false;
-            });
 
 
         });

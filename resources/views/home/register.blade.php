@@ -19,8 +19,6 @@
             <div class="reg-title">
                 注册会员
             </div>
-
-
             <form action="./register" method="post">
                 {{csrf_field()}}
                 <div class="reg-inner">

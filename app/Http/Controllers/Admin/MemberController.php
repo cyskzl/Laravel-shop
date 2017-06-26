@@ -26,7 +26,8 @@ class MemberController extends Controller
             $userData = UserRegister::where('email','like','%'.$keyword.'%')->paginate(3);
 
         }
-        return view('admin.main.member.index', compact('userData','request'));
+        $type = ['0'=>'未激活','1'=>'已激活'];
+        return view('admin.main.member.index', compact('userData','request','type'));
     }
 
     /**
@@ -42,7 +43,8 @@ class MemberController extends Controller
         // 获取积分详情
         $usercode = $user->userCode;
 //        dd($usercode);
-        return view('admin.main.member.show',compact('userinfo','user','usercode'));
+        $sexType = ['1'=>'男','2'=>'女'];
+        return view('admin.main.member.show',compact('userinfo','user','usercode','sexType'));
     }
 
     /**
@@ -84,7 +86,10 @@ class MemberController extends Controller
         $user = UserRegister::find($id);
         $userinfo = $user->userInfo;
 //        dd($userinfo);
-        return view('admin.main.member.edit', compact('userinfo','user'));
+        if(!empty($userinfo)){
+            return view('admin.main.member.edit', compact('userinfo','user'));
+        }
+
     }
 
     /**

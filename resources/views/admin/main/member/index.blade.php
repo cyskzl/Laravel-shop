@@ -38,6 +38,7 @@
                 <th>第三方ID</th>
                 <th>注册IP</th>
                 <th>加入时间</th>
+                <th>注册状态</th>
                 <th>收货地址</th>
                 <th>操作</th>
             </tr>
@@ -60,6 +61,7 @@
                 <td >{{$v->third_party_id}}</td>
                 <td >{{$v->register_ip}}</td>
                 <td >{{$v->created_at}}</td>
+                <td >{{$type[$v->status]}}</td>
                 <td ><a href="javascript:;" onclick="member_show('{{$v->id}}','{{'./address'.'?id='.$v->id }}','800','800')" class="layui-btn layui-btn-mini">收货地址</a></td>
                 <td class="td-manage">
                     <a title="编辑" href="javascript:;" onclick="member_edit('编辑','{{url('admin/member/'.$v->id.'/edit')}}','{{$v->id}}','','510')"

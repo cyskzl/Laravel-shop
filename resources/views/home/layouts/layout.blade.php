@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="{{asset('/templates/home/css/public.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/header.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/footer.css')}}"/>
-    <link rel="stylesheet" href="{{asset('/templates/home/css/registe.css')}}">
     {{--<script src="{{asset('/templates/home/js/registe.js')}}"></script>--}}
     <script src="{{asset('/templates/home/js/jquery-2.0.0.min.js')}}"></script>
+    <script src="{{asset('/templates/home/js/jquery.cookie.js')}}"></script>
     @yield('style')
 </head>
 <body>
@@ -17,8 +17,8 @@
     <!-- 顶部 -->
     <div class="header_top left">
         <ul class="header_top_left left">
-            <li><a href="registe.html">注册</a></li>
-            <li><a href="login.html">登录</a></li>
+            <li><a href="{{url('home/register')}}">注册</a></li>
+            <li><a href="{{url('home/login')}}">登录</a></li>
             <li class="header_top_left_li">下载APP
                 <a href="javascript:">
                     <img class="header_top_left_code" src="{{asset('/templates/home/uploads/down_app.png')}}" alt="">

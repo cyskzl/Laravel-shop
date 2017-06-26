@@ -12,10 +12,10 @@
             <tr>
                 <th width="80">性别：</th>
                 <td>
-                    @if($userinfo && $userinfo->sex==1)
-                        {{'男'}}
+                    @if($userinfo)
+                        {{$sexType[$userinfo->sex] or '无'}}
                     @else
-                        {{'女'}}
+                        无
                     @endif
                 </td>
             </tr>

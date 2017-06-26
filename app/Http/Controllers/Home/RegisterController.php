@@ -142,6 +142,7 @@ class RegisterController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 处理邮件内部的信息
+     * 判断连接是否失效
      * 信息对应则修改用户注册表的状态
      * 删除临时存储的验证信息
      * 增加用户详情表的片段信息
@@ -153,33 +154,45 @@ class RegisterController extends Controller
         $temp = TempEmail::where('uuid','=',$uuid)->get()->toArray();
 //        $name = ['one'=>'qwewqe'];
 //        dd($temp);
+        $deadline = $temp[0]['user_id'];
+        $nowtime = date('Y-m-d H:i:s',time());
         $uid = $temp[0]['user_id'];
+        // 判断链接是否失效
+        if($deadline>$nowtime) {
+            if (count($temp)) {
+                // 修改注册表信息
+                $register = UserRegister::where('id', '=', $uid)->update(['status' => 1]);
+                if (!$register) {
+                    return view('home.validatefail');
+                }
+                // 对应增加users_info表的信息
+                $uinfo = UserRegister::find($uid);
+                $userinfo = new UserInfo();
+                $userinfo->user_id = $uid;
+                $userinfo->email = $uinfo->email;
+                $infoId = $userinfo->save();
+                if (!$infoId) {
+                    return view('home.validatefail');
+                }
+                // 删除邮箱注册的临时信息
+                $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
+                if (!$delTemp) {
+                    return view('home.validatefail');
+                }
+                return view('home.validatefail', ['info' => '用户名已激活，3秒后跳转到网站首页或者点击立即跳转']);
 
-        if(count($temp)){
-            // 修改注册表信息
-            $register = UserRegister::where('id','=',$uid)->update(['status'=>1]);
-            if(!$register){
+            } else {
+                return view('home.validatefail');
+
+            }
+        } else {
+            // 连接失效，删除临时信息表和用户注册表中的信息
+            $deluser = UserRegister::where('id','=',$uid)->delete();
+            $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
+            if (!$delTemp || !$deluser) {
                 return view('home.validatefail');
             }
-            // 对应增加users_info表的信息
-            $uinfo = UserRegister::find($uid);
-            $userinfo = new UserInfo();
-            $userinfo->user_id = $uid;
-            $userinfo->email = $uinfo->email;
-            $infoId = $userinfo->save();
-            if(!$infoId){
-                return view('home.validatefail');
-            }
-            // 删除邮箱注册的临时信息
-            $delTemp = TempEmail::where('user_id','=',$uid)->delete();
-            if(!$delTemp){
-                return view('home.validatefail');
-            }
-            return view('home.validatefail',['info'=>'用户名已激活，3秒后跳转到网站首页或者点击立即跳转']);
-
-        }else{
-            return view('home.validatefail');
-
+            return view('home.validatefail',['info'=>'该链接已失效，请重新注册']);
         }
     }
 }

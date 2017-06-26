@@ -28,7 +28,10 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::post('/register/validate', 'RegisterController@validateEmail');
     // 邮箱激活
     Route::get('/register/validate_email', 'RegisterController@validateEmailCode');
-
+    // 登录界面
+    Route::get('/login', 'UserController@login');
+    // 登录信息处理
+    Route::post('/doLogin', 'Usercontroller@doLogin');
 });
 
 //prefix => 前缀
@@ -52,8 +55,11 @@ Route::group(['prefix' => 'admin'], function (){
         //商品规格
         Route::resource('/spec', 'Admin\SpecController');
 
-            //活动管理
+        //活动管理
         Route::resource('/activity', 'Admin\ActivityController');
+
+        // 活动商品管理
+        Route::resource('/goodsactivity','Admin\GoodsActivityController');
 
         //轮播图管理
         Route::resource('/carousel', 'Admin\CarouselController');

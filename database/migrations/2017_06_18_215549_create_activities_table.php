@@ -22,7 +22,7 @@ class CreateActivitiesTable extends Migration
             $table->string('img')->comment('活动分类导图');
             $table->timestamp('start_time')->comment('活动开始时间');
             $table->timestamp('end_time')->comment('活动结束时间');
-            $table->tinyInteger('is_over')->default(0)->comment('结束标识：0未结束 1已结束');
+            $table->tinyInteger('is_over')->default(0)->comment('结束标识：0未开始，1已开始 1已结束');
             $table->timestamps();
         });
     }
