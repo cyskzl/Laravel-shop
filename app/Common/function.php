@@ -18,8 +18,9 @@
 
     //提示规格类型
     function getSpecType($id){
-
-	    $spec = \App\Models\Spec::find($id);
+		
+	    $spec = \App\Models\GoodsType::find($id);
+		// var_dump($spec);die;
         if(empty($spec)){
             return '无';
         }else{

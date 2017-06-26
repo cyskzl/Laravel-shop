@@ -1,4 +1,8 @@
 @extends('admin.layouts.layout')
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{asset('org/ajax/ajax.css')}}">
+    <script src="{{asset('org/ajax/ajax.js')}}" type="text/javascript"></script>
+@endsection
 @section('x-nav')
     <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
@@ -7,7 +11,7 @@
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 @endsection
 @section('x-body')
-    <form class="layui-form " action="{{url('admin/goodscategory')}}" style="width:800px">
+    <form class="layui-form " action="{{url('admin/spec')}}" style="width:800px">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
                 <label class="layui-form-label">搜索</label>
@@ -64,25 +68,27 @@
                 </td>
                 <td>
                     {{--自定义函数--}}
-                    {{getSpecType($spec->type_id) }}
+                    {{getSpecType($spec->type_id)}}
                     {{--{{$spec->type_id}}--}}
                 </td>
                 <td>
                     {{$spec->name}}
                 </td>
                 <td>
-                    <form class="layui-form" action="">
-                        <input type="checkbox" name="" title="是" @if($spec->search_index == 0) checked @endif>
-                    </form>
-                </td>
-                <td>
-                    <form class="layui-form" action="">
-                        <input type="text" id="order" name="order" value=" {{$spec->order}}" size="1">
-                    </form>
+                    <div style="text-align: center; width: 50px;">
+                     <span class="@if($spec->search_index == '0') no @else yes @endif"   onclick="changeTableVal('search_index' , 'spec', '{{$spec->id}}' ,'{{url('/admin/ajax')}}',this)">
+                     @if($spec->search_index == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
+                     </span>
+                    </div>
 
                 </td>
+                <td>
+                    <form class="layui-form" action="" >
+                        <input onkeyup="this.value=this.value.replace(/[^\d]/g,'')" type="text"  name="order" onchange="changeTableVal('order','spec','{{$spec->id}}','{{url('/admin/ajax')}}',this)" value="{{$spec->order}}"  size="1">
+                    </form>
+                </td>
                 <td class="td-manage">
-                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/type/{{$spec->id}}/edit','{{$spec->id}}','','510')"
+                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/spec/{{$spec->id}}/edit','{{$spec->id}}','','510')"
                        class="ml-5" style="text-decoration:none">
                         <i class="layui-icon">&#xe642;</i>
                     </a>
@@ -98,13 +104,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-4">
-                {{$specs->links()}}
+                {{--{{$specs->links()}}--}}
+                {!! $specs->appends($request->only(['keyword']))->render() !!}
             </div>
         </div>
     </div>
 @endsection
-
 @section('js')
+    <script src="{{asset('templates/admin/js/jquery.min.js')}}" type="text/javascript"></script>
     <script>
         layui.use(['element','layer','form'], function(){
             $ = layui.jquery;//jquery
@@ -131,6 +138,7 @@
                 });
                 return false;
             });
+
 
 
         })
@@ -164,8 +172,12 @@
                     dataType: 'json',
                     data: { '_token':'{{csrf_token()}}', '_method': 'DELETE', 'id': id },
                     success:function (data){
-                        if(data.status == 0){
+                        if(data.status == 2){
                             layer.msg(data.msg, {icon: 5,time:1000});
+                            return false;
+                        }else if(data.status == 0){
+                            layer.msg(data.msg, {icon: 5,time:1000});
+                            return false;
                         }
                         location.href = location.href;
                         $(obj).parents("tr").remove();
@@ -174,6 +186,7 @@
                 });
             });
         }
+
     </script>
 
 @endsection

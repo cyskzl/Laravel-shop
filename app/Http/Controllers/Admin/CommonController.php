@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-
+use DB;
+use App\Models\Brand;
+use App\Models\Goods;
+use App\Models\Spec;
 use App\Http\Requests;
+use Illuminate\Http\Request;
+use App\Models\GoodsAttribute;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 
@@ -43,7 +47,6 @@ class CommonController extends Controller
             //get请求
            if( $request->isMethod('get') ){
                //获取文件名
-
                $uppaths = $request->all();
                 $upname = $uppaths['data'];
                 //删除文件
@@ -67,4 +70,75 @@ class CommonController extends Controller
 
     }
 
+    /**
+     * 是否切换ajax请求
+     * @param Request $request
+     * @return array
+     * 详细看org/ajax/ajax.js
+     */
+    public function ajax(Request $request)
+    {
+        $data = $request->all();
+        //判断表名
+//        dd($data);
+        switch($data['tablename']){
+            case 'spec':
+                $specdata = spec::findOrFail($data['id']);
+                break;
+            case 'goods_attribute':
+                $specdata = GoodsAttribute::findOrFail($data['id']);
+                break;
+            case 'brand':
+                $specdata = Brand::findOrFail($data['id']);
+                break;
+            case 'goods':
+                $specdata = Goods::findOrFail($data['id']);
+                break;
+        }
+
+        $fieldname = $data['fieldname'];
+
+        //获取数据库值，并修改
+        if($data['val'] == ''){
+            switch( $specdata->$fieldname ){
+                //成功
+                case '1':
+                    $specdata->$fieldname = 0;
+                    break;
+                case '0':
+                    $specdata->$fieldname = 1;
+                    break;
+            }
+        } else {
+            //onchange 修改排序
+            $specdata->$fieldname = $data['val'] ;
+        }
+        //保存并返回
+        if ( $specdata->save() ){
+            $data = [
+                'status' => 1,
+                'msg'    => '插入成功',
+                'val'    => $specdata->$fieldname
+            ];
+        } else {
+            $data = [
+                'status' => 0,
+                'msg' => '插入失败'
+            ];
+        }
+        return $data;
+    }
+    //返回ajax
+    public function ajaxCate(Request $request)
+    {
+        $fatcate = $request->input('fatcate');
+        if($fatcate){
+            $second  =  DB::table('goods_category')->where('level', 'like', '0,%'.$fatcate)->select()->get();
+            return $second;
+        }
+       if($request->input('three')){
+           $three  =  DB::table('goods_category')->where('level', 'like', '0,%'.$fatcate.',%')->select()->get();
+           return $three;
+       }
+    }
 }
