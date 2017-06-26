@@ -28,7 +28,7 @@ class GoodsTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $goodstype = new GoodsType;
+        $goodstype = new GoodsType();
         $goodstype->name = $request->input('name');
         if( $goodstype->save() ){
             $data = [
