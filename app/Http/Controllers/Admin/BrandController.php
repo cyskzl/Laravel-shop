@@ -10,9 +10,9 @@ use App\Http\Controllers\Controller;
 class BrandController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 显示列表视图
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
@@ -31,9 +31,8 @@ class BrandController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 显示添加视图
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -41,50 +40,36 @@ class BrandController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 添加品牌
+     * @param Request $request
+     * @return array|mixed
      */
     public function store(Request $request)
     {
         $data = json_decode($request->json);
         $brand = new Brand;
-        $brand->name = $data->name;
+        if($data->name){
+            $brand->name = $data->name;
+        } else {
+            return self::errorNumb(2,'品牌名称不能为空');
+        }
+
         $brand->url = $data->url;
         $brand->logo = $data->img;
         $brand->sort = $data->sort;
         $brand->desc = $data->desc;
         if( $brand->save() ){
-            $data = [
-                'status' => 0,
-                'msg'    => '添加成功'
-            ];
+            $data = self::errorNumb(0,'添加成功');
         } else {
-            $data = [
-                'status' => 1,
-                'msg'    => '添加失败'
-            ];
+            $data = self::errorNumb(1,'添加失败');
         }
         return $data;
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 显示修改视图
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
     {
@@ -93,11 +78,10 @@ class BrandController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  更新操作
+     * @param Request $request
+     * @param $id
+     * @return array|mixed
      */
     public function update(Request $request, $id)
     {
@@ -112,18 +96,15 @@ class BrandController extends Controller
         }
 //        dd($data);
         if(Brand::where('id', $id)->update($data)){
-            $data = [
-                'status' => 0,
-                'msg'    => '修改成功'
-            ];
+
+            $data = self::errorNumb(0,'修改成功');
         } else {
-            $data = [
-                'status' => 1,
-                'msg'    => '修改失败'
-            ];
+            $data = self::errorNumb(1,'修改失败');
         }
         return $data;
     }
+
+    public function show(){}
 
     /**
      * Remove the specified resource from storage.
@@ -136,18 +117,30 @@ class BrandController extends Controller
         $brand = Brand::find($id);
         $logo = '.'.rtrim($brand->logo, ',');
         //删除图片
-        if(Brand::destroy([$id]) && unlink($logo)){
-            $data = [
-                'status' => 0,
-                'msg'    => '删除成功'
-            ];
+
+        if(Brand::destroy([$id])){
+            if($brand->logo){
+                unlink($logo);
+            }
+            $data = self::errorNumb(0,'删除成功');
         } else {
-            $data = [
-                'status' => 1,
-                'msg'    => '删除失败'
-            ];
+            $data = self::errorNumb(1,'删除失败');
         }
 
+        return $data;
+    }
+    /**
+     * 错误信息
+     * @param $status
+     * @param $msg
+     * @return array
+     */
+    public function errorNumb( $status ,$msg)
+    {
+        $data = [
+            'status' => $status,
+            'msg'    => $msg
+        ];
         return $data;
     }
 }

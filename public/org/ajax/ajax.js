@@ -59,7 +59,9 @@ function changeTableVal(fieldname , tablename, id, url, that){
 			//排序
 			if($(that).attr('onchange')){
 				if(data.status == 1){
+                    location.href = location.href;
 					layer.msg('更新成功' ,{icon:1,time:1000});
+
 				} else {
 					layer.msg('更新失败', {icon: 5,time:1000});
 				}

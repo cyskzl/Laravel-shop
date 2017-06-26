@@ -11,7 +11,7 @@
             <label class="layui-form-label" style="width: 100px">所属类型</label>
             <div class="layui-input-block">
                 <select name="type_id" lay-verify="required">
-                    <option >--请选择--</option>
+                    <option value="">--请选择--</option>
                     @foreach($typeinfos as $typeinfo)
                         <option value="{{$typeinfo->id}}">{{$typeinfo->name}}</option>
                     @endforeach
@@ -77,15 +77,21 @@
                         //失败
                         if(data.status == 1){
                             layer.msg(data.msg, {icon: 5,time:1000});
+                         //所属不能为空
+                        } else if(data.status == 2){
+                            layer.msg(data.msg, {icon: 5,time:1000});
+                            //属性名称不能为空
+                        }else if(data.status == 3){
+                            layer.msg(data.msg, {icon: 5,time:1000});
+                        } else if (data.status == 0){
+                            //成功
+                            layer.alert(data.msg, {icon: 6},function () {
+                                //获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            });
                         }
-                        //成功
-                        layer.alert(data.msg, {icon: 6},function () {
-                            //获得frame索引
-                            var index = parent.layer.getFrameIndex(window.name);
-                            //关闭当前frame
-                            parent.layer.close(index);
-                        });
-
                     }
                 });
 

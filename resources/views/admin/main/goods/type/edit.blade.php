@@ -56,22 +56,17 @@
                     },
                     success:function (data){
                         if(data.status == 1){
-                            layer.alert(data.msg, {icon: 6},function () {
-//                                // 获得frame索引
-//                                var index = parent.layer.getFrameIndex(window.name);
-//                                //关闭当前frame
-//                                parent.layer.close(index);
                                 layer.msg(data.msg, {icon: 5});
+                        } else if(data.status == 3){
+                            layer.msg(data.msg, {icon: 5});
+                        } else if(data.status == 0){
+                            layer.alert("保存成功", {icon: 6},function () {
+                                // 获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                parent.layer.close(index);
                             });
                         }
-                        layer.alert("保存成功", {icon: 6},function () {
-                            // 获得frame索引
-                            var index = parent.layer.getFrameIndex(window.name);
-                            //关闭当前frame
-                            parent.layer.close(index);
-                        });
-
-
                     }
                 });
 

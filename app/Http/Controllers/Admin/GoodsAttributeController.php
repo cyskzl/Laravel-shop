@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use DB;
@@ -17,25 +16,23 @@ class GoodsAttributeController extends Controller
      */
     public function index(Request $request)
     {
-//        var_dump($request->all());
         //type模型表查询
-        $typeinfos  =  DB::table('goods_type')->select('id', 'name')->get();
+        $typeinfos = DB::table('goods_type')->select('id', 'name')->get();
         //分页查询以keyword为搜索关键字
-        $goodsattrs = GoodsAttribute::orderBy('order', 'desc')
-            ->where(function($query) use ($request){
-                //分类检索
-                $typename= $request->input('typename');
-                if(!empty($typename)){
-                    $query->where('type_id','like','%'.$typename.'%');
-                }
-                //关键字
-                $keyword = $request->input('keyword');
-                //检测参数
-                if(!empty($keyword)){
-                    $query->where('attr_name','like','%'.$keyword.'%');
-                }
-            })->paginate(10);
-       return view('admin.main.goods.goodsattribute.index', ['request' => $request, 'goodsattrs' => $goodsattrs, 'typeinfos' => $typeinfos]);
+        $goodsattrs = GoodsAttribute::orderBy('order', 'desc')->where(function ($query) use($request) {
+            //分类检索
+            $typename = $request->input('typename');
+            if (!empty($typename)) {
+                $query->where('type_id', 'like', '%' . $typename . '%');
+            }
+            //关键字
+            $keyword = $request->input('keyword');
+            //检测参数
+            if (!empty($keyword)) {
+                $query->where('attr_name', 'like', '%' . $keyword . '%');
+            }
+        })->paginate(10);
+        return view('admin.main.goods.goodsattribute.index', ['request' => $request, 'goodsattrs' => $goodsattrs, 'typeinfos' => $typeinfos]);
     }
 
     /**
@@ -44,7 +41,7 @@ class GoodsAttributeController extends Controller
      */
     public function create()
     {
-        $typeinfos  =  DB::table('goods_type')->select('id', 'name')->get();
+        $typeinfos = DB::table('goods_type')->select('id', 'name')->get();
         return view('admin.main.goods.goodsattribute.create', ['typeinfos' => $typeinfos]);
     }
 
@@ -57,26 +54,26 @@ class GoodsAttributeController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->json);
-
-        $goodsattribute = new GoodsAttribute;
-        $goodsattribute->type_id = $data->type_id;
+        $goodsattribute = new GoodsAttribute();
+        if ($data->type_id) {
+            $goodsattribute->type_id = $data->type_id;
+        } else {
+            return self::errorNumb(2, '所属类型不能为空');
+        }
         $goodsattribute->attr_index = $data->attr_index;
         $goodsattribute->attr_input_type = $data->attr_input_type;
         $goodsattribute->attr_values = $data->attr_values;
-        $goodsattribute->attr_name = $data->attr_name;
+        if ($data->attr_name) {
+            $goodsattribute->attr_name = $data->attr_name;
+        } else {
+            return self::errorNumb(3, '属性名称不能为空');
+        }
         //待修改
         $goodsattribute->attr_type = 0;
-
-        if($goodsattribute->save()){
-            $data = [
-                'status' => 0,
-                'msg'    => '添加成功'
-            ];
+        if ($goodsattribute->save()) {
+            return self::errorNumb(0, '添加成功');
         } else {
-            $data = [
-                'status' => 1,
-                'msg'    => '添加失败'
-            ];
+            return self::errorNumb(1, '添加失败');
         }
         return $data;
     }
@@ -89,9 +86,7 @@ class GoodsAttributeController extends Controller
      */
     public function show($id)
     {
-
     }
-
     /**
      * 显示修改商品属性模板
      * @param $id
@@ -99,9 +94,9 @@ class GoodsAttributeController extends Controller
      */
     public function edit($id)
     {
-        $typeinfos  =  DB::table('goods_type')->select('id', 'name')->get();
-        $goodsattribute  = GoodsAttribute::find($id);
-//        dd($goodsattribute);
+        $typeinfos = DB::table('goods_type')->select('id', 'name')->get();
+        $goodsattribute = GoodsAttribute::find($id);
+        //        dd($goodsattribute);
         return view('admin.main.goods.goodsattribute.edit', ['typeinfos' => $typeinfos, 'goodsattribute' => $goodsattribute]);
     }
 
@@ -117,20 +112,13 @@ class GoodsAttributeController extends Controller
         $data = json_decode($request->json, true);
         //过滤id
         unset($data['attr_id']);
-        if(GoodsAttribute::where('attr_id', $id)->update($data)){
-            $data = [
-                'status' => 0,
-                'msg'    => '修改成功'
-            ];
+        if (GoodsAttribute::where('attr_id', $id)->update($data)) {
+            $data = self::errorNumb(0, '修改成功');
         } else {
-            $data = [
-                'status' => 1,
-                'msg'    => '修改失败'
-            ];
+            $data = self::errorNumb(1, '修改失败');
         }
         return $data;
     }
-
 
     /**
      * 删除商品属性
@@ -138,17 +126,23 @@ class GoodsAttributeController extends Controller
      */
     public function destroy($id)
     {
-       if(GoodsAttribute::destroy([$id])){
-           $data = [
-               'status' => 0,
-               'msg'    => '删除成功'
-           ];
-       } else {
-           $data = [
-               'status' => 1,
-               'msg'    => '删除失败'
-           ];
-       }
-       return $data;
+        if (GoodsAttribute::destroy([$id])) {
+            $data = self::errorNumb(0, '删除成功');
+        } else {
+            $data = self::errorNumb(1, '删除失败');
+        }
+        return $data;
+    }
+
+    /**
+     * 错误信息
+     * @param $status
+     * @param $msg
+     * @return array
+     */
+    public function errorNumb($status, $msg)
+    {
+        $data = ['status' => $status, 'msg' => $msg];
+        return $data;
     }
 }

@@ -34,7 +34,7 @@
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 @endsection
 @section('x-body')
-    <form class="layui-form layui-form-pane" action="{{url('admin/goodscategory')}}" method="post"  enctype="multipart/form-data" style="width:50%">
+    <form class="layui-form layui-form-pane"  action='' style="width:50%">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">
@@ -54,7 +54,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">分类名称</label>
             <div class="layui-input-block">
-                <input type="text" name="name" required  lay-verify="required" placeholder="分类名称" autocomplete="off" class="layui-input">
+                <input type="text" name="name"  lay-verify="required" placeholder="分类名称" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item" >
@@ -82,7 +82,7 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button class="layui-btn"  lay-filter="add" lay-submit lay-filter="formDemo">立即提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
@@ -104,7 +104,7 @@
         layui.use(['form', 'layer', 'layedit', 'upload'], function () {
             $ = layui.jquery;
             var form = layui.form()
-                , layer = layui.layer
+                , layer = layui.layer;
 
             var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
             $('#layer-photos-demo' ).on('click', function(){
@@ -113,6 +113,40 @@
                     photos: '#layer-photos-demo',
                 });
             });
+
+            form.on('submit(add)', function(data){
+                console.log(data);
+                //发异步，把数据提交给php
+                $.ajax({
+                    type: 'post',
+                    url:  '/admin/goodscategory',
+                    dataType: 'json',
+                    data: { '_token':'{{csrf_token()}}',  'json': JSON.stringify(data.field) },
+                    success:function (data){
+//                        console.log(data);
+                        //失败
+                        if(data.status == 1){
+                            layer.msg(data.msg, {icon: 5,time:1000});
+                        } else if(data.status == 3){
+                            layer.msg(data.msg, {icon: 5,time:1000});
+                        } else if(data.status == 4 ){
+                            layer.msg(data.msg, {icon: 5,time:1000});
+                        } else if(data.status == 0 ){
+                            //成功
+                            layer.alert(data.msg, {icon: 6},function () {
+                                //获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            });
+                        }
+
+                    }
+                });
+
+                return false;
+            });
+
         });
 
     </script>

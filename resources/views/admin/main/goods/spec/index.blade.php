@@ -16,7 +16,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">搜索</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="keyword" value="{{$request->input('keyword')}}" placeholder="标题" autocomplete="off" class="layui-input">
+                    <input type="text" name="keyword" value="{{$request->input('keyword')}}" placeholder="商品规格名称" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-input-inline" style="width:80px">
                     <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
@@ -129,7 +129,6 @@
                     dataType: 'json',
                     data: { '_token':'{{csrf_token()}}',  'name': data.field.name },
                     success:function (data){
-//                            console.log();
                         if(data.status == 1){
                             layer.msg(data.msg,{icon:1,time:1000});
                         }
