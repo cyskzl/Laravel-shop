@@ -15,17 +15,27 @@ class CommentController extends Controller
     /**
      * @return  view    商品评论列表页
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = GoodsComment::
-                    join('users_register','goods_comment.user_id','=','users_register.id')
-                    ->join('goods','goods_comment.goods_id','=','goods.id')
-                    ->select('goods_comment.*','users_register.email','goods.goods_title')
-                    ->get();
+        //获取搜索提交过来的会员名
+        $username = $request->input('username');
 
-        $sum = count($data);
+        //获取搜索提交过来的内容
+        $content = $request->input('content');
+
+        //查询评论信息
+            $data = GoodsComment::where('users_register.email','like','%'.$username.'%')
+                ->where('goods_comment.comment_info','like','%'.$content.'%')
+                ->join('users_register','goods_comment.user_id','=','users_register.id')
+                ->join('goods','goods_comment.goods_id','=','goods.id')
+                ->select('goods_comment.*','users_register.email','goods.goods_title')
+                ->get();
+
+        //统计总数
+            $sum = count($data);
 
         return view('admin.main.comment.index',compact('data','sum'));
+
     }
 
     /**
@@ -36,13 +46,42 @@ class CommentController extends Controller
      */
     public function destroy(Request $request)
     {
-        //删除id
+
+
+        $id = trim($request->input('id'),',');
+
+
+//        foreach (explode(',',$id) as $value){
+//
+//            $commentlist = GoodsComment::find($value)->reply->toArray();
+//
+//
+//        }
+
+        $arrid = explode(',',$id);
+
+        $status = 0;
+
+        foreach ($arrid as $value){
+
+           $sta = GoodsComment::where('id',$value)->delete();
+
+           $stat = GoodsCommentReply::where('comment_id',$value)->delete();
+
+           if(!$sta){
+               $status = 1;
+           }
+
+        }
+
+        return $status;
     }
 
     public function show($id)
     {
 
-       $data =  GoodsCommentReply::where('comment_id', '=', $id)->get();
+//       $data =  GoodsCommentReply::join('users_register','goods_comment_reply.user_id','users_register.id')
+//                                    ->where('comment_id', '=', $id)->get();
 
        return view('admin.main.comment.show');
 
@@ -80,5 +119,7 @@ class CommentController extends Controller
 
         return '{"error":"0"}';
     }
+
+
 
 }

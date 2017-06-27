@@ -125,11 +125,19 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd class="">
-                        <dd class="">
                             <a href="javascript:;" _href="{{ url('admin/orders') }}">
                                 <cite>订单列表</cite>
                             </a>
                         </dd>
+                        <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/deliveryinfo') }}">
+                                <cite>发货单</cite>
+                            </a>
+                        </dd>
+                        <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/returninfo') }}">
+                                <cite>退货单</cite>
+                            </a>
                         </dd>
                     </dl>
                 </li>

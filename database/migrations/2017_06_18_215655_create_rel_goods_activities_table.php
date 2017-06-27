@@ -22,7 +22,9 @@ class CreateRelGoodsActivitiesTable extends Migration
             $table->integer('promotion_price')->comment('促销价');
             $table->timestamps();
 
+
             $table->foreign('activity_id')->references('id')->on('activities')->comment('活动表的ID外键');
+
         });
     }
 

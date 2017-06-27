@@ -55,7 +55,9 @@
             <th>应付金额</th>
             <th>订单状态</th>
             <th>支付状态</th>
+            <th>发货状态</th>
             <th>支付方式</th>
+            <th>配送方式</th>
             <th>下单时间</th>
             <th>操作</th>
         </tr>
@@ -65,13 +67,15 @@
         @foreach($ordersList as $value)
         <tbody>
         <tr>
-            <th scope="row">{{$value->guid}}</th>
-            <td>{{$value->name_message}}</td>
-            <td>{{$value->total_amount}}</td>
-            <td>{{$value->total_amount}}</td>
+            <th scope="row">{{$value->order_sn}}</th>
+            <td>{{$value->consignee}}</td>
+            <td>{{$value->goods_price}}</td>
+            <td>{{$value->order_amount}}</td>
             <td>{{$value->order_status}}</td>
             <td>{{$value->pay_status}}</td>
-            <td>{{$value->pay_type}}</td>
+            <td>{{$value->shipping_status}}</td>
+            <td>{{$value->pay_name}}</td>
+            <td>{{$value->shipping_name}}</td>
             <td>{{$value->created_at}}</td>
             <td style="width: 160px;">
                 <a class="btn btn-primary btn-xs" role="button" href="javascript:;" onclick="question_edit('编辑','{{ url('admin/orders/').'/'.$value->id}}','1','','800')">查看</a>
