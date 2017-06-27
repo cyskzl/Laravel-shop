@@ -53,6 +53,12 @@ Route::group(['prefix' => 'admin'], function (){
         //轮播图管理
         Route::resource('/carousel', 'Admin\CarouselController');
 
+        //发货单管理
+        Route::resource('/deliveryinfo', 'Admin\OrdersDeliveryController');
+
+        //退货单管理
+        Route::resource('/returninfo', 'Admin\OrdersReturnController');
+
         //订单管理
         Route::resource('/orders', 'Admin\OrdersController');
 

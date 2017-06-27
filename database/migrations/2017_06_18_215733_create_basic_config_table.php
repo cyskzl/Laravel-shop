@@ -20,7 +20,7 @@ class CreateBasicConfigTable extends Migration
             $table->string('site_describe')->comment('网站描述');
             $table->string('telephone')->comment('400电话');
             $table->string('logo')->comment('网站logo');
-            $table->tinyInteger('level_set')->comment(' 分类层级设置 默认 4级');
+            $table->tinyInteger('level_set')->comment('分类层级设置 默认 4级');
             $table->string('record_number')->comment('网站备案号');
             $table->string('address')->comment('公司地址');
             $table->string('copyright')->comment('版权信息');

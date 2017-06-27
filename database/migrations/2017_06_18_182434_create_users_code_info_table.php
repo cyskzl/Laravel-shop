@@ -20,7 +20,7 @@ class CreateUsersCodeInfoTable extends Migration
             $table->integer('code_num')->comment('获取和消耗积分');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
+//            $table->foreign('user_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
         });
     }
 

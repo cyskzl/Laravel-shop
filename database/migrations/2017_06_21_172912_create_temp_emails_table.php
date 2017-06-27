@@ -21,7 +21,7 @@ class CreateTempEmailsTable extends Migration
             $table->timestamps();
             $table->softDeletes()->comment('删除时间');
 
-            $table->foreign('user_id')->references('id')->on('users_register')->comment('用户注册表id外键');
+//            $table->foreign('user_id')->references('id')->on('users_register')->comment('用户注册表id外键');
 
         });
     }

@@ -89,13 +89,14 @@
             <td>总价</td>
         </tr>
 
-        @foreach($detaildata as $value)
+
+        @foreach($ordergoods[0]['ordergood'] as $value)
         <tr>
-            <td>商品名称</td>
-            <td>{{$value->order_guid}}</td>
-            <td>{{$value->cargo_price}}</td>
-            <td>{{$value->commodity_number}}</td>
-            <td>{{($value->cargo_price * $value->commodity_number)}}</td>
+            <td>{{$value->goods_name}}</td>
+            <td>{{$value->goods_sn}}</td>
+            <td>{{$value->goods_price}}</td>
+            <td>{{$value->goods_num}}</td>
+            <td>{{($value->goods_price * $value->goods_num)}}</td>
         </tr>
             @endforeach
     </table>

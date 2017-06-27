@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\OrderGood;
 use App\Models\Orders;
-use App\Models\OrdersDetails;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -17,14 +17,18 @@ class OrdersController extends Controller
     public function index()
     {
 
-        $ordersList = Orders::all();
 
-//        $ordersList = OrdersDetails::all();
+        $ordersList = Orders::with(['users'=>function($query){
 
-//        dd($ordersList->ordersDetails->guid);
+            $query->select('id','email','tel');
+
+        }])->get();
 
         return view('admin.main.orders.index',compact('ordersList'));
     }
+
+
+
 
 
     /**
@@ -32,13 +36,12 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        $orderdata = Orders::find($id);
 
-        $detaildata = $orderdata->ordersDetails;
+        $ordergoods = Orders::where('id',$id)->with('ordergood')->get();
 
-//        dd($detaildata);
+//        dd($ordergoods);
 
-        return view('admin.main.orders.show',compact('orderdata','detaildata'));
+        return view('admin.main.orders.show',compact('ordergoods'));
     }
 
     /**

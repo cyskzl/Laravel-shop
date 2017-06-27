@@ -22,7 +22,7 @@ class CreateUsersCodeTable extends Migration
             $table->tinyInteger('status')->comment('积分状态');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
+//            $table->foreign('user_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
         });
     }
 

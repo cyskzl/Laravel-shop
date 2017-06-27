@@ -27,4 +27,5 @@ class UserRegister extends Model
     public function tempeMail(){
         return $this->hasOne('App\Models\TempEmail','user_id');
     }
+
 }
