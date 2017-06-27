@@ -18,8 +18,13 @@
 //});
 
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
+    // 首页
+    Route::get('/', 'IndexController@index');
     // 注册页面
-    Route::get('/register', 'RegisterController@register');
+    Route::group(['middleware'=>'auth'],function(){
+        Route::get('/register', 'RegisterController@register');
+    });
+
     // 验证码生成
     Route::get('/register/code', 'RegisterController@createCode');
     // 邮箱发送注册
@@ -32,6 +37,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/login', 'UserController@login');
     // 登录信息处理
     Route::post('/doLogin', 'Usercontroller@doLogin');
+    // 退出登录
+    Route::get('/logOut', 'UserController@logOut');
 });
 
 //prefix => 前缀

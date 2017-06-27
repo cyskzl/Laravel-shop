@@ -15,12 +15,12 @@ class CreateBrandTable extends Migration
        Schema::create('brand', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-			$table->string('name', 60)->nullable()->comment('Æ·ÅÆÃû³Æ');
-			$table->string('logo', 80)->nullable()->comment('Æ·ÅÆlogo');
-			$table->text('desc')->comment('Æ·ÅÆÃèÊö');
-			$table->string('url')->comment('Æ·ÅÆµØÖ·');
+			$table->string('name', 60)->nullable()->comment('å“ç‰Œåç§°');
+			$table->string('logo', 80)->nullable()->comment('å“ç‰Œlogo');
+			$table->text('desc')->comment('å“ç‰Œæè¿°');
+			$table->string('url')->comment('å“ç‰Œåœ°å€');
 			$table->tinyInteger('sort')->default(50)->unsigned()->comment(50);
-			$table->tingInteger('is_hot', 1)->unsigned()->comment('ÊÇ·ñÍÆ¼ö,0·ñ1ÊÇ');
+			$table->tinyInteger('is_hot')->unsigned()->comment('æ˜¯å¦æŽ¨è,0å¦1æ˜¯');
             $table->timestamps();
 
         });

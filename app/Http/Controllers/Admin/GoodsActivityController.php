@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Good;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -26,7 +27,8 @@ class GoodsActivityController extends Controller
      */
     public function create()
     {
-        return view('admin.main.goodsactivity.add');
+        $goods = Good::orderBy('goods_id','desc')->paginate(5);
+        return view('admin.main.goodsactivity.add',compact('goods'));
     }
 
     /**
@@ -37,7 +39,8 @@ class GoodsActivityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $chk_value = trim($request->input('chk_value'),',');
+//        return $chk_value;
     }
 
     /**

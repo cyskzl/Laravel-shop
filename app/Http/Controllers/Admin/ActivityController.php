@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Activity;
 use App\Models\GoodsActivity;
+use App\Models\GoodsType;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ActivityController extends Controller
 {
@@ -46,9 +49,14 @@ class ActivityController extends Controller
      * 活动详情页
      * 包含活动商品的详细信息
      */
-    public function show()
+    public function show($id)
     {
-        return view('admin.main.activity.show');
+        // 关联商品表得到商品的信息
+        $act_goods = GoodsActivity::with(['goods'=>function($query){
+            $query->select('goods_id','goods_name');
+        }])->where('activity_id','=',$id)->get();
+
+        return view('admin.main.activity.show',compact('act_goods'));
     }
 
     /**
@@ -58,7 +66,7 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         //活动添加
-        $ $this->validate($request,[
+        $this->validate($request,[
             'name'=>'required',
             'type'=>'required',
             'start_time'=>'required',
@@ -113,9 +121,13 @@ class ActivityController extends Controller
      *
      * @return  未定义
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
-        //
+        $status = $request->input('status');
+        $activity = DB::table('activities')
+                ->where('id','=',$id)
+                ->update(['is_over'=>$status]);
+        return $activity;
     }
 
     /**
@@ -126,9 +138,12 @@ class ActivityController extends Controller
      */
     public function destroy(Request $request)
     {
-        //删除id
-
+        // 删除id
         $act_id = $request->input('id');
+        $activity = Activity::find($act_id);
+        // 删除上传活动图片
+        $img = './'.trim($activity->img,',');
+        unlink($img);
         $delGoods = GoodsActivity::where('activity_id','=',$act_id)->delete();
         $delAct = Activity::where('id','=',$act_id)->delete();
         return 2;

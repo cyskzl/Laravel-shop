@@ -15,7 +15,7 @@ class CreateGoodsTypeTable extends Migration
           Schema::create('goods_type', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-			$table->string('name')->nullable()->comment('ÀàÐÍÃû³Æ');
+			$table->string('name')->nullable()->comment('ç±»åž‹åç§°');
             $table->timestamps();
 
         });

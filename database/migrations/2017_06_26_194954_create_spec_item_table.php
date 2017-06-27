@@ -15,8 +15,8 @@ class CreateSpecItemTable extends Migration
        Schema::create('spec_item', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-			 $table->integer('spec_id')->unsigned()->comment('¹æ¸ñid');
-			 $table->string('item', 60)->nullable()->comment('¹æ¸ñÏî');
+			 $table->integer('spec_id')->unsigned()->comment('è§„æ ¼id');
+			 $table->string('item', 60)->nullable()->comment('è§„æ ¼é¡¹');
             $table->timestamps();
 
         });

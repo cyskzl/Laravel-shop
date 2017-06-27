@@ -15,13 +15,13 @@ class CreateGoodsAttributeTable extends Migration
          Schema::create('goods_attribute', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('attr_id');
-			$table->string('attr_name', 60)->nullable()->comment('Æ·ÅÆÃû³Æ');
-			 $table->integer('type_id')->unsigned()->nullable()->default(0)->comment('ÊôÐÔ·ÖÀàid');
-			$table->tinyInteger('attr_index',1)->unsigned()->default(0)->comment('0²»ÐèÒª¼ìË÷ 1¹Ø¼ü×Ö¼ìË÷ 2·¶Î§¼ìË÷');
-			$table->tinyInteger('attr_type',1)->unsigned()->default(0)->comment('0Î¨Ò»ÊôÐÔ 1µ¥Ñ¡ÊôÐÔ 2¸´Ñ¡ÊôÐÔ');
-			$table->tinyInteger('attr_input_type', 1)->unsigned()->default(0)->comment('0 ÊÖ¹¤Â¼Èë 1´ÓÁÐ±íÖÐÑ¡Ôñ 2¶àÐÐÎÄ±¾¿ò');
-			$table->text('attr_values')->comment('¿ÉÑ¡ÖµÁÐ±í');
-			$table->tinyInteger('order')->unsigned()->nullable()->default(50)->comment('ÊôÐÔÅÅÐò');
+			$table->string('attr_name', 60)->nullable()->comment('å“ç‰Œåç§°');
+			 $table->integer('type_id')->unsigned()->nullable()->default(0)->comment('å±žæ€§åˆ†ç±»id');
+			$table->tinyInteger('attr_index')->default(0)->unsigned()->comment('0ä¸éœ€è¦æ£€ç´¢ 1å…³é”®å­—æ£€ç´¢ 2èŒƒå›´æ£€ç´¢');
+			$table->tinyInteger('attr_type')->default(0)->unsigned()->comment('0å”¯ä¸€å±žæ€§ 1å•é€‰å±žæ€§ 2å¤é€‰å±žæ€§');
+			$table->tinyInteger('attr_input_type')->unsigned()->default(0)->comment('0 æ‰‹å·¥å½•å…¥ 1ä»Žåˆ—è¡¨ä¸­é€‰æ‹© 2å¤šè¡Œæ–‡æœ¬æ¡†');
+			$table->text('attr_values')->comment('å¯é€‰å€¼åˆ—è¡¨');
+			$table->tinyInteger('order')->unsigned()->nullable()->default(50)->comment('å±žæ€§æŽ’åº');
 			
             $table->timestamps();
 

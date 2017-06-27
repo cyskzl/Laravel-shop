@@ -15,10 +15,10 @@ class CreateSpecTable extends Migration
          Schema::create('spec', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-			 $table->integer('type_id')->unsigned()->nullable()->default(0)->comment('¹æ¸ñÀàÐÍ');
-			 $table->string('name')->nullable()->comment('¹æ¸ñÃû³Æ');
-			 $table->tinyInteger('order')->unsigned()->nullable()->default(50)->comment('ÅÅÐò');
-			$table->tinyInteger('search_index',1)->unsigned()->default(0)->comment('0²»ÐèÒª¼ìË÷ 1¼ìË÷ ');
+			 $table->integer('type_id')->unsigned()->nullable()->default(0)->comment('è§„æ ¼ç±»åž‹');
+			 $table->string('name')->nullable()->comment('è§„æ ¼åç§°');
+			 $table->tinyInteger('order')->unsigned()->nullable()->default(50)->comment('æŽ’åº');
+			$table->tinyInteger('search_index')->unsigned()->default(0)->comment('0ä¸éœ€è¦æ£€ç´¢ 1æ£€ç´¢ ');
             $table->timestamps();
 
         });
