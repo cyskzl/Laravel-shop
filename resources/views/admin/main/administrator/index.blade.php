@@ -40,39 +40,24 @@
                   </div>
                 </div>
             </form>
-            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="admin_add('添加管理员','{{ url('admin/adminlist/create') }}','600','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
+            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="admin_add('添加管理员','{{ url('admin/adminlist/create') }}','600','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：{{ count($admin_user) }}条</span></xblock>
             <table class="layui-table">
                 <thead>
                     <tr>
-                        <th>
-                            <input type="checkbox" name="" value="">
-                        </th>
-                        <th>
-                            ID
-                        </th>
-                        <th>
-                            登录名
-                        </th>
-
-                        <th>
-                            邮箱
-                        </th>
-                        <th>
-                            角色
-                        </th>
-                        <th>
-                            加入时间
-                        </th>
-                        <th>
-                            状态
-                        </th>
-                        <th>
-                            操作
-                        </th>
+                        <th><input type="checkbox" name="" value=""></th>
+                        <th>ID</th>
+                        <th>登录名</th>
+                        <th>邮箱</th>
+                        <th>角色</th>
+                        <th>加入时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach($admin_user as $row)
+
+
                     <tr>
                         {{--{{dd($admin_user)}}--}}
                         <td>
@@ -85,7 +70,7 @@
 
                         <td >{{ $row->email }}</td>
 
-                        <td >{{ $row->display_name }}</td>
+                        <td >{{ $row->nickname }}</td>
 
                         <td>{{ $row->created_at }}</td>
 
@@ -124,7 +109,7 @@
                 </tbody>
             </table>
 
-            <div id="page"></div>
+            {{ $admin_user->links() }}
         </div>
         <script src="{{ asset('templates/admin/lib/layui/layui.js') }}" charset="utf-8"></script>
         <script src="{{ asset('templates/admin/js/x-layui.js') }}" charset="utf-8"></script>
@@ -202,7 +187,8 @@
 
                     var data = admin_ajax(url, 'PUT', JSON.stringify(obj));
 //                    console.log(data);
-                    if (data == '1') {
+                    res = JSON.parse(data);
+                    if (res.success == '1') {
                         var str = '<a style="text-decoration:none" onClick="admin_start(this,id)" href="javascript:;" title="启用"><i class="layui-icon">&#xe62f;</i></a>';
 
                         $(obj).parents("tr").find(".td-manage").prepend(str);
@@ -210,11 +196,11 @@
                         $(obj).parents("tr").find(".td-status").html('<span class="layui-btn layui-btn-disabled layui-btn-mini">已停用</span>');
 
                         $(obj).remove();
-                        layer.msg('已停用!',{icon: 5,time:1000});
+                        layer.msg(res.info,{icon: 5,time:1000});
                         location.href = location.href;
 
                     } else {
-                        layer.msg('停用失败!',{icon: 5,time:1000});
+                        layer.msg(res.info,{icon: 5,time:1000});
                         location.href = location.href;
                     }
 
@@ -232,7 +218,8 @@
                     }
 
                     var data = admin_ajax(url, 'PUT', JSON.stringify(obj));
-                    if (data == '1') {
+                    res = JSON.parse(data);
+                    if (res.success == '1') {
 
                         var str = '<a style="text-decoration:none" onClick="admin_stop(this,id)" href="javascript:;" title="停用"><i class="layui-icon">&#xe601;</i></a>';
 
@@ -242,12 +229,12 @@
 
                         $(obj).remove();
 
-                        layer.msg('已启用!',{icon: 6,time:1000});
+                        layer.msg(res.info,{icon: 6,time:1000});
                         location.href = location.href;
 
                     } else {
 
-                        layer.msg('启用失败!',{icon: 5,time:1000});
+                        layer.msg(res.info,{icon: 5,time:1000});
                         location.href = location.href;
                     }
 
@@ -267,13 +254,14 @@
                     var obj = {'id':id}
 
                     var data = admin_ajax(url, 'delete', JSON.stringify(obj));
-
-                    if (data == '1') {
+                    res = JSON.parse(data);
+                    if (res.success == '1') {
                         $(obj).parents("tr").remove();
-                        layer.msg('已删除!',{icon:1,time:1000});
+                        layer.msg(res.info,{icon:1,time:1000});
                         location.href = location.href;
                     } else{
-                        layer.msg('删除失败!',{icon:5,time:1000});
+                        layer.msg(res.info,{icon:5,time:1000});
+                        location.href = location.href;
 
                     }
                 });
@@ -289,9 +277,7 @@
                     async: false,
                     data:{json,'_token':"{{ csrf_token() }}"},
                     success:function (res) {
-
                         data = res;
-
                     }
 
                 });

@@ -16,13 +16,13 @@
     <body>
         <div class="x-body">
             <form action="" method="post" class="layui-form layui-form-pane">
-                <input type="hidden" name="id" value="{{ $role->id }}">
+                <input type="hidden" name="id" value="1">
                 <div class="layui-form-item">
                     <label for="name" class="layui-form-label">
                         <span class="x-red">*</span>角色名
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="name" name="display_name" required="" lay-verify="required" value="{{$role->display_name}}"
+                        <input type="text" id="name" name="display_name" required="" lay-verify="required" value="1"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                         <span class="x-red">*</span>角色标识
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="name" name="name" required="" lay-verify="required" value="{{$role->name}}"
+                        <input type="text" id="name" name="name" required="" lay-verify="required" value="1"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -49,12 +49,7 @@
                                 <td>
                                     <div class="layui-input-block">
 
-                                        @foreach($permission as $value)
 
-                                              {{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false) }}
-                                              {{ $value->display_name }}
-
-                                        @endforeach
                                     </div>
                                 </td>
                             </tr>
@@ -80,7 +75,7 @@
                         描述
                     </label>
                     <div class="layui-input-block">
-                        <textarea placeholder="请输入内容" id="desc" name="description" class="layui-textarea">{{$role->description}}</textarea>
+                        <textarea placeholder="请输入内容" id="desc" name="description" class="layui-textarea">a</textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">

@@ -27,20 +27,18 @@
 
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
-                <div class="layui-input-inline">
-                    <select name="class_name">
+                <!-- <div class="layui-input-inline">
+                    <select name="class_id" required="" lay-verify="required">
                         <option value="">请选择角色</option>
-                        @foreach($class as $value)
+                            <option value="1"></option>
 
-                            <option value="{{ $value->id }}">{{ $value->class_name }}</option>
-                        @endforeach
                     </select>
-                </div>
+                </div> -->
                 <div class="layui-input-inline">
                     <input type="text" name="name" placeholder="模块/控制器/方法" autocomplete="off" class="layui-input" lay-verify="required" required="">
                 </div>
                 <div class="layui-input-inline">
-                    <input type="text" name="display_name" placeholder="权限名称" autocomplete="off" class="layui-input" lay-verify="required">
+                    <input type="text" name="name" placeholder="权限名称" autocomplete="off" class="layui-input" lay-verify="required">
                 </div>
                 <div class="layui-input-inline">
                     <input type="text" name="description" placeholder="描述" autocomplete="off" class="layui-input">
@@ -58,44 +56,43 @@
     </form>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
+        <span class="x-right" style="line-height:40px">共有数据：1 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
             <th><input type="checkbox" name="" value=""></th>
             <th>ID</th>
-            <th>权限分类</th>
-            <th>权限规则</th>
             <th>权限名称</th>
             <th>描述</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody id="x-link">
-        @foreach($perms as $row)
+            @foreach($permission as $perms)
+                <tr>
+                    <td><input type="checkbox" value="{{ $perms->id }}" name="id"></td>
+                    <td>{{ $perms->id }}</td>
+                    <td>{{ $perms->name }}</td>
+                    <td>{{ $perms->description }}</td>
+
+                    <td class="td-manage">
+                        <a title="编辑" href="javascript:;" onclick="rule_edit('编辑','{{ url('admin/permission/1/edit') }}','1','','510')"
+                           class="ml-5" style="text-decoration:none">
+                            <i class="layui-icon">&#xe642;</i>
+                        </a>
+                        <a title="删除" href="javascript:;" onclick="rule_del(this, 1)"
+                           style="text-decoration:none">
+                            <i class="layui-icon">&#xe640;</i>
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
 
             <tr>
-                <td>
-                    <input type="checkbox" value="{{ $row->id }}" name="id">
-                </td>
-                <td>{{ $row->id }}</td>
-                <td>{{ $row->class_name }}</td>
-                <td>{{ $row->name }}</td>
-                <td>{{ $row->display_name }}</td>
-                <td>{{ $row->description }}</td>
-
-                <td class="td-manage">
-                    <a title="编辑" href="javascript:;" onclick="rule_edit('编辑','{{ url('admin/permission/'.$row->id.'/edit') }}','{{ $row->id }}','','510')"
-                       class="ml-5" style="text-decoration:none">
-                        <i class="layui-icon">&#xe642;</i>
-                    </a>
-                    <a title="删除" href="javascript:;" onclick="rule_del(this, {{ $row->id }})"
-                       style="text-decoration:none">
-                        <i class="layui-icon">&#xe640;</i>
-                    </a>
-                </td>
+                <td colspan="7" ><h3 style="text-align: center">暂无信息</h3></td>
             </tr>
-        @endforeach
+
+
         </tbody>
     </table>
 
@@ -113,7 +110,7 @@
 
         //监听提交
         form.on('submit(*)', function (data) {
-
+            console.log(data.field);
 
             //异步提交数据
             $.ajax({
@@ -137,7 +134,7 @@
                                 str += '<input type="checkbox"value='+ res.id +'name=""></td>';
                                 str += '<td>'+ res.id +'</td>';
                                 str += '<td>' + res.name + '</td>';
-                                str += '<td>' + data.field.display_name + '</td>';
+                                str += '<td>' + data.field.description + '</td>';
                                 str += '<td class="td-manage">';
                                 str += 	'<a title="编辑"href="javascript:;"onclick="rule_edit(\'编辑\',\'/admin/permission/'+ res.id +'/edit\',\'4\',\'\',\'510\')"class="ml-5"style="text-decoration:none">';
                                 str += '<i class="layui-icon">&#xe642;</i></a> ';
@@ -151,14 +148,10 @@
 
                     } else{
 
-                        layer.alert("添加失败", {icon: 6});
+                        layer.alert("添加失败", {icon: 5});
                     }
                 }
             });
-            //发异步，把数据提交给php
-
-
-
 
             return false;
         });
@@ -184,8 +177,22 @@
     function rule_del(obj, id) {
         layer.confirm('确认要删除吗？', function (index) {
             //发异步删除数据
-            $(obj).parents("tr").remove();
-            layer.msg('已删除!', {icon: 1, time: 1000});
+            $.ajax({
+                url:'{{ url('admin/permission') }}' + '/' + id,
+                type:'delete',
+                datatype:'json',
+                data:{'_token':"{{ csrf_token() }}"},
+                success:function (data) {
+                    if (data == '1') {
+                        $(obj).parents("tr").remove();
+                        layer.msg('已删除!', {icon: 1, time: 1000});
+                    } else {
+
+                        layer.msg('删除失败!', {icon: 5, time: 1000});
+                    }
+                }
+            });
+
         });
     }
 </script>

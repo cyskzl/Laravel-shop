@@ -22,81 +22,41 @@
 </div>
 <div class="x-body">
 
-    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="role_add('添加角色','{{ url('admin/adminrole/create') }}','900','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：{{$count->total()}} 条</span></xblock>
+    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="role_add('添加角色','{{ url('admin/adminrole/create') }}','900','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：0 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
-            <th>
-                <input type="checkbox" name="" value="">
-            </th>
-            <th>
-                ID
-            </th>
-
-            <th>
-                角色名
-            </th>
-            <th>
-                拥有权限规则
-            </th>
-            <th>
-                描述
-            </th>
-            <th>
-                操作
-            </th>
+            <th><input type="checkbox" name="" value=""></th>
+            <th>ID</th>
+            <th>角色名</th>
+            <th>描述</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($res as $row)
 
+            @foreach($roles as $role)
             <tr>
-                <td>
-                    <input type="checkbox" value="1" name="">
-                </td>
-                <td>
-                    {{$row->id}}
-                </td>
-                <td>
-                    {{$row->display_name}}
-                </td>
-                <td >
-                    @foreach($row->perms as $v)
-
-                        {{$v->display_name.','}}
-
-                    @endforeach
-                </td>
-                <td >
-                    {{$row->description}}
-                </td>
-                @if ($row->name == 'admin')
+                <td><input type="checkbox" value="{{ $role->id }}" name="id"></td>
+                <td>{{ $role->id }}</td>
+                <td>{{ $role->name }}</td>
+                <td>{{ $role->description }}</td>
                     <td class="td-manage">
-                        <span class="ml-5" style="text-decoration:none">
-                            <i class="layui-icon">&#xe642;</i>
-                        </span>
-                        <span style="text-decoration:none">
-                            <i class="layui-icon">&#xe640;</i>
-                        </span>
-                    </td>
-                @else
-                    <td class="td-manage">
-                        <a title="编辑" href="javascript:;" onclick="role_edit('编辑角色','{{ url('admin/adminrole/'.$row->id.'/edit') }}','{{$row->id}}','','510')"
+                        <a title="编辑" href="javascript:;" onclick="role_edit('编辑角色','{{ url('admin/adminrole/'.$role->id.'/edit') }}','{{ $role->id }}','','510')"
                            class="ml-5" style="text-decoration:none">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
-                        <a title="删除" href="javascript:;" onclick="role_del(this,{{ $row->id }})"
+                        <a title="删除" href="javascript:;" onclick="role_del(this,{{ $role->id }})"
                            style="text-decoration:none">
                             <i class="layui-icon">&#xe640;</i>
                         </a>
                     </td>
-                @endif
             </tr>
-        @endforeach
+            @endforeach
         </tbody>
     </table>
 
-    <div id="page"></div>
+    {{ $roles->links() }}
 </div>
 <script src="{{ asset('templates/admin/lib/layui/layui.js') }}" charset="utf-8"></script>
 <script src="{{ asset('templates/admin/js/x-layui.js') }}" charset="utf-8"></script>

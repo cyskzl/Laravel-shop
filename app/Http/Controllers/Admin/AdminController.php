@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\AdminUser;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Role;
 use App\Permission;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {

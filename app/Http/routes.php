@@ -11,22 +11,25 @@
 |
 */
 
-//DB::listen(function($sql) {
-////dump($sql);
-//    echo $sql->sql;
-//// dump($sql->bindings);
-//});
+// DB::listen(function($sql) {
+// //dump($sql);
+//    echo $sql->sql.'<br>';
+// // dump($sql->bindings);
+// });
 //prefix => 前缀
 
 
 
 
 
-Route::group(['prefix' => 'admin'],function (){
+Route::group(['prefix' => 'admin'], function (){
 
         Route::get('/login', 'Admin\LoginController@index');
         Route::post('/login', 'Admin\LoginController@login');
         Route::get('/loginout', 'Admin\LoginController@loginout');
+
+    Route::group(['middleware'=>'auth:admin'], function(){
+
 
         //后台首页
         Route::get('/', 'Admin\AdminController@index');
@@ -79,16 +82,16 @@ Route::group(['prefix' => 'admin'],function (){
         Route::resource('/memberintegral', 'Admin\MemberIntegralController');
 
         //管理员列表
-        Route::resource('/adminlist', 'Admin\AdminListController');
+        Route::resource('/adminlist', 'Admin\AdminUserController');
 
         //角色列表
-        Route::resource('/adminrole', 'Admin\AdminRoleController');
+        Route::resource('/adminrole', 'Admin\RoleController');
 
         //权限列表
         Route::resource('/permission', 'Admin\PermissionController');
 
         //权限分类
-        Route::resource('/adminjurisdiction', 'Admin\AdminJurisdictionCateController');
+        // Route::resource('/adminjurisdiction', 'Admin\AdminJurisdictionCateController');
 
         //系统设置
         Route::any('/settings', 'Admin\SystemSettingsController@index');
@@ -100,8 +103,6 @@ Route::group(['prefix' => 'admin'],function (){
         Route::get('systemlog', 'Admin\AdminController@SystemLog');
 
 
+    });
 
 });
-
-
-

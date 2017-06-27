@@ -18,6 +18,7 @@ class LoginController extends Controller
     public function __construct()
     {
     	$this->middleware('admin', ['except' => 'loginout']);
+
     }
 
     /**
@@ -38,9 +39,8 @@ class LoginController extends Controller
         $res = AdminUser::where('nickname', '=', $request->username)->first();
         if ($res) {
             // 验证登录
-            if (Auth::attempt(['nickname' => $request->username, 'password' => $request->password])) {
+            if (Auth::guard('admin')->attempt(['nickname' => $request->username, 'password' => $request->password])) {
                 // 认证通过...
-                session(['admin_user'=> $res]);
                 return redirect('/admin');
             }
         } else {
@@ -54,7 +54,8 @@ class LoginController extends Controller
      */
     public function loginout(Request $request)
     {
-        $request->session()->forget('admin_user');
+        Auth::guard('admin')->logout();
+        return redirect('/admin/login');
 
     }
 }

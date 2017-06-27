@@ -22,12 +22,21 @@
                 <span class="x-red">*</span>角色名
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="name" name="display_name" required="" lay-verify="required"
+                <input type="text" id="name" name="name" required="" lay-verify="required"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
 
-        <div class="layui-form-item">
+        <div class="layui-form-item layui-form-text">
+            <label for="desc" class="layui-form-label">
+                描述
+            </label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" id="desc" name="description" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <!-- <div class="layui-form-item">
             <label for="name" class="layui-form-label">
                 <span class="x-red">*</span>角色标识
             </label>
@@ -35,7 +44,7 @@
                 <input type="text" id="name" name="name" required="" lay-verify="required"
                        autocomplete="off" class="layui-input">
             </div>
-        </div>
+        </div> -->
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">
                 拥有权限
@@ -47,38 +56,19 @@
                         用户管理
                     </td>
                     <td>
+                        @foreach($permission as $perms)
                         <div class="layui-input-block">
-                            @foreach($perms as $row)
-                                <input name="perms[]" type="checkbox" value="{{$row->id}}"> {{$row->display_name or $row-name}}
-                            @endforeach
+
+                                <input name="perms[]" type="checkbox" value="{{ $perms->id }}">  {{ $perms->name }}
                         </div>
+                        @endforeach
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        文章管理
-                    </td>
-                    <td>
-                        <div class="layui-input-block">
-                            <input name="id[]" type="checkbox" value="2"> 文章添加
-                            <input name="id[]" type="checkbox" value="2"> 文章删除
-                            <input name="id[]" type="checkbox" value="2"> 文章修改
-                            <input name="id[]" type="checkbox" value="2"> 文章改密
-                            <input name="id[]" type="checkbox" value="2"> 文章列表
-                        </div>
-                    </td>
-                </tr>
+
                 </tbody>
             </table>
         </div>
-        <div class="layui-form-item layui-form-text">
-            <label for="desc" class="layui-form-label">
-                描述
-            </label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入内容" id="desc" name="description" class="layui-textarea"></textarea>
-            </div>
-        </div>
+
         <div class="layui-form-item">
             <button class="layui-btn" lay-submit="" lay-filter="add">增加</button>
         </div>
@@ -96,12 +86,11 @@
         form.on('submit(add)', function(data){
             //表单数据转换
             var arr = new Array();
-
             var a = $("input[name='perms[]']:checked")
             for (var i=0; i<a.length; i++) {
                 arr.push(a[i].value);
             }
-            
+
             console.log(arr);
 //            JSON.stringify(data.field);
             console.log(JSON.stringify(data.field));

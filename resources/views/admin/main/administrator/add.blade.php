@@ -56,13 +56,10 @@
                     <label for="role" class="layui-form-label">
                         <span class="x-red">*</span>角色
                     </label>
-                    <div class="layui-input-inline">
-                          <select name="role_id">
-                            <option value="">请选择角色</option>
-                            @foreach($role as $row)
-                            <option value="{{ $row->id }}">{{ $row->display_name }}</option>
-                            @endforeach
-                          </select>
+                    <div class="layui-input-block">
+                        @foreach($roles as $role)
+                        <input type="checkbox" name="roles[]" value="{{ $role->id }}"title="{{ $role->name }}" >
+                        @endforeach
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -131,7 +128,14 @@
 
               //监听提交
               form.on('submit(add)', function(data){
-                console.log(data);
+                // console.log(data);
+
+                var arr = new Array();
+                var a = $("input[name='roles[]']:checked")
+                for (var i=0; i<a.length; i++) {
+                    arr.push(a[i].value);
+                }
+
                 //发异步，把数据提交给php
                 $.ajax({
                   url:'{{ url('admin/adminlist/') }}',
@@ -139,11 +143,12 @@
                   datatype:'json',
                   data:{
                     'json':JSON.stringify(data.field),
+                    'roles':JSON.stringify(arr),
                      '_token':"{{ csrf_token() }}",
                    },
                   success:function (res){
                       res = JSON.parse(res);
-                      console.log(res.success);
+                    //   console.log(res.success);
                       if (res.success == '1') {
                           layer.alert(res.info, {icon: 6},function () {
                               // 获得frame索引

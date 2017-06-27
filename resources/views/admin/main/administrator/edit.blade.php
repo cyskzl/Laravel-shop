@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    
+
     <head>
         <meta charset="utf-8">
         <title>管理员修改</title>
@@ -12,24 +12,24 @@
         <meta name="format-detection" content="telephone=no">
         <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
     </head>
-    
+
     <body>
         <div class="x-body">
             <form class="layui-form">
-                <input type="hidden" name="id" value="{{ $res->id }}">
+                <input type="hidden" name="id" value="{{ $user->id }}">
                 <div class="layui-form-item">
                     <label for="username" class="layui-form-label">
                         <span class="x-red">*</span>用户名
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="username" name="nickname" required="" lay-verify="required" value="{{ $res->nickname }}"
+                        <input type="text" id="username" name="nickname" required="" lay-verify="required" value="{{ $user->nickname }}"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         <span class="x-red">*</span>将会成为您唯一的登入名
                     </div>
                 </div>
-                <div class="layui-form-item">
+                <!-- <div class="layui-form-item">
                     <label for="phone" class="layui-form-label">
                         <span class="x-red">*</span>手机
                     </label>
@@ -40,13 +40,13 @@
                     <div class="layui-form-mid layui-word-aux">
                         <span class="x-red">*</span>将会成为您唯一的登入名
                     </div>
-                </div>
+                </div> -->
                 <div class="layui-form-item">
                     <label for="L_email" class="layui-form-label">
                         <span class="x-red">*</span>邮箱
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="L_email" name="email" required="" lay-verify="email" value="{{ $res->email }}"
+                        <input type="text" id="L_email" name="email" required="" lay-verify="email" value="{{ $user->email }}"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
@@ -57,14 +57,11 @@
                     <label for="role" class="layui-form-label">
                         <span class="x-red">*</span>角色
                     </label>
-                    <div class="layui-input-inline">
-                      <select name="role_id">
-                          <option value="">请选择角色</option>
-                        @foreach($role as $row)
-                            <option value="{{ $row->id }}" {{ $res->role_id == $row->id?'selected':'' }}>{{ $row->display_name }}</option>
+                    <div class="layui-input-block">
+                        @foreach($roles as $role)
+                        <input type="checkbox" name="roles[]" value="{{ $role->id }}" title="{{ $role->name }}"
+                        @if($myRoles->contains($role)) checked @endif >
                         @endforeach
-
-                      </select>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -72,7 +69,7 @@
                         密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="password" lay-verify="pass"  class="layui-input" >
+                        <input type="password" id="L_pass" name="password" lay-verify="pass"  class="layui-input" placeholder="默认为不修改">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         6到16个字符
@@ -83,14 +80,14 @@
                         确认密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_repass" lay-verify="repass" autocomplete="off" class="layui-input">
+                        <input type="password" id="L_repass" lay-verify="repass" autocomplete="off" class="layui-input" placeholder="默认为不修改">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">状态</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="status" value="{{ $res->status }}"  title="启用" {{ $res->status == '1'?'checked':'' }}>
-                        <input type="radio" name="status" value="{{ $res->status }}" title="禁用" {{ $res->status == '0'?'checked':'' }}>
+                        <input type="radio" name="status" value="1" title="启用" {{ $user->status == 1 ? 'checked' : '' }}>
+                        <input type="radio" name="status" value="0" title="禁用" {{ $user->status == 0 ? 'checked' : '' }}>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -132,7 +129,14 @@
 
               //监听提交
               form.on('submit(save)', function(data){
-                console.log(data);
+                // console.log(data);
+
+                var arr = new Array();
+                var a = $("input[name='roles[]']:checked")
+                for (var i=0; i<a.length; i++) {
+                    arr.push(a[i].value);
+                }
+
                 //发异步，把数据提交给php
                   $.ajax({
                       url:'{{ url('admin/adminlist/') }}' + '/'+ data.field.id,
@@ -140,11 +144,13 @@
                       datatype:'json',
                       data:{
                           'json_edit':JSON.stringify(data.field),
+                          'roles':JSON.stringify(arr),
                           '_token':"{{ csrf_token() }}",
                       },
                       success:function (res){
-                          if (res == '1') {
-                              layer.alert("保存成功", {icon: 6},function () {
+                           res = JSON.parse(res);
+                          if (res.success == '1') {
+                              layer.alert(res.info, {icon: 6},function () {
                                   // 获得frame索引
                                   var index = parent.layer.getFrameIndex(window.name);
                                   //关闭当前frame
@@ -152,7 +158,7 @@
                               });
 
                           } else {
-                              layer.alert("保存失败", {icon: 6},function () {
+                              layer.alert("保存失败", {icon: 5},function () {
                                   // 获得frame索引
                                   var index = parent.layer.getFrameIndex(window.name);
                                   //关闭当前frame
@@ -165,8 +171,8 @@
 
                 return false;
               });
-              
-              
+
+
             });
         </script>
     </body>

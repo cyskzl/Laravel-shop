@@ -34,7 +34,7 @@
                   </div>
                 </div> 
             </form>
-            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
+            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><span class="x-right" style="line-height:40px">共有数据：{{ $num }} 条</span></xblock>
             <table class="layui-table">
                 <thead>
                     <tr>
@@ -53,27 +53,33 @@
                     </tr>
                 </thead>
                 <tbody id="x-link">
+
+                @if(count($class) > 0)
+                @foreach($class as $row)
+
                     <tr>
                         <td>
-                            <input type="checkbox" value="1" name="">
+                            <input type="checkbox" value="{{ $row->id }}" name="id">
                         </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            会员相关
-                        </td>
+                        <td>{{ $row->id }}</td>
+                        <td>{{ $row->class_name }}</td>
                         <td class="td-manage">
-                            <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','{{'adminjurisdiction/1/edit'}}','4','','510')"
+                            <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','{{url('admin/adminjurisdiction/'.$row->id.'/edit')}}','{{ $row->id }}','','510')"
                             class="ml-5" style="text-decoration:none">
                                 <i class="layui-icon">&#xe642;</i>
                             </a>
-                            <a title="删除" href="javascript:;" onclick="cate_del(this,'1')" 
+                            <a title="删除" href="javascript:;" onclick="cate_del(this,{{ $row->id }})"
                             style="text-decoration:none">
                                 <i class="layui-icon">&#xe640;</i>
                             </a>
                         </td>
                     </tr>
+                @endforeach
+                @else
+                    <tr>
+                        <td colspan="4" ><h3 style="text-align: center">暂无分类信息</h3></td>
+                    </tr>
+                @endif
 
                 </tbody>
             </table>
@@ -92,7 +98,7 @@
 
               //监听提交
               form.on('submit(*)', function(data){
-                console.log(data);
+//                console.log(data);
                 //发异步，把数据提交给php
                   $.ajax({
                       url:'{{ url('admin/adminjurisdiction') }}',
@@ -115,7 +121,7 @@
                                   str += '<td>'+ data.id +'</td>';
                                   str += '<td>'+data.class_name+'</td>';
                                   str += '<td class="td-manage">';
-                                  str += '<a title="编辑"href="javascript:;"onclick="cate_edit(\'编辑\',\'{{ url('adminjurisdiction/') }}'+ '/' + data.id +'/edit\',\''+ data.id +'\',\'\',\'510\')"class="ml-5"style="text-decoration:none">';
+                                  str += '<a title="编辑"href="javascript:;"onclick="cate_edit(\'编辑\',\'{{ url('admin/adminjurisdiction/') }}'+ '/' + data.id +'/edit\',\''+ data.id +'\',\'\',\'510\')"class="ml-5"style="text-decoration:none">';
                                   str += '<i class="layui-icon">&#xe642;</i></a>';
                                   str += '<a title="删除"href="javascript:;"onclick="cate_del(this,\''+ data.id +'\')"style="text-decoration:none"><i class="layui-icon">&#xe640;</i></a></td></tr>';
 
@@ -149,9 +155,23 @@
             /*删除*/
             function cate_del(obj,id){
                 layer.confirm('确认要删除吗？',function(index){
+
                     //发异步删除数据
-                    $(obj).parents("tr").remove();
-                    layer.msg('已删除!',{icon:1,time:1000});
+                    $.ajax({
+                        url:'{{'adminjurisdiction'}}' + '/' + id,
+                        type:'delete',
+                        datatype:'json',
+                        data:{'_token':"{{ csrf_token() }}", 'id':id},
+                        success:function (data){
+                            if (data == '1') {
+                                $(obj).parents("tr").remove();
+                                layer.msg('已删除!',{icon:1,time:1000});
+                            } else {
+                                layer.msg('删除失败!',{icon:5,time:1000});
+                            }
+                        }
+                    });
+
                 });
             }
             </script>

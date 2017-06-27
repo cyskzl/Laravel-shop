@@ -1,4 +1,4 @@
-{{--@if(session())--}}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +17,7 @@
         <p>Hello Word</p>
     </div>
 
-    <form action="/admin/login" method="post" id="loginForm">
+    <form action="{{ url('admin/login') }}" method="post" id="loginForm">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div>
             <input type="text" name="username" class="username" placeholder="用户名" autocomplete="off"/>

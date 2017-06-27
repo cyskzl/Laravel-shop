@@ -22,7 +22,7 @@
             <ul class="layui-nav" lay-filter="">
                 <li class="layui-nav-item"><img src="{{asset('templates/admin/images/logo.png')}}" class="layui-circle" style="border: 2px solid #A9B7B7;" width="35px" alt=""></li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">admin</a>
+                    <a href="javascript:;">{{ Auth::guard('admin')->user()->nickname}}</a>
                     <dl class="layui-nav-child"> <!-- 二级菜单 -->
                         <dd><a href="">个人信息</a></dd>
                         <dd><a href="">切换帐号</a></dd>
