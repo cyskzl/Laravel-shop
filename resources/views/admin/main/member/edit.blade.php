@@ -1,20 +1,6 @@
-<!DOCTYPE html>
-<html>
+@extends('admin.layouts.layout')
+@section('x-body')
 
-<head>
-    <meta charset="utf-8">
-    <title>会员信息修改</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
-</head>
-
-<body>
-<div class="x-body">
     <form class="layui-form">
         <div class="layui-form-item">
             <label for="L_email" class="layui-form-label">
@@ -22,7 +8,7 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text" id="L_email" name="email" required lay-verify="email"
-                       autocomplete="off" value="113664000@qq.com" class="layui-input">
+                       autocomplete="off" value="{{$userinfo->email}}" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">
                 如果您在邮箱已激活的情况下，变更了邮箱，需
@@ -38,31 +24,37 @@
             </label>
             <div class="layui-input-inline">
                 <input type="text" id="L_username" name="username" required lay-verify="required"
-                       autocomplete="off" value="zhibinm" class="layui-input">
+                       autocomplete="off" value="{{$userinfo->nickname or '无'}}" class="layui-input">
             </div>
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input type="radio" name="sex" value="0" checked title="男">
-                    <input type="radio" name="sex" value="1" title="女">
+                    <input type="radio" name="sex" value="1" {{$userinfo->sex==1?'checked':''}} title="男">
+                    <input type="radio" name="sex" value="2" {{$userinfo->sex==2?'checked':''}} title="女">
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
-            <label for="L_city" class="layui-form-label">
-                城市
+            <label for="L_tel" class="layui-form-label">
+                手机号码
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="L_city" name="city" autocomplete="off" value="广州"
+                <input type="text" id="L_tel" name="tel" autocomplete="off" value="{{$userinfo->tel or '无'}}"
                        class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item layui-form-text">
-            <label for="L_sign" class="layui-form-label">
-                签名
+        <div class="layui-form-item">
+            <label for="L_avatar" class="layui-form-label">
+                头像
             </label>
-            <div class="layui-input-block">
-                        <textarea placeholder="随便写些什么刷下存在感" id="L_sign" name="sign" autocomplete="off"
-                                  class="layui-textarea" style="height: 80px;"></textarea>
+            <div class="layui-input-inline">
+                <input type="text" id="L_avtar" name="avatar" autocomplete="off" value="{{$userinfo->avatar or '无'}}"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">生日</label>
+            <div class="layui-input-inline">
+                <input type="date" class="layui-input" placeholder="生日" name="birthday" id="LAY_demorange_s" >
             </div>
         </div>
         <div class="layui-form-item">
@@ -73,35 +65,49 @@
             </button>
         </div>
     </form>
-</div>
-<script src="{{ asset('templates/admin/lib/layui/layui.js') }}" charset="utf-8">
-</script>
-<script src="{{ asset('templates/admin/js/x-layui.js') }}" charset="utf-8">
-</script>
+@endsection
+@section('js')
 <script>
-    layui.use(['form','layer'], function(){
+    layui.use(['form','layer','laydate'], function(){
         $ = layui.jquery;
+        laydate = layui.laydate;//日期插件
         var form = layui.form()
             ,layer = layui.layer;
 
-        //自定义验证规则
-        // form.verify({
-        //   nikename: function(value){
-        //     if(value.length < 5){
-        //       return '昵称至少得5个字符啊';
-        //     }
-        //   }
-        //   ,pass: [/(.+){6,12}$/, '密码必须6到12位']
-        //   ,repass: function(value){
-        //       if($('#L_pass').val()!=$('#L_repass').val()){
-        //           return '两次密码不一致';
-        //       }
-        //   }
-        // });
-        //监听提交
+        var data;
+
+        var start = {
+            min: '0000-00-00 00:00:00',
+            max: laydate.now(),
+            istoday: false,
+            choose: function (datas){
+                data = datas;
+
+
+            }
+        };
+
+
+
+        document.getElementById('LAY_demorange_s').onclick = function () {
+            start.elem = this;
+            laydate(start);
+//            console.log(start.choose);
+        }
+
         form.on('submit(save)', function(data){
-            console.log(data);
+            console.log(data.field.birthday);
             //发异步，把数据提交给php
+            $.ajax({
+                type: "POST",
+                url: "admin/member/",
+                data: { '_token':'{{csrf_token()}}', '_method': 'PUT', 'email': data.field.email,'tel':'data.field.tel','nickname':'data.field.nickname','sex':'data.field.sex','avatar':'data.field.avatar' },
+                dataType:'json',
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+
             layer.alert("增加成功", {icon: 6},function () {
                 // 获得frame索引
                 var index = parent.layer.getFrameIndex(window.name);
@@ -110,11 +116,6 @@
             });
             return false;
         });
-
-
     });
 </script>
-
-</body>
-
-</html>
+@endsection

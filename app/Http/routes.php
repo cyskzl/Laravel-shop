@@ -13,13 +13,33 @@
 
 //DB::listen(function($sql) {
 ////dump($sql);
-//echo $sql->sql;
+//    echo $sql->sql;
 //// dump($sql->bindings);
 //});
+
+Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
+    // 注册页面
+    Route::get('/register', 'RegisterController@register');
+    // 验证码生成
+    Route::get('/register/code', 'RegisterController@createCode');
+    // 邮箱发送注册
+    Route::post('/register', 'RegisterController@toRegister');
+    // 邮箱验证是否注册
+    Route::post('/register/validate', 'RegisterController@validateEmail');
+    // 邮箱激活
+    Route::get('/register/validate_email', 'RegisterController@validateEmailCode');
+    // 登录界面
+    Route::get('/login', 'UserController@login');
+    // 登录信息处理
+    Route::post('/doLogin', 'Usercontroller@doLogin');
+});
+
 //prefix => 前缀
+    // 后台首页
 Route::group(['prefix' => 'admin'], function (){
         //后台首页
-         Route::get('/', 'Admin\AdminController@index');
+
+        Route::get('/', 'Admin\AdminController@index');
 
         Route::get('/welcome', 'Admin\AdminController@welcome');
 
@@ -30,6 +50,10 @@ Route::group(['prefix' => 'admin'], function (){
         Route::any('/upload/{uploadname}', 'Admin\CommonController@upload');
         //返回3级分类
         Route::any('/ajaxCate','Admin\CommonController@ajaxCate');
+        //规格
+        Route::any('/ajaxModel','Admin\CommonController@ajaxModel');
+        //加载商品属性
+        Route::any('/ajaxAttr','Admin\CommonController@ajaxAttr');
         //处理ajax
         Route::any('/ajax', 'Admin\CommonController@ajax');
         //商品列表
@@ -42,8 +66,10 @@ Route::group(['prefix' => 'admin'], function (){
         Route::resource('/goodsattr', 'Admin\GoodsAttributeController');
         //商品品牌
         Route::resource('/brand', 'Admin\BrandController');
-            //活动管理
+        //活动管理
         Route::resource('/activity', 'Admin\ActivityController');
+        // 活动商品管理
+        Route::resource('/goodsactivity','Admin\GoodsActivityController');
 
         //轮播图管理
         Route::resource('/carousel', 'Admin\CarouselController');
@@ -59,6 +85,9 @@ Route::group(['prefix' => 'admin'], function (){
 
         //会员管理
         Route::resource('/member', 'Admin\MemberController');
+
+        // 收货地址管理
+        Route::get('/address','Admin\MemberController@getAddress');
 
         //会员密码修改
         Route::get('/memberpassword', 'Admin\MemberController@memberPassword');

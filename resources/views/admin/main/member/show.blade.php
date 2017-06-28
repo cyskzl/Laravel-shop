@@ -1,25 +1,9 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <title>会员详情</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
-</head>
-
-<body>
-<div class="x-body">
+@extends('admin.layouts.layout')
+@section('x-body')
     <blockquote class="layui-elem-quote">
         <img src="{{ asset('templates/admin/images/logo.png') }}" class="layui-circle" style="width:50px;float:left">
         <dl style="margin-left:80px; color:#019688">
-            <dt><span>张三</span> <span>余额：40</span></dt>
-            <dd style="margin-left:0">这家伙很懒，什么也没有留下</dd>
+            <dt><span>{{$userinfo->nickname or '这家伙很懒，什么也没有留下'}}</dt>
         </dl>
     </blockquote>
     <div class="pd-20">
@@ -27,36 +11,46 @@
             <tbody>
             <tr>
                 <th width="80">性别：</th>
-                <td>男</td>
+                <td>
+                    @if($userinfo)
+                        {{$sexType[$userinfo->sex] or '无'}}
+                    @else
+                        无
+                    @endif
+                </td>
             </tr>
             <tr>
                 <th>手机：</th>
-                <td>13000000000</td>
+                <td>{{$userinfo->tel or '无 '}}</td>
             </tr>
             <tr>
                 <th>邮箱：</th>
-                <td>admin@mail.com</td>
+                <td>{{$userinfo->email or '无'}}</td>
             </tr>
             <tr>
-                <th>地址：</th>
-                <td>北京市 海淀区</td>
+                <th>生日：</th>
+                <td>{{$userinfo->birthday or '无'}}</td>
             </tr>
             <tr>
                 <th>注册时间：</th>
-                <td>2017-01-01</td>
+                <td>{{$user->created_at}}</td>
             </tr>
             <tr>
-                <th>积分：</th>
-                <td>330</td>
+                <th>可用积分：</th>
+                <td>
+                    @if($usercode && $usercode->status == 1)
+                        {{$usercode->code}}
+                    @else
+                        0
+                    @endif
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
-</div>
-<script src="{{ asset('templates/admin/lib/layui/layui.js') }}" charset="utf-8">
-</script>
-<script src="{{ asset('templates/admin/js/x-layui.js') }}" charset="utf-8">
-</script>
+@endsection
+
+@section('js')
 <script>
     layui.use(['form', 'layer'], function () {
         $ = layui.jquery;
@@ -95,7 +89,4 @@
 
     });
 </script>
-
-</body>
-
-</html>
+@endsection

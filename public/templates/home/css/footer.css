@@ -1,0 +1,48 @@
+/*尾部*/
+.footer{
+	width: 100%;
+	height: 268px;
+	background-color: #2D2D2D;
+}
+.footer span{
+	color: #fff;
+	font-size: 14px;
+}
+.footer_top{
+	width: 1100px;
+	height: 169px;
+	margin: 0 auto;
+}
+.footer_top a{
+	width: 220px;
+	height: 169px;
+	float: left;
+	text-align: center;
+}
+.footer_top a img{
+	display: block;
+	width: 51px;
+	height: 51px;
+	margin: 0 auto 43px;
+	margin-top: 54px;
+}
+.footer_top a:nth-child(3) img{
+	width: 88px;
+	height:88px;
+	margin: 25px auto 35px;
+}
+.footer_bottom{
+	width: 100%;
+	height: 99px;
+	float: left;
+}
+.footer_bottom p{
+	color: #fff;
+	text-align: center;
+	line-height: 99px;
+	font-size: 14px;
+}
+.footer_bottom a{
+	color:#fff;
+	font-size: 14px;
+}

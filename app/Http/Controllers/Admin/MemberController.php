@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\ReceivingAddress;
+use App\Models\UserInfo;
+use App\Models\UserRegister;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -12,17 +15,36 @@ class MemberController extends Controller
     /**
      * @return  view    会员列表页
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.main.member.index');
+        $keyword = $request->input('keyword');
+
+        if(!$keyword) {
+            // 查询用户注册表，得到用户注册信息，并按照ID分组，3条数据为一页
+            $userData = UserRegister::orderBy('id', 'desc')->paginate(3);
+        }else {
+            $userData = UserRegister::where('email','like','%'.$keyword.'%')->paginate(3);
+
+        }
+        $type = ['0'=>'未激活','1'=>'已激活'];
+        return view('admin.main.member.index', compact('userData','request','type'));
     }
 
     /**
      * @return  view    查看会员详情
      */
-    public function show()
+    public function show($id)
     {
-        return view('admin.main.member.show');
+        // 获取会员注册信息
+        $user = UserRegister::find($id);
+        // 获取会员详细信息
+        $userinfo = $user->userInfo;
+//        dd($userinfo);
+        // 获取积分详情
+        $usercode = $user->userCode;
+//        dd($usercode);
+        $sexType = ['1'=>'男','2'=>'女'];
+        return view('admin.main.member.show',compact('userinfo','user','usercode','sexType'));
     }
 
     /**
@@ -39,15 +61,35 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        //会员添加
+        // 获取ajax请求数据
+        $res = $request->all();
+//        dd($res);
+        $userregister = new UserRegister();
+        $userregister -> email = $res['email'];
+        $userregister -> tel = $res['tel'];
+        $userregister -> password = $res['password'];
+        $userregister -> register_ip = $request->ip();
+//        dd($userregister);
+        // 存入数据库
+        if( $userregister->save() ){
+            return 1;
+        } else {
+            return 2;
+        }
     }
 
     /**
      * @return  view    会员修改页
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('admin.main.member.edit');
+        $user = UserRegister::find($id);
+        $userinfo = $user->userInfo;
+//        dd($userinfo);
+        if(!empty($userinfo)){
+            return view('admin.main.member.edit', compact('userinfo','user'));
+        }
+
     }
 
     /**
@@ -67,12 +109,26 @@ class MemberController extends Controller
      *
      * @param   $request    array   获取请求头信息
      *
+     * 暂时只删除会员详情表与收货地址表，后续其他与用户表关联表的信息也的进行删除
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        //删除id
+
+        UserInfo::where('user_id','=',$id)->delete();
+        ReceivingAddress::where('user_id','=',$id)->delete();
+        if (UserRegister::destroy($id))
+        {
+            return 1;
+        }
     }
 
+
+    public function getAddress(Request $request)
+    {
+        $id = $request->input('id');
+        $userAddress = ReceivingAddress::where('user_id','=',$id)->get();
+        return view('admin.main.member.receivingaddress',compact('userAddress'));
+    }
     /**
      * @return  view    会员密码修改页
      */

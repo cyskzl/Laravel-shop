@@ -1,21 +1,7 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <title>添加会员</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
-</head>
-
-<body>
-<div class="x-body">
-    <form class="layui-form">
+@extends('admin.layouts.layout')
+@section('x-body')
+    <form class="layui-form" action="" method="post">
+        {{csrf_field()}}
         <div class="layui-form-item">
             <label for="L_email" class="layui-form-label">
                 <span class="x-red">*</span>邮箱
@@ -29,11 +15,11 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label for="L_username" class="layui-form-label">
-                <span class="x-red">*</span>昵称
+            <label for="L_tel" class="layui-form-label">
+                <span class="x-red">*</span>手机号码
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="L_username" name="username" required="" lay-verify="nikename"
+                <input type="text" id="L_tel" name="tel" required="" lay-verify="tel"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -42,7 +28,7 @@
                 <span class="x-red">*</span>密码
             </label>
             <div class="layui-input-inline">
-                <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
+                <input type="password" id="L_pass" name="password" required="" lay-verify="pass"
                        autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -54,7 +40,7 @@
                 <span class="x-red">*</span>确认密码
             </label>
             <div class="layui-input-inline">
-                <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                <input type="password" id="L_repass" name="repassword" required="" lay-verify="repass"
                        autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -66,49 +52,59 @@
             </button>
         </div>
     </form>
-</div>
-<script src="{{ asset('templates/admin/lib/layui/layui.js') }}" charset="utf-8">
-</script>
-<script src="{{ asset('templates/admin/js/x-layui.js') }}" charset="utf-8">
-</script>
-<script>
-    layui.use(['form','layer'], function(){
-        $ = layui.jquery;
-        var form = layui.form()
-            ,layer = layui.layer;
+@endsection
+@section('js')
+    <script>
+        layui.use(['form','layer'], function(){
+            $ = layui.jquery;
+            var form = layui.form()
+                ,layer = layui.layer;
 
-        //自定义验证规则
-        form.verify({
-            nikename: function(value){
-                if(value.length < 5){
-                    return '昵称至少得5个字符啊';
+            //自定义验证规则
+            form.verify({
+                nikename: function(value){
+                    if(value.length < 5){
+                        return '昵称至少得5个字符啊';
+                    }
                 }
-            }
-            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
-            ,repass: function(value){
-                if($('#L_pass').val()!=$('#L_repass').val()){
-                    return '两次密码不一致';
+                ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+                ,repass: function(value){
+                    if($('#L_pass').val()!=$('#L_repass').val()){
+                        return '两次密码不一致';
+                    }
                 }
-            }
-        });
-
-        //监听提交
-        form.on('submit(add)', function(data){
-            console.log(data);
-            //发异步，把数据提交给php
-            layer.alert("增加成功", {icon: 6},function () {
-                // 获得frame索引
-                var index = parent.layer.getFrameIndex(window.name);
-                //关闭当前frame
-                parent.layer.close(index);
             });
-            return false;
+
+            //监听提交
+            form.on('submit(add)', function(data){
+//                console.log(data.field);
+//                return false;
+                //发异步，把数据提交给php
+                $.ajax({
+                    type:"POST",
+                    url: '/admin/member',
+                    data: { '_token':'{{csrf_token()}}', 'email': data.field.email, 'tel':data.field.tel, 'password':data.field.password },
+                    dataType:'json',
+                    success: function(res){
+                        if (res == 1) {
+                            layer.alert("添加成功", {icon: 6},function () {
+                                // 获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            });
+                        } else {
+                            layer.alert("添加失败", {icon: 5},function () {
+                                // 获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
         });
-
-
-    });
-</script>
-
-</body>
-
-</html>
+    </script>
+@endsection

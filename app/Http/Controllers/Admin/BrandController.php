@@ -117,7 +117,7 @@ class BrandController extends Controller
         $brand = Brand::find($id);
         $logo = '.'.rtrim($brand->logo, ',');
         //删除图片
-
+//        dd($logo);
         if(Brand::destroy([$id])){
             if($brand->logo){
                 unlink($logo);
