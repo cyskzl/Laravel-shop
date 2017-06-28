@@ -50,6 +50,10 @@ Route::group(['prefix' => 'admin'], function (){
         Route::any('/upload/{uploadname}', 'Admin\CommonController@upload');
         //返回3级分类
         Route::any('/ajaxCate','Admin\CommonController@ajaxCate');
+        //规格
+        Route::any('/ajaxModel','Admin\CommonController@ajaxModel');
+        //加载商品属性
+        Route::any('/ajaxAttr','Admin\CommonController@ajaxAttr');
         //处理ajax
         Route::any('/ajax', 'Admin\CommonController@ajax');
         //商品列表

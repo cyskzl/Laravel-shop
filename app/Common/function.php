@@ -27,3 +27,16 @@
             return $spec->name;
         }
     }
+	
+	  //提示规格类型
+    function getSpecItem($id){
+		
+	    $spec = \App\Models\SpecItem::where('spec_id', '=', $id)->get();
+		// var_dump($spec);die;
+        if(empty($spec)){
+            return '无';
+        }else{
+	
+            return $spec;
+        }
+    }

@@ -69,21 +69,20 @@ class SpecController extends Controller
         $spec->order =  $data->order;
         //成功后获取id
         if( $spec->save()){
-            //写入规格项表spec_item
-            $spec_item->spec_id = $spec->id;
-            //判断规格项不能为空
-            if($data->item){
-                $spec_item->item = $data->item;
-            } else {
-
-                return self::errorNumb(4,'规格项不能为空');
-            }
-            //成功返回信息
-            if(  $spec_item->save() ){
-                $data = self::errorNumb(0,'添加成功');
-            } else {
-                $data = self::errorNumb(1,'添加失败');
-            }
+            $item = $data->item;
+            $itemstrs = explode(',',$item);
+                foreach ($itemstrs as $itemstr){
+                    if(DB::table('spec_item')->insert(
+                        [
+                             'item'=> $itemstr,
+                              'spec_id' => $spec->id,
+                        ]
+                    )){
+                        $data = self::errorNumb(0,'添加成功');
+                    } else {
+                        $data = self::errorNumb(1,'添加失败');
+                    }
+                }
         }
         //返回给ajax
         return $data;
