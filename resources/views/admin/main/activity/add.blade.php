@@ -66,6 +66,9 @@
                 <div class="layui-input-block">
                     <input type="text" id="L_name" name="name" required lay-verify="name"
                            autocomplete="off" class="layui-input" value="{{old('name')}}">
+                    <span style="color:mediumvioletred;">
+                        {{ $errors->first('name') }}
+                    </span>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -81,6 +84,9 @@
                             <option value="3">团购</option>
                             <option value="4">超值</option>
                         </select>
+                        <span style="color:mediumvioletred;">
+                            {{ $errors->first('type') }}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -90,6 +96,9 @@
                 </label>
                 <div class="layui-input-block" id="end_time">
                     <input type="date" id="L_start" name="start_time" required lay-verify="start_time"  autocomplete="off" class="layui-input" style="width:20%;"  value="{{old('start_time')}}"><span></span>
+                    <span style="color:mediumvioletred;">
+                        {{ $errors->first('start_time') }}
+                    </span>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -98,6 +107,9 @@
                 </label>
                 <div class="layui-input-block">
                     <input type="date" id="L_end" name="end_time" required lay-verify="end_time" autocomplete="off" class="layui-input" style="width:20%;"  value="{{old('end_time')}}"><span></span>
+                    <span style="color:mediumvioletred;">
+                        {{ $errors->first('end_time') }}
+                    </span>
                 </div>
             </div>
             <div class="layui-form-item" >
@@ -134,6 +146,9 @@
                 <label for="L_content" class="layui-form-label" style="top: -2px;">
                     描述
                 </label>
+                <span style="color:mediumvioletred;">
+                        {{ $errors->first('desc') }}
+                    </span>
             </div>
 
             <div class="layui-form-item">

@@ -21,8 +21,11 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 首页
     Route::get('/', 'IndexController@index');
     // 注册页面
+    Route::get('/register', 'RegisterController@register');
+
     Route::group(['middleware'=>'auth'],function(){
-        Route::get('/register', 'RegisterController@register');
+        // 登录界面
+        Route::get('/login', 'UserController@login');
     });
 
     // 验证码生成
@@ -33,8 +36,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::post('/register/validate', 'RegisterController@validateEmail');
     // 邮箱激活
     Route::get('/register/validate_email', 'RegisterController@validateEmailCode');
-    // 登录界面
-    Route::get('/login', 'UserController@login');
+
     // 登录信息处理
     Route::post('/doLogin', 'Usercontroller@doLogin');
     // 退出登录
@@ -130,6 +132,9 @@ Route::group(['prefix' => 'admin'], function (){
 
         //系统设置
         Route::any('/settings', 'Admin\SystemSettingsController@index');
+
+        //系统设置修改
+        Route::post('/setchange', 'Admin\SystemSettingsController@setChange');
 
         //友情链接
         Route::resource('/link', 'Admin\LinkController');

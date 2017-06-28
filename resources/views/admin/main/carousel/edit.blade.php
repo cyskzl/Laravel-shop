@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-<html>
+@extends('admin.layouts.layout')
 
-<head>
-    <meta charset="utf-8">
-    <title>轮播图信息修改</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="{{asset('templates/admin/css/x-admin.css')}}" media="all">
-</head>
+@section('title','修改轮播图')
 
-<body>
-<div class="x-body">
+@section('x-body')
     <form class="layui-form">
         <div class="layui-form-item">
             <label for="link" class="layui-form-label">
@@ -66,45 +54,40 @@
             </button>
         </div>
     </form>
-</div>
-<script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8">
-</script>
-<script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8">
-</script>
-<script>
-    layui.use(['form','layer','upload'], function(){
-        $ = layui.jquery;
-        var form = layui.form()
-            ,layer = layui.layer;
+@endsection
+
+@section('js')
+    <script>
+        layui.use(['form','layer','upload'], function(){
+            $ = layui.jquery;
+            var form = layui.form()
+                ,layer = layui.layer;
 
 
-        //图片上传接口
-        layui.upload({
-            url: './upload.json' //上传接口
-            ,success: function(res){ //上传成功后的回调
-                console.log(res.code);
-                $('#LAY_demo_upload').attr('src',res.url);
-            }
-        });
-
-
-        //监听提交
-        form.on('submit(add)', function(data){
-            console.log(data);
-            //发异步，把数据提交给php
-            layer.alert("修改成功", {icon: 6},function () {
-                // 获得frame索引
-                var index = parent.layer.getFrameIndex(window.name);
-                //关闭当前frame
-                parent.layer.close(index);
+            //图片上传接口
+            layui.upload({
+                url: './upload.json' //上传接口
+                ,success: function(res){ //上传成功后的回调
+                    console.log(res.code);
+                    $('#LAY_demo_upload').attr('src',res.url);
+                }
             });
-            return false;
+
+
+            //监听提交
+            form.on('submit(add)', function(data){
+                console.log(data);
+                //发异步，把数据提交给php
+                layer.alert("修改成功", {icon: 6},function () {
+                    // 获得frame索引
+                    var index = parent.layer.getFrameIndex(window.name);
+                    //关闭当前frame
+                    parent.layer.close(index);
+                });
+                return false;
+            });
+
+
         });
-
-
-    });
-</script>
-
-</body>
-
-</html>
+    </script>
+@endsection
