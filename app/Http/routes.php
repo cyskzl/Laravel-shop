@@ -78,6 +78,10 @@ Route::group(['prefix' => 'admin'], function (){
 
         //轮播图管理
         Route::resource('/carousel', 'Admin\CarouselController');
+        //轮播图排序
+        Route::post('/carousel/orderby', 'Admin\CarouselController@orderBy');
+        //修改轮播图状态
+        Route::post('/carousel/status', 'Admin\CarouselController@status');
 
         //发货单管理
         Route::resource('/deliveryinfo', 'Admin\OrdersDeliveryController');

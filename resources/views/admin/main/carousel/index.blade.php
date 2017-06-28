@@ -23,6 +23,7 @@
             <th>链接</th>
             <th>描述</th>
             <th>展示位置</th>
+            <th>排序</th>
             <th>显示状态</th>
             <th>操作</th>
         </tr>
@@ -34,7 +35,7 @@
                 <input type="checkbox" value="1" name="">
             </td>
             <td>
-                1
+                {{$car->id}}
             </td>
             <td>
                 <img  src="{{asset(trim($car->img,','))}}" width="200" alt="">点击图片试试
@@ -48,16 +49,19 @@
             <td>
                 {{$type[$car->type_id]}}
             </td>
+            <td>
+                <input type="text" name="orderby" onchange="changeOrder(this,'{{$car->id}}')" value={{$car->orderby}} size="1">
+            </td>
             <td class="td-status">
-                <span class="layui-btn layui-btn-normal layui-btn-mini">
-                    {{$status[$car->status]}}
-                </span>
+                <div id="car_status" class="layui-unselect layui-form-checkbox {{$car->status==0?'layui-form-checked':''}}" onclick="changeStatus('{{$car->id}}','{{$car->status}}')" lay-skin="">
+                    <span>显示</span><i class="layui-icon"></i>
+                </div>
             </td>
             <td class="td-manage">
-                <a style="text-decoration:none" onclick="banner_stop(this,'{{$car->id}}')" href="javascript:;" title="不显示">
-                    <i class="layui-icon">&#xe601;</i>
+                <a style="text-decoration:none" onclick="banner_stop(this,'{{$car->id}}')" href="javascript:;" title="显示">
+                    <i class="layui-icon">&#xe609;</i>
                 </a>
-                <a title="编辑" href="javascript:;" onclick="banner_edit('编辑','{{ url('admin/carousel/1/edit') }}','1','','510')"
+                <a title="编辑" href="javascript:;" onclick="banner_edit('编辑','{{ url('admin/carousel/'.$car->id.'/edit') }}','{{$car->id}}','','510')"
                    class="ml-5" style="text-decoration:none">
                     <i class="layui-icon">&#xe642;</i>
                 </a>
@@ -80,6 +84,47 @@
 @endsection
 
 @section('js')
+    <script>
+        function changeOrder(obj,id){
+            var orderby = $(obj).val();
+            $.ajax({
+                type:'POST',
+                url:'{{url('admin/carousel/orderby')}}',
+                dataType: 'json',
+                data:{'_token':'{{csrf_token()}}','orderby':orderby,'id':id},
+                success: function (data){
+                    if(data==1){
+                        location.href = location.href;
+                        layer.msg('排序成功', {icon: 6,time:1000});
+                    }else{
+                        layer.msg('排序失败', {icon: 5,time:1000});
+                    }
+                }
+            });
+        }
+
+        function changeStatus(id,status){
+            if(status==0){
+                status=1;
+            }else{
+                status=0;
+            }
+            $.ajax({
+                type:'POST',
+                url:'{{url('admin/carousel/status')}}',
+                dataType: 'json',
+                data:{'_token':'{{csrf_token()}}','id':id,'status':status},
+                success: function (data){
+                    if(data==1){
+                        layer.msg('修改成功', {icon: 6,time:3000});
+                        location.href = location.href;
+                    }else{
+                        layer.msg('修改失败', {icon: 5,time:3000});
+                    }
+                }
+            });
+        }
+    </script>
     <script>
         layui.use(['laydate','element','laypage','layer'], function(){
             $ = layui.jquery;//jquery

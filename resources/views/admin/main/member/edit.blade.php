@@ -1,4 +1,7 @@
 @extends('admin.layouts.layout')
+
+@section('title','会员修改')
+
 @section('x-body')
 
     <form class="layui-form">
