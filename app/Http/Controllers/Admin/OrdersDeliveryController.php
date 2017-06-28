@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\OrdersDelivery;
+use App\Models\DeliveryDoc;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -14,12 +14,21 @@ class OrdersDeliveryController extends Controller
     public function index()
     {
 
-        $deliveryList = OrdersDelivery::with(['belongsToOrders'=>function($query){
+//        $deliveryList = DeliveryDoc::with('belongsToOrders')->get();
+
+
+        $deliveryList = DeliveryDoc::with(['belongsToOrders'=>function($query){
             $query->select('id','created_at','pay_time','total_amount');
         }])->get();
 
 //        dd($deliveryList);
 
+
         return view('admin.main.orders.delivery_info.index',compact('deliveryList'));
+    }
+
+    public function show($id)
+    {
+        dd($id);
     }
 }

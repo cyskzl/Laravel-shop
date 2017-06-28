@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Orders extends Model
 {
     //
-    protected $table = 'order';
+    protected $table = 'orders';
 
-    public function ordersDetails()
-    {
-        return $this->hasMany('App\Models\OrdersDetails','order_guid','guid');
-    }
+    use SoftDeletes;
+
+    protected $dates = ['delete_at'];
 
     public function users()
     {
@@ -21,7 +21,7 @@ class Orders extends Model
 
     public function ordergood()
     {
-        return $this->hasMany('App\Models\OrderGood','order_id','id');
+        return $this->hasMany('App\Models\OrdersDetails','order_id','id');
     }
 
 }

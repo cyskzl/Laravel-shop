@@ -10,9 +10,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="{{asset('templates/admin/css/x-admin.css')}}" media="all">
-    <link rel="stylesheet" href="{{asset('templates/admin/css/orders/header.css')}}" media="all">
-    <link rel="stylesheet" href="{{asset('templates/admin/css/orders/order.css')}}" media="all">
     <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap-datetimepicker.min.css')}}">
+    <script src="{{asset('templates/admin/js/jquery.min.js')}}" charset="utf-8"></script>
+    <script src="{{asset('templates/admin/lib/bootstrap/js/bootstrap.js')}}" charset="utf-8"></script>
+    <script src="{{asset('templates/admin/lib/bootstrap/js/bootstrap-datetimepicker.min.js')}}" charset="utf-8"></script>
+    <script src="{{asset('templates/admin/lib/bootstrap/js/bootstrap-datetimepicker.zh-CN.js')}}" charset="utf-8"></script>
 </head>
 <body>
 <div class="x-nav">
@@ -28,7 +31,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">日期范围</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" placeholder="开始日" id="LAY_demorange_s">
+                    <input class="form_datetime form-control" type="text" value="2016-03-07" size="16">
                 </div>
                 <div class="layui-input-inline">
                     <input class="layui-input" placeholder="截止日" id="LAY_demorange_e">
@@ -67,13 +70,13 @@
         @foreach($ordersList as $value)
         <tbody>
         <tr>
-            <th scope="row">{{$value->order_sn}}</th>
+            <th scope="row">{{$value->sn}}</th>
             <td>{{$value->consignee}}</td>
             <td>{{$value->goods_price}}</td>
             <td>{{$value->order_amount}}</td>
-            <td>{{$value->order_status}}</td>
-            <td>{{$value->pay_status}}</td>
-            <td>{{$value->shipping_status}}</td>
+            <td>{{$order_status[$value->order_status]}}</td>
+            <td>{{$pay_status[$value->pay_status]}}</td>
+            <td>{{$shipping_status[$value->shipping_status]}}</td>
             <td>{{$value->pay_name}}</td>
             <td>{{$value->shipping_name}}</td>
             <td>{{$value->created_at}}</td>
@@ -175,6 +178,22 @@
             layer.msg('已删除!',{icon:1,time:1000});
         });
     }
+
+
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true,
+            showMeridian: true,
+            pickerPosition: "bottom-left",
+            timePicker12Hour: false,
+            language: 'zh-CN',//中文，需要引用zh-CN.js包
+            startView: 2,//月视图
+            minView: 0//日期时间选择器所能够提供的最精确的时间选择视图
+        });
+
+
 </script>
 </body>
 </html>
