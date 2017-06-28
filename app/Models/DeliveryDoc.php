@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OrdersDelivery extends Model
+class DeliveryDoc extends Model
 {
     //
-    protected $table = 'order_delivery';
+    protected $table = 'delivery_doc';
 
     public function belongsToOrders()
     {

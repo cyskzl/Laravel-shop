@@ -10,6 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
+    <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
 </head>
 <body>
 <div class="x-nav">
@@ -86,15 +87,9 @@
             <td >
                 {{$value->belongsToOrders['total_amount']}}
             </td>
-            <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="role_edit('编辑','{{ url('adminrole/1/edit') }}','4','','510')"
-                   class="ml-5" style="text-decoration:none">
-                    <i class="layui-icon">&#xe642;</i>
-                </a>
-                <a title="删除" href="javascript:;" onclick="role_del(this,'1')"
-                   style="text-decoration:none">
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
+            <td style="width: 160px;">
+                <a class="btn btn-primary btn-xs" role="button" href="javascript:;" onclick="question_edit('编辑','{{ url('admin/deliveryinfo').'/'.$value->id}}','1','','800')">查看</a>
+                <a class="btn btn-success btn-xs" role="button" href="javascript:;" >发货</a>
             </td>
         </tr>
         </tbody>
@@ -140,6 +135,11 @@
             $(obj).parents("tr").remove();
             layer.msg('已删除!',{icon:1,time:1000});
         });
+    }
+
+    //编辑
+    function question_edit (title,url,id,w,h) {
+        x_admin_show(title,url,w,h);
     }
 </script>
 
