@@ -16,7 +16,6 @@
 @endsection
 
 @section('x-body')
-
     <div class="container">
         <div class="row">
             <table class="table table-bordered">
@@ -35,6 +34,28 @@
             </table>
         </div>
     </div>
+    <table class="table">
+        <tr class="active">
+            <td>商品</td>
+            <td>商品编号</td>
+            <td>单价</td>
+            <td>数量</td>
+            <td>总价</td>
+        </tr>
 
+        {{--@foreach($detaildata as $value)--}}
+            {{--<tr>--}}
+                {{--<td>商品名称</td>--}}
+                {{--<td>{{$value->order_guid}}</td>--}}
+                {{--<td>{{$value->cargo_price}}</td>--}}
+                {{--<td>{{$value->commodity_number}}</td>--}}
+                {{--<td>{{($value->cargo_price * $value->commodity_number)}}</td>--}}
+            {{--</tr>--}}
+        {{--@endforeach--}}
+    </table>
 
+    <div  style="float: right;padding-right: 30px;">
+        <button type="button" class="btn btn-success">发货</button>
+        <button type="button" class="btn btn-danger">关闭订单</button>
+    </div>
 @endsection

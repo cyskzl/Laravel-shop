@@ -6,7 +6,6 @@ use App\Models\OrdersDetails;
 use App\Models\Orders;
 use App\Models\Region;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -17,6 +16,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
+
 
 
         $ordersList = Orders::with(['users'=>function($query){
@@ -34,16 +34,11 @@ class OrdersController extends Controller
         return view('admin.main.orders.index',compact('ordersList','pay_status','order_status','shipping_status'));
     }
 
-
-
-
-
     /**
      * @return  view    订单详情页
      */
     public function show($id)
     {
-
         //获取订单信息和订单详情信息。ordergood 关联到订单详情模型。
 //        $ordergoods = Orders::whereHas('ordergood',function ($query) use ($id){
 //            $query->where('id',$id);

@@ -141,4 +141,30 @@ class CommonController extends Controller
            return $three;
        }
     }
+
+    public function ajaxModel(Request $request)
+    {
+        $type = $request->input('type');
+
+//        $spec  = Spec::select(DB::raw('spec.*, group_concat(spec_item.item)as specitem ,spec_item.id as spec_item_id'))
+//            ->join('spec_item', 'spec.id', '=', 'spec_item.spec_id')
+//            ->where('type_id','=',$type)
+//            ->groupby('spec.name')
+//            ->get();
+        //返回分组规格对应的名称与规格
+        $spec = Spec::select(DB::raw('spec.*, spec_item.spec_id,group_concat(spec_item.item) AS specitem,group_concat(spec_item.id) AS specid'))
+            ->join('spec_item', 'spec.id', '=', 'spec_item.spec_id')
+            ->where('type_id','=',$type)
+            ->groupby('spec.name')
+            ->get();
+        return $spec;
+    }
+    public function ajaxAttr(Request $request)
+    {
+        $type = $request->input('type');
+        $attr = GoodsAttribute::where('type_id', '=', $type)
+            ->get();
+      return $attr;
+    }
+
 }

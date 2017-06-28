@@ -32,5 +32,4 @@ class UserRegister extends Model
     public function receivingAddress(){
         return $this->hasMany('App\Models\ReceivingAddress','user_id');
     }
-
 }

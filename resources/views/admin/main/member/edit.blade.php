@@ -3,7 +3,6 @@
 @section('title','会员修改')
 
 @section('x-body')
-
     <form class="layui-form">
         <div class="layui-form-item">
             <label for="L_email" class="layui-form-label">

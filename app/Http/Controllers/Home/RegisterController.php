@@ -6,6 +6,7 @@ use App\Models\M3Email;
 use App\Models\TempEmail;
 use App\Models\UserInfo;
 use App\Models\UserLogin;
+
 use App\Models\UserRegister;
 use App\Tool\Validate\ValidateCode;
 use Illuminate\Support\Facades\DB;
@@ -159,7 +160,9 @@ class RegisterController extends Controller
         $nowtime = date('Y-m-d H:i:s',time());
         $uid = $temp[0]['user_id'];
         // 判断链接是否失效
-        if($deadline<$nowtime) {
+
+
+        if($deadline>$nowtime) {
             if (count($temp)) {
                 // 修改注册表信息
                 $register = UserRegister::where('id', '=', $uid)->update(['status' => 1]);
@@ -175,6 +178,7 @@ class RegisterController extends Controller
                 if (!$infoId) {
                     return view('home.validatefail');
                 }
+
                 // 增加用户登录表信息
                 $userlogin = new UserLogin();
                 $userlogin->user_id = $uid;
@@ -185,6 +189,7 @@ class RegisterController extends Controller
                 if(!$userlogin->save()){
                     return view('home.validatefail');
                 }
+
                 // 删除邮箱注册的临时信息
                 $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
                 if (!$delTemp) {
@@ -198,8 +203,13 @@ class RegisterController extends Controller
             }
         } else {
             // 连接失效，删除临时信息表和用户注册表中的信息
+
             $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
             $deluser = UserRegister::where('id','=',$uid)->delete();
+//
+//            $deluser = UserRegister::where('id','=',$uid)->delete();
+//            $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
+
             if (!$delTemp || !$deluser) {
                 return view('home.validatefail');
             }

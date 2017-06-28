@@ -18,6 +18,7 @@
 //});
 
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
+
     // 首页
     Route::get('/', 'IndexController@index');
     // 注册页面
@@ -27,7 +28,6 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
         // 登录界面
         Route::get('/login', 'UserController@login');
     });
-
     // 验证码生成
     Route::get('/register/code', 'RegisterController@createCode');
     // 邮箱发送注册
@@ -36,11 +36,11 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::post('/register/validate', 'RegisterController@validateEmail');
     // 邮箱激活
     Route::get('/register/validate_email', 'RegisterController@validateEmailCode');
-
     // 登录信息处理
     Route::post('/doLogin', 'Usercontroller@doLogin');
     // 退出登录
     Route::get('/logOut', 'UserController@logOut');
+
 });
 
 //prefix => 前缀
@@ -59,6 +59,10 @@ Route::group(['prefix' => 'admin'], function (){
         Route::any('/upload/{uploadname}', 'Admin\CommonController@upload');
         //返回3级分类
         Route::any('/ajaxCate','Admin\CommonController@ajaxCate');
+        //规格
+        Route::any('/ajaxModel','Admin\CommonController@ajaxModel');
+        //加载商品属性
+        Route::any('/ajaxAttr','Admin\CommonController@ajaxAttr');
         //处理ajax
         Route::any('/ajax', 'Admin\CommonController@ajax');
         //商品列表

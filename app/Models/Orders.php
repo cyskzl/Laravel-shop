@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Orders extends Model
 {
@@ -22,6 +24,7 @@ class Orders extends Model
     public function ordergood()
     {
         return $this->hasMany('App\Models\OrdersDetails','order_id','id');
+
     }
 
 }

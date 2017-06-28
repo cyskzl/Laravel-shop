@@ -9,5 +9,4 @@ class GoodsCommentReply extends Model
     //
     protected $table = 'goods_comment_reply';
 
-
 }

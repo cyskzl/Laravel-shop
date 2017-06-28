@@ -16,6 +16,7 @@ class CreateCargoRebateTable extends Migration
         Schema::create('cargo_rebate', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('主键');
+
             $table->string('rebate_id')->comment('折扣ID | 值为商品ID或分类ID');
             $table->integer('rebate_type')->comment('类型 货品0，分类1');
             $table->decimal('rebate_range',2,2)->comment('折扣率');

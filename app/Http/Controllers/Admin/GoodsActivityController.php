@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Models\Good;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -39,8 +39,9 @@ class GoodsActivityController extends Controller
      */
     public function store(Request $request)
     {
+
         $chk_value = trim($request->input('chk_value'),',');
-//        return $chk_value;
+
     }
 
     /**

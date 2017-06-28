@@ -66,6 +66,9 @@
             <td >
                 {{$type[$activity->type]}}
             </td>
+            {{--<td >--}}
+                {{--{{strip_tags($activity->desc)}}--}}
+            {{--</td>--}}
             <td >
                 {{$activity->start_time}}
             </td>
@@ -81,7 +84,6 @@
                 @else
                     <span id="act_end" class="layui-btn layui-btn-smal  layui-btn-danger">点击开始</span>
                 @endif
-
             </td>
             <td class="td-manage">
                 <a title="添加" href="javascript:;" onclick="question_add('添加','{{ url('admin/goodsactivity/create') }}','','510')"
@@ -111,15 +113,14 @@
     </div>
 @endsection
 
-@section('js')
 
+@section('js')
     <script>
         layui.use(['laydate','element','laypage','layer'], function(){
             $ = layui.jquery;//jquery
             lement = layui.element();//面包导航
             laypage = layui.laypage;//分页
             layer = layui.layer;//弹出层
-
 
         });
 

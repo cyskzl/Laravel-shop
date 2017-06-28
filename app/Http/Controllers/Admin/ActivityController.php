@@ -6,7 +6,6 @@ use App\Models\Activity;
 use App\Models\GoodsActivity;
 use App\Models\GoodsType;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -49,14 +48,15 @@ class ActivityController extends Controller
      * 活动详情页
      * 包含活动商品的详细信息
      */
+
     public function show($id)
     {
         // 关联商品表得到商品的信息
-        $act_goods = GoodsActivity::with(['goods'=>function($query){
-            $query->select('goods_id','goods_name');
-        }])->where('activity_id','=',$id)->get();
+        $act_goods = GoodsActivity::with(['goods' => function ($query) {
+            $query->select('goods_id', 'goods_name');
+        }])->where('activity_id', '=', $id)->get();
 
-        return view('admin.main.activity.show',compact('act_goods'));
+        return view('admin.main.activity.show', compact('act_goods'));
     }
 
     /**
@@ -66,6 +66,7 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         //活动添加
+
         $this->validate($request,[
             'name'=>'required',
             'type'=>'required',
@@ -138,6 +139,7 @@ class ActivityController extends Controller
      */
     public function destroy(Request $request)
     {
+
         // 删除id
         $act_id = $request->input('id');
         $activity = Activity::find($act_id);

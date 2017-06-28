@@ -140,7 +140,7 @@ function delimg(delUrl){
             success  :   function (data) {
                 var fileattr = $('#file_upload').data('uploadify');//获取上传文件的属性
                 //获取自己设置的上传文件大小
-                console.log(fileattr.settings);
+                // console.log(fileattr.settings);
                 var uploadLimit=fileattr.settings.uploadLimit;
                 //重置增加上传文件数,队列-1
                 $('#file_upload').uploadify('settings','uploadLimit', ++uploadLimit);
