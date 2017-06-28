@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Models\GoodsAttr;
 use App\Models\GoodsAttribute;
 use App\Models\GoodsImages;
@@ -37,6 +38,7 @@ class GoodsController extends Controller
      */
     public function create()
     {
+
         $fatcates   =  DB::table('goods_category')->where('pid', '=', '0')->select()->get();
         $brands  =  DB::table('brand')->select()->get();
         $types = DB::table('goods_type')->get();
@@ -143,7 +145,6 @@ class GoodsController extends Controller
         } else {
             return back();
         }
-
 
     }
 
