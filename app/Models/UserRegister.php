@@ -28,4 +28,8 @@ class UserRegister extends Model
         return $this->hasOne('App\Models\TempEmail','user_id');
     }
 
+    // 与收货地址建立一对多关系
+    public function receivingAddress(){
+        return $this->hasMany('App\Models\ReceivingAddress','user_id');
+    }
 }

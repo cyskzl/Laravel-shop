@@ -1,6 +1,8 @@
 @extends('admin.layouts.layout')
-@section('x-body')
 
+@section('title','会员修改')
+
+@section('x-body')
     <form class="layui-form">
         <div class="layui-form-item">
             <label for="L_email" class="layui-form-label">
@@ -87,14 +89,7 @@
             }
         };
 
-//        console.log(start.choose);
-//        console.log(data);
 
-//        start(function (data) {
-//            console.log(data);
-//        })
-//        demo(start.choose);
-//        console.log(demo(start.choose()));
 
         document.getElementById('LAY_demorange_s').onclick = function () {
             start.elem = this;

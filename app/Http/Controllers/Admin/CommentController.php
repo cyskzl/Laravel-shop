@@ -17,6 +17,7 @@ class CommentController extends Controller
      */
     public function index(Request $request)
     {
+
         //获取搜索提交过来的会员名
         $username = $request->input('username');
 
@@ -35,7 +36,6 @@ class CommentController extends Controller
             $sum = count($data);
 
         return view('admin.main.comment.index',compact('data','sum'));
-
     }
 
     /**
@@ -93,6 +93,7 @@ class CommentController extends Controller
 
     }
 
+
     public function edit($id)
     {
         $data = GoodsComment::findOrfail($id);
@@ -119,7 +120,4 @@ class CommentController extends Controller
 
         return '{"error":"0"}';
     }
-
-
-
 }

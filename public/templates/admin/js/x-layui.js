@@ -29,10 +29,10 @@ function x_admin_show(title,url,w,h){
 		shade:0.4,
 		title: title,
 		content: url,
-		end:function (){
+        end: function () {
             location.href = location.href;
-		}
-	});
+        }
+    });
 }
 
 /*关闭弹出框口*/

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\ReceivingAddress;
+use App\Models\UserInfo;
 use App\Models\UserRegister;
 use Illuminate\Http\Request;
 
@@ -24,7 +26,8 @@ class MemberController extends Controller
             $userData = UserRegister::where('email','like','%'.$keyword.'%')->paginate(3);
 
         }
-        return view('admin.main.member.index', compact('userData','request'));
+        $type = ['0'=>'未激活','1'=>'已激活'];
+        return view('admin.main.member.index', compact('userData','request','type'));
     }
 
     /**
@@ -40,7 +43,8 @@ class MemberController extends Controller
         // 获取积分详情
         $usercode = $user->userCode;
 //        dd($usercode);
-        return view('admin.main.member.show',compact('userinfo','user','usercode'));
+        $sexType = ['1'=>'男','2'=>'女'];
+        return view('admin.main.member.show',compact('userinfo','user','usercode','sexType'));
     }
 
     /**
@@ -82,7 +86,10 @@ class MemberController extends Controller
         $user = UserRegister::find($id);
         $userinfo = $user->userInfo;
 //        dd($userinfo);
-        return view('admin.main.member.edit', compact('userinfo','user'));
+        if(!empty($userinfo)){
+            return view('admin.main.member.edit', compact('userinfo','user'));
+        }
+
     }
 
     /**
@@ -102,15 +109,26 @@ class MemberController extends Controller
      *
      * @param   $request    array   获取请求头信息
      *
+     * 暂时只删除会员详情表与收货地址表，后续其他与用户表关联表的信息也的进行删除
      */
     public function destroy($id)
     {
+
+        UserInfo::where('user_id','=',$id)->delete();
+        ReceivingAddress::where('user_id','=',$id)->delete();
         if (UserRegister::destroy($id))
         {
             return 1;
         }
     }
 
+
+    public function getAddress(Request $request)
+    {
+        $id = $request->input('id');
+        $userAddress = ReceivingAddress::where('user_id','=',$id)->get();
+        return view('admin.main.member.receivingaddress',compact('userAddress'));
+    }
     /**
      * @return  view    会员密码修改页
      */

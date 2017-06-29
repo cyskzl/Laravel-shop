@@ -125,7 +125,7 @@
         form = layui.form();//弹出层
 
 
-    })
+    });
 
 
 
@@ -221,8 +221,6 @@
         });
     });
 
-
-
 //    批量删除
     $('input[name=checkboxall]').on('click',function () {
         
@@ -236,6 +234,7 @@
 
         $(this).prop('checked',!ck);
     });
+
 </script>
 
 </body>

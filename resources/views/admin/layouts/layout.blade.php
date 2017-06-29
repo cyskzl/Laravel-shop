@@ -11,6 +11,7 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="{{asset('templates/admin/css/x-admin.css')}}" media="all">
     <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
+    <script src="{{asset('templates/admin/js/jquery.min.js')}}"></script>
     @yield('style')
 </head>
 <body>

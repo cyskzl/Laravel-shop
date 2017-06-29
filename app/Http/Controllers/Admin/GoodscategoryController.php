@@ -42,12 +42,25 @@ class GoodscategoryController extends Controller
     {
         //插入数据
         $data = self::tree($request);
-        //保存
-        if (DB::table('goods_category')->insert($data)) {
-            return redirect('admin/goodscategory');
-        } else {
-            return back();
+
+        //是否有status这个键
+        if(array_key_exists('status', $data)){
+            return $data;
         }
+            //保存
+            if (DB::table('goods_category')->insert($data)) {
+                $data = [
+                    'status' => 0,
+                    'msg'    => '添加成功'
+                ];
+            } else {
+                $data = [
+                    'status' => 1,
+                    'msg'    => '添加失败'
+                ];
+            }
+
+        return $data;
     }
 
     /**
@@ -92,22 +105,25 @@ class GoodscategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        //插入数据
-//        $data = self::tree($request);
-//        //保存
-//        if (DB::table('goods_category')->where('id', $id)->update($data)) {
-//            return 1;
-//        } else {
-//            return 2;
-//        }
         //插入数据
         $data = self::tree($request);
-        //保存
-        if (DB::table('goods_category')->where('id', $id)->update($data)) {
-            return 1;
-        } else {
-            return 2;
+        //是否有status这个键
+        if(array_key_exists('status', $data)){
+            return $data;
         }
+        //保存
+        if(Category::where('id', $id)->update($data)){
+            $data = [
+                'status' => 0,
+                'msg'    => '添加成功'
+            ];
+        } else {
+            $data = [
+                'status' => 1,
+                'msg'    => '添加失败'
+            ];
+        }
+        return $data;
     }
 
     /**
@@ -174,8 +190,13 @@ class GoodscategoryController extends Controller
     public function tree(Request $request)
     {
         //清除put和csfr_field的请求
-        $data = $request->except(['_method', '_token']);
-        //        dd($data);
+        $data = json_decode($request->json,true);
+
+        if( array_key_exists('_token', $data) ||  array_key_exists('_method', $data)){
+            unset($data['_token']);
+            unset($data['_method']);
+        }
+
         $category = new Category();
         //如果顶级分类，pid和level都是0
         if ($data['pid'] == 0) {
@@ -186,9 +207,18 @@ class GoodscategoryController extends Controller
             $info = Category::find($data['pid']);
             $data['level'] = $info->level . ',' . $info->id;
         }
+
+        if(!empty($data['name']) ){
+            $category->name = $data['name'];
+        } else {
+            $data = [
+                'status' => 3,
+                'msg'    => '分类名称不能为空'
+            ];
+            return $data;
+        }
         $category->pid = $data['pid'];
         $category->level = $data['level'];
-        $category->name = $data['name'];
         $category->img = $data['img'];
         $category->describe = $data['describe'];
         return $data;

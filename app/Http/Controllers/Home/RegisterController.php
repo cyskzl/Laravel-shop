@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Home;
 use App\Models\M3Email;
 use App\Models\TempEmail;
 use App\Models\UserInfo;
+use App\Models\UserLogin;
+
 use App\Models\UserRegister;
 use App\Tool\Validate\ValidateCode;
 use Illuminate\Support\Facades\DB;
@@ -38,10 +40,17 @@ class RegisterController extends Controller
         return $validateCode->doimg();
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * 进行服务器端端的邮箱注册填写信息验证
+     * 完成验证将信息存入users_register
+     * 发送邮件给注册用户邮箱
+     */
     public function toRegister(Request $request)
     {
 
-        // 邮箱验证
+        // 邮箱注册填写信息验证
         $this->validate($request,[
             'email'=>'required | email',
             'password'=>'required | between:6,16',
@@ -107,8 +116,15 @@ class RegisterController extends Controller
                 ->subject($m3_email->subject);
         });
 
+        return view('home.validatefail',['info'=>'注册成功，请到邮箱激活']);
+
     }
 
+    /**
+     * @param Request $request
+     * @return int
+     * 注册页的邮箱名ajax验证
+     */
     public function validateEmail(Request $request)
     {
         $email = $request->input('email');
@@ -124,39 +140,80 @@ class RegisterController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * 处理邮件内部的信息
+     * 判断连接是否失效
+     * 信息对应则修改用户注册表的状态
+     * 删除临时存储的验证信息
+     * 增加用户详情表的片段信息
+     * 返回视图提示注册成功并跳转到网站首页（暂时缺少将信息存入SESSION中实现登录）
+     */
     public function validateEmailCode(Request $request)
     {
         $uuid = $request->input('code');
         $temp = TempEmail::where('uuid','=',$uuid)->get()->toArray();
 //        $name = ['one'=>'qwewqe'];
 //        dd($temp);
+        $deadline = $temp[0]['user_id'];
+        $nowtime = date('Y-m-d H:i:s',time());
         $uid = $temp[0]['user_id'];
+        // 判断链接是否失效
 
-        if(count($temp)){
-            // 修改注册表信息
-            $register = UserRegister::where('id','=',$uid)->update(['status'=>1]);
-            if(!$register){
+
+        if($deadline>$nowtime) {
+            if (count($temp)) {
+                // 修改注册表信息
+                $register = UserRegister::where('id', '=', $uid)->update(['status' => 1]);
+                if (!$register) {
+                    return view('home.validatefail');
+                }
+                // 对应增加users_info表的信息
+                $uinfo = UserRegister::find($uid);
+                $userinfo = new UserInfo();
+                $userinfo->user_id = $uid;
+                $userinfo->email = $uinfo->email;
+                $infoId = $userinfo->save();
+                if (!$infoId) {
+                    return view('home.validatefail');
+                }
+
+                // 增加用户登录表信息
+                $userlogin = new UserLogin();
+                $userlogin->user_id = $uid;
+                $userlogin->login_name = $uid;
+                $userlogin->password = $uinfo->password;
+                $userlogin->last_login_ip = $request->ip();
+                $userlogin->last_login_at = $nowtime;
+                if(!$userlogin->save()){
+                    return view('home.validatefail');
+                }
+
+                // 删除邮箱注册的临时信息
+                $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
+                if (!$delTemp) {
+                    return view('home.validatefail');
+                }
+                return view('home.validatefail', ['info' => '用户名已激活，3秒后跳转到网站首页或者点击立即跳转']);
+
+            } else {
+                return view('home.validatefail');
+
+            }
+        } else {
+            // 连接失效，删除临时信息表和用户注册表中的信息
+
+            $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
+            $deluser = UserRegister::where('id','=',$uid)->delete();
+//
+//            $deluser = UserRegister::where('id','=',$uid)->delete();
+//            $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
+
+            if (!$delTemp || !$deluser) {
                 return view('home.validatefail');
             }
-            // 对应增加users_info表的信息
-            $uinfo = UserRegister::find($uid);
-            $userinfo = new UserInfo();
-            $userinfo->user_id = $uid;
-            $userinfo->email = $uinfo->email;
-            $infoId = $userinfo->save();
-            if(!$infoId){
-                return view('home.validatefail');
-            }
-            // 删除邮箱注册的临时信息
-            $delTemp = TempEmail::where('user_id','=',$uid)->delete();
-            if(!$delTemp){
-                return view('home.validatefail');
-            }
-            return view('home.validatefail',compact('uinfo'));
-
-        }else{
-            return view('home.validatefail');
-
+            return view('home.validatefail',['info'=>'该链接已失效，请重新注册']);
         }
     }
 }

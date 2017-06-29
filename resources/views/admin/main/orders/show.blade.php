@@ -89,7 +89,6 @@
     </table>
 
 
-
     <table class="table">
         <tr class="info">
             <td>商品</td>
@@ -251,8 +250,6 @@
                         self.location.reload();
                     }
                 });
-
-
             });
         }
     </script>

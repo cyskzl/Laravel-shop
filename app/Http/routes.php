@@ -18,8 +18,16 @@
 //});
 
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
+
+    // 首页
+    Route::get('/', 'IndexController@index');
     // 注册页面
     Route::get('/register', 'RegisterController@register');
+
+    Route::group(['middleware'=>'auth'],function(){
+        // 登录界面
+        Route::get('/login', 'UserController@login');
+    });
     // 验证码生成
     Route::get('/register/code', 'RegisterController@createCode');
     // 邮箱发送注册
@@ -28,12 +36,18 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::post('/register/validate', 'RegisterController@validateEmail');
     // 邮箱激活
     Route::get('/register/validate_email', 'RegisterController@validateEmailCode');
+    // 登录信息处理
+    Route::post('/doLogin', 'Usercontroller@doLogin');
+    // 退出登录
+    Route::get('/logOut', 'UserController@logOut');
+
 });
 
 //prefix => 前缀
     // 后台首页
 Route::group(['prefix' => 'admin'], function (){
         //后台首页
+
         Route::get('/', 'Admin\AdminController@index');
 
         Route::get('/welcome', 'Admin\AdminController@welcome');
@@ -43,15 +57,35 @@ Route::group(['prefix' => 'admin'], function (){
 
         //图片上传
         Route::any('/upload/{uploadname}', 'Admin\CommonController@upload');
-
+        //返回3级分类
+        Route::any('/ajaxCate','Admin\CommonController@ajaxCate');
+        //规格
+        Route::any('/ajaxModel','Admin\CommonController@ajaxModel');
+        //加载商品属性
+        Route::any('/ajaxAttr','Admin\CommonController@ajaxAttr');
+        //处理ajax
+        Route::any('/ajax', 'Admin\CommonController@ajax');
         //商品列表
         Route::resource('/goods', 'Admin\GoodsController');
-
+        //商品类型
+        Route::resource('/type', 'Admin\GoodsTypeController');
+        //商品规格
+        Route::resource('/spec', 'Admin\SpecController');
+        //商品属性
+        Route::resource('/goodsattr', 'Admin\GoodsAttributeController');
+        //商品品牌
+        Route::resource('/brand', 'Admin\BrandController');
         //活动管理
         Route::resource('/activity', 'Admin\ActivityController');
+        // 活动商品管理
+        Route::resource('/goodsactivity','Admin\GoodsActivityController');
 
         //轮播图管理
         Route::resource('/carousel', 'Admin\CarouselController');
+        //轮播图排序
+        Route::post('/carousel/orderby', 'Admin\CarouselController@orderBy');
+        //修改轮播图状态
+        Route::post('/carousel/status', 'Admin\CarouselController@status');
 
         //发货单管理
         Route::resource('/deliveryinfo', 'Admin\OrdersDeliveryController');
@@ -70,6 +104,9 @@ Route::group(['prefix' => 'admin'], function (){
 
         //会员管理
         Route::resource('/member', 'Admin\MemberController');
+
+        // 收货地址管理
+        Route::get('/address','Admin\MemberController@getAddress');
 
         //会员密码修改
         Route::get('/memberpassword', 'Admin\MemberController@memberPassword');
@@ -103,6 +140,9 @@ Route::group(['prefix' => 'admin'], function (){
 
         //系统设置
         Route::any('/settings', 'Admin\SystemSettingsController@index');
+
+        //系统设置修改
+        Route::post('/setchange', 'Admin\SystemSettingsController@setChange');
 
         //友情链接
         Route::resource('/link', 'Admin\LinkController');
