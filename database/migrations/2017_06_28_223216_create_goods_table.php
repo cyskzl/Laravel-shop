@@ -25,7 +25,7 @@ class CreateGoodsTable extends Migration
             $table->integer('weight')->unsigned()->default(0)->comment('商品重量克为单位');
             $table->decimal('market_price', 10, 2)->default('0.00')->comment('市场价');
             $table->decimal('shop_price', 10, 2)->default('0.00')->comment('本店价');
-            $table->decimal('market_price', 10, 2)->default('0.00')->comment('商品成本价');
+            $table->decimal('cost_price', 10, 2)->default('0.00')->comment('商品成本价');
             $table->text('price_ladder')->comment('价格阶梯');
             $table->string('keywords')->default('')->comment('商品关键词');
             $table->text('goods_content')->comment('商品详细描述');
