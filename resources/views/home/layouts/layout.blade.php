@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{{asset('/templates/home/css/header.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/footer.css')}}"/>
     {{--<script src="{{asset('/templates/home/js/registe.js')}}"></script>--}}
+    <script src="{{asset('/templates/home/js/jquery-1.7.2.min.js')}}"></script>
+    <script src="{{asset('/templates/home/js/jquery.cookie.js')}}"></script>
+    <script src="{{asset('/templates/home/js/header.js')}}"></script>
 
     @yield('style')
 </head>
@@ -407,8 +410,6 @@
 
 </div>
 @yield('js')
-<script src="{{asset('/templates/home/js/jquery-1.7.2.min.js')}}"></script>
-<script src="{{asset('/templates/home/js/jquery.cookie.js')}}"></script>
-<script src="{{asset('/templates/home/js/header.js')}}"></script>
+
 </body>
 </html>

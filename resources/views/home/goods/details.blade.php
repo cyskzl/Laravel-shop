@@ -5,10 +5,10 @@
 @section('style')
 	<link rel="stylesheet" href="{{asset('/templates/home/css/details-header.css')}}"/>
 	<link rel="stylesheet" href="{{asset('/templates/home/css/details-main.css')}}"/>
-	<link rel="stylesheet" href="{{asset('/templates/home/css/details.css')}}" type="text/css">
+	{{--<link rel="stylesheet" href="{{asset('/templates/home/css/details.css')}}" type="text/css">--}}
 	<link rel="stylesheet" href="{{asset('/templates/home/css/section.css')}}" type="text/css">
 	<link rel="stylesheet" href="{{asset('/templates/home/css/dress.css')}}" type="text/css">
-
+	<script src="{{asset('/templates/home/js/details-main.js')}}"></script>
 
 @endsection
 
@@ -47,7 +47,7 @@
 
 	        <!-- 商品大图展示-->
 	        <div class="bigimgShow fl rela">
-	            <img src="./public/img/6.jpg" alt="" class="abso"/>
+	            <img src="{{asset('/templates/home/public/img/6.jpg')}}" alt="" class="abso"/>
 	        </div>
 
 	        <!-- 商品条件筛选-->
@@ -118,23 +118,23 @@
 	                        <span>
 	                            <ul>
 	                                <li>
-	                                    <img src="./public/png/zheng.png" alt="100%正品保障"/>
+	                                    <img src="{{asset('/templates/home/public/png/zheng.png')}}" alt="100%正品保障"/>
 	                                    100%正品保障
 	                                </li>
 	                                <li>
-	                                    <img src="./public/png/qian.png" alt="货物签收说明"/>
+	                                    <img src="{{asset('/templates/home/public/png/qian.png')}}" alt="货物签收说明"/>
 	                                    货物签收说明
 	                                </li>
 	                                <li>
-	                                    <img src="./public/png/shi.png" alt="实名认证"/>
+	                                    <img src="{{asset('/templates/home/public/png/shi.png')}}" alt="实名认证"/>
 	                                    实名认证
 	                                </li>
 	                                <li>
-	                                    <img src="./public/png/tui.png" alt="七天省心退"/>
+	                                    <img src="{{asset('/templates/home/public/png/tui.png')}}" alt="七天省心退"/>
 	                                    七天省心退
 	                                </li>
 	                                <li>
-	                                    <img src="./public/png/shui.png" alt="海外购额度说明"/>
+	                                    <img src="{{asset('/templates/home/public/png/shui.png')}}" alt="海外购额度说明"/>
 	                                    海外购额度说明
 	                                </li>
 	                            </ul>
@@ -146,7 +146,7 @@
 	            <!-- 收藏-->
 	            <div class="coll">
 	                <a href="javascript:">
-	                    <img src="./public/png/xin1.png" alt=""/>
+	                    <img src="{{asset('/templates/home/public/png/xin1.png')}}" alt=""/>
 	                    收藏（0）
 	                </a>
 	            </div>
@@ -168,7 +168,7 @@
 	                <li>
 	                    <a href="javascript:">
 	                        <!--产品样式 -->
-	                        <span class="cp-img"><img src="./public/img/1.jpg" alt=""/></span>
+	                        <span class="cp-img"><img src="{{asset('/templates/home/public/img/1.jpg')}}" alt=""/></span>
 	                        <!-- 产品牌子-->
 	                        <span class="cp-brand">LUCKY PLANET</span>
 	                        <!-- 产品名字-->
@@ -180,7 +180,7 @@
 	                <li>
 	                    <a href="javascript:">
 	                        <!--产品样式 -->
-	                        <span class="cp-img"><img src="./public/img/1.jpg" alt=""/></span>
+	                        <span class="cp-img"><img src="{{asset('/templates/home/public/img/1.jpg')}}" alt=""/></span>
 	                        <!-- 产品牌子-->
 	                        <span class="cp-brand">LUCKY PLANET</span>
 	                        <!-- 产品名字-->
@@ -192,7 +192,7 @@
 	                <li>
 	                    <a href="javascript:">
 	                        <!--产品样式 -->
-	                        <span class="cp-img"><img src="./public/img/1.jpg" alt=""/></span>
+	                        <span class="cp-img"><img src="{{asset('/templates/home/public/img/1.jpg')}}" alt=""/></span>
 	                        <!-- 产品牌子-->
 	                        <span class="cp-brand">LUCKY PLANET</span>
 	                        <!-- 产品名字-->
@@ -256,16 +256,16 @@
 	                <!-- 产品样式-->
 	                <div class="D4 clearfix">
 	                    <ul class="clearfix">
-	                        <li><img src="./public/img/2.jpg" alt=""/></li>
-	                        <li><img src="./public/img/3.jpg" alt=""/></li>
-	                        <li><img src="./public/img/4.jpg" alt=""/></li>
+	                        <li><img src="{{asset('/templates/home/public/img/2.jpg')}}" alt=""/></li>
+	                        <li><img src="{{asset('/templates/home/public/img/3.jpg')}}" alt=""/></li>
+	                        <li><img src="{{asset('/templates/home/public/img/4.jpg')}}" alt=""/></li>
 	                    </ul>
 	                </div>
 	                <!-- 产品品牌介绍-->
 	                <div class="D5">
 	                    <h3>品牌介绍</h3>
 	                    <div>
-	                        <img src="./public/img/8.jpg" alt=""/>
+	                        <img src="{{asset('/templates/home/public/img/8.jpg')}}" alt=""/>
 	                        <span>
 	                            THISISNEVERTHAT始创于2009年，主要突出韩系街头风格，
 	                            同时越来越多地融入高街元素。
@@ -279,7 +279,7 @@
 
 	            <!-- 购物须知-->
 	            <div class=" question none">
-	                <img src="./public/png/buy.png" alt=""/>
+	                <img src="{{asset('/templates/home/public/png/buy.png')}}" alt=""/>
 	                <span>常见问题&解答</span>
 	                <span>
 	                    Q：退货条件<br>
@@ -322,7 +322,7 @@
 	                    <span class="fl">写评论</span>
 	                    <textarea name="" id="text" cols="110" rows="8"></textarea>
 	                    <a class="fl" href="javascript:">
-	                        <img src="./public/png/image.png" alt=""/>
+	                        <img src="{{asset('/templates/home/public/png/image.png')}}" alt=""/>
 	                        发送图片
 	                    </a>
 	                    <input type="submit" value="提交" class="fl" id="submit"/>
@@ -334,7 +334,7 @@
 	                        <ul>
 	                            <li class="iD">梦幻般的眼神</li>
 	                            <li class="time">2017-06-21 13:57:46</li>
-	                            <li class="reply"><img src="./public/png/xinxi.png" alt=""/></li>
+	                            <li class="reply"><img src="{{asset('/templates/home/public/png/xinxi.png')}}" alt=""/></li>
 	                        </ul>
 	                        <span class="text">独特的个性</span>
 	                    </div>
@@ -343,7 +343,7 @@
 
 	            <!-- 标准尺码-->
 	            <div class="sizechart none">
-	                <img src="./public/img/sizechart.jpg" alt=""/>
+	                <img src="{{asset('/templates/home/public/img/sizechart.jpg')}}" alt=""/>
 	            </div>
 	        </div>
 	    </div>
@@ -356,23 +356,23 @@
 	        <h3>退换条款</h3>
 	        <ul>
 	            <li>
-	                <h4><img src="./public/png/zheng.png" alt=""/>100%正品保障</h4>
+	                <h4><img src="{{asset('/templates/home/public/png/zheng.png')}}" alt="" />100%正品保障</h4>
 	                <p>全球设计师品牌正品，品质有保障。</p>
 	            </li>
 	            <li>
-	                <h4><img src="./public/png/qian.png" alt=""/>货物签收说明</h4>
+	                <h4><img src="{{asset('/templates/home/public/png/qian.png')}}" alt=""/>货物签收说明</h4>
 	                <p>货到时，无论本人还是他人代签，请务必先开箱检查商品，确认无误后签收。如有破损、漏发、错发等情况，请拍照后当场拒收并在24小时内联系客服。</p>
 	            </li>
 	            <li>
-	                <h4><img src="./public/png/shi.png" alt=""/>实名认证</h4>
+	                <h4><img src="{{asset('/templates/home/public/png/shi.png')}}" alt=""/>实名认证</h4>
 	                <p>海外进口商品需以个人实名购买，请您购物前在支付宝/微信平台进行实名认证，同时支付人信息须与填报的身份证持有人信息一致。否则可能有退运风险，感谢您的配合。</p>
 	            </li>
 	            <li>
-	                <h4><img src="./public/png/tui.png" alt=""/>七天省心退</h4>
+	                <h4><img src="{{asset('/templates/home/public/png/tui.png')}}" alt=""/>七天省心退</h4>
 	                <p>平台大部分商品支持7天无理由退货（个别商品除外），请放心购买！海外商品如因个人主观原因发生退货，退款需扣除80元往返国际运费以及商品的相关税金。</p>
 	            </li>
 	            <li>
-	                <h4><img src="./public/png/shui.png" alt=""/>海外购额度说明</h4>
+	                <h4><img src="{{asset('/templates/home/public/png/shui.png')}}" alt=""/>海外购额度说明</h4>
 	                <p>根据2016.4.8颁布的海关新政，个人每年购买海外购商品总额度不可超过20000元，超额购买的商品将无法通过口岸申报而被退运。</p>
 	            </li>
 	        </ul>
@@ -380,13 +380,13 @@
 	            <a href="javascript:">更多售后服务条款请点击“客服中心” ></a>
 	        </p>
 	        <div class="X abso">
-	            <img src="./public/png/X.png" alt=""/>
+	            <img src="{{asset('/templates/home/public/png/X.png')}}" alt=""/>
 	        </div>
 	    </div>
 	</div>
 @endsection
 
 @section('js')
-	<script src="{{asset('/templates/home/js/details-main.js')}}"></script
+
 	<script src="{{asset('/templates/home/js/page.js')}}"></script>
 @endsection
