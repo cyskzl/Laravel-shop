@@ -160,6 +160,8 @@ return [
          * 阿里大鱼(大于) providers
          */
         iscms\Alisms\AlidayuServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
+
     ],
 
     /*
@@ -206,6 +208,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'UUID' => Webpatser\Uuid\Uuid::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
     ],
 
 ];

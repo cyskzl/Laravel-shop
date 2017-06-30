@@ -17,7 +17,7 @@
     <div class="layui-header header header-demo">
         <div class="layui-main">
             <a class="logo" href="{{url('/admin/admin')}}">
-                X-admin v1.0
+                Hello Word
             </a>
             <ul class="layui-nav" lay-filter="">
                 <li class="layui-nav-item"><img src="{{asset('templates/admin/images/logo.png')}}" class="layui-circle" style="border: 2px solid #A9B7B7;" width="35px" alt=""></li>
@@ -41,36 +41,17 @@
     <div class="layui-side layui-bg-black x-side">
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree site-demo-nav" lay-filter="side">
+
                 <li class="layui-nav-item">
                     <a class="javascript:;" href="javascript:;">
                         <i class="layui-icon" style="top: 3px;">&#xe62d;</i><cite>商品管理</cite>
                     </a>
+
                     <dl class="layui-nav-child">
                         <dd class="">
                         <dd class="">
-                            <a href="javascript:;" _href="{{ url('admin/type') }}">
-                                <cite>商品类别</cite>
-                            </a>
-                        </dd>
-                        </dd>
-                        <dd class="">
-                        <dd class="">
-                            <a href="javascript:;" _href="{{ url('admin/spec') }}">
-                                <cite>商品规格</cite>
-                            </a>
-                        </dd>
-                        </dd>
-                        <dd class="">
-                        <dd class="">
-                            <a href="javascript:;" _href="{{ url('admin/goodsattr') }}">
-                                <cite>商品属性</cite>
-                            </a>
-                        </dd>
-                        </dd>
-                        <dd class="">
-                        <dd class="">
-                            <a href="javascript:;" _href="{{ url('admin/brand') }}">
-                                <cite>商品品牌</cite>
+                            <a href="javascript:;" _href="{{ url('admin/goodscategory') }}">
+                                <cite>商品分类</cite>
                             </a>
                         </dd>
                         </dd>
@@ -97,8 +78,8 @@
                         </dd>
                         <dd class="">
                         <dd class="">
-                            <a href="javascript:;" _href="{{url('admin/activity/create')}}">
-                                <cite>添加活动</cite>
+                            <a href="javascript:;" _href="./welcome.html">
+                                <cite>活动管理</cite>
                             </a>
                         </dd>
                         </dd>
@@ -125,19 +106,11 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd class="">
+                        <dd class="">
                             <a href="javascript:;" _href="{{ url('admin/orders') }}">
                                 <cite>订单列表</cite>
                             </a>
                         </dd>
-                        <dd class="">
-                            <a href="javascript:;" _href="{{ url('admin/deliveryinfo') }}">
-                                <cite>发货单</cite>
-                            </a>
-                        </dd>
-                        <dd class="">
-                            <a href="javascript:;" _href="{{ url('admin/returninfo') }}">
-                                <cite>退货单</cite>
-                            </a>
                         </dd>
                     </dl>
                 </li>

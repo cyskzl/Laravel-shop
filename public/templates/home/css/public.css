@@ -1,49 +1,72 @@
-blockquote,
-body,
-button,
-dd,
-dl,
-dt,
-fieldset,
-form,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-hr,
-input,
-legend,
-li,
-ol,
-p,
-pre,
-td,
-textarea,
-th,
-ul {
-  margin: 0;
-  padding: 0;
+body{
+    width: 100%;
+    margin: auto;
+    font-size: 14px;
 }
-a {
-  text-decoration: none;
+.clearfix:before{
+    content: "";
+    display: table;
 }
-ul li {
-  list-style: none;
+.clearfix:after{
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
 }
-.clear:after {
-  display: block;
-  clear: both;
-  content: '';
-  visibility: hidden;
-  height: 0;
-  zoom: 1;
+.fl{
+    float: left;
 }
-img {
-  vertical-align: top;
+.fr{
+    float: right;
 }
-i,
-em {
-  font-style: normal;
+.flex{
+    display: flex;
+}
+.fix{
+    position: fixed;
+}
+.rela{
+    position: relative;
+}
+.abso{
+    position: absolute;
+}
+.black li:hover{
+    color: black;
+}
+.red li:hover{
+    background: #F54B73;
+}
+.blue li:hover{
+    background: lightblue;
+}
+.cur{
+    cursor: pointer;
+}
+.Black{
+    color: black;
+    font-size: 21px;
+    font-weight: 800;
+    cursor: pointer;
+}
+.B4d{
+    color: #6D6D6D;
+    font-size: 20px;
+    font-weight: 600;
+}
+.S3c{
+    color: #cccccc;
+    font-size: 12px;
+}
+.comWidth{
+    width: 1100px;
+    margin: 0 auto;
+}
+input{
+    outline: none;
+    border: none;
+}
+.none{
+    display: none;
 }

@@ -29,8 +29,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/register', 'RegisterController@register');
 
     Route::group(['middleware'=>'auth'],function(){
-        // 登录界面
-        Route::get('/login', 'UserController@login');
+
     });
     // 验证码生成
     Route::get('/register/code', 'RegisterController@createCode');
@@ -94,8 +93,13 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 //prefix => 前缀
     // 后台首页
 Route::group(['prefix' => 'admin'], function (){
-        //后台首页
+    Route::get('/login', 'Admin\LoginController@index');
+    Route::post('/login', 'Admin\LoginController@login');
+    Route::get('/loginout', 'Admin\LoginController@loginout');
 
+    Route::group(['middleware'=>'auth:admin'], function() {
+
+        //后台首页
         Route::get('/', 'Admin\AdminController@index');
 
         Route::get('/welcome', 'Admin\AdminController@welcome');
@@ -106,11 +110,11 @@ Route::group(['prefix' => 'admin'], function (){
         //图片上传
         Route::any('/upload/{uploadname}', 'Admin\CommonController@upload');
         //返回3级分类
-        Route::any('/ajaxCate','Admin\CommonController@ajaxCate');
+        Route::any('/ajaxCate', 'Admin\CommonController@ajaxCate');
         //规格
-        Route::any('/ajaxModel','Admin\CommonController@ajaxModel');
+        Route::any('/ajaxModel', 'Admin\CommonController@ajaxModel');
         //加载商品属性
-        Route::any('/ajaxAttr','Admin\CommonController@ajaxAttr');
+        Route::any('/ajaxAttr', 'Admin\CommonController@ajaxAttr');
         //处理ajax
         Route::any('/ajax', 'Admin\CommonController@ajax');
         //商品列表
@@ -126,7 +130,7 @@ Route::group(['prefix' => 'admin'], function (){
         //活动管理
         Route::resource('/activity', 'Admin\ActivityController');
         // 活动商品管理
-        Route::resource('/goodsactivity','Admin\GoodsActivityController');
+        Route::resource('/goodsactivity', 'Admin\GoodsActivityController');
 
         //轮播图管理
         Route::resource('/carousel', 'Admin\CarouselController');
@@ -154,7 +158,7 @@ Route::group(['prefix' => 'admin'], function (){
         Route::resource('/member', 'Admin\MemberController');
 
         // 收货地址管理
-        Route::get('/address','Admin\MemberController@getAddress');
+        Route::get('/address', 'Admin\MemberController@getAddress');
 
         //会员密码修改
         Route::get('/memberpassword', 'Admin\MemberController@memberPassword');
@@ -179,12 +183,15 @@ Route::group(['prefix' => 'admin'], function (){
 
         //角色列表
         Route::resource('/adminrole', 'Admin\AdminRoleController');
+        //权限列表
+        Route::resource('/permission', 'Admin\PermissionController');
+
 
         //权限规则
         Route::resource('/adminrule', 'Admin\AdminRuleController');
 
-        //权限分类
-        Route::resource('/adminjurisdiction', 'Admin\AdminJurisdictionCateController');
+        // //权限分类
+        // Route::resource('/adminjurisdiction', 'Admin\AdminJurisdictionCateController');
 
         //系统设置
         Route::any('/settings', 'Admin\SystemSettingsController@index');
@@ -198,7 +205,7 @@ Route::group(['prefix' => 'admin'], function (){
         //系统日志
         Route::get('systemlog', 'Admin\AdminController@SystemLog');
 
-
+    });
 
 });
 

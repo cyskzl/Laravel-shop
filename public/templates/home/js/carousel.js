@@ -1,66 +1,69 @@
 window.onload = function () {
-    var banner = $('#banner');
-    var list = $('#silder-list');
-    var round = $('#round').children();
-    var prev = $('#prev');
-    var next = $('#next');
+
+    var container = document.getElementById('banner');
+    var list = document.getElementById('silder-list');
+    var buttons = document.getElementById('round').getElementsByTagName('i');
+    var prev = document.getElementById('prev');
+    var next = document.getElementById('next');
     var timer;
-    var index=1;
+    var index = 1;
+    // console.log(buttons[0].className);return false;
+    function animate(offset) {
 
-    function animate (offset) {
-
-        var newLeft = parseFloat(list.css('margin-left')) + offset;
-        list.css('margin-left',newLeft+'px');
-        if(newLeft > 0) 
-        {
-            list.css('margin-left','-4400px');
-        }else if(newLeft < -4400){
-            list.css('margin-left','0px');
+        var newLeft = parseFloat(list.style.marginLeft) + offset;
+        list.style.marginLeft = newLeft + 'px';
+        if (newLeft > 0) {
+            list.style.marginLeft = -3300 + 'px';
+        } else if (newLeft < -3300) {
+            list.style.marginLeft = -1100 + 'px';
         }
     }
-    prev.onclick = function (){
-        index -=1;
-        if(index<1){
-            index=3;
+
+    prev.onclick = function () {
+        index -= 1;
+        if (index < 1) {
+            index = 3;
         }
         buttonsShow();
         animate(1100);
     };
-    next.onclick = function (){
-        index +=1;
-        if(index>3){
-            index=1;
+
+    next.onclick = function () {
+        index += 1;
+        if (index > 3) {
+            index = 1;
         }
         buttonsShow();
         animate(-1100);
     };
 
-    function play () {
+    function play() {
 
         timer = setInterval(function () {
             next.onclick();
-        },2000)
-    };
-    function stop () {
+        }, 1500)
+    }
+
+    function stop() {
         clearInterval(timer);
-    };
+    }
 
-    function buttonsShow () {
-        for (var i=0;i<round.length;i++){
-            if(round[i].className =='sel') {
-                // console.log(round[i]);
-                round[i].className = '';
-            } 
+    function buttonsShow() {
+        for (var i = 0; i < buttons.length; i++) {
+
+            if (buttons[i].className == 'sel') {
+                buttons[i].className = '';
+            }
         }
-        round[index-1].className = 'sel';
-    };
+        buttons[index - 1].className = 'sel';
+    }
 
-    for(var i=0;i<round.length;i++) {
+    for (var i = 0; i < buttons.length; i++) {
 
         (function (i) {
-            round[i].onclick = function () {
+            buttons[i].onclick = function () {
                 var checkIndex = parseFloat(this.getAttribute('index'));
-                var offset = 1100*(index-checkIndex);
+                var offset = 1100 * (index - checkIndex);
                 index = checkIndex;
                 animate(offset);
                 buttonsShow();
@@ -68,6 +71,6 @@ window.onload = function () {
         })(i)
     }
     play();
-    banner.mouseout(play);
-    banner.mouseover(stop);
-}
+    container.onmouseover = stop;
+    container.onmouseout = play;
+};

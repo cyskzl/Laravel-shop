@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class UserController extends Controller
 {
-    public function login(Request $request)
+    public function login()
     {
 
         return view('home.login');

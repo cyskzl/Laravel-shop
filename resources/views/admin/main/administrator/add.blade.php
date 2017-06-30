@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    
+
     <head>
         <meta charset="utf-8">
         <title>添加管理员</title>
@@ -12,34 +12,34 @@
         <meta name="format-detection" content="telephone=no">
         <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
     </head>
-    
+
     <body>
         <div class="x-body">
             <form class="layui-form">
-                <div class="layui-form-item">
+                <div class="layui-form-item" >
                     <label for="username" class="layui-form-label">
-                        <span class="x-red">*</span>登录名
+                        <span class="x-red">*</span>用户名
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="username" name="username" required="" lay-verify="required"
+                        <input type="text" id="username" name="nickname" required="" lay-verify="required"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         <span class="x-red">*</span>将会成为您唯一的登入名
                     </div>
                 </div>
-                <div class="layui-form-item">
+                <!-- <div class="layui-form-item">
                     <label for="phone" class="layui-form-label">
                         <span class="x-red">*</span>手机
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="phone" name="phone" required="" lay-verify="phone"
+                        <input type="text" id="phone" name="tel" required="" lay-verify="phone"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         <span class="x-red">*</span>将会成为您唯一的登入名
                     </div>
-                </div>
+                </div> -->
                 <div class="layui-form-item">
                     <label for="L_email" class="layui-form-label">
                         <span class="x-red">*</span>邮箱
@@ -53,24 +53,19 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label for="role" class="layui-form-label">
-                        <span class="x-red">*</span>角色
-                    </label>
-                    <div class="layui-input-inline">
-                      <select name="role">
-                        <option value="">请选择角色</option>
-                        <option value="超级管理员">超级管理员</option>
-                        <option value="编辑人员">编辑人员</option>
-                        <option value="问题维护">问题维护</option>
-                      </select>
+                    <label class="layui-form-label">角色</label>
+                    <div class="layui-input-block">
+                        @foreach($roles as $role)
+                      <input type="checkbox" name="roles[]" title="{{ $role->display_name }}" value="{{ $role->id }}">
+                      @endforeach
                     </div>
-                </div>
+                  </div>
                 <div class="layui-form-item">
                     <label for="L_pass" class="layui-form-label">
                         <span class="x-red">*</span>密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
+                        <input type="password" id="L_pass" name="password" required="" lay-verify="pass"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
@@ -86,6 +81,15 @@
                         autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="status" value="1" title="启用" checked>
+                        <input type="radio" name="status" value="0" title="禁用">
+                    </div>
+                </div>
+
                 <div class="layui-form-item">
                     <label for="L_repass" class="layui-form-label">
                     </label>
@@ -104,7 +108,7 @@
                 $ = layui.jquery;
               var form = layui.form()
               ,layer = layui.layer;
-            
+
               //自定义验证规则
               form.verify({
                 nikename: function(value){
@@ -122,18 +126,48 @@
 
               //监听提交
               form.on('submit(add)', function(data){
-                console.log(data);
+                // console.log(data);
+                var arr = new Array();
+                var a = $("input[name='roles[]']:checked")
+                for (var i=0; i<a.length; i++) {
+                    arr.push(a[i].value);
+                }
                 //发异步，把数据提交给php
-                layer.alert("增加成功", {icon: 6},function () {
-                    // 获得frame索引
-                    var index = parent.layer.getFrameIndex(window.name);
-                    //关闭当前frame
-                    parent.layer.close(index);
+                $.ajax({
+                  url:'{{ url('admin/adminlist/') }}',
+                  type:'post',
+                  datatype:'json',
+                  data:{
+                    'json':JSON.stringify(data.field),
+                    'roles':JSON.stringify(arr),
+                     '_token':"{{ csrf_token() }}",
+                   },
+                  success:function (res){
+                      res = JSON.parse(res);
+                      console.log(res.success);
+                      if (res.success == '1') {
+                          layer.alert(res.info, {icon: 6},function () {
+                              // 获得frame索引
+                              var index = parent.layer.getFrameIndex(window.name);
+                              //关闭当前frame
+                              parent.layer.close(index);
+                          });
+
+                      } else {
+                          layer.alert(res.info, {icon: 5},function () {
+                              // 获得frame索引
+                              var index = parent.layer.getFrameIndex(window.name);
+                              //关闭当前frame
+                              parent.layer.close(index);
+                          });
+                      }
+                  }
                 });
+
                 return false;
               });
-              
-              
+
+
             });
         </script>
     </body>

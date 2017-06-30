@@ -5,8 +5,9 @@
 	width:56px;
 	height: 200px;
 	position:fixed;
-	left:1250px;
+	left:50%;
     top: 50%;
+    margin-left:590px;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
@@ -157,7 +158,6 @@ main .banner {
 main .banner .silder {
   height: 460px;
   width: 500%;
- margin-left:-1100px;
 }
 main .banner .silder a img {
   display:block;
@@ -192,13 +192,13 @@ main .banner .arrow{
 main .banner .arrow1{
 	background:url(../uploads/zuo.png)no-repeat;
 	background-size:25px;
-	left: 27px;
+	left: 29px;
 	
 }
 main .banner .arrow2{
-	background:url(../uploads/you.png) no-repeat;
+	background:url(../uploads/you.png)no-repeat;
 	background-size:25px;
-	right:-27px;
+	right:-45px;
 }
  /*小广告smallbanner*/
 main .smallbanner {

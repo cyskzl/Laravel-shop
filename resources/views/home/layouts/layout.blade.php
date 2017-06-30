@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="{{asset('/templates/home/css/header.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/footer.css')}}"/>
     {{--<script src="{{asset('/templates/home/js/registe.js')}}"></script>--}}
-    <script src="{{asset('/templates/home/js/jquery-1.7.2.min.js')}}"></script>
-    <script src="{{asset('/templates/home/js/jquery.cookie.js')}}"></script>
-    <script src="{{asset('/templates/home/js/header.js')}}"></script>
+
     @yield('style')
 </head>
 <body>
@@ -29,18 +27,19 @@
                 </li>
             </ul>
             <ul class="header_top_right right">
-                <li>我的订单</li>
-                <li>收藏</li>
-                <li>消息</li>
-                <li class="header_top_right_li">个人中心&nbsp;
+                <li><a href="{{url('home/alreadyorder')}}">我的订单</a></li>
+                <li><a href="{{url('home/favorites')}}">收藏</a></li>
+                <li><a href="{{url('home/comproblem')}}">消息</a></li>
+                <li class="header_top_right_li">
+                    <a href="{{url('home/personal')}}">个人中心</a>&nbsp;
                     <span>
                         <img src="{{asset('/templates/home/uploads/pCenter_qian.png')}}" alt="">
                     </span>
                     <div class="header_top_right_div">
-                        <a href="javascript:">购物车</a>
-                        <a href="javascript:">收藏夹</a>
-                        <a href="javascript:">W积分</a>
-                        <a href="javascript:">优惠券</a>
+                        <a href="{{url('home/shoppingcart')}}">购物车</a>
+                        <a href="{{url('home/favorites')}}">收藏夹</a>
+                        <a href="{{url('home/integral')}}">W积分</a>
+                        <a href="{{url('home/coupon')}}">优惠券</a>
                     </div>
                 </li>
                 <li>客户服务</li>
@@ -132,7 +131,7 @@
                     </div>
                 </div>
                 <div id="header_nav_left_new">
-                    <a href="javascript:">服饰</a>
+                    <a href="{{url('home/goodsList/1')}}">服饰</a>
                     <div class="header_nav_left_new">
                         <div class="elastic_no">
                             <div class="header_nav_left_new_one_text">
@@ -404,7 +403,11 @@
 
         </div>
     </div>
+
 </div>
 @yield('js')
+<script src="{{asset('/templates/home/js/jquery-1.7.2.min.js')}}"></script>
+<script src="{{asset('/templates/home/js/jquery.cookie.js')}}"></script>
+<script src="{{asset('/templates/home/js/header.js')}}"></script>
 </body>
 </html>

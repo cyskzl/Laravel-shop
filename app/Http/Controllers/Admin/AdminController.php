@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\AdminUser;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Role;
+use App\Permission;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -13,9 +17,16 @@ class AdminController extends Controller
     /**
      * @return  view    后台首页
      */
-    public function index()
+    public function index(Request $request)
     {
+       $user = \Auth::guard('admin')->user();
+    //    dd($user->hasRole('admin'));
+//        if ($user->can('admin/goods')) {
+//
+//        }
+
         return view('admin.index');
+
     }
 
     /**

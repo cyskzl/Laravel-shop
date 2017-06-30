@@ -24,7 +24,7 @@
 		<!--广告 banner-->
 		<div class="banner width" id="banner">
 			<!--轮播图-->
-			<div class="silder" id="silder-list">
+			<div class="silder" id="silder-list" style="margin-left:-1100px;">
 					<!--最后一张图片-->
 				<a href=""><img name="car_img" src="{{asset('/templates/home/uploads/sider-3.jpg')}}" alt="" /></a>
                     <!--第一张图片-->

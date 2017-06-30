@@ -10,12 +10,14 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="format-detection" content="telephone=no">
         <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
+        <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
+
     </head>
     <body>
         <div class="x-nav">
             <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
-              <a><cite>会员管理</cite></a>
+              <a><cite>管理员管理</cite></a>
               <a><cite>管理员列表</cite></a>
             </span>
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
@@ -38,91 +40,122 @@
                         <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
                     </div>
                   </div>
-                </div> 
+                </div>
             </form>
-            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="admin_add('添加管理员','{{ url('adminlist/create') }}','600','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
+            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="admin_add('添加管理员','{{ url('admin/adminlist/create') }}','600','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：{{ count($admin_user) }}条</span></xblock>
             <table class="layui-table">
                 <thead>
                     <tr>
-                        <th>
-                            <input type="checkbox" name="" value="">
-                        </th>
-                        <th>
-                            ID
-                        </th>
-                        <th>
-                            登录名
-                        </th>
-                        <th>
-                            手机
-                        </th>
-                        <th>
-                            邮箱
-                        </th>
-                        <th>
-                            角色
-                        </th>
-                        <th>
-                            加入时间
-                        </th>
-                        <th>
-                            状态
-                        </th>
-                        <th>
-                            操作
-                        </th>
+                        <th><input type="checkbox" name="" value=""></th>
+                        <th>ID</th>
+                        <th>登录名</th>
+                        <th>邮箱</th>
+                        <th>角色</th>
+                        <th>加入时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <input type="checkbox" value="1" name="">
-                        </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            admin
-                        </td>
-                        <td >
-                            18925139194
-                        </td>
-                        <td >
-                            113664000@qq.com
-                        </td>
-                        <td >
-                            超级管理员
-                        </td>
-                        <td>
-                            2017-01-01 11:11:42
-                        </td>
-                        <td class="td-status">
-                            <span class="layui-btn layui-btn-normal layui-btn-mini">
-                                已启用
-                            </span>
-                        </td>
-                        <td class="td-manage">
-                            <a style="text-decoration:none" onclick="admin_stop(this,'10001')" href="javascript:;" title="停用">
-                                <i class="layui-icon">&#xe601;</i>
-                            </a>
-                            <a title="编辑" href="javascript:;" onclick="admin_edit('编辑','{{ url('adminlist/1/edit') }}','4','','510')"
-                            class="ml-5" style="text-decoration:none">
-                                <i class="layui-icon">&#xe642;</i>
-                            </a>
-                            <a title="删除" href="javascript:;" onclick="admin_del(this,'1')" 
-                            style="text-decoration:none">
-                                <i class="layui-icon">&#xe640;</i>
-                            </a>
-                        </td>
-                    </tr>
+                @if(count($admin_user) > 0)
+                    @foreach($admin_user as $row)
+                        @if( $row->id == 1)
+                            <tr id = "admin">
+                                {{--{{dd($admin_user)}}--}}
+                                <td>
+                                    <input type="checkbox" value="{{ $row->id }}" name="id">
+                                </td>
+
+                                <td>{{ $row->id }}</td>
+
+                                <td>{{ $row->nickname }}</td>
+
+                                <td >{{ $row->email }}</td>
+
+                                <td >{{ $row->nickname }}</td>
+
+                                <td>{{ $row->created_at }}</td>
+                                <td class="td-status">
+                                    @if($row->status == '1')
+                                        <span class="layui-btn layui-btn-normal layui-btn-mini">
+                                            已启用
+                                        </span>
+                                    @else
+                                        <span class="layui-btn layui-btn-normal layui-btn-mini">
+                                        已禁用
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="td-manage"></td>
+                            </tr>
+                        @continue
+                        @endif
+                        <tr>
+                            {{--{{dd($admin_user)}}--}}
+                            <td>
+                                <input type="checkbox" value="{{ $row->id }}" name="id">
+                            </td>
+
+                            <td>{{ $row->id }}</td>
+
+                            <td>{{ $row->nickname }}</td>
+
+                            <td >{{ $row->email }}</td>
+
+                            <td >{{ $row->nickname }}</td>
+
+                            <td>{{ $row->created_at }}</td>
+
+                            <td class="td-status">
+                                @if($row->status == '1')
+                                    <span class="layui-btn layui-btn-normal layui-btn-mini">
+                                        已启用
+                                    </span>
+                                @else
+                                    <span class="layui-btn layui-btn-normal layui-btn-mini">
+                                    已禁用
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="td-manage">
+                                @if($row->status == '1')
+                                    <a style="text-decoration:none" onclick="admin_stop(this,{{ $row->id }})" href="javascript:;" title="停用">
+                                        <i class="layui-icon">&#xe601;</i>
+                                    </a>
+                                @else
+                                    <a style="text-decoration:none" onclick="admin_start(this,{{ $row->id }})" href="javascript:;" title="启用">
+                                        <i class="layui-icon">&#xe62f;</i>
+                                    </a>
+                                @endif
+                                <a title="编辑" href="javascript:;" onclick="admin_edit('编辑','{{ url('admin/adminlist/'.$row->id.'/edit') }}',{{ $row->id }},'','510')"
+                                class="ml-5" style="text-decoration:none">
+                                    <i class="layui-icon">&#xe642;</i>
+                                </a>
+                                <a title="删除" href="javascript:;" onclick="admin_del(this, {{ $row->id }})"
+                                style="text-decoration:none">
+                                    <i class="layui-icon">&#xe640;</i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                <tr>
+                    <td colspan="5" ><h3 style="text-align: center">暂无信息</h3></td>
+                </tr>
+                @endif
                 </tbody>
             </table>
 
-            <div id="page"></div>
+            {{ $admin_user->links() }}
         </div>
         <script src="{{ asset('templates/admin/lib/layui/layui.js') }}" charset="utf-8"></script>
         <script src="{{ asset('templates/admin/js/x-layui.js') }}" charset="utf-8"></script>
         <script>
+
+            var tr = document.getElementById('admin');
+            tr.onmouseover = function(){
+                tr.style.cursor = 'not-allowed';
+            };
             layui.use(['laydate','element','laypage','layer'], function(){
                 $ = layui.jquery;//jquery
               laydate = layui.laydate;//日期插件
@@ -139,8 +172,8 @@
                 ,last: 100
                 ,prev: '<em><</em>'
                 ,next: '<em>></em>'
-              }); 
-              
+              });
+
               var start = {
                 min: laydate.now()
                 ,max: '2099-06-16 23:59:59'
@@ -150,7 +183,7 @@
                   end.start = datas //将结束日的初始值设定为开始日
                 }
               };
-              
+
               var end = {
                 min: laydate.now()
                 ,max: '2099-06-16 23:59:59'
@@ -159,7 +192,7 @@
                   start.max = datas; //结束日选好后，重置开始日的最大日期
                 }
               };
-              
+
               document.getElementById('LAY_demorange_s').onclick = function(){
                 start.elem = this;
                 laydate(start);
@@ -168,7 +201,7 @@
                 end.elem = this
                 laydate(end);
               }
-              
+
             });
 
             //批量删除提交
@@ -178,6 +211,7 @@
                     layer.msg('删除成功', {icon: 1});
                 });
              }
+
              /*添加*/
             function admin_add(title,url,w,h){
                 x_admin_show(title,url,w,h);
@@ -187,10 +221,31 @@
             function admin_stop(obj,id){
                 layer.confirm('确认要停用吗？',function(index){
                     //发异步把用户状态进行更改
-                    $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="admin_start(this,id)" href="javascript:;" title="启用"><i class="layui-icon">&#xe62f;</i></a>');
-                    $(obj).parents("tr").find(".td-status").html('<span class="layui-btn layui-btn-disabled layui-btn-mini">已停用</span>');
-                    $(obj).remove();
-                    layer.msg('已停用!',{icon: 5,time:1000});
+                    var url = '{{ url('/admin/adminlist/') }}'+ '/' + id;
+                    var obj = {
+                        'id':id,
+                        'status':'0',
+                    }
+
+                    var data = admin_ajax(url, 'PUT', JSON.stringify(obj));
+//                    console.log(data);
+                    res = JSON.parse(data);
+                    if (res.success == '1') {
+                        var str = '<a style="text-decoration:none" onClick="admin_start(this,id)" href="javascript:;" title="启用"><i class="layui-icon">&#xe62f;</i></a>';
+
+                        $(obj).parents("tr").find(".td-manage").prepend(str);
+
+                        $(obj).parents("tr").find(".td-status").html('<span class="layui-btn layui-btn-disabled layui-btn-mini">已停用</span>');
+
+                        $(obj).remove();
+                        layer.msg(res.info,{icon: 5,time:1000});
+                        location.href = location.href;
+
+                    } else {
+                        layer.msg(res.info,{icon: 5,time:1000});
+                        location.href = location.href;
+                    }
+
                 });
             }
 
@@ -198,24 +253,82 @@
             function admin_start(obj,id){
                 layer.confirm('确认要启用吗？',function(index){
                     //发异步把用户状态进行更改
-                    $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="admin_stop(this,id)" href="javascript:;" title="停用"><i class="layui-icon">&#xe601;</i></a>');
-                    $(obj).parents("tr").find(".td-status").html('<span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>');
-                    $(obj).remove();
-                    layer.msg('已启用!',{icon: 6,time:1000});
+                    var url = '{{ url('/admin/adminlist/') }}'+ '/' + id;
+                    var obj = {
+                        'id':id,
+                        'status':'1',
+                    }
+
+                    var data = admin_ajax(url, 'PUT', JSON.stringify(obj));
+                    res = JSON.parse(data);
+                    if (res.success == '1') {
+
+                        var str = '<a style="text-decoration:none" onClick="admin_stop(this,id)" href="javascript:;" title="停用"><i class="layui-icon">&#xe601;</i></a>';
+
+                        $(obj).parents("tr").find(".td-manage").prepend(str);
+
+                        $(obj).parents("tr").find(".td-status").html('<span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>');
+
+                        $(obj).remove();
+
+                        layer.msg(res.info,{icon: 6,time:1000});
+                        location.href = location.href;
+
+                    } else {
+
+                        layer.msg(res.info,{icon: 5,time:1000});
+                        location.href = location.href;
+                    }
+
                 });
             }
+
             //编辑
             function admin_edit (title,url,id,w,h) {
-                x_admin_show(title,url,w,h); 
+                x_admin_show(title,url,w,h);
             }
+
             /*删除*/
             function admin_del(obj,id){
                 layer.confirm('确认要删除吗？',function(index){
                     //发异步删除数据
-                    $(obj).parents("tr").remove();
-                    layer.msg('已删除!',{icon:1,time:1000});
+                    var url = '{{ url('/admin/adminlist/') }}'+ '/' + id;
+                    var obj = {'id':id}
+
+                    var data = admin_ajax(url, 'delete', JSON.stringify(obj));
+                    res = JSON.parse(data);
+                    if (res.success == '1') {
+                        $(obj).parents("tr").remove();
+                        layer.msg(res.info,{icon:1,time:1000});
+                        location.href = location.href;
+                    } else{
+                        layer.msg(res.info,{icon:5,time:1000});
+                        location.href = location.href;
+
+                    }
                 });
             }
+
+
+            function admin_ajax(url, type, json){
+                var data = '';
+                $.ajax({
+                    url:url,
+                    type:type,
+                    datatype:'json',
+                    async: false,
+                    data:{json,'_token':"{{ csrf_token() }}"},
+                    success:function (res) {
+                        data = res;
+                    }
+
+                });
+
+                return data;
+
+            }
+
+
             </script>
     </body>
 </html>

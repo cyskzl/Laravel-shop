@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    
+
     <head>
         <meta charset="utf-8">
         <title>管理员修改</title>
@@ -12,40 +12,41 @@
         <meta name="format-detection" content="telephone=no">
         <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
     </head>
-    
+
     <body>
         <div class="x-body">
             <form class="layui-form">
+                <input type="hidden" name="id" value="{{ $user->id }}">
                 <div class="layui-form-item">
                     <label for="username" class="layui-form-label">
-                        <span class="x-red">*</span>登录名
+                        <span class="x-red">*</span>用户名
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="username" name="username" required="" lay-verify="required" value="admin" 
+                        <input type="text" id="username" name="nickname" required="" lay-verify="required" value="{{ $user->nickname }}"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         <span class="x-red">*</span>将会成为您唯一的登入名
                     </div>
                 </div>
-                <div class="layui-form-item">
+                <!-- <div class="layui-form-item">
                     <label for="phone" class="layui-form-label">
                         <span class="x-red">*</span>手机
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="phone" value="18925139194" name="phone" required="" lay-verify="phone"
+                        <input type="text" id="phone" value="18898551596"  lay-verify="phone"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         <span class="x-red">*</span>将会成为您唯一的登入名
                     </div>
-                </div>
+                </div> -->
                 <div class="layui-form-item">
                     <label for="L_email" class="layui-form-label">
                         <span class="x-red">*</span>邮箱
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="L_email" name="email" required="" lay-verify="email" value="113664000@qq.com" 
+                        <input type="text" id="L_email" name="email" required="" lay-verify="email" value="{{ $user->email }}"
                         autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
@@ -56,22 +57,19 @@
                     <label for="role" class="layui-form-label">
                         <span class="x-red">*</span>角色
                     </label>
-                    <div class="layui-input-inline">
-                      <select name="role">
-                        <option value="">请选择角色</option>
-                        <option value="超级管理员" selected="">超级管理员</option>
-                        <option value="编辑人员">编辑人员</option>
-                        <option value="问题维护">问题维护</option>
-                      </select>
+                    <div class="layui-input-block">
+                        @foreach($roles as $role)
+                        <input type="checkbox" name="roles[]" value="{{ $role->id }}" title="{{ $role->display_name }}"
+                        @if($myRoles->contains($role)) checked @endif >
+                        @endforeach
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label for="L_pass" class="layui-form-label">
-                        <span class="x-red">*</span>密码
+                        密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
-                        autocomplete="off" class="layui-input" value="123456">
+                        <input type="password" id="L_pass" name="password" lay-verify="pass"  class="layui-input" placeholder="默认为不修改">
                     </div>
                     <div class="layui-form-mid layui-word-aux">
                         6到16个字符
@@ -79,11 +77,17 @@
                 </div>
                 <div class="layui-form-item">
                     <label for="L_repass" class="layui-form-label">
-                        <span class="x-red">*</span>确认密码
+                        确认密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_repass" name="repass" required="" lay-verify="repass" value="123456" 
-                        autocomplete="off" class="layui-input">
+                        <input type="password" id="L_repass" lay-verify="repass" autocomplete="off" class="layui-input" placeholder="默认为不修改">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="status" value="1" title="启用" {{ $user->status == 1 ? 'checked' : '' }}>
+                        <input type="radio" name="status" value="0" title="禁用" {{ $user->status == 0 ? 'checked' : '' }}>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -104,7 +108,8 @@
                 $ = layui.jquery;
               var form = layui.form()
               ,layer = layui.layer;
-            
+
+
               //自定义验证规则
               form.verify({
                 nikename: function(value){
@@ -112,7 +117,9 @@
                     return '昵称至少得5个字符啊';
                   }
                 }
-                ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+                ,pass:function (value){
+                      [/(.+){6,12}$/, '密码必须6到12位']
+                  }
                 ,repass: function(value){
                     if($('#L_pass').val()!=$('#L_repass').val()){
                         return '两次密码不一致';
@@ -122,18 +129,50 @@
 
               //监听提交
               form.on('submit(save)', function(data){
-                console.log(data);
+                // console.log(data);
+
+                var arr = new Array();
+                var a = $("input[name='roles[]']:checked")
+                for (var i=0; i<a.length; i++) {
+                    arr.push(a[i].value);
+                }
+
                 //发异步，把数据提交给php
-                layer.alert("保存成功", {icon: 6},function () {
-                    // 获得frame索引
-                    var index = parent.layer.getFrameIndex(window.name);
-                    //关闭当前frame
-                    parent.layer.close(index);
-                });
+                  $.ajax({
+                      url:'{{ url('admin/adminlist/') }}' + '/'+ data.field.id,
+                      type:'PUT',
+                      datatype:'json',
+                      data:{
+                          'json_edit':JSON.stringify(data.field),
+                          'roles':JSON.stringify(arr),
+                          '_token':"{{ csrf_token() }}",
+                      },
+                      success:function (res){
+                           res = JSON.parse(res);
+                          if (res.success == '1') {
+                              layer.alert(res.info, {icon: 6},function () {
+                                  // 获得frame索引
+                                  var index = parent.layer.getFrameIndex(window.name);
+                                  //关闭当前frame
+                                  parent.layer.close(index);
+                              });
+
+                          } else {
+                              layer.alert("保存失败", {icon: 5},function () {
+                                  // 获得frame索引
+                                  var index = parent.layer.getFrameIndex(window.name);
+                                  //关闭当前frame
+                                  parent.layer.close(index);
+                              });
+                          }
+                      }
+                  });
+
+
                 return false;
               });
-              
-              
+
+
             });
         </script>
     </body>
