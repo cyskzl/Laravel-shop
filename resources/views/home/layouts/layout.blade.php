@@ -82,11 +82,6 @@
         <!-- 头部nav -->
         <div class="header_nav left">
             <div class="header_nav_left left">
-                <div id="header_nav_left_nab">
-                    <a href="javascript:">6.18</a>
-                    <div class="header_nav_left_nab">
-                    </div>
-                </div>
                 <div id="header_nav_left_new">
                     <a href="javascript:">新品</a>
                     <div class="header_nav_left_new">

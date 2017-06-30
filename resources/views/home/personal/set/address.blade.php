@@ -1,19 +1,20 @@
 @extends('home.layouts.layout')
 
-@section('title','会员等级')
+@section('title','地址管理')
 
 @section('style')
 	<link rel="stylesheet" href="{{asset('/templates/home/css/personal.css')}}"/>
-	<link rel="stylesheet" href="{{asset('/templates/home/css/memberLevel.css')}}"/>
+	<link rel="stylesheet" href="{{asset('/templates/home/css/adress.css')}}"/>
 @endsection
 
 @section('main')
 	<!-- 内容 -->
-	    <div class="breadcrumbs comWidth">
+	    <!-- breadcrumbs start-->
+	    <div class="breadcrumbs comWidth clearfix">
 	        <ul>
-	            <li><a href="javascript:;">首页</a><span>&gt;</span></li>
-	            <li><a href="javascript:;">个人中心</a><span>&gt;</span></li>
-	            <li><a href="javascript:;">会员等级</a></li>
+	            <li><a href="javascript:">首页</a><span>&gt;</span></li>
+	            <li><a href="javascript:">个人中心</a><span>&gt;</span></li>
+	            <li><a href="javascript:">地址管理</a></li>
 	        </ul>
 	    </div>
 	    <!-- breadcrumbs end-->
@@ -39,7 +40,7 @@
 
 	                <dt class="level1">个人中心</dt>
 	                <dd><a href="javascript:;">W积分</a></dd>
-	                <dd class="on"><a href="javascript:;">会员等级</a></dd>
+	                <dd><a href="javascript:;">会员等级</a></dd>
 	                <dd><a href="javascript:;">优惠券</a></dd>
 	                <dd><a href="javascript:;">我的评论</a></dd>
 
@@ -51,33 +52,26 @@
 
 	                <dt class="level1">设置</dt>
 	                <dd><a href="javascript:;">个人信息</a></dd>
-	                <dd><a href="javascript:;">地址管理</a></dd>
+	                <dd class="on"><a href="javascript:;">地址管理</a></dd>
 	            </dl>
 	        </div>
 
 	        <div class="personal_main fr">
 	            <ul class="personal_tab_header clearfix">
-	                <li style="border-left: none"><a href="javascript:;">w积分</a></li>
-	                <li class="on"><a href="javascript:;">会员等级</a></li>
-	                <li><a href="javascript:;">优惠券</a></li>
-	                <li><a href="javascript:;">我的评论</a></li>
+	                <li><a href="javascript:;">个人信息</a></li>
+	                <li class="on"><a href="javascript:;">地址设置</a></li>
 	            </ul>
 
-	            <!-- 会员等级 -->
+	            <!-- 地址管理 -->
 	            <div class="personal_tab">
-	                <div class="tab_class">
-	                    <div class="my_class">
-	                        <div class="avatar">
-	                            <a href="javascript:;">
-	                                <img src="./uploads/W1.png" alt=""/>
-	                            </a>
-	                        </div>
-	                        <div class="myclass_name">我的会员等级</div>
-	                        <img src="./uploads/mypage_class.png" alt=""/>
+	                <div class="tab_paid">
+	                    <div class="empty-box">
+	                        <span class="icn-empty-address"></span>
+	                        <a class="address_btn" href="javascript:;">新增地址</a>
 	                    </div>
 	                </div>
 	            </div>
-	            <!-- 会员等级 -->
+	            <!-- 地址管理 -->
 	        </div>
 
 	    </div>
