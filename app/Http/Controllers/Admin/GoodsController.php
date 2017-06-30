@@ -53,7 +53,7 @@ class GoodsController extends Controller
     {
 
         $data = $request->all();
-//        dd($data);
+        dd($data);
         $goods = new Goods();
 
         //分类
@@ -116,10 +116,11 @@ class GoodsController extends Controller
                     $key = '';
                     foreach( $rose as $v){
                         $key .= $v.'_';
+                        $keys = rtrim($key,'_');
+                        $spec_goods_price->key = $keys;
+                        $spec_goods_price->save();
                     }
-                    $keys = rtrim($key,'_');
-                    $spec_goods_price->key = $keys;
-                    $spec_goods_price->save();
+
                 }
 
                 //商品属性表goods_attr
