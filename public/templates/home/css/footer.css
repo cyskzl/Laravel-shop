@@ -32,9 +32,15 @@
 	margin: 25px auto 35px;
 }
 .footer_bottom{
+<<<<<<< HEAD
 	width: 1100px;
 	height: 99px;
 	margin:auto;
+=======
+	width: 100%;
+	height: 99px;
+	float: left;
+>>>>>>> origin/dasuan
 }
 .footer_bottom p{
 	color: #fff;

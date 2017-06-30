@@ -7,12 +7,23 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Permission;
 
 class OrdersReturnController extends Controller
 {
+    protected $perms;
+
+	public function __construct()
+	{
+		$this->perms = new Permission;
+	}
+
     //
     public function index(Request $request)
     {
+        //判断是否有权限访问列表
+		$this->perms->adminPerms('admin, orders', 'ordersretum_list');
+
 //        初始化搜索订单号的状态
         $ordersn = false;
         $status = false;
@@ -44,6 +55,8 @@ class OrdersReturnController extends Controller
 
     public function edit($id)
     {
+        //判断是否有权限修改
+		$this->perms->adminPerms('admin, orders', 'edit_ordersretum');
 
         $ordersReturn = OrdersReturn::find($id);
 

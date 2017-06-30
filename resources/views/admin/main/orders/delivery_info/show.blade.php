@@ -118,11 +118,16 @@
     </tr>
     <tr>
         <td>操作备注:</td>
+<<<<<<< HEAD
         <td><textarea style="resize: none;width: 420px;height: 90px;" id="note">{{$ordergoods->note}}</textarea></td>
+=======
+        <td><textarea style="resize: none;width: 420px;height: 90px;" name=""></textarea></td>
+>>>>>>> origin/dasuan
     </tr>
     <tr>
         <td>可执行操作</td>
         <td>
+<<<<<<< HEAD
             @if($ordergoods->invoice_no == "")
                 <a href="javascript:;" class="layui-btn layui-btn-normal" onclick="level_update(this,'{{$ordergoods->id}}',1)">确认发货</a>
             @else
@@ -130,6 +135,9 @@
                 <a href="javascript:;" class="layui-btn layui-btn-normal" onclick="level_update(this,'{{$ordergoods->id}}',3)">取消发货</a>
 
             @endif
+=======
+            <button>确认发货</button>
+>>>>>>> origin/dasuan
         </td>
     </tr>
     </tbody>
@@ -181,13 +189,17 @@
     function level_update(obj,id,mode){
         layer.confirm('确认要提交吗？',function(index){
             //发异步修改数据
+<<<<<<< HEAD
             var invoice_no = $('input[name=invoice_no]').val();
 
             var note = $('#note').val();
+=======
+>>>>>>> origin/dasuan
 
             $.ajax({
                 type:"PUT",
                 url:'./' + id,
+<<<<<<< HEAD
                 data:{'_token':'{{csrf_token()}}','_method':'PUT',"note":note,"invoice_no":invoice_no,"mode":mode},
                 success:function (data) {
                     switch (data){
@@ -206,6 +218,20 @@
                             layer.msg('修改失败',{icon:2,time:1000});
                             return false;
                             break;
+=======
+                data:{'_token':'{{csrf_token()}}','mode':mode,'_method':'PUT'},
+                success:function (data) {
+
+                    if(data == 0){
+                        layer.msg('修改成功!',{icon:1,time:1000});
+                    }else  if(data ==2){
+                        layer.msg('已发货订单不可修改',{icon:2,time:1000});
+                    }else if(data ==3){
+                        layer.msg('删除成功!',{icon:3,time:1000});
+                    }else {
+                        layer.msg('操作失败!',{icon:2,time:1000});
+
+>>>>>>> origin/dasuan
                     }
 
                     self.location.reload();

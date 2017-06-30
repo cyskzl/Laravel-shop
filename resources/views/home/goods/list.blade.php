@@ -9,7 +9,23 @@
 	<script src="{{asset('/templates/home/js/page.js')}}"></script>
 @endsection
 
+<<<<<<< HEAD
 
+=======
+@section('shop')
+	<div class="cart">
+		<a href="">
+			<i></i>
+			<p>购物车</p>
+			<b>0</b>
+		</a>
+	</div>
+	<!--回到顶部-->
+	<div id="scrolltop">
+		<img src="{{asset('/templates/home/uploads/go_to_top.png')}}" alt=""  >
+	</div>
+@endsection
+>>>>>>> origin/dasuan
 	<!-- 头部 -->
 @section('main')
 	<!-- 商品页中间 -->
@@ -251,6 +267,7 @@
 		</div>
 	</div>
 @endsection
+<<<<<<< HEAD
 
 @section('shop')
 	<div class="cart">
@@ -265,6 +282,8 @@
 		<img src="{{asset('/templates/home/uploads/go_to_top.png')}}" alt=""  >
 	</div>
 @endsection
+=======
+>>>>>>> origin/dasuan
 @section('js')
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 @endsection

@@ -9,14 +9,25 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Permission;
 
 class MemberController extends Controller
 {
+    protected $perms;
+
+	public function __construct()
+	{
+		$this->perms = new Permission;
+	}
+
     /**
      * @return  view    会员列表页
      */
     public function index(Request $request)
     {
+        //判断是否有权限修改
+		$this->perms->adminPerms('admin, member', 'member_list');
+
         $keyword = $request->input('keyword');
 
         if(!$keyword) {
@@ -35,6 +46,9 @@ class MemberController extends Controller
      */
     public function show($id)
     {
+        //判断是否有权限查看
+        $this->perms->adminPerms('admin, member', 'show_member');
+
         // 获取会员注册信息
         $user = UserRegister::find($id);
         // 获取会员详细信息
@@ -52,6 +66,8 @@ class MemberController extends Controller
      */
     public function create()
     {
+        //判断是否有权限添加
+        $this->perms->adminPerms('admin, member', 'create_member');
         return view('admin.main.member.add');
     }
 
@@ -83,6 +99,9 @@ class MemberController extends Controller
      */
     public function edit($id)
     {
+        //判断是否有权限修改
+        $this->perms->adminPerms('admin, member', 'edit_member');
+
         $user = UserRegister::find($id);
         $userinfo = $user->userInfo;
 //        dd($userinfo);
@@ -113,6 +132,14 @@ class MemberController extends Controller
      */
     public function destroy($id)
     {
+        //判断是否有权限删除
+		$error = $this->perms->adminDelPerms('admin, member', 'delete_member');
+        if ($error){
+            //$error json数据  success=>错误码  info=>错误提示信息  如要返回的不是json数据请先转换
+            // $json = json_decode($error);
+
+            return 0;
+        }
 
         UserInfo::where('user_id','=',$id)->delete();
         ReceivingAddress::where('user_id','=',$id)->delete();

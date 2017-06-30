@@ -9,12 +9,22 @@ use App\Models\GoodsType;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Permission;
 
 class SpecController extends Controller
 {
+    protected $perms;
+
+	public function __construct()
+	{
+		$this->perms = new Permission;
+	}
+
     public function index(Request $request)
     {
+        //判断是否有权限访问列表
+		$this->perms->adminPerms('admin, goods', 'spec_list');
+
         //分页查询以keyword为搜索关键字
         $specs = Spec::orderBy('order', 'desc')
             ->where(function($query) use ($request){
@@ -37,6 +47,9 @@ class SpecController extends Controller
      */
     public function create()
     {
+        //判断是否有权限添加
+		$this->perms->adminPerms('admin, goods', 'create_spec');
+
         $typeinfos  =  DB::table('goods_type')->select('id', 'name')->get();
         return view('admin.main.goods.spec.create', ['typeinfos' => $typeinfos ]);
     }
@@ -107,6 +120,9 @@ class SpecController extends Controller
      */
     public function edit($id)
     {
+        //判断是否有权限修改
+		$this->perms->adminPerms('admin, goods', 'edit_spec');
+
         $info =  Spec::find($id);
         $typeinfos  =  DB::table('goods_type')->select('id', 'name')->get();
 
@@ -154,6 +170,15 @@ class SpecController extends Controller
      */
     public function destroy($id)
     {
+        //判断是否有权限删除
+		$error = $this->perms->adminDelPerms('admin, goods', 'delete_spec');
+        if ($error){
+            //$error json数据  success=>错误码  info=>错误提示信息  如要返回的不是json数据请先转换
+            $json = json_decode($error);
+            $data = self::errorNumb($json->success, $json->info);
+            return $data;
+        }
+
         $spec = Spec::find($id);
         //获取item表的信息
         $spec_item = GoodsType::find($spec->type_id)->spec_item;

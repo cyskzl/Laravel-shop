@@ -15,12 +15,33 @@
 
     <div class="connect">
         <p>Hello Word</p>
+<<<<<<< HEAD
     </div>
 
     <form action="{{ url('admin/login') }}" method="post" id="loginForm">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div>
             <input type="text" name="username" class="username" placeholder="用户名" autocomplete="off"/>
+=======
+
+    @if(session('fail'))
+        <p style="color:red;font-size: 16px;">{{session('fail')}}</p>
+    @endif
+    @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li><p style="color:red;font-size: 16px;">{{ $error }}</p></li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    </div>
+    <form action="{{ url('admin/login') }}" method="post" id="loginForm">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div>
+            <input type="text" name="username" value="{{old('username')}}" class="username" placeholder="用户名" autocomplete="off"/>
+>>>>>>> origin/dasuan
         </div>
         <div>
             <input type="password" name="password" class="password" placeholder="密码" oncontextmenu="return false" onpaste="return false" />

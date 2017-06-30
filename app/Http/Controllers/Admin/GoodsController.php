@@ -13,13 +13,17 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+
 class GoodsController extends Controller
 {
+
+
     /**
      * @return  view    商品列表页
      */
     public function index(Request $request)
     {
+
         //分页查询以keyword为搜索关键字
         $goods= Goods::orderBy('sort', 'desc')
             ->where(function($query) use ($request){
@@ -154,6 +158,7 @@ class GoodsController extends Controller
      */
     public function edit()
     {
+
         return view('admin.main.goods.edit');
     }
 

@@ -6,9 +6,18 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Models\GoodsAttribute;
 use App\Http\Controllers\Controller;
+use App\Permission;
 
 class GoodsAttributeController extends Controller
 {
+
+    protected $perms;
+
+	public function __construct()
+	{
+		$this->perms = new Permission;
+	}
+
     /**
      * 显示商品属性列表
      * @param Request $request
@@ -16,6 +25,9 @@ class GoodsAttributeController extends Controller
      */
     public function index(Request $request)
     {
+        //判断是否有权限访问列表
+		$this->perms->adminPerms('admin, goods', 'goodsAttribute_list');
+
         //type模型表查询
         $typeinfos = DB::table('goods_type')->select('id', 'name')->get();
         //分页查询以keyword为搜索关键字
@@ -41,6 +53,9 @@ class GoodsAttributeController extends Controller
      */
     public function create()
     {
+        //判断是否有权限添加
+		$this->perms->adminPerms('admin, goods', 'create_goodsAttribute');
+
         $typeinfos = DB::table('goods_type')->select('id', 'name')->get();
         return view('admin.main.goods.goodsattribute.create', ['typeinfos' => $typeinfos]);
     }
@@ -94,6 +109,9 @@ class GoodsAttributeController extends Controller
      */
     public function edit($id)
     {
+        //判断是否有权限添加
+		$this->perms->adminPerms('admin, goods', 'edit_goodsAttribute');
+
         $typeinfos = DB::table('goods_type')->select('id', 'name')->get();
         $goodsattribute = GoodsAttribute::find($id);
         //        dd($goodsattribute);
@@ -126,6 +144,15 @@ class GoodsAttributeController extends Controller
      */
     public function destroy($id)
     {
+        //判断是否有权限删除
+		$error = $this->perms->adminDelPerms('admin, goods', 'delete_goodsAttribute');
+        if ($error){
+            //$error json数据  success=>错误码  info=>错误提示信息  如要返回的不是json数据请先转换
+            $json = json_decode($error);
+            $data = self::errorNumb($json->success, $json->info);
+            return $data;
+        }
+
         if (GoodsAttribute::destroy([$id])) {
             $data = self::errorNumb(0, '删除成功');
         } else {
@@ -145,4 +172,5 @@ class GoodsAttributeController extends Controller
         $data = ['status' => $status, 'msg' => $msg];
         return $data;
     }
+
 }

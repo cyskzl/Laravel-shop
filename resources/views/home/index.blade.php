@@ -6,8 +6,26 @@
 	<link rel="stylesheet" href="{{asset('/templates/home/css/main.css')}}">
 @endsection
 
+<<<<<<< HEAD
 @section('main')
 		<!-- 主体内容 -->
+=======
+	@section('shop')
+		<div class="cart">
+			<a href="">
+				<i></i>
+				<p>购物车</p>
+				<b>0</b>
+			</a>
+		</div>
+		<!--回到顶部-->
+		<div id="scrolltop">
+			<img src="{{asset('/templates/home/uploads/go_to_top.png')}}" alt=""  >
+		</div>
+	@endsection
+	<!-- 主体内容 -->
+	@section('main')
+>>>>>>> origin/dasuan
 		<!--广告 banner-->
 		<div class="banner width" id="banner">
 			<!--轮播图-->
@@ -555,6 +573,7 @@
 				<a href="javascript:">查看更多</a>
 			</div>
 		</div>
+<<<<<<< HEAD
 @endsection
 
 @section('shop')
@@ -570,6 +589,10 @@
 		<img src="{{asset('/templates/home/uploads/go_to_top.png')}}" alt=""  >
 	</div>
 @endsection
+=======
+	@endsection
+
+>>>>>>> origin/dasuan
 @section('js')
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script src="{{asset('/templates/home/js/carousel.js')}}"></script>

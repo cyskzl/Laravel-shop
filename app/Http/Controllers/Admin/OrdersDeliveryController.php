@@ -3,20 +3,29 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\DeliveryDoc;
-use App\Models\Orders;
-use App\Models\OrdersDetails;
+
 use App\Models\Region;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use App\Permission;
 
 class OrdersDeliveryController extends Controller
 {
+    protected $perms;
+
+	public function __construct()
+	{
+		$this->perms = new Permission;
+	}
+
     //
     public function index()
     {
+
+        //判断是否有权限访问列表
+		$this->perms->adminPerms('admin, orders', 'ordersdelivery_list');
 
 //        $deliveryList = DeliveryDoc::with('belongsToOrders')->get();
 
@@ -34,6 +43,8 @@ class OrdersDeliveryController extends Controller
 
     public function show($id)
     {
+        //判断是否有权限查看
+		$this->perms->adminPerms('admin, orders', 'show_ordersdelivery');
 
         $ordergoods = DeliveryDoc::find($id)->with('belongsToOrdersDetalis','belongsToOrders')->get();
 

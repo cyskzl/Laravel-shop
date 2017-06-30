@@ -30,7 +30,6 @@
             <th><input type="checkbox" name="" value=""></th>
             <th>ID</th>
             <th>角色名</th>
-            <th>角色标识</th>
             <th>描述</th>
             <th>操作</th>
         </tr>
@@ -42,7 +41,6 @@
                     <td><input type="checkbox" value="{{ $role->id }}" name="id"></td>
                     <td>{{ $role->id }}</td>
                     <td>{{ $role->name }}</td>
-                    <td>{{ $role->display_name }}</td>
                     <td>{{ $role->description }}</td>
                         <td class="td-manage">
                             <a title="编辑" href="javascript:;" onclick="role_edit('编辑角色','{{ url('admin/adminrole/'.$role->id.'/edit') }}','{{ $role->id }}','','510')"

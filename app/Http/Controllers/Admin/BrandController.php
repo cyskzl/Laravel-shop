@@ -7,8 +7,20 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Permission;
+
 class BrandController extends Controller
 {
+    protected $perms;
+
+    /**
+     * AdminRoleController constructor.
+     */
+    public function __construct()
+    {
+        $this->perms = new Permission;
+    }
+
     /**
      * 显示列表视图
      * @param Request $request
@@ -16,6 +28,9 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
+        //判断是否有权限访问列表
+        $this->perms->adminPerms('admin,goods', 'brand_list');
+
         //分页查询以keyword为搜索关键字
         $brands= Brand::orderBy('sort', 'desc')
             ->where(function($query) use ($request){
@@ -36,6 +51,8 @@ class BrandController extends Controller
      */
     public function create()
     {
+        //判断是否有权限添加
+        $this->perms->adminPerms('admin,goods', 'create_brand');
         return view('admin.main.goods.brand.create');
     }
 
@@ -73,6 +90,9 @@ class BrandController extends Controller
      */
     public function edit($id)
     {
+        //判断是否有权限修改
+        $this->perms->adminPerms('admin,goods', 'edit_brand');
+
         $brand = Brand::find($id);
         return view('admin.main.goods.brand.edit', [ 'brand' => $brand]);
     }
@@ -114,6 +134,13 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
+        //判断是否有权限删除
+		$error = $this->perms->adminDelPerms('admin, goods', 'delete_brand');
+        if ($error){
+            $json = json_decode($error);
+            $data = self::errorNumb($json->success, $json->info);
+            return $data;
+        }
         $brand = Brand::find($id);
         $logo = '.'.rtrim($brand->logo, ',');
         //删除图片

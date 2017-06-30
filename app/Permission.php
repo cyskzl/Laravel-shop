@@ -13,21 +13,37 @@ class Permission extends EntrustPermission
     	'name','display_name','description'
     ];
 
-    //权限属于哪个角色
+    /**
+     * 权限属于哪个角色
+     *
+     * @return $this
+     */
     public function roles()
     {
         return $this->belongsToMany(\App\Role::class, 'permission_role', 'permission_id', 'role_id')->withPivot(['permission_id', 'role_id']);
     }
 
-    //判断权限
+    /**
+     * 判断权限
+     *
+     * @param $role
+     * @param null   $permission
+     */
     public function adminPerms($role, $permission=null)
     {
         if(!\Auth::guard('admin')->user()->ability($role, $permission)){
             return abort(403);
         }
+
     }
 
-    //判断权限
+    /**
+     * 判断权限
+     *
+     * @param   $role
+     * @param   null $permission
+     * @return  string
+     */
     public function adminDelPerms($role, $permission=null)
     {
         if(!\Auth::guard('admin')->user()->ability($role, $permission)){

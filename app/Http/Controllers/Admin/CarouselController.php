@@ -8,14 +8,28 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Permission;
 
 class CarouselController extends Controller
 {
+    protected $perms;
+
+    /**
+     * AdminRoleController constructor.
+     */
+    public function __construct()
+    {
+        $this->perms = new Permission;
+    }
+
     /**
      * @return  view    轮播图管理列表页
      */
     public function index(Request $request)
     {
+        //判断是否有权限访问列表
+		$this->perms->adminPerms('admin, goods', 'carouse_list');
+
         $carousel = Carousel::orderBy('orderby')
             ->where(function($query) use ($request){
                 // 搜索关键词
@@ -35,6 +49,9 @@ class CarouselController extends Controller
      */
     public function create()
     {
+        //判断是否有权限添加
+		$this->perms->adminPerms('admin, goods', 'create_carouse');
+
         return view('admin.main.carousel.add');
     }
 
@@ -64,6 +81,9 @@ class CarouselController extends Controller
      */
     public function edit($id)
     {
+        //判断是否有权限修改
+		$this->perms->adminPerms('admin, goods', 'edit_carouse');
+
         $carousel =Carousel::find($id);
         return view('admin.main.carousel.edit',compact('carousel'));
     }
@@ -102,6 +122,11 @@ class CarouselController extends Controller
      */
     public function destroy(Request $request,$id)
     {
+        //判断是否有权限删除
+		$error = $this->perms->adminDelPerms('admin, goods', 'delete_carousel');
+        if ($error){
+            return 2;
+        }
         //删除id,取单一字段
         $old_img = Carousel::where('id','=',$id)->pluck('img')->first();
         $img = './'.trim($old_img,',');

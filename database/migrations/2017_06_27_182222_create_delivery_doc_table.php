@@ -32,7 +32,11 @@ class CreateDeliveryDocTable extends Migration
             $table->string('shipping_code',32)->nullable()->comment('物流code');
             $table->string('shipping_name',120)->nullable()->comment('物流名称');
             $table->decimal('shipping_price',10,2)->defaule(0.00)->comment('运费');
+<<<<<<< HEAD
             $table->string('invoice_no',256)->defalut("")->comment('物流单号');
+=======
+            $table->string('invoice_on',256)->defalut("")->comment('物流单号');
+>>>>>>> origin/dasuan
             $table->string('tel',64)->nullable()->comment('座机电话');
             $table->string('note',255)->nullable()->comment('管理员添加的备注信息');
             $table->dateTime('best_time')->nullable()->comment('友好收货时间');

@@ -30,7 +30,11 @@
             }
 
             .title {
+<<<<<<< HEAD
                 font-size: 72px;
+=======
+                font-size: 30px;
+>>>>>>> origin/dasuan
                 margin-bottom: 40px;
             }
         </style>

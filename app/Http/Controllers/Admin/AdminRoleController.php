@@ -11,22 +11,26 @@ use Illuminate\Http\Request;
 
 class AdminRoleController extends Controller
 {
+
+    protected $perms;
+
     /**
      * AdminRoleController constructor.
      */
-     protected $perms;
-
  	public function __construct()
  	{
  		$this->perms = new Permission;
  	}
+
 
     /**
      * @return  view    角色列表
      */
     public function index()
     {
-        // $this->perms->adminPerms('admin', 'role_list');
+        //判断是否有权限访问列表
+        $this->perms->adminPerms('admin', 'role_list');
+
         $roles = Role::paginate(10);
         return view('admin.main.adminrole.index', compact('roles'));
     }
@@ -36,9 +40,9 @@ class AdminRoleController extends Controller
      */
     public function create()
     {
+        //判断是否有权限添加
         $this->perms->adminPerms('admin', 'create_role');
 
-       
         $permission   = Permission::all();
 
         return view('admin.main.adminrole.add', compact('permission'));
@@ -63,7 +67,6 @@ class AdminRoleController extends Controller
        //实例化角色类
        $roles  = new Role;
        $roles->name = $json->name;
-       $roles->display_name = $json->display_name;
        $roles->description =  $json->description;
 
        //保存新建角色
@@ -93,6 +96,7 @@ class AdminRoleController extends Controller
      */
     public function edit($id)
     {
+        //判断是否有权限修改
         $this->perms->adminPerms('admin', 'edit_role');
 
         $roles        = Role::find($id);
@@ -161,6 +165,7 @@ class AdminRoleController extends Controller
      */
     public function destroy($id)
     {
+        //判断是否有权限删除
         $error = $this->perms->adminDelPerms('admin', 'delete_role');
 		if ($error) {
 			return $error;

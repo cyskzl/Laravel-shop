@@ -7,9 +7,18 @@ use App\Models\Good;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Permission;
 
 class GoodsActivityController extends Controller
 {
+
+    protected $perms;
+
+	public function __construct()
+	{
+		$this->perms = new Permission;
+	}
+
     /**
      * Display a listing of the resource.
      *
@@ -17,6 +26,9 @@ class GoodsActivityController extends Controller
      */
     public function index()
     {
+        //判断是否有权限访问列表
+		$this->perms->adminPerms('admin, goods', 'goodsactivity_list');
+
         return view('admin.main.goodsactivity.index');
     }
 
@@ -27,6 +39,10 @@ class GoodsActivityController extends Controller
      */
     public function create()
     {
+
+        //判断是否有权限添加
+		$this->perms->adminPerms('admin, goods', 'create_goodsactivity');
+
         $goods = Good::orderBy('goods_id','desc')->paginate(5);
         return view('admin.main.goodsactivity.add',compact('goods'));
     }
@@ -63,6 +79,8 @@ class GoodsActivityController extends Controller
      */
     public function edit($id)
     {
+        //判断是否有权限修改
+		$this->perms->adminPerms('admin, goods', 'edit_goodsactivity');
         //
     }
 
@@ -86,6 +104,14 @@ class GoodsActivityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //判断是否有权限删除
+		$error = $this->perms->adminDelPerms('admin, feedback', 'delete_feedback');
+        if ($error){
+            //$error json数据  success=>错误码  info=>错误提示信息  如要返回的不是json数据请先转换
+            //json_decode($error);
+            return $error;
+        }
+
+
     }
 }

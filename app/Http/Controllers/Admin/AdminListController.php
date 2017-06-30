@@ -28,10 +28,10 @@ class AdminListController extends Controller
 	 */
 	public function index()
 	{
-		// $this->perms->adminPerms('admin', 'admin_list');
+        //判断是否有权限访问列表
+        $this->perms->adminPerms('admin', 'admin_list');
 
 		//查询管理员及其所属角色
-
 		$admin_user = AdminUser::paginate(10);
 		return view('admin.main.administrator.index', compact('admin_user'));
 	}
@@ -41,7 +41,9 @@ class AdminListController extends Controller
 	 */
 	public function create()
 
-	{	$this->perms->adminPerms('admin', 'create_role');
+	{
+        //判断是否有权限添加
+	    $this->perms->adminPerms('admin', 'create_role');
 		$roles = Role::all();
 		return view('admin.main.administrator.add', compact('roles'));
 	}
@@ -107,6 +109,7 @@ class AdminListController extends Controller
 
 	public function edit($id)
 	{
+        //判断是否有权限修改
 		$this->perms->adminPerms('admin', 'edit_list');
 
         $roles = Role::all();
@@ -199,33 +202,32 @@ class AdminListController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        //判断是否有权限删除
 		$error = $this->perms->adminDelPerms('admin', 'delete_admin');
+
 		if ($error) {
 			return $error;
 		}
 		//获取 Ajax json数据
-           $json = json_decode($request->json);
+        $json = json_decode($request->json);
 
-           $res  = AdminUser::where('id', '=', $json->id)->delete();
+        $res  = AdminUser::where('id', '=', $json->id)->delete();
 
-           if ($res) {
-               //删除该管理员下的角色
-               $role = \DB::table('role_user')->where('user_id', '=', $id)->delete();
-               if ($role) {
+        if ($res) {
+           //删除该管理员下的角色
+           $role = \DB::table('role_user')->where('user_id', '=', $id)->delete();
+           if ($role) {
 
-                   $error['success'] = 1;
-                   $error['info']    = '删除成功';
-                   return json_encode($error);
-               } else {
+               $error['success'] = 1;
+               $error['info']    = '删除成功';
+               return json_encode($error);
+           } else {
 
-                   $error['success'] = 0;
-                   $error['info']    = '该管理员的所属角色ID删除失败,或不存在';
-                   return json_encode($error);
-               }
-
+               $error['success'] = 0;
+               $error['info']    = '该管理员的所属角色ID删除失败,或不存在';
+               return json_encode($error);
            }
 
-       }
-
-
+        }
+    }
 }
