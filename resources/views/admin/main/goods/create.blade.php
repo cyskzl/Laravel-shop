@@ -49,6 +49,7 @@
 @section('x-body')
     {{--<form class="layui-form layui-form-pane">--}}
     <form class="layui-form layui-form-pane" action="{{url('/admin/goods')}}" method="post" >
+        {{csrf_field()}}
         <div class="layui-tab layui-tab-brief" lay-filter="test"  >
             <ul class="layui-tab-title">
                 <li class="layui-this">通用信息</li>
@@ -57,9 +58,9 @@
                 <li>商品物流</li>
             </ul>
             <div class="layui-tab-content" style="height: 1900px;">
-                <div class="layui-tab-item layui-show">
 
-                    {{csrf_field()}}
+                <div class="layui-tab-item ">
+
                     <div class="layui-form-item">
                         <label class="layui-form-label" style="width: 100px">商品名称</label>
                         <div class="layui-input-block">
@@ -232,11 +233,8 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
-                <div class="layui-tab-item ">
+                <div class="layui-tab-item layui-show">
                     {{--商品模型--}}
                     <div class="layui-form-item">
                         <label class="layui-form-label"  style="width: 100px">商品模型</label>
@@ -258,12 +256,12 @@
 
                         </table>
                         <div id="goods_spec_table2" style="height: 500px;display: inline-block;width: 700px;">
+                            <table id="table-mod" class="layui-table" >
 
+                            </table>
                             <div>
                             </div>
                         </div>
-
-
 
                     </div>
                     <div id="attribute" class="attribute">
@@ -361,8 +359,7 @@
                         dataType : 'json',
                         data     :  {'_token': '{{csrf_token()}}', 'type': data.value},
                         success:function (data){
-//                            //全局变量
-//                            Company = data;
+                            //全局变量
                             var str = '';
                             for(var i=0; i<data.length; i++){
                                 var strss ='';
@@ -370,23 +367,14 @@
                                 var specidsplit = data[i]['specid'].split(',');
                                 var specid = data[i]['id'];
                                 var spec_id = data[i]['spec_id'];
-//                               console.log(specidsplit);
-//                               var specItemId ='';
-//                               for(var k=0; k< specidsplit.length;k++){
-//
-//                                   specItemId += specidsplit[k];
-//                               }
-
+                                var spec_name = data[i]['name'];
                                 for(var j=0; j< strs.length;j++){
-//                                   console.log(data[i]);
-//                                   console.log(specidsplit[j]);
-                                    strss +=  '<input name="rose[]" type="checkbox" lay-filter="spec_che" id="spec_but"  class="layui-btn  layui-btn-normal spec_but" data-item_id='+spec_id+' data-spec='+strs[j]+' value='+specidsplit[j]+'>'+strs[j]+'';
-//                                     strss += '<input type=''>';
-//                                     strss +=  '<a  id="spec_but" onclick="getSpec()" class="layui-btn layui-btn-radius layui-btn-normal spec_but" data-item_id='+spec_id+' data-spec_id='+specid+'>'+strs[j]+'</a>';
+
+                                    strss +=  '<input name="rose[]" type="checkbox" lay-filter="spec_che" data-spec_name='+spec_name+' id="spec_but"  class="layui-btn  layui-btn-normal spec_but" data-item_id='+spec_id+'  data-spec='+strs[j]+' value='+strs[j]+'_'+specidsplit[j]+'>'+strs[j]+'';
                                 }
 
                                 var name = data[i]['name'];
-                                str += '<tr><td>'+name+'</td><td id="tableitem">'+strss+'</td></tr>';
+                                str += '<tr class="Father"><td class="item_name">'+name+'</td><td id="tableitem">'+strss+'</td></tr>';
                             }
                             $('.mod').append(str);
                             form.render();
@@ -450,136 +438,148 @@
                         }
                     });
                     form.on('checkbox(spec_che)', function(data){
-//                        var arr = new Array();
-//                        var a = $("#spec_but:checked").val();
-//                            a.attr();
-//                        console.log(data.value);
-//                        for (var i=0; i<a.length; i++) {
-//                            arr.push(a[i].value);
-//
-//
-//                        }
-//                console.log(data.elem); //得到checkbox原始DOM对象
-//                console.log(data.elem.checked); //是否被选中，true或者false
-//                console.log(data.value); //复选框value值，也可以通过data.elem.value得到
-//                console.log(data.othis); //得到美化后的DOM对象
-                        //求出笛卡尔乘积的函数
-                        var elem = data.elem ;
-//                $('#goods_spec_table2').remove();
-                        function combine(arr) {
-                            var r = [];
-                            (function f(t, a, n) {
-                                if (n == 0) return r.push(t);
-                                for (var i = 0; i < a[n-1].length; i++) {
-                                    f(t.concat(a[n-1][i]), a, n - 1);
+                        var step = {
+                            createSku:function(){
+//                                alert(1);
+                                var skuObj = $(".Father").has("input[type='checkbox']:checked");
+
+                                if (skuObj.length < 1) {
+                                    // 如果没有选中的情况下，情况table2里面的内容
+                                    step.clearTable();
+                                    return false; //后面的代码没必要进行下去
+                                };
+                                //=====================
+                                // 要获取 选中了规格值的 规格名：性别、网络...
+                                var arrayTitle = new Array();
+                                // 要获取 规格值和对应的id : 男_1 、 女_2...
+                                var arrayItem = new Array();
+                                // 保存所有的信息
+                                var arrayInfo = new Array();
+//                                console.log($);
+                                $.each(skuObj, function(i, item){
+
+                                    // 压入要生成标题数组中
+                                    arrayInfo[i] = new Array();
+//                                    return false;
+                                    arrayInfo[i].push($(this).find("td").first().html());
+//                                    console.log();
+                                    // 要获取 规格值和对应的id
+                                    var order = new Array();
+//                                    order.push(data.value);
+                                    $(this).find("input[type='checkbox']:checked").each(function (){
+                                        order.push($(this).val()); // 这里将当前规格下的规格项 写入数组order
+                                    });
+                                    arrayInfo[i].push(order);
+
+                                });
+
+                                /**
+                                 * 这个函数是sort的排序规格
+                                 * arr，arr2 是数组中的相邻的两个
+                                 */
+                                function countArr(arr, arr2){
+                                    if (arr[1].length >  arr2[1].length) {
+                                        return 1;
+                                    }else {
+                                        return -1
+                                    }
                                 }
-                            })([], arr, arr.length);
-                            return r;
-                        }
 
+                                // 对收集到的数组排序
+                                arrayInfo.sort(countArr);
 
-                        var arr2 = [];
-                        var i=0;
-                        $("table tr").each(function(){
-                            var arr = [];
-                            $(this).find(":checked").each(function(n){
-                                // 将每个规格下的被选中的规格值放入到arr中
-                                arr[n] = $(this).attr('data-spec');
-                            })
-                            // arr2
-                            if(arr.length!=0){
-                                arr2[i] = arr;
-                                i++;
-                            }
-                        });
+                                // 分离标题  和  规格值
+                                for (var i = 0; i < arrayInfo.length; i ++) {
+                                    arrayTitle[i] = arrayInfo[i][0];  // 标题数组
+                                    arrayItem[i] = arrayInfo[i][1];
+//                                    console.log(arrayInfo[i]);
+                                };
 
-                        // 冒泡排序  把数组内元素少的放前面
-                        var temp = [];
-                        for(i=0;i<arr2.length-1;i++){
-                            for(j=0;j<arr2.length-i-1;j++){
-                                if(arr2[j].length < arr2[j+1].length){
-                                    temp = arr2[j+1];
-                                    arr2[j+1] = arr2[j];
-                                    arr2[j] = temp;
+//                                 console.log(arrayTitle, arrayItem);
+//                                 console.log(step.combine(arrayItem));
+                                // 获取到了 笛卡尔积 数组
+                                var arrayDkej = step.combine(arrayItem);
+                                var row = [];
+                                // arrayDkej = 6    arrayItem =  1 * 2 * 3
+                                // 对应的td 的colspan = 3 、2 、1
+                                rowspan = arrayDkej.length;
+
+                                for(var n=arrayItem.length-1; n>-1; n--) {
+                                    //总条数除以arr2内每个数组的长度
+                                    row[n] = parseInt(rowspan/arrayItem[n].length);
+                                    // console.log(row[n]);
+                                    rowspan = row[n];
                                 }
-                            }
-                        }
-                        // console.log(arr2);
 
-                        var res = combine(arr2);
-//                    console.log(res);
-//                    return false;
-                        //合并单元格
-                        var row = [];
-                        var rowspan = res.length;
-                        for(var n=arr2.length-1; n>-1; n--) {
-                            //总条数除以arr2内每个数组的长度
-                            row[n] = parseInt(rowspan/arr2[n].length);
-//                        console.log(row[n]);
-                            rowspan = row[n];
-                        }
-                        row.reverse();
+                                row.reverse();
+                                var str = "";
+                                var len = arrayDkej[0].length;
+//                                console.log( arrayDkej[0]);
+                                for (var i=0; i<arrayDkej.length; i++) {
+                                    var tmp = "";
+                                    var itemsId = "";  // 用来做对应的price和sotre的input框的name值
+                                    for(var j=0; j<len; j++) {
+                                        var item = arrayDkej[i][j].split("_");
+                                        if (itemsId == "") {
+                                            itemsId = itemsId +""+item[1];
+//                                            console.log(itemsId);
+                                        } else {
+                                            itemsId = itemsId + "_"+ item[1];
 
-                        //table tr td
-                        var str = "";
-                        var len = res[0].length;
-                        for (var i=0; i<res.length; i++) {
-                            var tmp = "";
-                            for(var j=0; j<len; j++) {
-                                if(i%row[j]==0 && row[j]>1) {
-                                    tmp += "<td rowspan='"+ row[j] +"'>"+res[i][j]+"</td>";
-                                }else if(row[j]==1){
-                                    tmp += "<td>"+res[i][j]+"</td>";
+                                        }
+//                                        console.log(itemsId);
+                                        if(i%row[j]==0 && row[j]>1) {
+                                            tmp += "<td rowspan='"+ row[j] +"'>"+item[0]+"</td>";
+                                        }else if(row[j]==1){
+                                            tmp += "<td>"+item[0]+"</td>";
+                                        }
+//                                         console.log(tmp);
+                                    }
+                                    str += "<tr>" + tmp + "<td><input type='text' name='"+itemsId+"[]'/></td>" + "<td><input type='text' name='"+itemsId+"[]'/></td>" + "</tr>";
                                 }
-                            }
-                            str += "<tr>" + tmp + "<td><input type='text' name='price' value='0'></td>" + "<td><input type='text'  value='0' name='attr_store_count'></td>" +"<td><input type='text' name='attr_sku'></td>" + "</tr>";
-                        }
+//                                1293_123_123
+                                // 创建标题
+                                step.clearTable();
+                                table = $("#table-mod");
+                                var thead = $("<thead></thead>");
+                                thead.appendTo(table);
+                                var trHead = $("<tr></tr>");
+                                trHead.appendTo(thead);
+                                //创建表头
+                                $.each(arrayTitle, function (index, item) {
+                                    var td = $("<th>" + item + "</th>");
+                                    td.appendTo(trHead);
+                                });
+                                var itemColumHead = $("<th>价格</th><th>库存</th>");
+                                itemColumHead.appendTo(trHead);
+                                var tbody = $("<tbody></tbody>");
+                                tbody.appendTo(table);
+                                tbody.html(str);
+                            },
 
-                        //thead
-                        var th = "";
-                        for(var k=0; k<len; k++) {
-//                        for(var z=0; z<Company.length;z++){
-//                            console.log(Company[z]['name']);
-//                        }
-                            th += "<th></th>";
+                            clearTable:function(){
+                                $("#table-mod").html("");
+                            },
+                            //求出笛卡尔乘积的函数
+                            combine:function (arr) {
+                                var r = [];
+                                (function f(t, a, n) {
+                                    if (n == 0) return r.push(t);
+                                    for (var i = 0; i < a[n-1].length; i++) {
+                                        f(t.concat(a[n-1][i]), a, n - 1);
+                                    }
+                                })([], arr, arr.length);
+                                return r;
+                            },
+                        };
 
-                        }
-                        th = "<thead>"+th+"<th>价格</th>" + "<th>数量</th>" + "<th>SKU</th>" +"</thead>";
-                        str = "<table align='center'  class='layui-table' width='600px' border='1px'>" + th + str + "</table>";
 
-                        $('#goods_spec_table2').html(str);
+                        step.createSku();
 
 
                     });
                 }
             });
-
-
-            {{--form.on('submit(add)', function(data){--}}
-
-            {{--//               JSON.toString()--}}
-            {{--$.ajax({--}}
-            {{--type: 'post',--}}
-            {{--url:  '/admin/goods',--}}
-            {{--dataType: 'json',--}}
-            {{--data: { '_token':'{{csrf_token()}}',  'json': JSON.stringify(data.field) },--}}
-            {{--success:function (data){--}}
-
-            {{--}--}}
-
-
-
-
-            {{--});--}}
-
-            {{--return false;--}}
-            {{--});--}}
-
-
-
-
-
-
         });
 
         //logo 图实例
@@ -589,11 +589,9 @@
         upload(uploadPath,token);
         //实例化删除函数
         delimg(uploadPath);
-
-
-        //              实例化上传函数
+        // 实例化上传函数
         oneUpload(uploadPath,token);
-        //              实例化删除函数
+        // 实例化删除函数
         delOneImg(uploadPath)
     </script>
     <script>

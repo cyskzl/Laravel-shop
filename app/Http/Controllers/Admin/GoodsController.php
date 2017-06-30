@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Models\GoodsAttr;
 use App\Models\GoodsAttribute;
 use App\Models\GoodsImages;
@@ -37,6 +38,7 @@ class GoodsController extends Controller
      */
     public function create()
     {
+
         $fatcates   =  DB::table('goods_category')->where('pid', '=', '0')->select()->get();
         $brands  =  DB::table('brand')->select()->get();
         $types = DB::table('goods_type')->get();
@@ -51,7 +53,7 @@ class GoodsController extends Controller
     {
 
         $data = $request->all();
-//        dd($data);
+        dd($data);
         $goods = new Goods();
 
         //分类
@@ -114,10 +116,11 @@ class GoodsController extends Controller
                     $key = '';
                     foreach( $rose as $v){
                         $key .= $v.'_';
+                        $keys = rtrim($key,'_');
+                        $spec_goods_price->key = $keys;
+                        $spec_goods_price->save();
                     }
-                    $keys = rtrim($key,'_');
-                    $spec_goods_price->key = $keys;
-                    $spec_goods_price->save();
+
                 }
 
                 //商品属性表goods_attr
@@ -143,7 +146,6 @@ class GoodsController extends Controller
         } else {
             return back();
         }
-
 
     }
 
