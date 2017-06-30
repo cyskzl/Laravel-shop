@@ -1,78 +1,49 @@
-body,div,h1,h2,h3,h4,h5,h6,a,p,b,span,img,header,footer,aside,nav,ul,li,input{
-    padding: 0;
-    margin: 0;
+blockquote,
+body,
+button,
+dd,
+dl,
+dt,
+fieldset,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+input,
+legend,
+li,
+ol,
+p,
+pre,
+td,
+textarea,
+th,
+ul {
+  margin: 0;
+  padding: 0;
 }
-body{
-    width: 1350px;
-    margin: auto;
+a {
+  text-decoration: none;
 }
-a{
-    text-decoration: none;
+ul li {
+  list-style: none;
 }
-li{
-    list-style: none;
+.clear:after {
+  display: block;
+  clear: both;
+  content: '';
+  visibility: hidden;
+  height: 0;
+  zoom: 1;
 }
-.clearfix:before{
-    content: "";
-    display: table;
+img {
+  vertical-align: top;
 }
-.clearfix:after{
-    content: "";
-    display: block;
-    clear: both;
-    visibility: hidden;
-    height: 0;
-}
-.fl{
-    float: left;
-}
-.fr{
-    float: right;
-}
-.flex{
-    display: flex;
-}
-.fix{
-    position: fixed;
-}
-.rela{
-    position: relative;
-}
-.abso{
-    position: absolute;
-}
-.black li:hover{
-    color: black;
-}
-.red li:hover{
-    background: #F54B73;
-}
-.blue li:hover{
-    background: lightblue;
-}
-.cur{
-    cursor: pointer;
-}
-.Black{
-    color: black;
-    font-size: 21px;
-    font-weight: 800;
-    cursor: pointer;
-}
-.B4d{
-    color: #4D4D4D;
-    font-size: 21px;
-    font-weight: 600;
-}
-.S3c{
-    color: #cccccc;
-    font-size: 12px;
-}
-.comWidth{
-    width: 1100px;
-    margin: 0 auto;
-}
-input{
-    outline: none;
-    border: none;
+i,
+em {
+  font-style: normal;
 }

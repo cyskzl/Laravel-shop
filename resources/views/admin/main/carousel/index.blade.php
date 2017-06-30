@@ -58,14 +58,14 @@
                 </div>
             </td>
             <td class="td-manage">
-                <a style="text-decoration:none" onclick="banner_stop(this,'{{$car->id}}')" href="javascript:;" title="显示">
-                    <i class="layui-icon">&#xe609;</i>
-                </a>
+                {{--<a style="text-decoration:none" onclick="banner_stop(this,'{{$car->id}}')" href="javascript:;" title="显示">--}}
+                    {{--<i class="layui-icon">&#xe609;</i>--}}
+                {{--</a>--}}
                 <a title="编辑" href="javascript:;" onclick="banner_edit('编辑','{{ url('admin/carousel/'.$car->id.'/edit') }}','{{$car->id}}','','510')"
                    class="ml-5" style="text-decoration:none">
                     <i class="layui-icon">&#xe642;</i>
                 </a>
-                <a title="删除" href="javascript:;" onclick="banner_del(this,'1')"
+                <a title="删除" href="javascript:;" onclick="banner_del(this,'{{$car->id}}')"
                    style="text-decoration:none">
                     <i class="layui-icon">&#xe640;</i>
                 </a>
@@ -109,19 +109,22 @@
             }else{
                 status=0;
             }
-            $.ajax({
-                type:'POST',
-                url:'{{url('admin/carousel/status')}}',
-                dataType: 'json',
-                data:{'_token':'{{csrf_token()}}','id':id,'status':status},
-                success: function (data){
-                    if(data==1){
-                        layer.msg('修改成功', {icon: 6,time:3000});
-                        location.href = location.href;
-                    }else{
-                        layer.msg('修改失败', {icon: 5,time:3000});
+            layer.confirm('请确认是否需要显示？',function(index){
+                //捉到所有被选中的，发异步进行修改
+                $.ajax({
+                    type:'POST',
+                    url:'{{url('admin/carousel/status')}}',
+                    dataType: 'json',
+                    data:{'_token':'{{csrf_token()}}','id':id,'status':status},
+                    success: function (data){
+                        if(data==1){
+                            layer.msg('修改成功', {icon: 6,time:3000});
+                            location.href = location.href;
+                        }else{
+                            layer.msg('修改失败', {icon: 5,time:3000});
+                        }
                     }
-                }
+                });
             });
         }
     </script>
@@ -184,8 +187,23 @@
         function banner_del(obj,id){
             layer.confirm('确认要删除吗？',function(index){
                 //发异步删除数据
-                $(obj).parents("tr").remove();
-                layer.msg('已删除!',{icon:1,time:1000});
+                $.ajax({
+                    type:'DELETE',
+                    url:'{{url('admin/carousel')}}/'+id,
+                    dateType:'json',
+                    data: { '_token':'{{csrf_token()}}', '_method': 'DELETE'},
+                    success:function (data){
+//                        console.log(data);return false;
+                        if(data == 1){
+                            location.href = location.href;
+                            $(obj).parents("tr").remove();
+                            layer.msg('已删除!',{icon:6,time:1000});
+                            return false;
+                        } else {
+                            layer.msg('删除失败啦!请重试', {icon: 5,time:1000});
+                        }
+                    }
+                });
             });
         }
     </script>

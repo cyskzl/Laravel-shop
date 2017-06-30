@@ -1,0 +1,56 @@
+.tab_personal{
+    padding: 21px;
+}
+.personal_infomation li{
+    padding: 32px 5px;
+    border-bottom: 1px dashed #9e9e9e;
+    font-size: 14px;
+    color: #626161;
+}
+.personal_infomation li a{
+    float: right;
+    font-size: 14px;
+    color: #9e9e9e;
+}
+.personal_infomation li p{
+    display: inline-block;
+}
+.personal_infomation li span{
+    width: 95px;
+    padding-right: 35px;
+}
+.head_portrait_img{
+    display: inline-block;
+    width: 94px;
+    height: 94px;
+    -webkit-border-radius: 47px;
+    border-radius: 47px;
+    overflow: hidden;
+}
+.head_portrait_img img{
+    max-width: 100%;
+    max-height: 100%;
+}
+.ladda-button{
+    line-height: 94px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

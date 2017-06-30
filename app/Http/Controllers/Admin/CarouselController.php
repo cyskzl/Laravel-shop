@@ -100,9 +100,18 @@ class CarouselController extends Controller
      * @param   $request    array   获取请求头信息
      *
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request,$id)
     {
-        //删除id
+        //删除id,取单一字段
+        $old_img = Carousel::where('id','=',$id)->pluck('img')->first();
+        $img = './'.trim($old_img,',');
+        unlink($img);
+        $del_car = Carousel::where('id','=',$id)->delete();
+        if($del_car){
+            return 1;
+        }else {
+            return 2;
+        }
     }
 
     // 修改轮播图排序

@@ -19,8 +19,8 @@ class CreateCarouselsTable extends Migration
             $table->tinyInteger('type_id')->comment('分类ID：0女士|1男士|2创意生活');
             $table->string('link')->comment('跳转地址');
             $table->string('desc')->comment('描述');
-            $table->tinyInteger('status')->comment('显示状态: 0 显示 |1不显示 默认为1不显示');
-            $table->integer('orderby')->default(0)->comment('描述');
+            $table->tinyInteger('status')->default(1)->comment('显示状态: 0 显示 |1不显示 默认为1不显示');
+            $table->integer('orderby')->comment('描述');
             $table->timestamps();
             $table->softDeletes()->comment('删除时间');
 

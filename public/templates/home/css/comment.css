@@ -1,0 +1,23 @@
+.tab_paid{
+    padding: 21px;
+}
+.empty-box{
+    font-size: 18px;
+    color: #626161;
+    text-align: center;
+    min-height: 300px;
+}
+.icn-empty-review{
+    width: 71px;
+    height: 71px;
+    margin: 64px auto 54px;
+    background: url("../uploads/icn-empty-review.png") no-repeat;
+    -o-background-size: 100% 100%;
+    background-size: 100% 100%;
+    display: block;
+}
+
+
+
+
+

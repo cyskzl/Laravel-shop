@@ -28,6 +28,7 @@ class CreateGoodsTable extends Migration
             $table->decimal('cost_price', 10, 2)->default('0.00')->comment('商品成本价');
             $table->text('price_ladder')->comment('价格阶梯');
             $table->string('keywords')->default('')->comment('商品关键词');
+            $table->string('goods_remark')->default('')->comment('商品简单描述');
             $table->text('goods_content')->comment('商品详细描述');
             $table->string('original_img')->comment('商品上传原始图');
             $table->tinyInteger('is_real')->unsigned()->default(1)->nullable()->commetn('是否为实物,1是0否');
