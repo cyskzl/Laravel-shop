@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\DeliveryDoc;
+use App\Models\Orders;
+use App\Models\OrdersDetails;
 use App\Models\Region;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class OrdersDeliveryController extends Controller
 {
@@ -32,7 +35,6 @@ class OrdersDeliveryController extends Controller
     public function show($id)
     {
 
-
         $ordergoods = DeliveryDoc::find($id)->with('belongsToOrdersDetalis','belongsToOrders')->get();
 
         $ordergoods = $ordergoods[0];
@@ -53,5 +55,74 @@ class OrdersDeliveryController extends Controller
 //        dd($ordergoods);
 
         return view('admin.main.orders.delivery_info.show',compact('ordergoods','region'));
+    }
+
+
+    public function update(Request $request,$id)
+    {
+        if (empty($id)){
+
+            //返回空id错误号
+            return 1;
+        }
+
+        if (empty($request->input('invoice_no'))){
+
+            //返回空快递号错误
+            return 2;
+        }
+
+        $deliver = DeliveryDoc::find($id);
+
+        $orderid = $deliver->order_id;
+
+        if ($request->mode == 1 || $request->mode == 2){
+
+            $status = 1;
+            $invoice = $request->input('invoice_no');
+
+        }else{
+            $status = 0;
+            $invoice = "";
+        }
+
+            $note = $request->input('note');
+
+            $status = DB::transaction(function ($date) use ($request,$orderid,$status,$invoice,$note) {
+
+                DB::table('orders')->where('id',$orderid)->update(['shipping_status'=>$status]);
+
+                DB::table('orders_details')->where('order_id',$orderid)->update(['is_send'=>$status]);
+
+                DB::table('delivery_doc')->where('order_id',$orderid)->update(['invoice_no' => $invoice,
+                    'note' => $note]);
+        });
+
+
+        return $status;
+
+
+        $deliver = DeliveryDoc::find($id);
+
+        $orderid = $deliver->order_id;
+
+        return $orderid;
+
+        //写入发货快递单号
+        $deliver->invoice_no = $request->input('invoice_no');
+
+        //写入发货备注信息
+        $deliver->note = $request->input('note');
+
+        //判断写入是否成功
+        if ($deliver->save()){
+
+            //返回成功号
+            return 0;
+        }else{
+
+            //返回修改数据库错误号
+            return 3;
+        }
     }
 }
