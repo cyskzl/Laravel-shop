@@ -95,6 +95,8 @@ class OrdersController extends Controller
         //查询出来的的数据是在0下标，直接获取后使用更方便。
         $ordergoods = $ordergoods[0];
 
+        
+
 
         return view('admin.main.orders.edit',compact('ordergoods'));
     }
