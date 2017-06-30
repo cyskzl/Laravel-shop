@@ -13,7 +13,7 @@
                 <label class="layui-form-label">搜索</label>
                 <div class="layui-input-inline">
                     <input type="text" name="keyword" value="{{$request->input('keyword')}}" placeholder="标题" autocomplete="off" class="layui-input">
-                </div>
+            </div>
                 <div class="layui-input-inline" style="width:80px">
                     <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
                 </div>
@@ -23,8 +23,11 @@
     <xblock>
 
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
-        <a href="{{url('admin/goodscategory/create')}}"><button class="layui-btn" ><i class="layui-icon">&#xe608;</i>增加</button></a>
-        <span class="x-right" style="line-height:40px">共有数据：{{$cates->total()}} 条</span></xblock>
+        {{--<a href="{{url('admin/goodscategory/create')}}"><button class="layui-btn" ><i class="layui-icon">&#xe608;</i>增加</button></a>--}}
+        <button class="layui-btn" onclick="question_add('添加商品','{{ url('admin/goodscategory/create') }}','800','500')"><i
+                    class="layui-icon">&#xe608;</i>添加
+        </button>
+        <span class="x-right" style="line-height:40px">共有数据：{{ $cates->total()}}  条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -48,8 +51,8 @@
             </th>
         </tr>
         </thead>
-        <tbody id="x-link">
-        @foreach($cates as $v)
+        <center id="x-link">
+                @foreach($cates as $v)
             <tr>
                 <td>
                     <input type="checkbox" value="1" name="">
@@ -68,7 +71,7 @@
                    {{$v->describe =  $v->describe?:"无描述"}}
                 </td>
                 <td class="td-manage">
-                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','{{url('admin/goodscategory/'.$v->id.'/edit')}}','{{$v->id}}','','510')"
+                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/goodscategory/{{$v->id}}/edit','{{$v->id}}','','510')"
                        class="ml-5" style="text-decoration:none">
                         <i class="layui-icon">&#xe642;</i>
                     </a>
@@ -79,7 +82,6 @@
                 </td>
             </tr>
         @endforeach
-        </tbody>
     </table>
     <div class="container">
         <div class="row">
@@ -97,7 +99,12 @@
             lement = layui.element();//面包导航
             layer = layui.layer;//弹出层
 
-        })
+        });
+
+        /*添加*/
+        function question_add(title, url, w, h) {
+            x_admin_show(title, url, w, h);
+        }
 
         //批量删除提交
         function delAll () {
@@ -109,6 +116,7 @@
 
         //-编辑
         function cate_edit (title,url,id,w,h) {
+//            console.log(url);
             x_admin_show(title,url,w,h);
         }
 

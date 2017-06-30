@@ -16,39 +16,19 @@
     <body>
         <div class="x-body">
             <form class="layui-form" action="">
-                <input type="hidden" name="id" value="1">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">所属分类</label>
-                    <div class="layui-input-inline" >
-                        <select name="class_id">
-                            <option value="0">请选择分类</option>
-
-                                <option value="1" >1</option>
-
-
-                        </select>
-                    </div>
-                </div>
-
+                <input type="hidden" name="id" value="{{ $permission->id }}">
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">权限名称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="display_name" required  lay-verify="required" placeholder="请输入权限名称" autocomplete="off" class="layui-input" value="1">
+                        <input type="text" name="name" required  lay-verify="required" placeholder="请输入权限名称" autocomplete="off" class="layui-input" value="{{ $permission->name }}">
                     </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">权限规则</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="name" required lay-verify="required" placeholder="请输入权限规则" autocomplete="off" class="layui-input" value="1">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux">如: admin/adminlist</div>
                 </div>
 
                 <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">描述</label>
+                    <label class="layui-form-label">权限描述</label>
                     <div class="layui-input-inline">
-                        <textarea name="description" placeholder="请输入内容" class="layui-textarea">1</textarea>
+                        <textarea name="description" placeholder="请输入内容" class="layui-textarea">{{ $permission->description }}</textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -81,8 +61,9 @@
                         'json':JSON.stringify(data.field)
                     },
                     success:function (data) {
-                        if (data == '1') {
-                            layer.alert("保存成功", {icon: 6},function () {
+                        res = JSON.parse(data);
+                        if (res.success == '1') {
+                            layer.alert(res.info, {icon: 6},function () {
                                 // 获得frame索引
                                 var index = parent.layer.getFrameIndex(window.name);
                                 //关闭当前frame
@@ -90,7 +71,7 @@
                             });
                         } else {
 
-                            layer.alert("保存失败", {icon: 5},function () {
+                            layer.alert(res.info, {icon: 5},function () {
                                 // 获得frame索引
                                 var index = parent.layer.getFrameIndex(window.name);
                                 //关闭当前frame

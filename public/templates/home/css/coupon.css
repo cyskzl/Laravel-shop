@@ -1,0 +1,40 @@
+.tab_coupon{
+    padding: 21px;
+}
+.coupon_list{
+    padding: 5px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.coupon_item{
+    justify-content: space-around;
+    margin-bottom: 30px;
+    padding: 9.5px 0;
+    width: 423px;
+    height: 85px;
+    background: url("../uploads/icon_coupon.png") no-repeat;
+    -o-background-size: 423px 85px;
+    background-size: 423px 85px;
+}
+.CBL{
+    padding: 8.5px 0 0 50px;
+    width: 318px;
+    height: 66px;
+    border-right: 1px dotted #d9d9d9;
+}
+.coupon_price{
+    font-size: 18px;
+    color: #2d2d2d;
+    line-height: 35px;
+}
+.CBR{
+    width: 102px;
+    line-height: 66px;
+    font-size: 14px;
+    color: #9e9e9e;
+    text-align: center;
+}
+
+
+
+

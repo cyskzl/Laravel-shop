@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use DB;
+use Storage;
 use App\Http\Requests;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
@@ -26,7 +27,10 @@ class GoodscategoryController extends Controller
 
         //遍历数组 调整分类名称
         $cates =  self::trer($cate);
-        return view('admin.main.goodscategory.index', ['cates' => $cates, 'request' => $request]);
+        if(!empty($cates)){
+            return view('admin.main.goodscategory.index', ['cates' => $cates, 'request' => $request]);
+        }
+
     }
 
     /**
@@ -38,12 +42,25 @@ class GoodscategoryController extends Controller
     {
         //插入数据
         $data = self::tree($request);
-        //保存
-        if (DB::table('goods_category')->insert($data)) {
-            return redirect('admin/goodscategory');
-        } else {
-            return back();
+
+        //是否有status这个键
+        if(array_key_exists('status', $data)){
+            return $data;
         }
+            //保存
+            if (DB::table('goods_category')->insert($data)) {
+                $data = [
+                    'status' => 0,
+                    'msg'    => '添加成功'
+                ];
+            } else {
+                $data = [
+                    'status' => 1,
+                    'msg'    => '添加失败'
+                ];
+            }
+
+        return $data;
     }
 
     /**
@@ -59,13 +76,12 @@ class GoodscategoryController extends Controller
     }
 
     /**
-     * 显示页面
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show()
     {
-        $cates = self::getCates();
-        return view('admin.main.goodscategory.index', ['cates' => $cates]);
+
     }
 
     /**
@@ -76,7 +92,8 @@ class GoodscategoryController extends Controller
         $info = Category::find($id);
         //pid路径添加
         $cates = self::getCates();
-        return view('admin.main.goodscategory.edit', ['cates' => $cates, 'info' => $info]);
+        $img = rtrim($info->img, ',');
+        return view('admin.main.goodscategory.edit', ['cates' => $cates, 'info' => $info, 'img' => $img]);
     }
 
     /**
@@ -90,12 +107,23 @@ class GoodscategoryController extends Controller
     {
         //插入数据
         $data = self::tree($request);
-        //保存
-        if (DB::table('goods_category')->where('id', $id)->update($data)) {
-            return 1;
-        } else {
-            return 2;
+        //是否有status这个键
+        if(array_key_exists('status', $data)){
+            return $data;
         }
+        //保存
+        if(Category::where('id', $id)->update($data)){
+            $data = [
+                'status' => 0,
+                'msg'    => '添加成功'
+            ];
+        } else {
+            $data = [
+                'status' => 1,
+                'msg'    => '添加失败'
+            ];
+        }
+        return $data;
     }
 
     /**
@@ -114,7 +142,7 @@ class GoodscategoryController extends Controller
         if(!$row->count()){
             $img = $cates->img;
             if(!empty($img)){
-                dd($request->deleteFile($img));
+                @unlink('./'.date('Ymd').$img);
             }
             Category::destroy([$id]);
             //没数据返回给页面ajax
@@ -162,8 +190,13 @@ class GoodscategoryController extends Controller
     public function tree(Request $request)
     {
         //清除put和csfr_field的请求
-        $data = $request->except(['_method', '_token']);
-        //        dd($data);
+        $data = json_decode($request->json,true);
+
+        if( array_key_exists('_token', $data) ||  array_key_exists('_method', $data)){
+            unset($data['_token']);
+            unset($data['_method']);
+        }
+
         $category = new Category();
         //如果顶级分类，pid和level都是0
         if ($data['pid'] == 0) {
@@ -174,9 +207,18 @@ class GoodscategoryController extends Controller
             $info = Category::find($data['pid']);
             $data['level'] = $info->level . ',' . $info->id;
         }
+
+        if(!empty($data['name']) ){
+            $category->name = $data['name'];
+        } else {
+            $data = [
+                'status' => 3,
+                'msg'    => '分类名称不能为空'
+            ];
+            return $data;
+        }
         $category->pid = $data['pid'];
         $category->level = $data['level'];
-        $category->name = $data['name'];
         $category->img = $data['img'];
         $category->describe = $data['describe'];
         return $data;

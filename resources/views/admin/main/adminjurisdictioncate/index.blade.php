@@ -15,7 +15,7 @@
         <div class="x-nav">
             <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
-              <a><cite>分类管理</cite></a>
+              <a><cite>会员管理</cite></a>
               <a><cite>权限分类</cite></a>
             </span>
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
@@ -26,7 +26,7 @@
                   <div class="layui-form-item">
                     <label class="layui-form-label">分类名</label>
                     <div class="layui-input-inline">
-                      <input type="text" name="class_name"  placeholder="分类名" autocomplete="off" class="layui-input">
+                      <input type="text" name="name"  placeholder="分类名" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-input-inline" style="width:80px">
                         <button class="layui-btn"  lay-submit="" lay-filter="*"><i class="layui-icon">&#xe608;</i>添加</button>
@@ -34,7 +34,7 @@
                   </div>
                 </div> 
             </form>
-            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><span class="x-right" style="line-height:40px">共有数据：{{ $num }} 条</span></xblock>
+            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
             <table class="layui-table">
                 <thead>
                     <tr>
@@ -53,33 +53,27 @@
                     </tr>
                 </thead>
                 <tbody id="x-link">
-
-                @if(count($class) > 0)
-                @foreach($class as $row)
-
                     <tr>
                         <td>
-                            <input type="checkbox" value="{{ $row->id }}" name="id">
+                            <input type="checkbox" value="1" name="">
                         </td>
-                        <td>{{ $row->id }}</td>
-                        <td>{{ $row->class_name }}</td>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            会员相关
+                        </td>
                         <td class="td-manage">
-                            <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','{{url('admin/adminjurisdiction/'.$row->id.'/edit')}}','{{ $row->id }}','','510')"
+                            <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','{{'adminjurisdiction/1/edit'}}','4','','510')"
                             class="ml-5" style="text-decoration:none">
                                 <i class="layui-icon">&#xe642;</i>
                             </a>
-                            <a title="删除" href="javascript:;" onclick="cate_del(this,{{ $row->id }})"
+                            <a title="删除" href="javascript:;" onclick="cate_del(this,'1')" 
                             style="text-decoration:none">
                                 <i class="layui-icon">&#xe640;</i>
                             </a>
                         </td>
                     </tr>
-                @endforeach
-                @else
-                    <tr>
-                        <td colspan="4" ><h3 style="text-align: center">暂无分类信息</h3></td>
-                    </tr>
-                @endif
 
                 </tbody>
             </table>
@@ -98,39 +92,10 @@
 
               //监听提交
               form.on('submit(*)', function(data){
-//                console.log(data);
+                console.log(data);
                 //发异步，把数据提交给php
-                  $.ajax({
-                      url:'{{ url('admin/adminjurisdiction') }}',
-                      type:'post',
-                      datatype:'json',
-                      data:{
-                          'class_name':data.field.class_name,
-                          '_token':"{{ csrf_token() }}"
-                      },
-                      success:function (data){
-                          data = JSON.parse(data);
-
-                          if (data.success == '1') {
-
-
-                              layer.alert("增加成功", {icon: 6});
-
-                              var str = '<tr><td>';
-                                  str += '<input type="checkbox"value="'+ data.id +'"name=""></td>';
-                                  str += '<td>'+ data.id +'</td>';
-                                  str += '<td>'+data.class_name+'</td>';
-                                  str += '<td class="td-manage">';
-                                  str += '<a title="编辑"href="javascript:;"onclick="cate_edit(\'编辑\',\'{{ url('admin/adminjurisdiction/') }}'+ '/' + data.id +'/edit\',\''+ data.id +'\',\'\',\'510\')"class="ml-5"style="text-decoration:none">';
-                                  str += '<i class="layui-icon">&#xe642;</i></a>';
-                                  str += '<a title="删除"href="javascript:;"onclick="cate_del(this,\''+ data.id +'\')"style="text-decoration:none"><i class="layui-icon">&#xe640;</i></a></td></tr>';
-
-                              $('#x-link').prepend(''+ str +'');
-
-                          }
-                      }
-                  });
-
+                layer.alert("增加成功", {icon: 6});
+                $('#x-link').prepend('<tr><td><input type="checkbox"value="1"name=""></td><td>1</td><td>'+data.field.name+'</td><td class="td-manage"><a title="编辑"href="javascript:;"onclick="cate_edit(\'编辑\',\'link-edit.html\',\'4\',\'\',\'510\')"class="ml-5"style="text-decoration:none"><i class="layui-icon">&#xe642;</i></a><a title="删除"href="javascript:;"onclick="cate_del(this,\'1\')"style="text-decoration:none"><i class="layui-icon">&#xe640;</i></a></td></tr>');
                 return false;
               });
             })
@@ -155,23 +120,9 @@
             /*删除*/
             function cate_del(obj,id){
                 layer.confirm('确认要删除吗？',function(index){
-
                     //发异步删除数据
-                    $.ajax({
-                        url:'{{'adminjurisdiction'}}' + '/' + id,
-                        type:'delete',
-                        datatype:'json',
-                        data:{'_token':"{{ csrf_token() }}", 'id':id},
-                        success:function (data){
-                            if (data == '1') {
-                                $(obj).parents("tr").remove();
-                                layer.msg('已删除!',{icon:1,time:1000});
-                            } else {
-                                layer.msg('删除失败!',{icon:5,time:1000});
-                            }
-                        }
-                    });
-
+                    $(obj).parents("tr").remove();
+                    layer.msg('已删除!',{icon:1,time:1000});
                 });
             }
             </script>

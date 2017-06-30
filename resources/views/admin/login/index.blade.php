@@ -16,7 +16,15 @@
     <div class="connect">
         <p>Hello Word</p>
     </div>
-
+    @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <form action="{{ url('admin/login') }}" method="post" id="loginForm">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div>

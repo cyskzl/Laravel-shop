@@ -13,9 +13,11 @@ class EntrustSetupTables extends Migration
     {
         Schema::create('admin_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nickname')->unique();
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('nickname')->unique()->comment('管理员名称');
+            $table->string('email')->unique()->comment('管理员邮箱');
+            $table->string('password')->comment('密码');
+            $table->tinyInteger('status')->default('1')->comment('状态');
+            $table->rememberToken();
             $table->timestamps();
         });
 
@@ -70,7 +72,8 @@ class EntrustSetupTables extends Migration
      * @return  void
      */
     public function down()
-    {
+    {   
+        Schema::drop('admin_users');
         Schema::drop('permission_role');
         Schema::drop('permissions');
         Schema::drop('role_user');

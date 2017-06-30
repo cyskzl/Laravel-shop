@@ -10,6 +10,8 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="format-detection" content="telephone=no">
         <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
+        <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
+
     </head>
     <body>
         <div class="x-nav">
@@ -55,57 +57,92 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($admin_user as $row)
+                @if(count($admin_user) > 0)
+                    @foreach($admin_user as $row)
+                        @if( $row->id == 1)
+                            <tr id = "admin">
+                                {{--{{dd($admin_user)}}--}}
+                                <td>
+                                    <input type="checkbox" value="{{ $row->id }}" name="id">
+                                </td>
 
+                                <td>{{ $row->id }}</td>
 
-                    <tr>
-                        {{--{{dd($admin_user)}}--}}
-                        <td>
-                            <input type="checkbox" value="{{ $row->id }}" name="id">
-                        </td>
+                                <td>{{ $row->nickname }}</td>
 
-                        <td>{{ $row->id }}</td>
+                                <td >{{ $row->email }}</td>
 
-                        <td>{{ $row->nickname }}</td>
+                                <td >{{ $row->nickname }}</td>
 
-                        <td >{{ $row->email }}</td>
+                                <td>{{ $row->created_at }}</td>
+                                <td class="td-status">
+                                    @if($row->status == '1')
+                                        <span class="layui-btn layui-btn-normal layui-btn-mini">
+                                            已启用
+                                        </span>
+                                    @else
+                                        <span class="layui-btn layui-btn-normal layui-btn-mini">
+                                        已禁用
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="td-manage"></td>
+                            </tr>
+                        @continue
+                        @endif
+                        <tr>
+                            {{--{{dd($admin_user)}}--}}
+                            <td>
+                                <input type="checkbox" value="{{ $row->id }}" name="id">
+                            </td>
 
-                        <td >{{ $row->nickname }}</td>
+                            <td>{{ $row->id }}</td>
 
-                        <td>{{ $row->created_at }}</td>
+                            <td>{{ $row->nickname }}</td>
 
-                        <td class="td-status">
-                            @if($row->status == '1')
-                                <span class="layui-btn layui-btn-normal layui-btn-mini">
-                                    已启用
-                                </span>
-                            @else
-                                <span class="layui-btn layui-btn-normal layui-btn-mini">
-                                已禁用
-                                </span>
-                            @endif
-                        </td>
-                        <td class="td-manage">
-                            @if($row->status == '1')
-                                <a style="text-decoration:none" onclick="admin_stop(this,{{ $row->id }})" href="javascript:;" title="停用">
-                                    <i class="layui-icon">&#xe601;</i>
+                            <td >{{ $row->email }}</td>
+
+                            <td >{{ $row->nickname }}</td>
+
+                            <td>{{ $row->created_at }}</td>
+
+                            <td class="td-status">
+                                @if($row->status == '1')
+                                    <span class="layui-btn layui-btn-normal layui-btn-mini">
+                                        已启用
+                                    </span>
+                                @else
+                                    <span class="layui-btn layui-btn-normal layui-btn-mini">
+                                    已禁用
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="td-manage">
+                                @if($row->status == '1')
+                                    <a style="text-decoration:none" onclick="admin_stop(this,{{ $row->id }})" href="javascript:;" title="停用">
+                                        <i class="layui-icon">&#xe601;</i>
+                                    </a>
+                                @else
+                                    <a style="text-decoration:none" onclick="admin_start(this,{{ $row->id }})" href="javascript:;" title="启用">
+                                        <i class="layui-icon">&#xe62f;</i>
+                                    </a>
+                                @endif
+                                <a title="编辑" href="javascript:;" onclick="admin_edit('编辑','{{ url('admin/adminlist/'.$row->id.'/edit') }}',{{ $row->id }},'','510')"
+                                class="ml-5" style="text-decoration:none">
+                                    <i class="layui-icon">&#xe642;</i>
                                 </a>
-                            @else
-                                <a style="text-decoration:none" onclick="admin_start(this,{{ $row->id }})" href="javascript:;" title="启用">
-                                    <i class="layui-icon">&#xe62f;</i>
+                                <a title="删除" href="javascript:;" onclick="admin_del(this, {{ $row->id }})"
+                                style="text-decoration:none">
+                                    <i class="layui-icon">&#xe640;</i>
                                 </a>
-                            @endif
-                            <a title="编辑" href="javascript:;" onclick="admin_edit('编辑','{{ url('admin/adminlist/'.$row->id.'/edit') }}',{{ $row->id }},'','510')"
-                            class="ml-5" style="text-decoration:none">
-                                <i class="layui-icon">&#xe642;</i>
-                            </a>
-                            <a title="删除" href="javascript:;" onclick="admin_del(this, {{ $row->id }})"
-                            style="text-decoration:none">
-                                <i class="layui-icon">&#xe640;</i>
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                <tr>
+                    <td colspan="5" ><h3 style="text-align: center">暂无信息</h3></td>
+                </tr>
+                @endif
                 </tbody>
             </table>
 
@@ -114,6 +151,11 @@
         <script src="{{ asset('templates/admin/lib/layui/layui.js') }}" charset="utf-8"></script>
         <script src="{{ asset('templates/admin/js/x-layui.js') }}" charset="utf-8"></script>
         <script>
+
+            var tr = document.getElementById('admin');
+            tr.onmouseover = function(){
+                tr.style.cursor = 'not-allowed';
+            };
             layui.use(['laydate','element','laypage','layer'], function(){
                 $ = layui.jquery;//jquery
               laydate = layui.laydate;//日期插件

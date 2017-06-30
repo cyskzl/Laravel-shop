@@ -23,7 +23,7 @@ class CreateUsersOperationTable extends Migration
             $table->softDeletes()->comment('删除时间');
             $table->timestamps();
 
-            $table->foreign('operator_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
+//            $table->foreign('operator_id')->references('id')->on('users_register')->comment('user_register用户表id外键');
         });
     }
 

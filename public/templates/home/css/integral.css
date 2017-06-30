@@ -1,0 +1,64 @@
+.tab_point{
+    padding: 21px;
+}
+.avatar{
+    height: 130px;
+}
+.avatar a{
+    display: block;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    margin: 26px auto 0;
+}
+.avatar a img{
+    max-width: 100%;
+}
+.point_total_info{
+    border-top: 1px dashed #9e9e9e;
+    border-bottom: 1px solid #9e9e9e;
+    padding: 14px;
+    justify-content: space-between;
+}
+.point_total_info span{
+    width: 50%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 14px;
+    color: #9e9e9e;
+}
+.point_total_info span strong{
+    vertical-align: middle;
+    padding-left: 15px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #626161;
+}
+.BR{
+    border-right: solid 1px #9e9e9e;
+}
+.point_history{
+    margin-top: 20px;
+}
+.empty-box{
+    font-size: 18px;
+    color: #626161;
+    text-align: center;
+    min-height: 300px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -77,7 +77,7 @@
 
             //监听提交
             form.on('submit(add)', function(data){
-                console.log(data.field);
+//                console.log(data.field);
 //                return false;
                 //发异步，把数据提交给php
                 $.ajax({

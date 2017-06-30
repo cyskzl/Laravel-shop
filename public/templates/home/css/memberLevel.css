@@ -1,0 +1,32 @@
+.tab_class{
+    padding: 21px;
+}
+.avatar{
+    height: 130px;
+}
+.avatar a{
+    display: block;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 50px;
+    margin: 26px auto 0;
+}
+.avatar a img{
+    max-width: 100%;
+}
+.myclass_name{
+    text-align: center;
+    font-size: 18px;
+    color: #636363;
+    border-bottom: 1px dotted #9e9e9e;
+    padding-bottom: 38px;
+}
+.my_class>img{
+    margin: 40px 0 0 40px;
+}
+
+
+
+
+

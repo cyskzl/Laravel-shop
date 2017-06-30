@@ -19,6 +19,11 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
+       $user = \Auth::guard('admin')->user();
+    //    dd($user->hasRole('admin'));
+//        if ($user->can('admin/goods')) {
+//
+//        }
 
         return view('admin.index');
 

@@ -10,6 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
+    <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
 </head>
 <body>
 <div class="x-nav">
@@ -19,8 +20,8 @@
               <a><cite>权限规则</cite></a>
             </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
-       href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon"
-                                                                        style="line-height:30px">ဂ</i></a>
+       href="javascript:location.replace(location.href);" title="刷新">
+       <i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
 <div class="x-body">
     <form class="layui-form x-center" action="" style="width:80%">
@@ -34,9 +35,9 @@
 
                     </select>
                 </div> -->
-                <div class="layui-input-inline">
+                <!-- <div class="layui-input-inline">
                     <input type="text" name="name" placeholder="模块/控制器/方法" autocomplete="off" class="layui-input" lay-verify="required" required="">
-                </div>
+                </div> -->
                 <div class="layui-input-inline">
                     <input type="text" name="name" placeholder="权限名称" autocomplete="off" class="layui-input" lay-verify="required">
                 </div>
@@ -56,7 +57,7 @@
     </form>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
-        <span class="x-right" style="line-height:40px">共有数据：1 条</span></xblock>
+        <span class="x-right" style="line-height:40px">共有数据：{{ count($permission) }} 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -68,35 +69,35 @@
         </tr>
         </thead>
         <tbody id="x-link">
-            @foreach($permission as $perms)
-                <tr>
-                    <td><input type="checkbox" value="{{ $perms->id }}" name="id"></td>
-                    <td>{{ $perms->id }}</td>
-                    <td>{{ $perms->name }}</td>
-                    <td>{{ $perms->description }}</td>
+            @if(count($permission) > 0)
+                @foreach($permission as $perms)
+                    <tr>
+                        <td><input type="checkbox" value="{{ $perms->id }}" name="id"></td>
+                        <td>{{ $perms->id }}</td>
+                        <td>{{ $perms->name }}</td>
+                        <td>{{ $perms->description }}</td>
 
-                    <td class="td-manage">
-                        <a title="编辑" href="javascript:;" onclick="rule_edit('编辑','{{ url('admin/permission/1/edit') }}','1','','510')"
-                           class="ml-5" style="text-decoration:none">
-                            <i class="layui-icon">&#xe642;</i>
-                        </a>
-                        <a title="删除" href="javascript:;" onclick="rule_del(this, 1)"
-                           style="text-decoration:none">
-                            <i class="layui-icon">&#xe640;</i>
-                        </a>
-                    </td>
-                </tr>
-            @endforeach
-
+                        <td class="td-manage">
+                            <a title="编辑" href="javascript:;" onclick="rule_edit('编辑','{{ url('admin/permission/'.$perms->id.'/edit') }}','{{ $perms->id }}','','510')"
+                               class="ml-5" style="text-decoration:none">
+                                <i class="layui-icon">&#xe642;</i>
+                            </a>
+                            <a title="删除" href="javascript:;" onclick="rule_del(this, {{ $perms->id }})"
+                               style="text-decoration:none">
+                                <i class="layui-icon">&#xe640;</i>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
             <tr>
-                <td colspan="7" ><h3 style="text-align: center">暂无信息</h3></td>
+                <td colspan="5" ><h3 style="text-align: center">暂无信息</h3></td>
             </tr>
-
-
+            @endif
         </tbody>
     </table>
 
-    <div id="page"></div>
+    {{ $permission->links() }}
 </div>
 <script src="{{ asset('templates/admin/lib/layui/layui.js') }}" charset="utf-8"></script>
 <script src="{{ asset('templates/admin/js/x-layui.js') }}" charset="utf-8"></script>
@@ -143,13 +144,14 @@
                                 str += '<i class="layui-icon">&#xe640;</i></a></td></tr>';
                             //写入表格
                             $('#x-link').prepend(str);
-
                         }
 
                     } else{
 
                         layer.alert("添加失败", {icon: 5});
                     }
+
+
                 }
             });
 
@@ -183,13 +185,21 @@
                 datatype:'json',
                 data:{'_token':"{{ csrf_token() }}"},
                 success:function (data) {
-                    if (data == '1') {
-                        $(obj).parents("tr").remove();
-                        layer.msg('已删除!', {icon: 1, time: 1000});
-                    } else {
+                    res = JSON.parse(data);
+                    if (res) {
 
-                        layer.msg('删除失败!', {icon: 5, time: 1000});
+                        if (res.success == '1') {
+                            $(obj).parents("tr").remove();
+                            layer.msg(res.info, {icon: 6, time: 1000});
+                            location.href = location.href;
+                        } else {
+
+                            layer.msg(res.info, {icon: 5, time: 1000});
+                        }
+                    } else {
+                        layer.msg('未知错误！', {icon: 4, time: 1000});
                     }
+
                 }
             });
 

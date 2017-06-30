@@ -18,7 +18,7 @@ class CreateGoodscateTable extends Migration
             $table->integer('pid')->default(0)->comment('分类的父ID');
             $table->string('level', 30)->default(0)->comment('分类层级');
             $table->string('name')->comment('分类名');
-            $table->string('img', 64)->nullable()->comment('图标或图片');
+            $table->string('img')->nullable()->comment('图标或图片');
             $table->string('describe')->nullable()->comment('分类用的描述');
             $table->softDeletes();//删除时间
             $table->timestamps();

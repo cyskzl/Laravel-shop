@@ -1,0 +1,72 @@
+body{
+    width: 100%;
+    margin: auto;
+    font-size: 14px;
+}
+.clearfix:before{
+    content: "";
+    display: table;
+}
+.clearfix:after{
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.flex{
+    display: flex;
+}
+.fix{
+    position: fixed;
+}
+.rela{
+    position: relative;
+}
+.abso{
+    position: absolute;
+}
+.black li:hover{
+    color: black;
+}
+.red li:hover{
+    background: #F54B73;
+}
+.blue li:hover{
+    background: lightblue;
+}
+.cur{
+    cursor: pointer;
+}
+.Black{
+    color: black;
+    font-size: 21px;
+    font-weight: 800;
+    cursor: pointer;
+}
+.B4d{
+    color: #6D6D6D;
+    font-size: 20px;
+    font-weight: 600;
+}
+.S3c{
+    color: #cccccc;
+    font-size: 12px;
+}
+.comWidth{
+    width: 1100px;
+    margin: 0 auto;
+}
+input{
+    outline: none;
+    border: none;
+}
+.none{
+    display: none;
+}

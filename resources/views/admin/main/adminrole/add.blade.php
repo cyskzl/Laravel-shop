@@ -27,6 +27,16 @@
             </div>
         </div>
 
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="x-red">*</span>角色标识
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="name" name="display_name" required="" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
         <div class="layui-form-item layui-form-text">
             <label for="desc" class="layui-form-label">
                 描述
@@ -53,15 +63,17 @@
                 <tbody>
                 <tr>
                     <td>
-                        用户管理
-                    </td>
-                    <td>
-                        @foreach($permission as $perms)
-                        <div class="layui-input-block">
+                        @if( count($permission) > 0 )
 
-                                <input name="perms[]" type="checkbox" value="{{ $perms->id }}">  {{ $perms->name }}
-                        </div>
-                        @endforeach
+                            <div class="layui-input-block">
+                                @foreach($permission as $perms)
+                                    <input name="perms[]" type="checkbox" value="{{ $perms->id }}" title="{{ $perms->description }}">
+                                    @endforeach
+                            </div>
+
+                        @else
+                            暂无权限列表
+                        @endif
                     </td>
                 </tr>
 
@@ -91,9 +103,6 @@
                 arr.push(a[i].value);
             }
 
-            console.log(arr);
-//            JSON.stringify(data.field);
-            console.log(JSON.stringify(data.field));
             //发异步，把数据提交给php
             $.ajax({
                 url: '/admin/adminrole',

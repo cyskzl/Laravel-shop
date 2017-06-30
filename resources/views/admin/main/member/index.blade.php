@@ -11,9 +11,9 @@
     <form class="layui-form x-center" action="{{url('admin/member')}}" method="get" style="width:800px">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
-                <label class="layui-form-label">用户名</label>
+                <label class="layui-form-label">邮箱</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="keyword"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                    <input type="text" name="keyword"  placeholder="请输入邮箱" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-input-inline" style="width:80px">
                     <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
@@ -38,6 +38,8 @@
                 <th>第三方ID</th>
                 <th>注册IP</th>
                 <th>加入时间</th>
+                <th>注册状态</th>
+                <th>收货地址</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -59,6 +61,8 @@
                 <td >{{$v->third_party_id}}</td>
                 <td >{{$v->register_ip}}</td>
                 <td >{{$v->created_at}}</td>
+                <td >{{$type[$v->status]}}</td>
+                <td ><a href="javascript:;" onclick="member_show('{{$v->id}}','{{'./address'.'?id='.$v->id }}','800','800')" class="layui-btn layui-btn-mini">收货地址</a></td>
                 <td class="td-manage">
                     <a title="编辑" href="javascript:;" onclick="member_edit('编辑','{{url('admin/member/'.$v->id.'/edit')}}','{{$v->id}}','','510')"
                        class="ml-5" style="text-decoration:none">
@@ -88,37 +92,6 @@
         laydate = layui.laydate;//日期插件
         lement = layui.element();//面包导航
         layer = layui.layer;//弹出层
-
-        //以上模块根据需要引入
-
-
-        var start = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            ,istoday: false
-            ,choose: function(datas){
-                end.min = datas; //开始日选好后，重置结束日的最小日期
-                end.start = datas //将结束日的初始值设定为开始日
-            }
-        };
-
-        var end = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            ,istoday: false
-            ,choose: function(datas){
-                start.max = datas; //结束日选好后，重置开始日的最大日期
-            }
-        };
-
-        document.getElementById('LAY_demorange_s').onclick = function(){
-            start.elem = this;
-            laydate(start);
-        }
-        document.getElementById('LAY_demorange_e').onclick = function(){
-            end.elem = this
-            laydate(end);
-        }
 
     });
 
@@ -159,7 +132,7 @@
                 data: { '_token':'{{csrf_token()}}', '_method': 'DELETE', 'id': id },
                 dataType:'json',
                 success: function(data){
-                    console.log(data);
+//                    console.log(data);
                     if(data == 1){
                         location.href = location.href;
                         $(obj).parents("tr").remove();

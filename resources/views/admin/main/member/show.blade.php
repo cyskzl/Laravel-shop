@@ -3,8 +3,7 @@
     <blockquote class="layui-elem-quote">
         <img src="{{ asset('templates/admin/images/logo.png') }}" class="layui-circle" style="width:50px;float:left">
         <dl style="margin-left:80px; color:#019688">
-            <dt><span>{{$userinfo->nickname}}</dt>
-            <dd style="margin-left:0">这家伙很懒，什么也没有留下</dd>
+            <dt><span>{{$userinfo->nickname or '这家伙很懒，什么也没有留下'}}</dt>
         </dl>
     </blockquote>
     <div class="pd-20">
@@ -13,32 +12,38 @@
             <tr>
                 <th width="80">性别：</th>
                 <td>
-                    @if($userinfo->sex==1)
-                        {{'男'}}
+                    @if($userinfo)
+                        {{$sexType[$userinfo->sex] or '无'}}
                     @else
-                        {{'女'}}
+                        无
                     @endif
                 </td>
             </tr>
             <tr>
                 <th>手机：</th>
-                <td>{{$userinfo->tel}}</td>
+                <td>{{$userinfo->tel or '无 '}}</td>
             </tr>
             <tr>
                 <th>邮箱：</th>
-                <td>admin@mail.com</td>
+                <td>{{$userinfo->email or '无'}}</td>
             </tr>
             <tr>
-                <th>地址：</th>
-                <td>北京市 海淀区</td>
+                <th>生日：</th>
+                <td>{{$userinfo->birthday or '无'}}</td>
             </tr>
             <tr>
                 <th>注册时间：</th>
-                <td>2017-01-01</td>
+                <td>{{$user->created_at}}</td>
             </tr>
             <tr>
-                <th>积分：</th>
-                <td>330</td>
+                <th>可用积分：</th>
+                <td>
+                    @if($usercode && $usercode->status == 1)
+                        {{$usercode->code}}
+                    @else
+                        0
+                    @endif
+                </td>
             </tr>
             </tbody>
         </table>

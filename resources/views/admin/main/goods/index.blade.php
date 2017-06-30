@@ -1,53 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>商品列表</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="{{asset('templates/admin/css/x-admin.css')}}" media="all">
-</head>
-<body>
-<div class="x-nav">
-            <span class="layui-breadcrumb">
+@extends('admin.layouts.layout')
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{asset('org/ajax/ajax.css')}}">
+    <script src="{{asset('org/ajax/ajax.js')}}" type="text/javascript"></script>
+    @endsection
+@section('x-nav')
+    <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
-              <a><cite>商品列表</cite></a>
+              <a><cite>商品列表管理</cite></a>
             </span>
-    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
-       href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon"
-                                                                        style="line-height:30px">ဂ</i></a>
-</div>
-<div class="x-body">
-    <form class="layui-form x-center" action="" style="width:800px">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
+@endsection
+@section('x-body')
+    <form class="layui-form " action="{{url('admin/brand')}}" style="width:800px">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
-                <label class="layui-form-label">日期范围</label>
+                <label class="layui-form-label">搜索</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" placeholder="开始日" id="LAY_demorange_s">
-                </div>
-                <div class="layui-input-inline">
-                    <input class="layui-input" placeholder="截止日" id="LAY_demorange_e">
-                </div>
-                <div class="layui-input-inline">
-                    <input type="text" name="username" placeholder="标题" autocomplete="off" class="layui-input">
+                    <input type="text" name="keyword" value="{{$request->input('keyword')}}" placeholder="属性名称" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-input-inline" style="width:80px">
-                    <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i>
-                    </button>
+                    <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
                 </div>
             </div>
         </div>
     </form>
-    <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
-        <button class="layui-btn" onclick="question_add('添加商品','{{ url('goods/create') }}','800','500')"><i
+    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
+        <button class="layui-btn" onclick="question_add('添加商品','{{ url('admin/goods/create') }}','800','500')"><i
                     class="layui-icon">&#xe608;</i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
+        {{--<a href="{{url('admin/spec/create')}}"><button class="layui-btn" ><i class="layui-icon">&#xe608;</i>增加</button></a>--}}
+        <span class="x-right" style="line-height:40px">共有数据：{{$goods->total()}} 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -55,147 +37,178 @@
                 <input type="checkbox" name="" value="">
             </th>
             <th>
-                ID
+                id
             </th>
             <th>
-                标题
+                商品名称
+            </th>
+            <th>
+                货号
             </th>
             <th>
                 分类
             </th>
             <th>
-                来源
+                价格
             </th>
             <th>
-                更新时间
+                推荐
             </th>
             <th>
-                浏览次数
+                新品
+            </th>
+            <th>
+               热卖
+            </th>
+            <th>
+                上/下架
+            </th>
+            <th>
+               库存
+            </th>
+            <th>
+                排序
             </th>
             <th>
                 操作
             </th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>
-                <input type="checkbox" value="1" name="">
-            </td>
-            <td>
-                1
-            </td>
-            <td>
-                <u style="cursor:pointer" onclick="question_show()">
-                    问题标题
-                </u>
-            </td>
-            <td>
-                新闻子类1
-            </td>
-            <td>
-                xuebingsi
-            </td>
-            <td>
-                2017-01-01 11:11:42
-            </td>
-            <td>
-                34
-            </td>
-            <td class="td-manage">
-                <a title="编辑" href="javascript:;" onclick="question_edit('编辑','{{ url('goods/1/edit') }}','1','','510')"
-                   class="ml-5" style="text-decoration:none">
-                    <i class="layui-icon">&#xe642;</i>
-                </a>
-                <a title="删除" href="javascript:;" onclick="question_del(this,'1')"
-                   style="text-decoration:none">
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
-            </td>
-        </tr>
+        <tbody id="x-link">
+        @foreach($goods as $good)
+            <input type="hidden" value="{{$good->goods_id}}" name="id">
+            <tr>
+                <td>
+                    <input type="checkbox" value="1" name="">
+                </td>
+                <td>
+                    {{$good->goods_id}}
+                </td>
+                <td>
+                    {{$good->goods_name}}
+                </td>
+                <td>
+                    {{$good->goods_sn}}
+                </td>
+                <td>
+                    {{--{{$good->cat_id}}--}}
+                    {{getCateNameByCateId($good->cat_id)}}
+                </td>
+                <td>
+                    {{$good->shop_price}}
+                </td>
+                <td>
+                    <div style="text-align: center; width: 50px;">
+                     <span class="@if($good->is_recommend == '0') no @else yes @endif" id="is_recommend"  onclick="changeTableVal('is_recommend' , 'goods', '{{$good->goods_id}}' ,'{{url('/admin/ajax')}}',this)">
+                     @if($good->is_recommend == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
+                     </span>
+                    </div>
+
+                </td>
+                <td>
+                    <div style="text-align: center; width: 50px;">
+                     <span class="@if($good->is_new == '0') no @else yes @endif"   onclick="changeTableVal('is_new' , 'goods', '{{$good->goods_id}}' ,'{{url('/admin/ajax')}}',this)">
+                     @if($good->is_new == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
+                     </span>
+                    </div>
+                </td>
+                <td>
+                    <div style="text-align: center; width: 50px;">
+                     <span class="@if($good->is_hot == '0') no @else yes @endif"   onclick="changeTableVal('is_hot' , 'goods', '{{$good->goods_id}}' ,'{{url('/admin/ajax')}}',this)">
+                     @if($good->is_hot == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
+                     </span>
+                    </div>
+                </td>
+                <td>
+                    <div style="text-align: center; width: 50px;">
+                     <span class="@if($good->is_on_sale == '0') no @else yes @endif"   onclick="changeTableVal('is_on_sale' , 'goods', '{{$good->goods_id}}' ,'{{url('/admin/ajax')}}',this)">
+                     @if($good->is_on_sale == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
+                     </span>
+                    </div>
+                </td>
+                <td>
+                    {{$good->store_count}}
+                </td>
+                <td>
+                    <form class="layui-form" action="" id="orderid">
+                        <input onkeyup="this.value=this.value.replace(/[^\d]/g,'')" type="text"  name="sort" onchange="changeTableVal('sort','goods','{{$good->goods_id}}','{{url('/admin/ajax')}}',this)" value="{{$good->sort}}"  size="1">
+                    </form>
+                </td>
+                <td class="td-manage">
+                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/goods/{{$good->id}}/edit','{{$good->id}}','','510')"
+                       class="ml-5" style="text-decoration:none">
+                        <i class="layui-icon">&#xe642;</i>
+                    </a>
+                    <a title="删除" href="javascript:;" onclick="cate_del(this,'{{$good->id}}')"
+                       style="text-decoration:none">
+                        <i class="layui-icon">&#xe640;</i>
+                    </a>
+                </td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+                {{--{{$specs->links()}}--}}
+                {!! $goods->appends($request->only(['keyword', 'typename']))->render() !!}
+            </div>
+        </div>
+    </div>
+@endsection
 
-    <div id="page"></div>
-</div>
-<script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
-<script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
-<script>
-    layui.use(['laydate', 'element', 'laypage', 'layer'], function () {
-        $ = layui.jquery;//jquery
-        laydate = layui.laydate;//日期插件
-        lement = layui.element();//面包导航
-        laypage = layui.laypage;//分页
-        layer = layui.layer;//弹出层
+@section('js')
+    <script src="{{asset('templates/admin/js/jquery.min.js')}}" type="text/javascript"></script>
+    <script>
+           layui.use(['element','layer','form'], function(){
+            $ = layui.jquery;//jquery
+            lement = layui.element();//面包导航
+            layer = layui.layer;//弹出层
+            form = layui.form();
 
-        //以上模块根据需要引入
-        laypage({
-            cont: 'page'
-            , pages: 100
-            , first: 1
-            , last: 100
-            , prev: '<em><</em>'
-            , next: '<em>></em>'
         });
-
-        var start = {
-            min: laydate.now()
-            , max: '2099-06-16 23:59:59'
-            , istoday: false
-            , choose: function (datas) {
-                end.min = datas; //开始日选好后，重置结束日的最小日期
-                end.start = datas //将结束日的初始值设定为开始日
-            }
-        };
-
-        var end = {
-            min: laydate.now()
-            , max: '2099-06-16 23:59:59'
-            , istoday: false
-            , choose: function (datas) {
-                start.max = datas; //结束日选好后，重置开始日的最大日期
-            }
-        };
-
-        document.getElementById('LAY_demorange_s').onclick = function () {
-            start.elem = this;
-            laydate(start);
+        /*添加*/
+        function question_add(title, url, w, h) {
+            x_admin_show(title, url, w, h);
         }
-        document.getElementById('LAY_demorange_e').onclick = function () {
-            end.elem = this
-            laydate(end);
+
+
+        //批量删除提交
+        function delAll () {
+            layer.confirm('确认要删除吗？',function(index){
+                //捉到所有被选中的，发异步进行删除
+                layer.msg('删除成功', {icon: 1});
+            });
         }
-    });
 
-    //批量删除提交
-    function delAll() {
-        layer.confirm('确认要删除吗？', function (index) {
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-        });
-    }
+        //-编辑
+        function cate_edit (title,url,id,w,h) {
+            x_admin_show(title,url,w,h);
+        }
 
-    function question_show(argument) {
-        layer.msg('可以跳到前台具体问题页面', {icon: 1, time: 1000});
-    }
-    /*添加*/
-    function question_add(title, url, w, h) {
-        x_admin_show(title, url, w, h);
-    }
-    //编辑
-    function question_edit(title, url, id, w, h) {
-        x_admin_show(title, url, w, h);
-    }
+        /*-删除*/
+        function cate_del(obj,id){
+            layer.confirm('确认要删除吗？',function(index){
+                //发异步删除数据
+                $.ajax({
+                    type: 'post',
+                    url:  '{{url('/admin/brand/')}}'+'/'+id,
+                    dataType: 'json',
+                    data: { '_token':'{{csrf_token()}}', '_method': 'DELETE', 'id': id },
+                    success:function (data){
+                        if(data.status == 1){
+                            layer.msg(data.msg, {icon: 5,time:1000});
+                            return false;
+                        }
+                        location.href = location.href;
+                        $(obj).parents("tr").remove();
+                        layer.msg(data.msg ,{icon:1,time:1000});
+                    }
+                });
+            });
+        }
 
-    /*删除*/
-    function question_del(obj, id) {
-        layer.confirm('确认要删除吗？', function (index) {
-            //发异步删除数据
-            $(obj).parents("tr").remove();
-            layer.msg('已删除!', {icon: 1, time: 1000});
-        });
-    }
-</script>
+    </script>
 
-</body>
-</html>
+@endsection

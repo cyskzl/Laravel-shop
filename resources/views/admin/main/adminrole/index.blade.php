@@ -10,6 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="{{ asset('templates/admin/css/x-admin.css') }}" media="all">
+    <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
 </head>
 <body>
 <div class="x-nav">
@@ -22,37 +23,44 @@
 </div>
 <div class="x-body">
 
-    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="role_add('添加角色','{{ url('admin/adminrole/create') }}','900','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：0 条</span></xblock>
+    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="role_add('添加角色','{{ url('admin/adminrole/create') }}','900','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：{{ count($roles) }} 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
             <th><input type="checkbox" name="" value=""></th>
             <th>ID</th>
             <th>角色名</th>
+            <th>角色标识</th>
             <th>描述</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
-
-            @foreach($roles as $role)
+            @if( count($roles) > 0 )
+                @foreach($roles as $role)
+                <tr>
+                    <td><input type="checkbox" value="{{ $role->id }}" name="id"></td>
+                    <td>{{ $role->id }}</td>
+                    <td>{{ $role->name }}</td>
+                    <td>{{ $role->display_name }}</td>
+                    <td>{{ $role->description }}</td>
+                        <td class="td-manage">
+                            <a title="编辑" href="javascript:;" onclick="role_edit('编辑角色','{{ url('admin/adminrole/'.$role->id.'/edit') }}','{{ $role->id }}','','510')"
+                               class="ml-5" style="text-decoration:none">
+                                <i class="layui-icon">&#xe642;</i>
+                            </a>
+                            <a title="删除" href="javascript:;" onclick="role_del(this,{{ $role->id }})"
+                               style="text-decoration:none">
+                                <i class="layui-icon">&#xe640;</i>
+                            </a>
+                        </td>
+                </tr>
+                @endforeach
+            @else
             <tr>
-                <td><input type="checkbox" value="{{ $role->id }}" name="id"></td>
-                <td>{{ $role->id }}</td>
-                <td>{{ $role->name }}</td>
-                <td>{{ $role->description }}</td>
-                    <td class="td-manage">
-                        <a title="编辑" href="javascript:;" onclick="role_edit('编辑角色','{{ url('admin/adminrole/'.$role->id.'/edit') }}','{{ $role->id }}','','510')"
-                           class="ml-5" style="text-decoration:none">
-                            <i class="layui-icon">&#xe642;</i>
-                        </a>
-                        <a title="删除" href="javascript:;" onclick="role_del(this,{{ $role->id }})"
-                           style="text-decoration:none">
-                            <i class="layui-icon">&#xe640;</i>
-                        </a>
-                    </td>
+                <td colspan="5" ><h3 style="text-align: center">暂无信息</h3></td>
             </tr>
-            @endforeach
+            @endif
         </tbody>
     </table>
 
@@ -102,13 +110,16 @@
                     '_token':"{{ csrf_token() }}"
                 },
                 success:function (data){
-                    if (data == '1') {
-
+                    res = JSON.parse(data);
+                    if (res.success == '1') {
                         $(obj).parents("tr").remove();
-                        layer.msg('已删除!',{icon:1,time:1000});
+                        layer.msg(res.info,{icon:6,time:1000});
+
+
                     } else {
-                        layer.msg('删除失败!',{icon:5,time:1000});
+                        layer.msg(res.info,{icon:5,time:1000});
                     }
+                    location.href = location.href;
                 }
             });
 

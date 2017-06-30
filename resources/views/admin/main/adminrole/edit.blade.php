@@ -16,23 +16,40 @@
     <body>
         <div class="x-body">
             <form action="" method="post" class="layui-form layui-form-pane">
-                <input type="hidden" name="id" value="1">
+                <input type="hidden" name="id" value="{{ $roles->id }}">
                 <div class="layui-form-item">
                     <label for="name" class="layui-form-label">
                         <span class="x-red">*</span>角色名
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="name" name="display_name" required="" lay-verify="required" value="1"
-                               autocomplete="off" class="layui-input">
+                        <input type="text" id="name" name="name" required="" lay-verify="required" value="{{ $roles->name }}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
                 <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red">*</span>角色标识
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="display_name" required="" lay-verify="required" value="{{ $roles->display_name }}" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <!-- <div class="layui-form-item">
                     <label for="name" class="layui-form-label">
                         <span class="x-red">*</span>角色标识
                     </label>
                     <div class="layui-input-inline">
                         <input type="text" id="name" name="name" required="" lay-verify="required" value="1"
                                autocomplete="off" class="layui-input">
+                    </div>
+                </div> -->
+
+                <div class="layui-form-item layui-form-text">
+                    <label for="desc" class="layui-form-label">
+                        描述
+                    </label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" id="desc" name="description" class="layui-textarea">{{ $roles->description }}</textarea>
                     </div>
                 </div>
 
@@ -44,40 +61,20 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    用户管理
-                                </td>
-                                <td>
-                                    <div class="layui-input-block">
-
-
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    文章管理
-                                </td>
-                                <td>
-                                    <div class="layui-input-block">
-                                        <input name="permission[]" type="checkbox" value="2"> 文章添加
-                                        <input name="permission[]" checked="" type="checkbox" value="2"> 文章删除
-                                        <input name="permission[]" type="checkbox" value="2"> 文章修改
-                                        <input name="permission[]" checked="" type="checkbox" value="2"> 文章改密
-                                        <input name="permission[]" type="checkbox" value="2"> 文章列表
-                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            @foreach($permissions as $permission)
+                                          <input type="checkbox" name="perms[]" title="{{ $permission->description }}" value="{{ $permission->id }}"
+                                          @if($myPermissions->contains($permission)) checked @endif >
+                                          @endforeach
+                                        </div>
+                                      </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="layui-form-item layui-form-text">
-                    <label for="desc" class="layui-form-label">
-                        描述
-                    </label>
-                    <div class="layui-input-block">
-                        <textarea placeholder="请输入内容" id="desc" name="description" class="layui-textarea">a</textarea>
-                    </div>
-                </div>
+
                 <div class="layui-form-item">
                 <button class="layui-btn" lay-submit="" lay-filter="save">保存</button>
               </div>
@@ -93,9 +90,9 @@
 
               //监听提交
               form.on('submit(save)', function(data){
-                console.log(data);
+
                   var arr = new Array();
-                  var a = $("input[name='permission[]']:checked")
+                  var a = $("input[name='perms[]']:checked")
                   for (var i=0; i<a.length; i++) {
                       arr.push(a[i].value);
                   }
@@ -111,16 +108,26 @@
                   },
                   traditional: true,
                   success:function (data){
-                      console.log(data);
+                      res = JSON.parse(data);
+                      if (res.success == '1') {
+                          layer.alert(res.info, {icon: 6},function () {
+                              // 获得frame索引
+                              var index = parent.layer.getFrameIndex(window.name);
+                              //关闭当前frame
+                              parent.layer.close(index);
+                          });
+                      } else {
+                          layer.alert(res.info, {icon: 5},function () {
+                              // 获得frame索引
+                              var index = parent.layer.getFrameIndex(window.name);
+                              //关闭当前frame
+                              parent.layer.close(index);
+                          });
+                      }
                   }
 
                 });
-                layer.alert("增加成功", {icon: 6},function () {
-                    // 获得frame索引
-                    var index = parent.layer.getFrameIndex(window.name);
-                    //关闭当前frame
-                    parent.layer.close(index);
-                });
+
                 return false;
               });
 

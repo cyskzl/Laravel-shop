@@ -1,0 +1,46 @@
+.cs_board{
+    padding: 21px;
+}
+.cs_board_list li{
+    padding: 21px 0;
+    border-bottom: 1px dashed #d9d9d9;
+}
+.tit{
+    font-size: 16px;
+    color: #626161;
+}
+.cs_board_list li span{
+    float: right;
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
+}
+.icon_to_right{
+    background: url("../uploads/icon_to_right.png") no-repeat center center;
+    background-size: 7.7px 13.1px;
+}
+
+/*item_content*/
+.item_content{
+    display: none;
+}
+.item_content p{
+    font-size: 14px;
+    color: #9e9e9e;
+    line-height: 20px;
+    margin-top: 8px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -59,7 +59,7 @@
                     </label>
                     <div class="layui-input-block">
                         @foreach($roles as $role)
-                        <input type="checkbox" name="roles[]" value="{{ $role->id }}" title="{{ $role->name }}"
+                        <input type="checkbox" name="roles[]" value="{{ $role->id }}" title="{{ $role->display_name }}"
                         @if($myRoles->contains($role)) checked @endif >
                         @endforeach
                     </div>

@@ -28,7 +28,7 @@
                         <span class="x-red">*</span>将会成为您唯一的登入名
                     </div>
                 </div>
-                <div class="layui-form-item">
+                <!-- <div class="layui-form-item">
                     <label for="phone" class="layui-form-label">
                         <span class="x-red">*</span>手机
                     </label>
@@ -39,7 +39,7 @@
                     <div class="layui-form-mid layui-word-aux">
                         <span class="x-red">*</span>将会成为您唯一的登入名
                     </div>
-                </div>
+                </div> -->
                 <div class="layui-form-item">
                     <label for="L_email" class="layui-form-label">
                         <span class="x-red">*</span>邮箱
@@ -53,15 +53,13 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label for="role" class="layui-form-label">
-                        <span class="x-red">*</span>角色
-                    </label>
+                    <label class="layui-form-label">角色</label>
                     <div class="layui-input-block">
                         @foreach($roles as $role)
-                        <input type="checkbox" name="roles[]" value="{{ $role->id }}"title="{{ $role->name }}" >
-                        @endforeach
+                      <input type="checkbox" name="roles[]" title="{{ $role->display_name }}" value="{{ $role->id }}">
+                      @endforeach
                     </div>
-                </div>
+                  </div>
                 <div class="layui-form-item">
                     <label for="L_pass" class="layui-form-label">
                         <span class="x-red">*</span>密码
@@ -129,13 +127,11 @@
               //监听提交
               form.on('submit(add)', function(data){
                 // console.log(data);
-
                 var arr = new Array();
                 var a = $("input[name='roles[]']:checked")
                 for (var i=0; i<a.length; i++) {
                     arr.push(a[i].value);
                 }
-
                 //发异步，把数据提交给php
                 $.ajax({
                   url:'{{ url('admin/adminlist/') }}',
@@ -148,7 +144,7 @@
                    },
                   success:function (res){
                       res = JSON.parse(res);
-                    //   console.log(res.success);
+                      console.log(res.success);
                       if (res.success == '1') {
                           layer.alert(res.info, {icon: 6},function () {
                               // 获得frame索引
