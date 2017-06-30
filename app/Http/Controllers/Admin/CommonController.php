@@ -12,6 +12,7 @@ use App\Models\GoodsAttribute;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 
+
 /**
  * Class CommonController
  * @package App\Http\Controllers\Admin
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Input;
  */
 class CommonController extends Controller
 {
+
+
     /**
      * 上传加删除
      * @param Request $request

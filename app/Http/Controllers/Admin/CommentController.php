@@ -9,14 +9,27 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Permission;
 
 class CommentController extends Controller
 {
+    protected $perms;
+
+    /**
+     * AdminRoleController constructor.
+     */
+    public function __construct()
+    {
+        $this->perms = new Permission;
+    }
+
     /**
      * @return  view    商品评论列表页
      */
     public function index(Request $request)
     {
+        //判断是否有权限访问列表
+		$this->perms->adminPerms('admin, comment', 'comment_list');
 
         //获取搜索提交过来的会员名
         $username = $request->input('username');
@@ -46,7 +59,12 @@ class CommentController extends Controller
      */
     public function destroy(Request $request)
     {
-
+        //判断是否有权限删除
+        $error = $this->perms->adminDelPerms('admin, comment', 'delete_comment');
+        if ($error){
+            $status = 0;
+            return $status;
+        }
 
         $id = trim($request->input('id'),',');
 
@@ -96,6 +114,9 @@ class CommentController extends Controller
 
     public function edit($id)
     {
+        //判断是否有权限修改
+		$this->perms->adminPerms('admin, comment', 'edit_comment');
+
         $data = GoodsComment::findOrfail($id);
 
         $show = $data->is_show;

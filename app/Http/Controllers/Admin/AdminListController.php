@@ -28,10 +28,10 @@ class AdminListController extends Controller
 	 */
 	public function index()
 	{
-		// $this->perms->adminPerms('admin', 'admin_list');
+        //判断是否有权限访问列表
+        $this->perms->adminPerms('admin', 'admin_list');
 
 		//查询管理员及其所属角色
-
 		$admin_user = AdminUser::paginate(10);
 		return view('admin.main.administrator.index', compact('admin_user'));
 	}
@@ -40,10 +40,12 @@ class AdminListController extends Controller
 	 * @return  view    添加管理员页
 	 */
 	public function create()
-
-	{	$this->perms->adminPerms('admin', 'create_role');
+	{
+        //判断是否有权限添加
+	    $this->perms->adminPerms('admin', 'create_role');
 		$roles = Role::all();
 		return view('admin.main.administrator.add', compact('roles'));
+
 	}
 
     /**
@@ -107,6 +109,7 @@ class AdminListController extends Controller
 
 	public function edit($id)
 	{
+        //判断是否有权限修改
 		$this->perms->adminPerms('admin', 'edit_list');
 
         $roles = Role::all();
@@ -199,7 +202,9 @@ class AdminListController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        //判断是否有权限删除
 		$error = $this->perms->adminDelPerms('admin', 'delete_admin');
+
 		if ($error) {
 			return $error;
 		}

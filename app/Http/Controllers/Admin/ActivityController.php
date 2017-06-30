@@ -10,14 +10,28 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Permission;
 
 class ActivityController extends Controller
 {
+
+    protected $perms;
+
+    /**
+     * AdminRoleController constructor.
+     */
+    public function __construct()
+    {
+        $this->perms = new Permission;
+    }
     /**
      * @return  view    活动管理列表页
      */
     public function index(Request $request)
     {
+        //判断是否有权限访问列表
+        $this->perms->adminPerms('admin', 'admin_list');
+
         // 查询活动并降序排列
         $activities = Activity::orderBy('id','desc')
             ->where(function($query) use ($request){

@@ -35,7 +35,7 @@ class Permission extends EntrustPermission
             return abort(403);
         }
 
-//        666
+
     }
 
     /**

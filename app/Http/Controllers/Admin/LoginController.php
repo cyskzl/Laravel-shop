@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers
+use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\AdminUser;
@@ -41,10 +41,16 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
+//        dd($request->all());
         $this->validate($request, [
-            'nickname' => 'required|unique:admin_users|max:30',
-            'password' => 'required',
-        ]);
+            'username' => 'required',
+            'password' => 'required'
+        ], [
+            'required' => ':attribute必须填写',
+        ], [
+            'username' => '管理员名称',
+            'password' => '密码'
+    ]);
 
         $res = AdminUser::where('nickname', '=', $request->username)->first();
         if ($res) {
@@ -53,10 +59,10 @@ class LoginController extends Controller
                 // 认证通过...
                 return redirect('/admin');
             }else {
-                dd('认证失败');
+                return back()->withInput()->with(['fail'=>'密码错误！']);
             }
         } else {
-            dd('不存在');
+            return back()->withInput()->with(['fail'=>'该管理员不存在！']);
         }
 
     }

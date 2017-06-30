@@ -30,7 +30,7 @@
             }
 
             .title {
-                font-size: 72px;
+                font-size: 30px;
                 margin-bottom: 40px;
             }
         </style>

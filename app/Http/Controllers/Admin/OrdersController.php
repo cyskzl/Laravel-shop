@@ -8,14 +8,24 @@ use App\Models\Region;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Permission;
 
 class OrdersController extends Controller
 {
+    protected $perms;
+
+	public function __construct()
+	{
+		$this->perms = new Permission;
+	}
+
     /**
      * @return  view    订单管理列表页
      */
     public function index()
     {
+        //判断是否有权限访问列表
+		$this->perms->adminPerms('admin, orders', 'orders_list');
 
         $ordersList = Orders::with(['users'=>function($query){
 
@@ -37,6 +47,9 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
+        //判断是否有权限查看
+		$this->perms->adminPerms('admin, orders', 'show_orders');
+
         //获取订单信息和订单详情信息。ordergood 关联到订单详情模型。
 //        $ordergoods = Orders::whereHas('ordergood',function ($query) use ($id){
 //            $query->where('id',$id);
@@ -70,6 +83,8 @@ class OrdersController extends Controller
      */
     public function create()
     {
+        //判断是否有权限添加
+		$this->perms->adminPerms('admin, orders', 'create_orders');
         return view('admin.main.orders.add');
     }
 
@@ -87,6 +102,8 @@ class OrdersController extends Controller
      */
     public function edit($id)
     {
+        //判断是否有权限修改
+		$this->perms->adminPerms('admin, orders', 'edit_orders');
 
         //获取订单信息和订单详情信息。ordergood 关联到订单详情模型。
         $ordergoods = Orders::find($id)->with('ordergood')->get();
@@ -190,6 +207,12 @@ class OrdersController extends Controller
      */
     public function destroy(Request $request)
     {
+        //判断是否有权限删除
+		$error = $this->perms->adminDelPerms('admin, orders', 'delete_orsers');
+        if ($error){
+            //$error json数据  success=>错误码  info=>错误提示信息  如要返回的不是json数据请先转换
+            return $error;
+        }
         //删除id
     }
 }
