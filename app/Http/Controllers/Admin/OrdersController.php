@@ -17,8 +17,6 @@ class OrdersController extends Controller
     public function index()
     {
 
-
-
         $ordersList = Orders::with(['users'=>function($query){
 
             $query->select('id','email','tel');
@@ -87,9 +85,18 @@ class OrdersController extends Controller
     /**
      * @return  view    订单修改页
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('admin.main.orders.edit');
+
+        //获取订单信息和订单详情信息。ordergood 关联到订单详情模型。
+        $ordergoods = Orders::find($id)->with('ordergood')->get();
+
+
+        //查询出来的的数据是在0下标，直接获取后使用更方便。
+        $ordergoods = $ordergoods[0];
+
+
+        return view('admin.main.orders.edit',compact('ordergoods'));
     }
 
     /**

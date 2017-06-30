@@ -58,13 +58,9 @@
             <th>应付金额</th>
             <th>订单状态</th>
             <th>支付状态</th>
-<<<<<<< HEAD
             <th>发货状态</th>
             <th>支付方式</th>
             <th>配送方式</th>
-=======
-            <th>支付方式</th>
->>>>>>> origin/chenys
             <th>下单时间</th>
             <th>操作</th>
         </tr>
@@ -74,7 +70,6 @@
         @foreach($ordersList as $value)
         <tbody>
         <tr>
-<<<<<<< HEAD
             <th scope="row">{{$value->sn}}</th>
             <td>{{$value->consignee}}</td>
             <td>{{$value->goods_price}}</td>
@@ -84,19 +79,10 @@
             <td>{{$shipping_status[$value->shipping_status]}}</td>
             <td>{{$value->pay_name}}</td>
             <td>{{$value->shipping_name}}</td>
-=======
-            <th scope="row">{{$value->guid}}</th>
-            <td>{{$value->name_message}}</td>
-            <td>{{$value->total_amount}}</td>
-            <td>{{$value->total_amount}}</td>
-            <td>{{$value->order_status}}</td>
-            <td>{{$value->pay_status}}</td>
-            <td>{{$value->pay_type}}</td>
->>>>>>> origin/chenys
             <td>{{$value->created_at}}</td>
             <td style="width: 160px;">
-                <a class="btn btn-primary btn-xs" role="button" href="javascript:;" onclick="question_edit('编辑','{{ url('admin/orders/').'/'.$value->id}}','1','','800')">查看</a>
-                <a class="btn btn-success btn-xs" role="button" href="javascript:;" >发货</a>
+                <a class="btn btn-primary btn-xs" role="button" href="javascript:;" onclick="question_detaile('查看订单','{{ url('admin/orders/').'/'.$value->id}}','1','','800')">查看</a>
+                <a class="btn btn-success btn-xs" role="button" href="javascript:;" onclick="question_edit('编辑订单','{{ url('admin/orders/').'/'.$value->id.'/edit'}}','1','','800')">编辑</a>
                 <a class="btn btn-danger btn-xs" role="button" href="javascript:;" >关闭订单</a>
             </td>
         </tr>
@@ -181,6 +167,11 @@
     }
     //编辑
     function question_edit (title,url,id,w,h) {
+        x_admin_show(title,url,w,h);
+    }
+
+    //查看详情
+    function question_detaile (title,url,id,w,h) {
         x_admin_show(title,url,w,h);
     }
 

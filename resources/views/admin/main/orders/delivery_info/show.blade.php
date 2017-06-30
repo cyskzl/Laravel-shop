@@ -35,28 +35,19 @@
         </td>
     </tr>
     <tr>
-        <td>订单ID:{{$ordergoods->id}}</td>
-        <td>订单编号:{{$ordergoods->sn}}</td>
-        <td>会员:{{$ordergoods->user_id}}</td>
+        <td>订单编号:{{$ordergoods->order_sn}}</td>
+        <td>下单时间:{{$ordergoods->belongsToOrders->created_at}}</td>
+        <td>配送费用:{{$ordergoods->shipping_price}}</td>
     </tr>
     <tr>
-        <td>E-MAIL:{{$ordergoods->email}}</td>
-        <td>电话:{{$ordergoods->mobile}}</td>
-        <td>应付金额:{{$ordergoods->order_amount}}</td>
-    </tr>
-    <tr>
-        <td>订单状态:{{$ordergoods->status}}</td>
-        <td>下单时间:{{$ordergoods->created_at}}</td>
-        <td>支付时间:{{$ordergoods->pay_time}}</td>
-    </tr>
-    <tr>
-        <td>支付方式:{{$ordergoods->pay_name}}</td>
-        <td>发票抬头:{{$ordergoods->invoice_title}}</td>
-        <td></td>
+        <td>配送方式:{{$ordergoods->shipping_name}}</td>
+        <td colspan="2">
+            配送单号:
+            <input type="text" name="invoice_no" value="{{$ordergoods->invoice_no}}">
+        </td>
     </tr>
     </tbody>
 </table>
-
 
 <table class="layui-table" lay-even="" lay-skin="nob">
     <colgroup>
@@ -73,74 +64,46 @@
     </tr>
     <tr>
         <td>收货人:{{$ordergoods->consignee}}</td>
-        <td>联系方式:{{$ordergoods->mobile}}</td>
-        <td>配送方式:{{$ordergoods->shipping_name}}</td>
+        <td>电子邮件:{{$ordergoods->belongsToOrders->email}}</td>
+
     </tr>
     <tr>
         <td colspan="2">
-            收货地址:{{$region.$ordergoods->address}}
+            收货地址:{{$region.$ordergoods->belongsToOrders->address}}
         </td>
+
+    </tr>
+    <tr>
+        <td>联系方式:{{$ordergoods->mobile}}</td>
         <td>邮编:{{$ordergoods->zipcode}}</td>
     </tr>
     <tr>
-        <td colspan="3">留言:{{$ordergoods->user_note}}</td>
+        <td>发票抬头:{{$ordergoods->belongsToOrders->invoice_title}}</td>
+    </tr>
+    <tr>
+        <td colspan="3">用户备注:{{$ordergoods->belongsToOrders->user_note}}</td>
     </tr>
     </tbody>
 </table>
 
-
-
 <table class="table">
     <tr class="info">
         <td>商品</td>
-        <td>商品编号</td>
-        <td>单价</td>
-        <td>数量</td>
-        <td>单品小计</td>
+        <td>规格属性</td>
+        <td>购买数量</td>
+        <td>商品单价</td>
     </tr>
 
-
-    @foreach($ordergoods['ordergood'] as $value)
+    @foreach($ordergoods->belongsToOrdersDetalis as $value)
         <tr>
             <td>{{$value->goods_name}}</td>
             <td>{{$value->goods_sn}}</td>
             <td>{{$value->goods_price}}</td>
             <td>{{$value->goods_num}}</td>
-            <td>{{($value->goods_price * $value->goods_num)}}</td>
         </tr>
     @endforeach
 </table>
-<h4 style="float: right;margin-right: 50px;">订单总额</h4>
 
-<table class="layui-table" lay-even="" lay-skin="nob">
-    <colgroup>
-        <col width="200">
-        <col width="200">
-        <col width="200">
-        <col>
-    </colgroup>
-    <tbody>
-    <tr>
-        <td colspan="3">
-            <strong>费用信息</strong>
-            <span>修改费用</span>
-        </td>
-    </tr>
-    <tr>
-        <td>小计:{{$ordergoods->tota_amount}}</td>
-        <td>运费:{{$ordergoods->shippiung_price}}</td>
-        <td>积分:{{$ordergoods->integral}}</td>
-    </tr>
-    <tr>
-        <td>余额抵扣:{{$ordergoods->user_money}}</td>
-        <td>优惠券抵扣:{{$ordergoods->coupon_price}}</td>
-        <td>价格调整:{{$ordergoods->discount}}</td>
-    </tr>
-    <tr>
-        <td colspan="3">应付:{{$ordergoods->order_amount}}</td>
-    </tr>
-    </tbody>
-</table>
 
 <table class="layui-table" lay-even="" lay-skin="nob">
     <colgroup>
@@ -150,7 +113,7 @@
     <tbody>
     <tr>
         <td>
-            <strong>操作信息</strong>
+            <strong>发货备注</strong>
         </td>
     </tr>
     <tr>
@@ -158,27 +121,9 @@
         <td><textarea style="resize: none;width: 420px;height: 90px;" name=""></textarea></td>
     </tr>
     <tr>
-        <td colspan="3">
-            @if($ordergoods->order_status <0)
-
-                <a href="javascript:;" class="layui-btn layui-btn-normal" name="order_status" onclick="level_update(this,'{{$ordergoods->id}}','-1')">删除</a>
-
-            @else
-
-                @if($ordergoods->pay_status == 0)
-                    <a href="javascript:;" class="layui-btn layui-btn-normal" name="pay_status" onclick="level_update(this,'{{$ordergoods->id}}','1')">付款</a>
-                @endif
-
-                @if($ordergoods->pay_status == 1 && $ordergoods->shipping_status != 1 )
-                    <a href="javascript:;" class="layui-btn layui-btn-normal" name="pay_status" onclick="level_update(this,'{{$ordergoods->id}}','1')">设为未付款</a>
-                @endif
-
-                @if($ordergoods->shipping_status !=1)
-                    <a href="javascript:;" class="layui-btn layui-btn-normal" name="shipping_status" onclick="level_update(this,'{{$ordergoods->id}}','2')">作废</a>
-
-                @endif
-
-            @endif
+        <td>可执行操作</td>
+        <td>
+            <button>确认发货</button>
         </td>
     </tr>
     </tbody>

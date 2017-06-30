@@ -156,6 +156,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /**
+         * 阿里大鱼(大于) providers
+         */
+        iscms\Alisms\AlidayuServiceProvider::class,
     ],
 
     /*
