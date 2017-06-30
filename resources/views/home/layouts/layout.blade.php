@@ -377,7 +377,7 @@
         @yield('shop')
     </div>
     <!--主体内容-->
-    <main>
+    <main class="clearfix">
         @yield('main')
     </main>
     <!-- 错误弹窗 -->
@@ -403,6 +403,7 @@
 
         </div>
     </div>
+    @yield('footer')
 
 </div>
 @yield('js')

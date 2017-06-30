@@ -1,6 +1,6 @@
 @extends('home.layouts.layout')
 
-@section('title','商品详情页')
+@section('title','商品列表页')
 
 @section('style')
 	<link rel="stylesheet" href="{{asset('/templates/home/css/section.css')}}" type="text/css">
