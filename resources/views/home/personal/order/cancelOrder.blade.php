@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @extends('home.layouts.layout')
 
 @section('title','已取消订单')
@@ -99,7 +98,6 @@
 @endsection
 
 
-=======
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -582,4 +580,3 @@
 
 </body>
 </html>
->>>>>>> origin/dasuan

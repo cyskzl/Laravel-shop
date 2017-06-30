@@ -71,11 +71,7 @@
   justify-content: space-between;
 }
 span {
-<<<<<<< HEAD
   /*display: block;*/
-=======
-  display: block;
->>>>>>> origin/dasuan
   padding-top: 5px;
   text-align: center;
 }
