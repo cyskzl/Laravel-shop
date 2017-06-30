@@ -43,7 +43,7 @@ class CreateOrdersTable extends Migration
             $table->integer('integral')->defaule(0)->unsigned()->comment('使用积分');
             $table->decimal('integral_money',10,2)->defaule(0.00)->comment('使用积分抵多少钱');
             $table->decimal('order_amount',10,2)->defaule(0.00)->comment('应付款金额');
-            $table->decimal('totak_amount',10,2)->defaule(0.00)->comment('订单总价');
+            $table->decimal('total_amount',10,2)->defaule(0.00)->comment('订单总价');
             $table->dateTime('shipping_time')->nullable()->comment('最后发货时间');
             $table->dateTime('confirm_time')->nullable()->comment('收货确认时间');
             $table->dateTime('pay_time')->nullable()->comment('支付时间');

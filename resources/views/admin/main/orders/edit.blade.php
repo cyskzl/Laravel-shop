@@ -12,60 +12,151 @@
         <meta name="format-detection" content="telephone=no">
         <link rel="stylesheet" href="{{asset('templates/admin/css/x-admin.css')}}" media="all">
     </head>
-    
     <body>
         <div class="x-body">
             <form class="layui-form layui-form-pane">
                 <div class="layui-form-item">
                     <label for="L_title" class="layui-form-label">
-                        标题
+                         订单总额
                     </label>
                     <div class="layui-input-block">
-                        <input type="text" id="L_title" name="title" required lay-verify="title" value="layDate如何设置最小时间为当前" 
+                        <span class="layui-input">￥<b>{{$ordergoods->goods_price + $ordergoods->shipping_price}}</b>(商品总价:{{$ordergoods->goods_price}} 运费:{{$ordergoods->shipping_price}})</span>
+                        <span style="font-size: 12px;">订单总额=商品总价+运费</span>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="L_title" class="layui-form-label">
+                        收货人
+                    </label>
+                    <div class="layui-input-block">
+                        <input type="text" id="L_title" name="consignee" required lay-verify="title" value="{{$ordergoods->consignee}}"
                         autocomplete="off" class="layui-input">
                     </div>
                 </div>
-                <div class="layui-form-item layui-form-text">
-                    <div class="layui-input-block">
-                        <script id="container" name="content" type="text/plain"></script>
-                        <!-- 配置文件 -->
-                        <script type="text/javascript" src="{{asset('templates/admin/ueditor/ueditor.config.js')}}"></script>
-                        <!-- 编辑器源码文件 -->
-                        <script type="text/javascript" src="{{asset('templates/admin/ueditor/ueditor.all.js')}}"></script>
-                        <!-- 实例化编辑器 -->
-                        <script type="text/javascript">
-                            var ue = UE.getEditor('container');
-                        </script>
-                    </div>
-                    <label for="L_content" class="layui-form-label" style="top: -2px;">
-                        描述
+
+                <div class="layui-form-item">
+                    <label for="L_title" class="layui-form-label">
+                        手机
                     </label>
-                </div>
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">
-                            所在类别
-                        </label>
-                        <div class="layui-input-block">
-                            <select lay-verify="required" name="cid">
-                                <option>
-                                </option>
-                                <optgroup label="Layui相关">
-                                    <option value="0">layui</option>
-                                    <option value="2">layer弹层</option>
-                                    <option value="3">LayIM即时通讯</option>
-                                </optgroup>
-                                <optgroup label="其它交流">
-                                    <option selected="" value="100">技术闲谈</option>
-                                    <option value="101">建议反馈</option>
-                                    <option value="168">官方公告</option>
-                                </optgroup>
-                            </select>
-                        </div>
+                    <div class="layui-input-block">
+                        <input type="text" id="L_title" name="mobile" required lay-verify="title" value="{{$ordergoods->mobile}}"
+                               autocomplete="off" class="layui-input">
                     </div>
                 </div>
+
+
                 <div class="layui-form-item">
-                    <button class="layui-btn" lay-filter="add" lay-submit>
+                    <label class="layui-form-label">地区选择</label>
+                    <div class="layui-input-inline">
+                        <select name="quiz1">
+                            <option value="">请选择省</option>
+                            <option value="浙江" selected="">浙江省</option>
+                            <option value="你的工号">江西省</option>
+                            <option value="你最喜欢的老师">福建省</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="quiz2">
+                            <option value="">请选择市</option>
+                            <option value="杭州">杭州</option>
+                            <option value="宁波" disabled="">宁波</option>
+                            <option value="温州">温州</option>
+                            <option value="温州">台州</option>
+                            <option value="温州">绍兴</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="quiz3">
+                            <option value="">请选择县/区</option>
+                            <option value="西湖区">西湖区</option>
+                            <option value="余杭区">余杭区</option>
+                            <option value="拱墅区">临安市</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">详细地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="address" lay-verify="title" autocomplete="off"
+                               placeholder="请输入详细地址" class="layui-input" value="{{$ordergoods->address}}">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">配送物流</label>
+                    <div class="layui-input-inline">
+                        <select name="modules" lay-verify="required" lay-search="">
+                            <option value="1">顺丰快递</option>
+                            <option value="2">圆通快递</option>
+                            <option value="3">申通快递</option>
+                        </select>
+                    </div>
+                </div>
+                </div>
+
+                <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">支付方式</label>
+                    <div class="layui-input-inline">
+                        <select name="modules" lay-verify="required" lay-search="">
+                            <option value="1">微信支付</option>
+                            <option value="2">支付宝支付</option>
+                            <option value="3">货到付款</option>
+                            <option value="4">银联在线</option>
+                        </select>
+                    </div>
+                </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">发票抬头</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" lay-verify="title" autocomplete="off"
+                               placeholder="发票抬头" class="layui-input" value="{{$ordergoods->invoice_title}}">
+                    </div>
+                </div>
+
+                <table class="layui-table" lay-even="" lay-skin="nob">
+                    <colgroup>
+                        <col width="150">
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>商品名称</th>
+                        <th>规格</th>
+                        <th>价格</th>
+                        <th>数量</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($ordergoods['ordergood'] as $value)
+                        <tr>
+                            <td>{{$value->goods_name}}</td>
+                            <td>{{$value->goods_sn}}</td>
+                            <td>{{$value->goods_price}}</td>
+                            <td>{{$value->goods_num}}</td>
+                            <td><a href="">删除</a></td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">管理员备注</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" class="layui-textarea">{{$ordergoods->admin_note}}</textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <button class="layui-btn" lay-filter="add" name="btn" lay-submit>
                         保存
                     </button>
                 </div>

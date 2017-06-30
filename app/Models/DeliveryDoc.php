@@ -13,4 +13,10 @@ class DeliveryDoc extends Model
     {
         return $this->belongsTo('App\Models\Orders','order_id','id');
     }
+
+    public function belongsToOrdersDetalis()
+    {
+        return $this->hasMany('App\Models\OrdersDetails','order_id','order_id');
+    }
+
 }
