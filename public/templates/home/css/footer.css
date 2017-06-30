@@ -32,9 +32,9 @@
 	margin: 25px auto 35px;
 }
 .footer_bottom{
-	width: 100%;
+	width: 1100px;
 	height: 99px;
-	float: left;
+	margin:auto;
 }
 .footer_bottom p{
 	color: #fff;
