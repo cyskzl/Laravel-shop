@@ -94,5 +94,5 @@
 @endsection
 
 @section('js')
-	<script src="{{asset('/templates/homejs/dynamic.js')}}"></script>
+	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 @endsection
