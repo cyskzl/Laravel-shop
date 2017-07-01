@@ -248,6 +248,8 @@ class RegisterController extends Controller
 
         $phonecode = $this->get_mobile_code($phone);
 
+        return $phonecode;
+
         $name = 'xybeta注册验证';
 
         $content = '{code:"'. $phonecode .'",name:"xxx"}';
@@ -255,24 +257,30 @@ class RegisterController extends Controller
         $code = 'SMS_71285782';
 
         $result = $sms->send("$phone","$name","$content","$code");
+
+        return $result;
     }
 
 
     //生成手机验证码
     protected function get_mobile_code($phone)
     {
-        $data = TempEmail::where('user_id',$phone)->get();
 
-        $code = $data->uuid;
+        $data = TempEmail::where('user_id',$phone)->get()->toArray();
 
-        if ($code && $data->created_at < (date('Y-m-d H:i:s',time() + 600))){
+        if (!empty($data)){
 
-            return $code;
+            $code = $data[0]['uuid'];
+
+            if ($data[0]['created_at'] < (date('Y-m-d H:i:s',time() + 600))){
+
+                return $code;
+            }
         }
 
         $code = mt_rand(10001,99999);
 
-        $status = TempEmail::insert(['user_id' => $phone, 'uuid' => $code]);
+        $status = TempEmail::create(['user_id' => $phone, 'uuid' => $code]);
 
         if ($status){
             

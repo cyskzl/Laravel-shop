@@ -210,11 +210,30 @@
                     var id = data.elem.id;
                     var value = data.value;
 
-                    console.log(origin);
 
-                    if(value != origin){
+                    if(id == 'province'){
 
-                        var origin = value;
+                        $('#city').html('');
+                        $('#district').html('');
+                        $('#city').append("<option value='0'>请选择市</option>");
+                        $('#district').append("<option value='0'>请选择县/区</option>");
+                        layui.form('select').render();
+
+                    }
+
+                    if (id == 'city'){
+
+                        $('#district').html('');
+                        $('#district').append("<option value='0'>请选择县/区</option>");
+                        layui.form('select').render();
+
+                    }
+
+
+                    if(value == 0){
+
+                        return false;
+                    }
 
                         $.ajax({
                             url:'/admin/region',
@@ -233,24 +252,20 @@
 
                                 if(id == 'province'){
 
-                                    $('#city').html('');
-                                    $('#district').html('');
-                                    $('#city').append("<option value=''>请选择市</option>").append(str);
-                                    $('#district').append("<option value=''>请选择县/区</option>");
+                                    $('#city').append(str);
                                     layui.form('select').render();
 
                                 }
 
                                 if (id == 'city'){
 
-                                    $('#district').html('');
-                                    $('#district').append("<option value=''>请选择县/区</option>").append(str);
+                                    $('#district').append(str);
                                     layui.form('select').render();
 
                                 }
                             }
                         });
-                    }
+
 
 
                 });
