@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 class IndexController extends Controller
 {
-    public function index()
+    public function index($category_id = 1)
     {
         return view('home.index');
     }

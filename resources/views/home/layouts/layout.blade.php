@@ -401,6 +401,6 @@
     </div>
 </div>
 @yield('js')
-
+<script src="{{asset('/templates/home/js/index.js')}}"></script>
 </body>
 </html>

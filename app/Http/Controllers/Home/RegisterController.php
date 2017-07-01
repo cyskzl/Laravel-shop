@@ -47,7 +47,7 @@ class RegisterController extends Controller
      * 完成验证将信息存入users_register
      * 发送邮件给注册用户邮箱
      */
-    public function toRegister(Request $request)
+    public function toEmailRegister(Request $request)
     {
 
         // 邮箱注册填写信息验证
@@ -100,7 +100,7 @@ class RegisterController extends Controller
         $m3_email->to = $email;
         $m3_email->cc = 'nietzsche_nc@163.com';
         $m3_email->subject = '尤为商城注册';
-        $m3_email->content = '请于24小时点击该链接完成注册. http://zw1.com/home/register/validate_email' . '?code=' . $uuid;
+        $m3_email->content = '请于24小时点击该链接完成注册. http://zw1.com/home/email_register/validate_email' . '?code=' . $uuid;
 
         $tempEmail = new TempEmail();
         $tempEmail->user_id = $userregister->id;
@@ -215,5 +215,10 @@ class RegisterController extends Controller
             }
             return view('home.validatefail',['info'=>'该链接已失效，请重新注册']);
         }
+    }
+
+    public function validatePhone(Request $request)
+    {
+        //
     }
 }

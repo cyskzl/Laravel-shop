@@ -21,26 +21,31 @@ Route::get('/', function () {
     return redirect('home');
 });
 
+
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
     // 首页
-    Route::get('/', 'IndexController@index');
+    Route::get('/{category_id?}', 'IndexController@index')->where('category_id', '[0-9]+');
     // 注册页面
     Route::get('/register', 'RegisterController@register');
-
+    // 登录界面
+    Route::get('/login', 'UserController@login');
+    //
     Route::group(['middleware'=>'auth'],function(){
 
     });
     // 验证码生成
     Route::get('/register/code', 'RegisterController@createCode');
     // 邮箱发送注册
-    Route::post('/register', 'RegisterController@toRegister');
+    Route::post('/email_register', 'RegisterController@toEmailRegister');
     // 邮箱验证是否注册
-    Route::post('/register/validate', 'RegisterController@validateEmail');
+    Route::post('/email_register/validate', 'RegisterController@validateEmail');
     // 邮箱激活
-    Route::get('/register/validate_email', 'RegisterController@validateEmailCode');
+    Route::get('/email_register/validate_email', 'RegisterController@validateEmailCode');
+    // 手机验证是否注册
+    Route::post('/phone_register/validate', 'RegisterController@validatePhone');
     // 登录信息处理
-    Route::post('/doLogin', 'Usercontroller@doLogin');
+    Route::post('/doLogin', 'UserController@doLogin');
     // 退出登录
     Route::get('/logOut', 'UserController@logOut');
     // 商品列表页
