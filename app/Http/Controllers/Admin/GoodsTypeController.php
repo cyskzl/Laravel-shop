@@ -7,26 +7,15 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\GoodsType;
-use App\Permission;
 
 class GoodsTypeController extends Controller
 {
-    protected $perms;
-
-	public function __construct()
-	{
-		$this->perms = new Permission;
-	}
-
     /**
      * 显示类型页面
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        //判断是否有权限修改
-		$this->perms->adminPerms('admin, goods', 'goodstype_list');
-
         $goodstypes = GoodsType::orderBy('id', 'desc')->paginate(10);
 
        return view('admin.main.goods.type.index', ['goodstypes' => $goodstypes]);
@@ -79,9 +68,6 @@ class GoodsTypeController extends Controller
      */
     public function edit($id)
     {
-        //判断是否有权限修改
-		$this->perms->adminPerms('admin, goods', 'edit_goodstype');
-
         $info = GoodsType::find($id);
 
         return view('admin.main.goods.type.edit', ['info' => $info]);
@@ -128,15 +114,6 @@ class GoodsTypeController extends Controller
      */
     public function destroy($id)
     {
-        //判断是否有权限删除
-        $error = $this->perms->adminDelPerms('admin, goods', 'delete_goodstype');
-        if ($error){
-            //$error json数据  success=>错误码  info=>错误提示信息  如要返回的不是json数据请先转换
-            $json = json_decode($error);
-            $data = self::errorNumb($json->success, $json->info);
-            return $data;
-        }
-
         if(GoodsType::destroy([$id])){
             $data = [
                 'status' => 1,

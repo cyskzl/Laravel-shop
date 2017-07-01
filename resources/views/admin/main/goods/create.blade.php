@@ -58,7 +58,6 @@
                 <li>商品物流</li>
             </ul>
             <div class="layui-tab-content" style="height: 1900px;">
-
                 <div class="layui-tab-item ">
 
                     <div class="layui-form-item">
@@ -589,6 +588,7 @@
         upload(uploadPath,token);
         //实例化删除函数
         delimg(uploadPath);
+
         // 实例化上传函数
         oneUpload(uploadPath,token);
         // 实例化删除函数

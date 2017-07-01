@@ -7,25 +7,13 @@ use Storage;
 use App\Http\Requests;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
-use App\Permission;
-
 class GoodscategoryController extends Controller
 {
-    protected $perms;
-
-	public function __construct()
-	{
-		$this->perms = new Permission;
-	}
-
     /**
      * @return  view    商品分类列表页
      */
     public function index(Request $request)
     {
-        //判断是否有权限访问列表页
-		$this->perms->adminPerms('admin, goods', 'goodscategory_list');
-
         //分页查询以keyword为搜索关键字
         $cate = Category::select(DB::raw('*, concat(level,",",id) as paths '))->orderBy('paths', 'desc')
                 ->where(function($query) use ($request){
@@ -81,9 +69,6 @@ class GoodscategoryController extends Controller
      */
     public function create()
     {
-         //判断是否有权限修改
-         $this->perms->adminPerms('admin, goods', 'create_goodscategory');
-
         //商品分类添加
         $cates = self::getCates();
 
@@ -104,9 +89,6 @@ class GoodscategoryController extends Controller
      */
     public function edit($id)
     {
-        //判断是否有权限修改
-		$this->perms->adminPerms('admin, goods', 'edit_goodscategory');
-
         $info = Category::find($id);
         //pid路径添加
         $cates = self::getCates();
@@ -152,15 +134,6 @@ class GoodscategoryController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        //判断是否有权限删除
-		$error = $this->perms->adminDelPerms('admin, goods', 'delete_goodscategory');
-        if ($error){
-            //$error json数据  success=>错误码  info=>错误提示信息  如要返回的不是json数据请先转换
-            // $json = json_decode($error);
-            // $data = self::errorNumb($json->success, $json->info);
-            return 1;
-        }
-
         //分类删除id
         $cates = Category::findOrFail($id);
         $map = "level like '%.$id.%'";

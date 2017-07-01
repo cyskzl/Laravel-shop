@@ -19,8 +19,6 @@ use Illuminate\Support\Facades\Input;
  */
 class CommonController extends Controller
 {
-
-
     /**
      * 上传加删除
      * @param Request $request
@@ -69,7 +67,6 @@ class CommonController extends Controller
            }
            return $data;
         }
-
 
     }
 
