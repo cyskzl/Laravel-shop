@@ -24,7 +24,7 @@
 
 	        <div class="personal_left fl">
 	            <dl>
-	                <dt class="personal_info"><a href="javascript:;"><img src="./uploads/personal.jpg" alt=""/></a></dt>
+	                <dt class="personal_info"><a href="javascript:;"><img src="{{ asset('templates/home/uploads/personal.jpg') }}" alt=""/></a></dt>
 	                <dd class="phone">13843838438</dd>
 
 	                <dt class="level1">交易管理</dt>

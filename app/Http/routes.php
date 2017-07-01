@@ -30,7 +30,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/register', 'RegisterController@register');
     // 登录界面
     Route::get('/login', 'UserController@login');
-    //
+
     Route::group(['middleware'=>'auth'],function(){
 
     });
@@ -89,7 +89,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 个人中心-服务中心（隐私条款）
     Route::get('/privacyclause', 'PersonalController@privacyClause');
     // 个人中心-设置（地址管理）
-    Route::resource('/adress', 'AddressController');
+    Route::resource('/address', 'AddressController');
 
 
 
