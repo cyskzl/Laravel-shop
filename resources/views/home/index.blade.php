@@ -599,7 +599,7 @@
 			//导航背景色随频道颜色改变
 
 			var currentId = $(this).data("currentcategoryid"),navBg;
-
+			// console.log($(this));
 			var img = imgClass(currentId);
 
 	        $(this).addClass(''+ img +'').css('color','#fff').siblings("a").removeClass().css('color','#626161');

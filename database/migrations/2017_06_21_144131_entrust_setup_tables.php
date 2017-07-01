@@ -18,6 +18,9 @@ class EntrustSetupTables extends Migration
             $table->string('password')->comment('密码');
             $table->tinyInteger('status')->default('1')->comment('状态');
             $table->rememberToken();
+            $table->timestamp('last_login_time')->comment('上次登录时间');
+            $table->string('last_login_ip', 20)->comment('上次登录IP');
+            $table->integer('login_num')->comment('登录次数');
             $table->timestamps();
         });
 
@@ -72,7 +75,7 @@ class EntrustSetupTables extends Migration
      * @return  void
      */
     public function down()
-    {   
+    {
         Schema::drop('admin_users');
         Schema::drop('permission_role');
         Schema::drop('permissions');
