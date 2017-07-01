@@ -40,8 +40,8 @@
                         <td>92</td>
                         <td>9</td>
                         <td>0</td>
-                        <td>8</td>
-                        <td>20</td>
+                        <td>{{ $user }}</td>
+                        <td>{{ $admin_user }}</td>
                     </tr>
                     <tr>
                         <td>今日</td>
@@ -201,7 +201,7 @@
         (function() {
           var hm = document.createElement("script");
           hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-          var s = document.getElementsByTagName("script")[0]; 
+          var s = document.getElementsByTagName("script")[0];
           s.parentNode.insertBefore(hm, s);
         })();
         </script>

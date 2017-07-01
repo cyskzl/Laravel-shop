@@ -30,7 +30,7 @@ class ActivityController extends Controller
     public function index(Request $request)
     {
         //判断是否有权限访问列表
-        $this->perms->adminPerms('admin', 'admin_list');
+        $this->perms->adminPerms('admin,activity,goods', 'activity_list');
 
         // 查询活动并降序排列
         $activities = Activity::orderBy('id','desc')
@@ -55,6 +55,7 @@ class ActivityController extends Controller
      */
     public function create()
     {
+        $this->perms->adminPerms('admin,activity,goods', 'create_activity');
         return view('admin.main.activity.add');
     }
 
@@ -125,6 +126,7 @@ class ActivityController extends Controller
      */
     public function edit($id)
     {
+        $this->perms->adminPerms('admin,activity,goods', 'edut_activity');
 
         return view('admin.main.activity.edit');
     }

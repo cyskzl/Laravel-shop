@@ -23,18 +23,11 @@
             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
         </div>
         <div class="x-body">
-            <form class="layui-form x-center" action="" style="width:80%">
+            <form class="layui-form x-center" action="{{url('admin/adminlist')}}" style="width:100%">
                 <div class="layui-form-pane" style="margin-top: 15px;">
                   <div class="layui-form-item">
-                    <label class="layui-form-label">日期范围</label>
                     <div class="layui-input-inline">
-                      <input class="layui-input" placeholder="开始日" id="LAY_demorange_s">
-                    </div>
-                    <div class="layui-input-inline">
-                      <input class="layui-input" placeholder="截止日" id="LAY_demorange_e">
-                    </div>
-                    <div class="layui-input-inline">
-                      <input type="text" name="username"  placeholder="请输入登录名" autocomplete="off" class="layui-input">
+                      <input type="text" name="keyword"  placeholder="请输入登录名" autocomplete="off" class="layui-input" value="{{$request->input('keyword')}}">
                     </div>
                     <div class="layui-input-inline" style="width:80px">
                         <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
@@ -42,7 +35,7 @@
                   </div>
                 </div>
             </form>
-            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="admin_add('添加管理员','{{ url('admin/adminlist/create') }}','600','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：{{ count($admin_user) }}条</span></xblock>
+            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="admin_add('添加管理员','{{ url('admin/adminlist/create') }}','600','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：{{ count($search) }}条</span></xblock>
             <table class="layui-table">
                 <thead>
                     <tr>
@@ -57,8 +50,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                @if(count($admin_user) > 0)
-                    @foreach($admin_user as $row)
+                @if(count($search) > 0)
+                    @foreach($search as $row)
                         @if( $row->id == 1)
                             <tr id = "admin">
                                 {{--{{dd($admin_user)}}--}}
@@ -146,7 +139,7 @@
                 </tbody>
             </table>
 
-            {{ $admin_user->links() }}
+            {!! $search->appends($request->only(['keyword']))->render() !!}
         </div>
         <script src="{{ asset('templates/admin/lib/layui/layui.js') }}" charset="utf-8"></script>
         <script src="{{ asset('templates/admin/js/x-layui.js') }}" charset="utf-8"></script>
