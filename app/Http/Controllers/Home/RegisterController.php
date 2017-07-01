@@ -275,6 +275,9 @@ class RegisterController extends Controller
             if ($data[0]['created_at'] < (date('Y-m-d H:i:s',time() + 600))){
 
                 return $code;
+            }else{
+
+                TempEmail::where('user_id',$phone)->delete();
             }
         }
 
