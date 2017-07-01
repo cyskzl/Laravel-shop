@@ -95,10 +95,17 @@ class OrdersController extends Controller
         //查询出来的的数据是在0下标，直接获取后使用更方便。
         $ordergoods = $ordergoods[0];
 
-        
+
+        $province = Region::where('parent_id',0)->get();
+
+        $city = Region::where('parent_id',$ordergoods->province)->get();
+
+        $district = Region::where('parent_id',$ordergoods->city)->get();
+
+//        dd($province);
 
 
-        return view('admin.main.orders.edit',compact('ordergoods'));
+        return view('admin.main.orders.edit',compact('ordergoods','province','city','district'));
     }
 
     /**
@@ -110,6 +117,7 @@ class OrdersController extends Controller
      */
     public function update(Request $request,$id)
     {
+        dd($request);
         // 修改付款状态为付款
         if($request->mode == 1){
            $order =  Orders::find($id);
