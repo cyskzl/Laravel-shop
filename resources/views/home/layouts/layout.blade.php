@@ -20,11 +20,11 @@
         <!-- 顶部 -->
         <div class="header_top left">
             <ul class="header_top_left left">
-                <li><a href="javascript:;">注册</a></li>
-                <li><a href="javascript:;">登录</a></li>
+                <li><a href="{{ asset('home/register') }}">注册</a></li>
+                <li><a href="{{ asset('home/login') }}">登录</a></li>
                 <li class="header_top_left_li">下载APP
                     <a href="javascript:">
-                        <img class="header_top_left_code" src="./uploads/down_app.png" alt="">
+                        <img class="header_top_left_code" src="{{ asset('templates/home/uploads/down_app.png') }}" alt="">
                     </a>
                 </li>
             </ul>
@@ -34,7 +34,7 @@
                 <li>消息</li>
                 <li class="header_top_right_li">个人中心&nbsp;
                     <span>
-						<img src="./uploads/pCenter_qian.png" alt="">
+						<img src="{{ asset('templates/home/uploads/pCenter_qian.png') }}" alt="">
 					</span>
                     <div class="header_top_right_div">
                         <a href="javascript:">购物车</a>
@@ -46,7 +46,7 @@
                 <li>客户服务</li>
                 <li class="header_top_left_li_two">关注我们
                     <a href="javascript:" class="header_top_left_li_two_ding">
-                        <img class="header_top_left_code_two" src="./uploads/down_app.png" alt="">
+                        <img class="header_top_left_code_two" src="{{ asset('templates/home/uploads/down_app.png') }}" alt="">
                     </a>
                 </li>
 
@@ -55,18 +55,18 @@
         <!-- 搜索区 -->
         <div class="header_top_bottom left">
             <div class="header_top_bottom_people left">
-                <a href="javascript:">女士</a>
-                <a href="javascript:">男士</a>
-                <a href="javascript:">创意生活</a>
+                <a href="http://www.dasuan.com" data-currentcategoryid="1">女士</a>
+                <a href="http://www.dasuan1.com" data-currentcategoryid="2">男士</a>
+                <a href="http://www.dasuan2.com" data-currentcategoryid="3">创意生活</a>
             </div>
             <div class="header_logo left">
-                <img src="./uploads/logo (1).png" alt="">
+                <img src="{{ asset('templates/home/uploads/logo (1).png') }}" alt="">
             </div>
             <div class="header_search right">
                 <div>
                     <input type="text" class="header_searchForm left" placeholder="请输入搜索内容" style="outline:none">
                     <a href="javascript:" id="header_searchin">
-                        <img src="./uploads/icon_searchin.png" alt="">
+                        <img src="{{ asset('templates/home/uploads/icon_searchin.png') }}" alt="">
                     </a>
                 </div>
                 <ul class="left">
@@ -86,42 +86,14 @@
                     <a href="javascript:">新品</a>
                     <div class="header_nav_left_new">
                         <div class="elastic_no">
+
                             <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
+                                <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
                                 <span class="font_sm">LOOKAST</span>
                                 <span class="font">翻领短袖开叉连衣裙_黄色</span>
                                 <span class="money">¥ 715</span>
                             </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -148,29 +120,12 @@
                                 <a href="javascript:">羽绒服／棉服</a>
                             </div>
                             <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
+                                <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
                                 <span class="font_sm">LOOKAST</span>
                                 <span class="font">翻领短袖开叉连衣裙_黄色</span>
                                 <span class="money">¥ 715</span>
                             </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -197,29 +152,12 @@
                                 <a href="javascript:">羽绒服／棉服</a>
                             </div>
                             <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
+                                <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
                                 <span class="font_sm">LOOKAST</span>
                                 <span class="font">翻领短袖开叉连衣裙_黄色</span>
                                 <span class="money">¥ 715</span>
                             </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -246,29 +184,12 @@
                                 <a href="javascript:">羽绒服／棉服</a>
                             </div>
                             <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
+                                <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
                                 <span class="font_sm">LOOKAST</span>
                                 <span class="font">翻领短袖开叉连衣裙_黄色</span>
                                 <span class="money">¥ 715</span>
                             </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -295,29 +216,12 @@
                                 <a href="javascript:">羽绒服／棉服</a>
                             </div>
                             <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
+                                <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
                                 <span class="font_sm">LOOKAST</span>
                                 <span class="font">翻领短袖开叉连衣裙_黄色</span>
                                 <span class="money">¥ 715</span>
                             </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="./uploads/wimg_450700745_2945817.jpg" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -401,6 +305,7 @@
     </div>
 </div>
 @yield('js')
+
 
 </body>
 </html>

@@ -27,7 +27,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/', 'IndexController@index');
     // 注册页面
     Route::get('/register', 'RegisterController@register');
-
+    // 登录界面
+    Route::get('/login', 'UserController@login');
     Route::group(['middleware'=>'auth'],function(){
 
     });
@@ -40,7 +41,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 邮箱激活
     Route::get('/register/validate_email', 'RegisterController@validateEmailCode');
     // 登录信息处理
-    Route::post('/doLogin', 'Usercontroller@doLogin');
+    Route::post('/doLogin', 'UserController@doLogin');
     // 退出登录
     Route::get('/logOut', 'UserController@logOut');
     // 商品列表页
@@ -84,7 +85,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 个人中心-服务中心（隐私条款）
     Route::get('/privacyclause', 'PersonalController@privacyClause');
     // 个人中心-设置（地址管理）
-    Route::resource('/adress', 'AddressController');
+    Route::resource('/address', 'AddressController');
 
 
 

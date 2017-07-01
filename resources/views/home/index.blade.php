@@ -119,7 +119,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!--设计师-->
 		<div class="designer width ">
 			<div class="title ">
@@ -135,7 +135,7 @@
 				</a>
 			</div>
 		</div>
-		
+
 		<!--热门品类-->
 		<div class="category width">
 			<div class="title">
@@ -190,7 +190,7 @@
 								<span class="price">¥&nbsp;627</span>
 							</a>
 					</div>
-					
+
 				</div>
 				<!--第二列-->
 				<div class="category-show width cen">
@@ -261,11 +261,11 @@
 								<span class="price">¥&nbsp;627</span>
 							</a>
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
-		
+
 		<!--热门品牌-->
 		<div class="hot-brand width">
 			<div class="title ">
@@ -309,7 +309,7 @@
 				</ul>
 			</div>
 		</div>
-		
+
 		<!--博主控-->
 		<div class="master width">
 			<div class="title ">
@@ -384,10 +384,10 @@
 								<span class="price">¥&nbsp;222</span>
 							</a>
 					</div>
-					
+
 				</div>
 		</div>
-		
+
 		<!--潮流穿搭-->
 		<div class="design width">
 			<!--标题-->
@@ -458,7 +458,7 @@
 				</div>
 			</div>
 		</div>
-			
+
 		<!--促销-->
 		<div class="promotion width">
 			<!--标题-->
@@ -492,8 +492,8 @@
 							<span class="price">¥&nbsp;627</span>
 						</a>
 					</div>
-			</div>	
-			
+			</div>
+
 			<!--最新-->
 			<div class="newest">
 				<!--最新韩流-->
@@ -522,7 +522,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!--热销商品-->
 		<div class="hotProduct width ">
 			<!--标题-->
@@ -573,5 +573,39 @@
 @section('js')
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script src="{{asset('/templates/home/js/carousel.js')}}"></script>
-@endsection
+	<script type="text/javascript">
 
+		$(function(){
+
+			$('.header_top_bottom_people a')[0].setAttribute('class','women');
+			$('.header_top_bottom_people a')[0].style='color:#fff';
+		});
+
+	    // 女士，男士，创意生活切换
+	    $(".header_top_bottom_people a").click(function(){
+	        // console.log($(this));
+			//导航背景色随频道颜色改变
+		   var currentId = $(this).data("currentcategoryid"),navBg;
+		   var img = '';
+		//    console.log(currentId );
+			   if(currentId == 1){
+				//    navBg = "#f54b73";
+				img = 'women';
+			   }else if(currentId == 2){
+				//    navBg = "#505c82";
+				img = 'men';
+			   }else if(currentId == 3){
+				//    navBg = "#a4d7d8";
+				img = 'design';
+		   }
+	      
+	        $(this).addClass(''+ img +'').css('color','#fff').siblings("a").removeClass().css('color','#626161');
+
+
+	        return false;
+	    });
+
+
+	</script>
+
+@endsection
