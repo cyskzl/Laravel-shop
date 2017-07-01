@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Models\GoodsType;
 use DB;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -17,7 +18,8 @@ class GoodsAttributeController extends Controller
     public function index(Request $request)
     {
         //type模型表查询
-        $typeinfos = DB::table('goods_type')->select('id', 'name')->get();
+//        $typeinfos = DB::table('goods_type')->select('id', 'name')->get();
+        $typeinfos = GoodsType::select('id', 'name')->get();
         //分页查询以keyword为搜索关键字
         $goodsattrs = GoodsAttribute::orderBy('order', 'desc')->where(function ($query) use($request) {
             //分类检索

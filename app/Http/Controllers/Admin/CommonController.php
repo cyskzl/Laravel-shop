@@ -52,13 +52,13 @@ class CommonController extends Controller
                 //删除文件
                if(@unlink('.'.$upname)){
                     $data = [
-                          'status' => 0,
+                          'status' => 1,
                           'msg'   => '图片删除成功',
                           'path'  => $upname,
                     ];
                } else {
                    $data = [
-                       'status' => 1,
+                       'status' => 0,
                        'msg'   => '图片删除失败,请稍后重试',
                        'path'  => $upname,
                    ];
@@ -128,29 +128,46 @@ class CommonController extends Controller
         }
         return $data;
     }
-    //返回ajax
+
+    /**
+     * 商品添加修改获取分类
+     * @param Request $request
+     * @return array 失败信息
+     */
     public function ajaxCate(Request $request)
     {
         $fatcate = $request->input('fatcate');
         if($fatcate){
             $second  =  DB::table('goods_category')->where('level', 'like', '0,%'.$fatcate)->select()->get();
             return $second;
+        } else {
+            $data = [
+                'status' => 0,
+                'msg' => '获取失败'
+            ];
+
         }
        if($request->input('three')){
            $three  =  DB::table('goods_category')->where('level', 'like', '0,%'.$fatcate.',%')->select()->get();
            return $three;
+       } else {
+           $data = [
+               'status' => 0,
+               'msg' => '获取失败'
+           ];
        }
+        return $data;
     }
 
+    /**
+     * 商品添加修改获取商品规格
+     * @param Request $request
+     * @return mixed
+     */
     public function ajaxModel(Request $request)
     {
         $type = $request->input('type');
 
-//        $spec  = Spec::select(DB::raw('spec.*, group_concat(spec_item.item)as specitem ,spec_item.id as spec_item_id'))
-//            ->join('spec_item', 'spec.id', '=', 'spec_item.spec_id')
-//            ->where('type_id','=',$type)
-//            ->groupby('spec.name')
-//            ->get();
         //返回分组规格对应的名称与规格
         $spec = Spec::select(DB::raw('spec.*, spec_item.spec_id,group_concat(spec_item.item) AS specitem,group_concat(spec_item.id) AS specid'))
             ->join('spec_item', 'spec.id', '=', 'spec_item.spec_id')
@@ -159,12 +176,18 @@ class CommonController extends Controller
             ->get();
         return $spec;
     }
+
+    /**
+     * 商品添加修改获取商品属性
+     * @param Request $request
+     * @return mixed
+     */
     public function ajaxAttr(Request $request)
     {
         $type = $request->input('type');
         $attr = GoodsAttribute::where('type_id', '=', $type)
             ->get();
-      return $attr;
+        return $attr;
     }
 
 }

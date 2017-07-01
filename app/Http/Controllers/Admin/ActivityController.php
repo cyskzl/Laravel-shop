@@ -30,7 +30,7 @@ class ActivityController extends Controller
     public function index(Request $request)
     {
         //判断是否有权限访问列表
-        $this->perms->adminPerms('admin', 'admin_list');
+        $this->perms->adminPerms('admin,goods', 'activity_list');
 
         // 查询活动并降序排列
         $activities = Activity::orderBy('id','desc')

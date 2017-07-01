@@ -11,30 +11,52 @@
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 @endsection
 @section('x-body')
-    <form class="layui-form " action="{{url('admin/brand')}}" style="width:800px">
-        <div class="layui-form-pane" style="margin-top: 15px;">
+       <form class="layui-form " action="{{url('admin/goods')}}" style="width:1200px">
+        <div class="layui-form-pane" style="margin-top: 15px; width: 100%">
             <div class="layui-form-item">
                 <label class="layui-form-label">搜索</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="keyword" value="{{$request->input('keyword')}}" placeholder="属性名称" autocomplete="off" class="layui-input">
+                    <input type="text" name="keyword" value="{{$request->input('keyword')}}" placeholder="商品名称关键字" autocomplete="off" class="layui-input">
                 </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">搜索选择框</label>
                     <div class="layui-input-inline">
-                        <select name="modules" lay-verify="required" lay-search="">
-                            <option value="">直接选择或搜索选择</option>
-                            <option value="1">layer</option>
-
+                        <select name="modules"  >
+                            <option value="">-请选择分类-</option>
+                            <option value="">所有模型</option>
+                            @foreach($typeinfos as $typeinfo)
+                                <option value="{{$typeinfo->id}}" @if($request->typename == $typeinfo->id) selected @endif>{{$typeinfo->name}}  </option>
+                            @endforeach
                         </select>
                     </div>
+                <div class="layui-input-inline" >
+                    <select  name="modules" >
+                        <option value="">-请选择品牌-</option>
+                        <option value="">所有品牌</option>
+                        <option value="1">layer</option>
+                    </select>
                 </div>
-            </div>
-                <div class="layui-input-inline" style="width:80px">
+                <div class="layui-input-inline" style="width:100px">
+                    <select name="modules" >
+                        <option value="">-请选择上下架-</option>
+                        <option value="">全部</option>
+                        <option value="1">layer</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline" style="width:100px">
+                    <select name="modules"  >
+                        <option value="">-请选择新品推荐-</option>
+                        <option value="">全部</option>
+                        <option value="1">layer</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline" style="width:100px">
                     <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
                 </div>
             </div>
-        </div>
+
+            </div>
+
     </form>
+
     <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
         <button class="layui-btn" onclick="question_add('添加商品','{{ url('admin/goods/create') }}','800','500')"><i
                     class="layui-icon">&#xe608;</i>添加
@@ -146,11 +168,11 @@
                     </form>
                 </td>
                 <td class="td-manage">
-                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/goods/{{$good->id}}/edit','{{$good->id}}','','510')"
+                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/goods/{{$good->goods_id}}/edit','{{$good->id}}','','510')"
                        class="ml-5" style="text-decoration:none">
                         <i class="layui-icon">&#xe642;</i>
                     </a>
-                    <a title="删除" href="javascript:;" onclick="cate_del(this,'{{$good->id}}')"
+                    <a title="删除" href="javascript:;" onclick="cate_del(this,'{{$good->goods_id}}')"
                        style="text-decoration:none">
                         <i class="layui-icon">&#xe640;</i>
                     </a>
@@ -204,17 +226,21 @@
                 //发异步删除数据
                 $.ajax({
                     type: 'post',
-                    url:  '{{url('/admin/brand/')}}'+'/'+id,
+                    url:  '{{url('/admin/goods/')}}'+'/'+id,
                     dataType: 'json',
                     data: { '_token':'{{csrf_token()}}', '_method': 'DELETE', 'id': id },
                     success:function (data){
-                        if(data.status == 1){
+                        if(data.status == 0){
                             layer.msg(data.msg, {icon: 5,time:1000});
                             return false;
+                        } else if(data.status == 2){
+                            layer.msg(data.msg, {icon: 5,time:1000});
+                        } else {
+                            location.href = location.href;
+                            $(obj).parents("tr").remove();
+                            layer.msg(data.msg ,{icon:1,time:1000});
                         }
-                        location.href = location.href;
-                        $(obj).parents("tr").remove();
-                        layer.msg(data.msg ,{icon:1,time:1000});
+
                     }
                 });
             });
