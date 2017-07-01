@@ -14,7 +14,9 @@
     </head>
     <body>
         <div class="x-body">
-            <form class="layui-form layui-form-pane">
+            <form class="layui-form layui-form-pane" action="./{{$ordergoods->id}}" method="PUT">
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <input type="hidden" name="_method" value="PUT">
                 <div class="layui-form-item">
                     <label for="L_title" class="layui-form-label">
                          订单总额
@@ -45,33 +47,39 @@
                     </div>
                 </div>
 
-
                 <div class="layui-form-item">
                     <label class="layui-form-label">地区选择</label>
                     <div class="layui-input-inline">
-                        <select name="quiz1">
+                        <select name="province" id="province" lay-filter="address">
                             <option value="">请选择省</option>
-                            <option value="浙江" selected="">浙江省</option>
-                            <option value="你的工号">江西省</option>
-                            <option value="你最喜欢的老师">福建省</option>
+                            @foreach($province as $v)
+                                <option value="{{$v->id}}" selected="">{{$v->name}}</option>
+                                    @if($v->id == $ordergoods->province)
+                                        <option value="{{$v->id}}" selected="selected">{{$v->name}}</option>
+                                    @endif
+                                @endforeach
                         </select>
                     </div>
                     <div class="layui-input-inline">
-                        <select name="quiz2">
+                        <select name="city" id="city" lay-filter="address">
                             <option value="">请选择市</option>
-                            <option value="杭州">杭州</option>
-                            <option value="宁波" disabled="">宁波</option>
-                            <option value="温州">温州</option>
-                            <option value="温州">台州</option>
-                            <option value="温州">绍兴</option>
+                            @foreach($city as $v)
+                                <option value="{{$v->id}}" selected="">{{$v->name}}</option>
+                                @if($v->id == $ordergoods->city)
+                                    <option value="{{$v->id}}" selected="selected">{{$v->name}}</option>
+                                @endif
+                            @endforeach
                         </select>
                     </div>
                     <div class="layui-input-inline">
-                        <select name="quiz3">
+                        <select name="district" id="district" lay-filter="address">
                             <option value="">请选择县/区</option>
-                            <option value="西湖区">西湖区</option>
-                            <option value="余杭区">余杭区</option>
-                            <option value="拱墅区">临安市</option>
+                            @foreach($district as $v)
+                                <option value="{{$v->id}}" selected="">{{$v->name}}</option>
+                                @if($v->id == $ordergoods->district)
+                                    <option value="{{$v->id}}" selected="selected">{{$v->name}}</option>
+                                @endif
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -164,6 +172,7 @@
         </div>
         <script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
         <script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
+        <script src="{{asset('templates/admin/js/jquery.min.js')}}" charset="utf-8"></script>
         <script>
             layui.use(['form','layer','layedit'], function(){
                 $ = layui.jquery;
@@ -182,7 +191,6 @@
             //创建一个编辑器
             editIndex = layedit.build('L_content');
             
-              
 
               //监听提交
               form.on('submit(add)', function(data){
@@ -196,9 +204,61 @@
                 });
                 return false;
               });
-              
-              
+
+
+                form.on('select(address)',function(data){
+                    var id = data.elem.id;
+                    var value = data.value;
+
+                    console.log(origin);
+
+                    if(value != origin){
+
+                        var origin = value;
+
+                        $.ajax({
+                            url:'/admin/region',
+                            type:'GET',
+                            data:{'id':value},
+                            dataType:'json',
+                            success:function (data) {
+
+                                var str = "";
+
+                                for(var i=0; i<data.length;i++){
+
+                                    str += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+
+                                }
+
+                                if(id == 'province'){
+
+                                    $('#city').html('');
+                                    $('#district').html('');
+                                    $('#city').append("<option value=''>请选择市</option>").append(str);
+                                    $('#district').append("<option value=''>请选择县/区</option>");
+                                    layui.form('select').render();
+
+                                }
+
+                                if (id == 'city'){
+
+                                    $('#district').html('');
+                                    $('#district').append("<option value=''>请选择县/区</option>").append(str);
+                                    layui.form('select').render();
+
+                                }
+                            }
+                        });
+                    }
+
+
+                });
+
+
             });
+
+
         </script>
 
     </body>
