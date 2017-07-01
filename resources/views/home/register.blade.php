@@ -110,28 +110,5 @@
             $(this).attr('src', '/home/register/code?random=' + Math.random());
         });
 
-        //获取手机验证码
-		$('#phone_code').on('click',function () {
-
-		    var phone = $('#phone').val();y7u
-
-		    var regex = /^[1][34578]\d{9}$/;
-
-		    var boot = regex.test(phone);
-
-		    if (!boot){
-                $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码不合法</p>');
-                return false;
-			}
-
-			$.ajax({
-				url:"/phonecode",
-				type:"POST",
-				data:{'phone':phone},
-				success:function (data) {
-					console.log(data);
-                }
-			})
-        })
 	</script>
 @endsection
