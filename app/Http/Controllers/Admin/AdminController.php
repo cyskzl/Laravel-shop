@@ -19,11 +19,6 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
-       $user = \Auth::guard('admin')->user();
-    //    dd($user->hasRole('admin'));
-//        if ($user->can('admin/goods')) {
-//
-//        }
 
         return view('admin.index');
 
@@ -34,7 +29,10 @@ class AdminController extends Controller
      */
     public function welcome()
     {
-        return view('admin.main.welcome');
+        $admin_user = \App\Models\AdminUser::count();
+        $user       = \DB::table('users_register')->count();
+        // dd($user);
+        return view('admin.main.welcome', compact('admin_user', 'user'));
     }
 
     /**

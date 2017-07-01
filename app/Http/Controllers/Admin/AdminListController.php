@@ -26,14 +26,23 @@ class AdminListController extends Controller
 	/**
 	 * @return  view    管理员列表
 	 */
-	public function index()
+	public function index(Request $request)
 	{
         //判断是否有权限访问列表
         $this->perms->adminPerms('admin', 'admin_list');
 
-		//查询管理员及其所属角色
-		$admin_user = AdminUser::paginate(10);
-		return view('admin.main.administrator.index', compact('admin_user'));
+		//搜索
+		$search = AdminUser::orderBy('id', 'desc')
+            ->where(function($query) use ($request){
+                //关键字
+                $keyword = $request->input('keyword');
+                //检测参数
+                if(!empty($keyword)){
+                    $query->where('nickname','like','%'.$keyword.'%');
+                }
+            })->paginate(10);
+
+		return view('admin.main.administrator.index', compact('search','request'));
 	}
 
 	/**

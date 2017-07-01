@@ -10,7 +10,7 @@
     {{--<script src="{{asset('/templates/home/js/registe.js')}}"></script>--}}
     <script src="{{asset('/templates/home/js/jquery-1.7.2.min.js')}}"></script>
     <script src="{{asset('/templates/home/js/jquery.cookie.js')}}"></script>
-    <script src="{{asset('/templates/home/js/header.js')}}"></script>
+    <script src="{{asset('/templates/home/js/jquery-session.js')}}"></script>
 
     @yield('style')
 </head>
@@ -56,9 +56,9 @@
         <!-- 搜索区 -->
         <div class="header_top_bottom left">
             <div class="header_top_bottom_people left">
-                <a href="{{url('home/1')}}" data-currentcategoryid="1">女士</a>
-                <a href="{{url('home/2')}}" data-currentcategoryid="2">男士</a>
-                <a href="{{url('home/3')}}" data-currentcategoryid="3">创意生活</a>
+                <a href="{{ url('home/') }}" data-currentcategoryid="0">女士</a>
+                <a href="{{ url('home/2') }}" data-currentcategoryid="1">男士</a>
+                <a href="{{ url('home/3') }}" data-currentcategoryid="2">创意生活</a>
             </div>
             <div class="header_logo left">
                 <img src="{{ asset('templates/home/uploads/logo (1).png') }}" alt="">
@@ -305,6 +305,7 @@
         @yield('shop')
     </div>
 </div>
+
 @yield('js')
 <script src="{{asset('/templates/home/js/index.js')}}"></script>
 </body>
