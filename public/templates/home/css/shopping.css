@@ -1,0 +1,71 @@
+
+/*¹ºÎï³µÎª¿Õ*/
+.emptyShoppingcar{
+    margin-bottom: 20px;
+}
+.emptyShoppingcar img{
+    display: block;
+    width: 87px;
+    height: 86px;
+    margin: 60px auto;
+}
+.emptyShoppingcar p{
+    font-size: 18px;
+    color: #7a7a7a;
+    text-align: center;
+    margin-bottom: 60px;
+}
+.emptyShoppingcar a{
+    display: block;
+    width: 140px;
+    height: 50px;
+    line-height: 50px;
+    margin: 0 auto;
+    background-color: #2d2d2d;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+}
+
+/*²ÂÄãÏ²»¶*/
+.guessLike{
+    margin-bottom: 20px;
+}
+.guessLike h3{
+    height: 80px;
+    line-height: 80px;
+    font-size: 22px;
+    color: #626161;
+    font-weight: normal;
+    text-align: center;
+}
+.guessLike .likeItem{
+    justify-content: space-between;
+    overflow: hidden;
+}
+.guessLike .likeItem .product_card{
+    width: 204px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+.guessLike .likeItem .product_card span{
+    display: block;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.guessLike .likeItem .product_img img{
+    max-width: 100%;
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+

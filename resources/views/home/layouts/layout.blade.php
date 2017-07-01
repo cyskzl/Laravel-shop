@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{asset('/templates/home/css/public.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/header.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/footer.css')}}"/>
-    <link rel="stylesheet" href="{{asset('/templates/home/bootstrap/css/bootstrap.min.css')}}"/>
+    {{--<link rel="stylesheet" href="{{asset('/templates/home/bootstrap/css/bootstrap.min.css')}}"/>--}}
     {{--<script src="{{asset('/templates/home/js/registe.js')}}"></script>--}}
     <script src="{{asset('/templates/home/js/jquery-1.7.2.min.js')}}"></script>
     <script src="{{asset('/templates/home/js/jquery.cookie.js')}}"></script>

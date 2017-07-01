@@ -1,0 +1,104 @@
+body{
+    color: #626161;
+}
+.layout{
+    border-top: 2px solid #626161;
+    border-bottom: 1px solid #626161;
+    padding: 40px;
+}
+.dagou{
+    color: #626161;
+    font-size: 80px;
+    margin: 0 30px 0 30px;
+}
+.erhuh h3{
+    font-size: 18px;
+    padding-bottom: 10px;
+    font-weight: 400;
+}
+.erhuh p{
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+.erhuh p b{
+    font-size: 15px;
+}
+.details_btn{
+    display: block;
+    text-align: center;
+    width: 108px;
+    height: 32px;
+    border: 1px solid #626161;
+    border-top:1px solid #fff;
+    background: url("../uploads/select_bg.png")no-repeat 15px center;
+    background-size: 10px;
+    margin: -1px auto 0;
+    position: relative;
+    z-index: 99;
+    line-height: 30px;
+    font-size: 14px;
+    color: #626161;
+    text-indent: 10px;
+}
+.details_btn:hover{
+    text-decoration: underline;
+}
+/*支付方式*/
+.payWay h4{
+    font-weight: normal;
+    line-height: 40px;
+}
+.payment_area{
+    padding: 30px 0 0 25px;
+    display: inline-block;
+}
+.payList{
+    border: 1px solid #626161;
+    justify-content: flex-start;
+    padding-bottom: 20px;
+}
+.payList ul li {
+    width: 167px;
+    padding-bottom: 25px;
+}
+.payment_area label{
+    display: inline-block;
+}
+.payment_area label img{
+    vertical-align: middle;
+    cursor: pointer;
+    width: 120px;
+    height: 40px;
+    margin-left: 10px;
+}
+.payment_area .vam{
+    position: relative;
+    top: 11px;
+}
+
+/*确认支付方式*/
+.confirm_pay{
+    padding-top: 30px;
+    text-align: right;
+    margin-bottom: 30px;
+}
+.confirm_pay a{
+    color: #FFF;
+    background-color: #626161;
+    border: 1px solid #626161;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    width: 148px;
+    height: 35px;
+    line-height: 33px;
+}
+
+
+
+
+
+
+
+
+

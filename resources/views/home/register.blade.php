@@ -37,10 +37,10 @@
 									<span style="color:mediumvioletred;">
 										{{ $errors->first('email') }}
 									</span>
-									<input type="text" id="email" name="email" placeholder="请填写邮箱" id="email"><span style="color:#C73F49;"></span>
+									<input type="text" id="email" name="email" placeholder="请填写邮箱" id="email" value="{{old('email')}}"><span style="color:#C73F49;"></span>
 									<div class="code clearfix">
 
-										<input type="text" name="validate_code" placeholder="请填写图形验证码">
+										<input type="text" name="validate_code" placeholder="请填写图形验证码" ">
 										<span>
                             				<img src="{{url('home/register/code')}}" class="validate_code">
                         				</span>
@@ -52,7 +52,7 @@
 									<span style="color:mediumvioletred;">
 										{{ $errors->first('password') }}
 									</span>
-									<input type="password" name="password" placeholder="设置密码" id="pass"><span style="color:#C73F49;"></span>
+									<input type="password" name="password" placeholder="设置密码" id="pass" ><span style="color:#C73F49;"></span>
 									<span style="color:mediumvioletred;">
 										{{ $errors->first('repassword') }}
 									</span>

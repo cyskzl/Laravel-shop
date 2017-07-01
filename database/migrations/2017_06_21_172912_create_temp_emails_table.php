@@ -15,7 +15,7 @@ class CreateTempEmailsTable extends Migration
         Schema::create('temp_emails', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('注册邮箱临时存储表ID');
-            $table->unsignedInteger('user_id')->comment('用户注册表的外键');
+            $table->string('user_id')->comment('用户注册表的外键');
             $table->string('uuid')->comment('发送给用户邮件里的uuid');
             $table->timestamp('deadline')->comment('过期时间');
             $table->timestamps();

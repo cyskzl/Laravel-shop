@@ -26,7 +26,7 @@ class AddressController extends Controller
      */
     public function create()
     {
-        //
+        return view('home.personal.set.create_address');
     }
 
     /**

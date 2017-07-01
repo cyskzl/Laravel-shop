@@ -16,7 +16,10 @@ class ShoppingCartController extends Controller
      */
     public function index()
     {
-        return view('home.shoppingcart.index');
+        // 购物车无商品时
+//        return view('home.shoppingcart.cart_empty');
+        // 购物车有商品时
+        return view('home.shoppingcart.cart_isset');
     }
 
     /**

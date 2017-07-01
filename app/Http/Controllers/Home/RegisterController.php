@@ -92,7 +92,7 @@ class RegisterController extends Controller
         $userregister -> register_ip = $request->ip();
 
         if(!($userregister->save())){
-            return back()->withInput()->with(['fail'=>'注册失败']);
+            return back()->withInput()->with(['fail'=>'注册失败,请您重新填写用户信息']);
         }
         // 生成随机码
         $uuid = Uuid::generate();
@@ -119,7 +119,7 @@ class RegisterController extends Controller
                 ->subject($m3_email->subject);
         });
 
-        return view('home.validatefail',['info'=>'注册成功，请到邮箱激活']);
+        return view('home.validatefail',['info'=>'注册成功，请您到邮箱激活']);
 
     }
 
@@ -172,7 +172,7 @@ class RegisterController extends Controller
                 // 修改注册表信息
                 $register = UserRegister::where('id', '=', $uid)->update(['status' => 1]);
                 if (!$register) {
-                    return view('home.validatefail');
+                    return view('home.validatefail',['info'=>'邮箱激活失败，请重回邮箱点击链接重试激活']);
                 }
                 // 对应增加users_info表的信息
                 $uinfo = UserRegister::find($uid);
@@ -181,7 +181,7 @@ class RegisterController extends Controller
                 $userinfo->email = $uinfo->email;
                 $infoId = $userinfo->save();
                 if (!$infoId) {
-                    return view('home.validatefail');
+                    return view('home.validatefail',['info'=>'回到首页']);
                 }
 
                 // 增加用户登录表信息
@@ -192,18 +192,18 @@ class RegisterController extends Controller
                 $userlogin->last_login_ip = $request->ip();
                 $userlogin->last_login_at = $nowtime;
                 if(!$userlogin->save()){
-                    return view('home.validatefail');
+                    return view('home.validatefail',['info'=>'回到首页']);
                 }
 
                 // 删除邮箱注册的临时信息
                 $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
                 if (!$delTemp) {
-                    return view('home.validatefail');
+                    return view('home.validatefail',['info'=>'回到首页']);
                 }
                 return view('home.validatefail', ['info' => '用户名已激活，3秒后跳转到网站首页或者点击立即跳转']);
 
             } else {
-                return view('home.validatefail');
+                return view('home.validatefail',['info' => '用户名已激活，3秒后跳转到网站首页或者点击立即跳转']);
 
             }
         } else {
@@ -216,7 +216,7 @@ class RegisterController extends Controller
 //            $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
 
             if (!$delTemp || !$deluser) {
-                return view('home.validatefail');
+                return view('home.validatefail',['info'=>'该链接已失效，请重新注册']);
             }
             return view('home.validatefail',['info'=>'该链接已失效，请重新注册']);
         }
