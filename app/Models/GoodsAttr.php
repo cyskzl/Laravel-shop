@@ -9,4 +9,6 @@ class GoodsAttr extends Model
     protected  $table = 'goods_attr';
 
     protected $primaryKey = 'goods_attr_id';
+
+
 }

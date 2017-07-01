@@ -9,4 +9,6 @@ class GoodsImages extends Model
     protected  $table = 'goods_images';
 
     protected $primaryKey = 'img_id';
+
+
 }
