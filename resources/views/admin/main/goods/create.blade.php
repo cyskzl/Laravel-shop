@@ -302,14 +302,17 @@
                         dataType : 'json',
                         data     :  {'_token': '{{csrf_token()}}', 'fatcate': data.value},
                         success:function (data){
+                            var char = '';
+                            char = '<option value="">请选择商品分类</option>';
+                            char += '<option value="">请选择商品分类</option>';
+                            $form.find('select[name=cat_id_02]').append(char);
+                            form.render();
                             for(var i=0; i<data.length; i++){
                                 var id = data[i]['id'];
                                 var name = data[i]['name'];
                                 var str = '';
-                                var char = '';
-                                char += '<option value="">请选择商品分类</option>';
                                 str += '<option value="'+id+'">'+name+'</option>';
-                                $form.find('select[name=cat_id_02]').prepend(char).append(str);
+                                $form.find('select[name=cat_id_02]').append(str);
                             }
                             form.render();
                         }
@@ -333,19 +336,12 @@
                         for(var i=0; i<data.length; i++){
                             var id = data[i]['id'];
                             var name = data[i]['name'];
-//                                console.log(id);
-//                                console.log();
-
                             str += '<option value="'+id+'">'+name+'</option>';
                         }
-
                         char += '<option value="">请选择商品分类</option><option value="">请选择商品分类</option>';
-//                    console.log(data);
                         if(data.status == 0){
-//                                alert(1);
                             $form.find('select[name=cat_id_03]').children().remove();
                         }
-//                            console.log(char);
                         $form.find('select[name=cat_id_03]').prepend(char).append(str);
                         form.render();
                     }
@@ -358,7 +354,7 @@
             form.on('select(choice-mod)',function(data){
 
 //                console.log(data.elem); //得到select原始DOM对象
-                console.log(data.value); //得到被选中的值
+//                console.log(data.value); //得到被选中的值
                 var newType = $('select[name="type_id" ]').attr('type_id', data.value);
                 if($('select[name="type_id" ]').attr('type_id') !== newType){
                     $('#table-mod').children().remove();

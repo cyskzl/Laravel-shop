@@ -63,7 +63,7 @@ class GoodsController extends Controller
     {
 
         $data = $request->all();
-//        dd($data);
+//        dd($data['image_url']);
         $goods = new Goods();
 
         //3级分类不能为空
@@ -117,7 +117,8 @@ class GoodsController extends Controller
             $goods_id = $goods->goods_id;
             $type_id = $data['type_id'];
             //图片相册
-            if($data['image_url']){
+            if(!empty($data['image_url'])){
+                $data['image_url'];
                 $goods_images = new GoodsImages;
                 $goods_images->image_url = $data['image_url'];
                 $goods_images->goods_id = $goods_id;
@@ -224,62 +225,76 @@ class GoodsController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        //id错在的话
-        if($id){
-            //获取goods_image图片表
-            $goods_images = GoodsImages::where('goods_id', '=', $id)->first();
-            //获取goods商品表
-            $goods = Goods::where('goods_id', '=', $id)->first();
-            //获取规格表
-            $spec_goods_price =  SpecGoodsPrice::where('goods_id', '=', $id)->first();
-            //获取商品属性表
-            $goods_attrs = GoodsAttr::where('goods_id', '=', $id)->get();
-           //删除服务端图片
-            $delcomma = rtrim($goods_images->image_url,',');
-            //清除左边符号
-            $imgarr = explode(',', $delcomma);
-            //删除goods表
-            if($goods->delete()){
-                //删除goods图片
-                $delgoodsimg = rtrim($goods->original_img, ',');
-                @unlink('.'.$delgoodsimg);
-                //删除图片表
-                if($goods_images->delete()){
-                    foreach ($imgarr as $k => $v){
-                        //删除img的所有图
-                        $imagepath = '.'.$v;
-                        @unlink($imagepath);
+        //id在的话
+        if ($id) {
+            //在删除与goods表关联的表
+            $goods = Goods::find($id);
+            //获取与goods表关联的images表数据
+            $goodImages = $goods->goodImages()->first();
+            //获取与goods表关联的attr属性表数据
+            $goodsAttr = $goods->goodAttr()->get();
+            //获取与goods表关联的attr属性表数据
+            $specGoodsPrice = $goods->specGoodsPrice()->get();
+
+            if(!empty($goods)){
+                //同时删除数据
+                //删除spec_goods_price数据
+                if(!empty($specGoodsPrice)){
+                    foreach($specGoodsPrice as $v){
+                        SpecGoodsPrice::destroy($v['id']);
                     }
                 }
-                //删除规格表
-                $spec_goods_price->delete();
-                //删除商品属性
-                foreach ($goods_attrs as $k => $v){
-
-                    GoodsAttr::destroy($v->goods_attr_id);
+                //goods_attr
+                if(!empty($goodsAttr)){
+                    foreach($goodsAttr as $v){
+                        GoodsAttr::destroy($v['goods_attr_id']);
+                    }
                 }
-                $data = [
-                    'status' => 1,
-                    'msg'   => '删除成功',
-                ];
+                //删除图片在删除数据
+                if(!empty($goodImages)){
+                    if($goodImages->image_url){
+                        $delcomma = rtrim($goodImages->image_url,',');
+                        //清除左边符号
+                        $imgarr = explode(',', $delcomma);
+                        foreach ($imgarr as $k => $v){
+                            //删除img的所有图
+                            $imagepath = '.'.$v;
+                            @unlink($imagepath);
+                        }
+                   }
+                    $goodImages->delete();
+                }
+                //最后删除goods表
+                //删除goods表单图片
+                if(!empty($goods->original_img)){
+                    $delgoodsimg = rtrim($goods->original_img, ',');
+                    @unlink('.'.$delgoodsimg);
+                }
+                if( $goods->delete()){
+                    $data = [
+                        'status' => 1,
+                        'msg'   => '删除成功',
+                    ];
+                } else {
+                    $data = [
+                        'status' => 0,
+                        'msg'   => '删除失败',
+                    ];
+                }
             } else {
                 $data = [
-                    'status' => 0,
-                    'msg'   => '删除失败',
+                    'status' => 2,
+                    'msg'   => '删除失败,请刷新重试',
                 ];
             }
-
         } else {
             $data = [
                 'status' => 2,
                 'msg'   => '删除失败,请刷新重试',
             ];
         }
-
         return $data;
-
     }
-
     public function show(){}
 
 }
