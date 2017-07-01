@@ -228,4 +228,10 @@ class RegisterController extends Controller
     {
         //
     }
+
+    //获取短信验证码
+    public function phoneCode(Request $request)
+    {
+
+    }
 }

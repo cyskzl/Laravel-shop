@@ -103,11 +103,35 @@
 	</div>
 @endsection
 @section('js')
+	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script>
         // 验证码点击换图
         $('.validate_code').on('click', function () {
             $(this).attr('src', '/home/register/code?random=' + Math.random());
         });
+
+        //获取手机验证码
+		$('#phone_code').on('click',function () {
+
+		    var phone = $('#phone').val();y7u
+
+		    var regex = /^[1][34578]\d{9}$/;
+
+		    var boot = regex.test(phone);
+
+		    if (!boot){
+                $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码不合法</p>');
+                return false;
+			}
+
+			$.ajax({
+				url:"/phonecode",
+				type:"POST",
+				data:{'phone':phone},
+				success:function (data) {
+					console.log(data);
+                }
+			})
+        })
 	</script>
-	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 @endsection
