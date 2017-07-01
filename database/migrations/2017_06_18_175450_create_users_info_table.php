@@ -20,7 +20,7 @@ class CreateUsersInfoTable extends Migration
             $table->string('nickname')->nullable()->comment('用户昵称');
             $table->string('realname')->nullable()->comment('真实姓名');
             $table->string('email')->comment('用户邮箱');
-            $table->string('tel')->default(1)->comment('用户手机号码');
+            $table->string('tel')->default('')->comment('用户手机号码');
             $table->tinyInteger('sex')->nullable()->comment('性别：1男2女');
             $table->string('avatar')->nullable()->comment('头像');
             $table->string('id_number')->nullable()->comment('身份证号');

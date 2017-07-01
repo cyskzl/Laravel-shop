@@ -157,13 +157,11 @@ class RegisterController extends Controller
         $uuid = $request->input('code');
         $temp = TempEmail::where('uuid','=',$uuid)->get()->toArray();
 //        $name = ['one'=>'qwewqe'];
-//        dd($temp);
-        $deadline = $temp[0]['user_id'];
+        $deadline = $temp[0]['deadline'];
         $nowtime = date('Y-m-d H:i:s',time());
         $uid = $temp[0]['user_id'];
+
         // 判断链接是否失效
-
-
         if($deadline>$nowtime) {
             if (count($temp)) {
                 // 修改注册表信息

@@ -41,13 +41,11 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 邮箱发送注册
     Route::post('/email_register', 'RegisterController@toEmailRegister');
     // 邮箱验证是否注册
-    Route::post('/email_register/validate', 'RegisterController@validateEmail');
+    Route::post('/register/validate', 'RegisterController@validateEmail');
     // 邮箱激活
     Route::get('/email_register/validate_email', 'RegisterController@validateEmailCode');
     // 手机注册界面
     Route::get('/phone_register', 'RegisterController@phoneRegister');
-    // 手机验证是否注册
-    Route::post('/phone_register/validate', 'RegisterController@validatePhone');
     // 登录信息处理
     Route::post('/doLogin', 'UserController@doLogin');
     // 退出登录

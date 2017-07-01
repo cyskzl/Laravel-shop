@@ -16,7 +16,7 @@ class CreateUsersRegisterTable extends Migration
         Schema::create('users_register', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('主键');
-            $table->string('tel')->default(1)->index()->comment('会员手机号码');
+            $table->string('tel')->default('')->index()->comment('会员手机号码');
             $table->string('email')->unique()->comment('会员邮箱地址');
             $table->string('password')->comment('会员密码');
             $table->string('third_party_id')->nullable()->comment('第三方 ID');

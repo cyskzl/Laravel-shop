@@ -23,9 +23,6 @@
 				<div class="reg-title">
 					注册会员
 				</div>
-			@if(session('fail'))
-				{{session('fail')}}
-			@endif
 				<!-- 选项卡切换开始 -->
 				<div class="box_hezi">
 					<ul class="menu">
@@ -40,7 +37,7 @@
 									<span style="color:mediumvioletred;">
 										{{ $errors->first('email') }}
 									</span>
-									<input type="text" name="email" placeholder="请填写邮箱" id="email">
+									<input type="text" id="email" name="email" placeholder="请填写邮箱" id="email"><span style="color:#C73F49;"></span>
 									<div class="code clearfix">
 
 										<input type="text" name="validate_code" placeholder="请填写图形验证码">
@@ -55,11 +52,11 @@
 									<span style="color:mediumvioletred;">
 										{{ $errors->first('password') }}
 									</span>
-									<input type="password" name="password" placeholder="设置密码" id="pass">
+									<input type="password" name="password" placeholder="设置密码" id="pass"><span style="color:#C73F49;"></span>
 									<span style="color:mediumvioletred;">
 										{{ $errors->first('repassword') }}
 									</span>
-									<input type="password" name="repassword" placeholder="确认密码" id="pass_again">
+									<input type="password" name="repassword" placeholder="确认密码" id="pass_again"><span style="color:#C73F49;"></span>
 									<input type="submit" id="submit" class="btn-submit" value="立即注册" >
 								</div>
 								<div class="clause clearfix">
@@ -67,6 +64,7 @@
 									<span class="clause-font" >接受Wconcept隐私条款</span>
 									<a href="" class="clause-font">去登陆</a>
 								</div>
+								<span style="color:#C73F49;"></span>
 								<span style="color:mediumvioletred;">
 									{{ $errors->first('check') }}
 								</span>
@@ -110,28 +108,121 @@
             $(this).attr('src', '/home/register/code?random=' + Math.random());
         });
 
-        //获取手机验证码
-		$('#phone_code').on('click',function () {
+        // 验证邮箱是否注册
+        $('#email').blur(function(){
+            var email = $(this).val();
+            var that = $(this);
+//            console.log(email);return false;
+            // 保存一开始输入的邮箱
+            var origin = that.data('u');
+            if(origin != email){
+//                origin = '';
+                $.ajax({
+                    type: "POST",
+                    url: './register/validate',
+                    dataType: 'json',
+                    cache: false,
+                    data: {'email': email,'_token': "{{csrf_token()}}"},
+                    success: function(data) {
+//                        console.log(data);return false;
+                        that.data('u',email);
+                        if (data == 1) {
+                            //先把input后面的所有span.tip标签删除
+                            var text = 'Tip:该邮箱已注册';
+                            $('#alert').show("fast",function(){
+                                $('#text').text(text);
+                            });
+                            return false;
+                        }
+                        return true;
+                    }
+                });
+            }
 
-		    var phone = $('#phone').val();y7u
+        });
 
-		    var regex = /^[1][34578]\d{9}$/;
+        var inputs = $('form').find('input');
+        var pass = $('input[name=password]');
+        //        console.log(pass);
+        for(var i=0;i<inputs.length;i++)
+        {
+            inputs[i].onfocus = function () {
+                this.nextSibling.innerHTML = '';
+                this.parentNode.nextSibling.innerHTML = '';
+            }
+            inputs[i].onblur = function () {
+                this.nextSibling.innerHTML = '';
 
-		    var boot = regex.test(phone);
+                var iname = this.name;
+                // 检测输入框为空值
+                if (this.value == '') {
+                    if(iname == 'email'){
+                        this.nextSibling.innerHTML = '请输入邮箱';
+                    }
+                    if(iname == 'password'){
+                        this.nextSibling.innerHTML = '请输入密码';
+                    }
+                    if(iname == 'repassword'){
+                        this.nextSibling.innerHTML = '请再次输入密码';
+                    }
+                    if(iname == 'validate_code'){
+                        this.parentNode.nextSibling.innerHTML = '请输入验证码';
+                    }
+                } else {
 
-		    if (!boot){
-                $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码不合法</p>');
-                return false;
-			}
-
-			$.ajax({
-				url:"/phonecode",
-				type:"POST",
-				data:{'phone':phone},
-				success:function (data) {
-					console.log(data);
+                    regPattern.checkPattern(this);
                 }
-			})
-        })
+
+            }
+
+        }
+        var regPattern = {
+
+            email_pattern: [
+                /^[1-9a-zA-Z_][0-9a-zA-Z_-]{1,}@\w+\.\w{2,}$/
+            ],
+
+            email_val: [
+                '请输入正确的邮箱格式'
+            ],
+
+            password_pattern: [
+                /^\w{6,}$/
+            ],
+            password_val: [
+                '请至少输入6位的密码'
+            ],
+            checkPattern: function (input) {
+
+                var Val = input.value;
+
+                for (var i = 0; i < (this[input.name + '_pattern']).length; i++) {
+//                    console.log(this[input.name + '_pattern'][i]);
+                    // break;
+                    var pattern = this[input.name + '_pattern'][i];
+                    var res = Val.match(pattern);
+                    if (res == null) {
+                        // input.nextSibling.innerHTML = this[input.name+'_val'][i];
+                        $(input).next().css({color: 'red'}).html(this[input.name + '_val'][i]);
+                        break;
+                    }
+                }
+            }
+        }
+        $('input[name=repassword]').blur(function () {
+            if((this.value)!= pass.val()){
+                this.nextSibling.innerHTML = '请再次输入相同的密码';
+            }
+        });
+
+        $('input[name=repassword]').focus(function () {
+            this.nextSibling.innerHTML = '';
+        });
+
+
+        // 关闭弹出层
+        $('#close').click(function(){
+            $('#alert').hide();
+        });
 	</script>
 @endsection
