@@ -575,11 +575,11 @@
 	<script src="{{asset('/templates/home/js/carousel.js')}}"></script>
 	<script type="text/javascript">
 
-		$(function(){
-
-			$('.header_top_bottom_people a')[0].setAttribute('class','women');
-			$('.header_top_bottom_people a')[0].style='color:#fff';
-		});
+//		$(function(){
+//
+//			$('.header_top_bottom_people a')[0].setAttribute('class','women');
+//			$('.header_top_bottom_people a')[0].style='color:#fff';
+//		});
 
 	    // 女士，男士，创意生活切换
 	    $(".header_top_bottom_people a").click(function(){
@@ -598,7 +598,7 @@
 				//    navBg = "#a4d7d8";
 				img = 'design';
 		   }
-	      
+
 	        $(this).addClass(''+ img +'').css('color','#fff').siblings("a").removeClass().css('color','#626161');
 
             window.location.href=''+ $(this).attr('href') +'';

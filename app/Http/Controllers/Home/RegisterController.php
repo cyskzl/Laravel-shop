@@ -51,6 +51,8 @@ class RegisterController extends Controller
     {
 
         // 邮箱注册填写信息验证
+
+//        dd($request->all());
         $this->validate($request,[
             'email'=>'required | email',
             'password'=>'required | between:6,16',
@@ -80,7 +82,7 @@ class RegisterController extends Controller
 
         //验证验证码是否输入正确
         if($validate_code != $code) {
-            return redirect('home/register')->withInput()->with(['fail'=>'验证码错误']);
+            return redirect('home/register')->withInput()->with(['fail'=>'验证码错误','id'=>'email']);
         }
 
         $userregister = new UserRegister();
@@ -215,6 +217,11 @@ class RegisterController extends Controller
             }
             return view('home.validatefail',['info'=>'该链接已失效，请重新注册']);
         }
+    }
+
+    public function phoneRegister()
+    {
+        return view('home.phone_register');
     }
 
     public function validatePhone(Request $request)

@@ -23,63 +23,62 @@
 				<div class="reg-title">
 					注册会员
 				</div>
+			@if(session('fail'))
+				{{session('fail')}}
+			@endif
 				<!-- 选项卡切换开始 -->
 				<div class="box_hezi">
 					<ul class="menu">
-						<li class="li_one"><a href="javascript:;">手机注册</a></li>
-						<li class="li_two"><a href="javascript:;">邮箱注册</a></li>
+						<li class="li_one"><a href="{{url('home/register')}}">邮箱注册</a></li>
+						<li class="li_two"><a href="{{url('home/phone_register')}}">手机注册</a></li>
 					</ul>
 					<ul class="macn">
-						<li  class="li_theer" style="display: block;">
-							<form action="{{url('home/phone_register')}}" method="POST">
-								{{csrf_field()}}
-								<div class="reg-inner">
-									<input type="text" name="tel" placeholder="请填写手机号码" id="phone">
-									<div class="code clearfix">
-										<input type="text" name="phone_code" placeholder="请填写图形验证码">
-										<span id="phone_code">发送验证码</span>
-									</div>
-									<input type="password" name="password" placeholder="设置密码" id="pass">
-									<input type="password" name="repassword" placeholder="确认密码" id="pass_again">
-									<input type="submit" id="submit" class="btn-submit" value="立即注册" >
-								</div>
-								<div class="clause clearfix">
-									<input type="checkbox" id="check"  >
-									<span class="clause-font" >接受Wconcept隐私条款</span>
-									<a href="" class="clause-font">去登陆</a>
-								</div>
-							</form>
-						</li>
-						<li class="li_forn">
+						<li  class="li_theer" style="display:block;">
 							<form action="{{url('home/email_register')}}" method="post">
 								{{csrf_field()}}
 								<div class="reg-inner">
+									<span style="color:mediumvioletred;">
+										{{ $errors->first('email') }}
+									</span>
 									<input type="text" name="email" placeholder="请填写邮箱" id="email">
 									<div class="code clearfix">
+
 										<input type="text" name="validate_code" placeholder="请填写图形验证码">
 										<span>
                             				<img src="{{url('home/register/code')}}" class="validate_code">
                         				</span>
-
+										{{ $errors->first('validate_code') }}
+										@if(session('fail'))
+											{{session('fail')}}
+										@endif
 									</div>
+									<span style="color:mediumvioletred;">
+										{{ $errors->first('password') }}
+									</span>
 									<input type="password" name="password" placeholder="设置密码" id="pass">
+									<span style="color:mediumvioletred;">
+										{{ $errors->first('repassword') }}
+									</span>
 									<input type="password" name="repassword" placeholder="确认密码" id="pass_again">
 									<input type="submit" id="submit" class="btn-submit" value="立即注册" >
 								</div>
 								<div class="clause clearfix">
-									<input type="checkbox" id="check"  >
+									<input type="checkbox" id="check" name="check" >
 									<span class="clause-font" >接受Wconcept隐私条款</span>
 									<a href="" class="clause-font">去登陆</a>
 								</div>
+								<span style="color:mediumvioletred;">
+									{{ $errors->first('check') }}
+								</span>
 							</form>
 						</li>
 					</ul>
-
 				</div>
 				<!-- 选项卡结束 -->
 			</div>
 		</div>
 	</div>
+
 @endsection
 	<!-- 错误弹窗 -->
 @section('alert')

@@ -55,9 +55,9 @@
         <!-- 搜索区 -->
         <div class="header_top_bottom left">
             <div class="header_top_bottom_people left">
-                <a href="http://www.dasuan.com" data-currentcategoryid="1">女士</a>
-                <a href="http://www.dasuan1.com" data-currentcategoryid="2">男士</a>
-                <a href="http://www.dasuan2.com" data-currentcategoryid="3">创意生活</a>
+                <a href="{{url('home/1')}}" data-currentcategoryid="1">女士</a>
+                <a href="{{url('home/2')}}" data-currentcategoryid="2">男士</a>
+                <a href="{{url('home/3')}}" data-currentcategoryid="3">创意生活</a>
             </div>
             <div class="header_logo left">
                 <img src="{{ asset('templates/home/uploads/logo (1).png') }}" alt="">

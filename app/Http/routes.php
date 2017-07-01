@@ -26,7 +26,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
     // 首页
     Route::get('/{category_id?}', 'IndexController@index')->where('category_id', '[0-9]+');
-    // 注册页面
+    // 注册页面(默认邮箱注册email)
     Route::get('/register', 'RegisterController@register');
     // 登录界面
     Route::get('/login', 'UserController@login');
@@ -42,6 +42,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::post('/email_register/validate', 'RegisterController@validateEmail');
     // 邮箱激活
     Route::get('/email_register/validate_email', 'RegisterController@validateEmailCode');
+    // 手机注册界面
+    Route::get('/phone_register', 'RegisterController@phoneRegister');
     // 手机验证是否注册
     Route::post('/phone_register/validate', 'RegisterController@validatePhone');
     // 登录信息处理
