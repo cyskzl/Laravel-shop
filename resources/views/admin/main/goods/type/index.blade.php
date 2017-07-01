@@ -92,7 +92,7 @@
                     dataType: 'json',
                     data: { '_token':'{{csrf_token()}}',  'name': data.field.name },
                     success:function (data){
-                            console.log(data);return false;
+//                            console.log(data);return false;
                         if(data.status == 1){
                             layer.msg(data.msg,{icon:5,time:1000});
                         } else if(data.status == 3){
