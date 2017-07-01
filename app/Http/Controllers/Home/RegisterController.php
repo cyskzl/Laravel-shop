@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
+use iscms\Alisms\SendsmsPusher as Sms;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -130,8 +131,12 @@ class RegisterController extends Controller
     public function validateEmail(Request $request)
     {
         $email = $request->input('email');
+
+        $phone = $request->input('phone');
+
         $user = DB::table('users_register')
             ->where('email','=',$email)
+            ->where('phone',$phone)
             ->get();
 
         if($user){
@@ -228,8 +233,50 @@ class RegisterController extends Controller
     }
 
     //获取短信验证码
-    public function phoneCode(Request $request)
+    public function phoneCode(Request $request,Sms $sms)
     {
+        $phone = $request->input('phone');
 
+        $pattern  =  '/^[1][34578]\d{9}$/' ;
+
+        $bool = preg_match($pattern,$phone);
+
+        if(!$bool){
+
+            return '{"error":1}';
+        }
+
+        $phonecode = $this->get_mobile_code($phone);
+
+        $name = 'xybeta注册验证';
+
+        $content = '{code:"'. $phonecode .'",name:"xxx"}';
+
+        $code = 'SMS_71285782';
+
+        $result = $sms->send("$phone","$name","$content","$code");
+    }
+
+
+    //生成手机验证码
+    protected function get_mobile_code($phone)
+    {
+        $data = TempEmail::where('user_id',$phone)->get();
+
+        $code = $data->uuid;
+
+        if ($code && $data->created_at < (date('Y-m-d H:i:s',time() + 600))){
+
+            return $code;
+        }
+
+        $code = mt_rand(10001,99999);
+
+        $status = TempEmail::insert(['user_id' => $phone, 'uuid' => $code]);
+
+        if ($status){
+            
+            return $code;
+        }
     }
 }
