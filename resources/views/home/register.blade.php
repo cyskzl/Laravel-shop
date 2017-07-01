@@ -34,9 +34,10 @@
 							<form action="{{url('home/phone_register')}}" method="POST">
 								{{csrf_field()}}
 								<div class="reg-inner">
+
 									<input type="text" name="tel" placeholder="请填写手机号码" id="phone">
 									<div class="code clearfix">
-										<input type="text" name="phone_code" placeholder="请填写图形验证码">
+										<input type="text" name="phone_code" placeholder="请填写收到的验证码">
 										<span id="phone_code">发送验证码</span>
 									</div>
 									<input type="password" name="password" placeholder="设置密码" id="pass">
@@ -104,11 +105,35 @@
 	</div>
 @endsection
 @section('js')
+	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script>
         // 验证码点击换图
         $('.validate_code').on('click', function () {
             $(this).attr('src', '/home/register/code?random=' + Math.random());
         });
+
+        //获取手机验证码
+		$('#phone_code').on('click',function () {
+
+		    var phone = $('#phone').val();y7u
+
+		    var regex = /^[1][34578]\d{9}$/;
+
+		    var boot = regex.test(phone);
+
+		    if (!boot){
+                $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码不合法</p>');
+                return false;
+			}
+
+			$.ajax({
+				url:"/phonecode",
+				type:"POST",
+				data:{'phone':phone},
+				success:function (data) {
+					console.log(data);
+                }
+			})
+        })
 	</script>
-	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 @endsection

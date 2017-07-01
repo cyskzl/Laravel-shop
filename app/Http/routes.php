@@ -36,6 +36,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     });
     // 验证码生成
     Route::get('/register/code', 'RegisterController@createCode');
+    // 手机验证码发送
+    Route::get('/register/phonecode', 'RegisterController@phoneCode');
     // 邮箱发送注册
     Route::post('/email_register', 'RegisterController@toEmailRegister');
     // 邮箱验证是否注册
