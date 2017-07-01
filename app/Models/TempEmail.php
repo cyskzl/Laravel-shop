@@ -7,4 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class TempEmail extends Model
 {
     //
+    protected $guarded = ['id'];
 }

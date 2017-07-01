@@ -94,7 +94,7 @@
         //获取手机验证码
         $('#phone_code').on('click',function () {
 
-            var phone = $('#phone').val();y7u
+            var phone = $('#phone').val();
 
             var regex = /^[1][34578]\d{9}$/;
 
@@ -106,7 +106,7 @@
             }
 
             $.ajax({
-                url:"/phonecode",
+                url:"/home/register/phonecode",
                 type:"POST",
                 data:{'phone':phone},
                 success:function (data) {
