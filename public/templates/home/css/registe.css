@@ -93,7 +93,7 @@
 	width: 60%;
 	float: left;
 }
-.code>span{
+.code>button{
 	display: block;
 	float: left;
 	height: 45px;

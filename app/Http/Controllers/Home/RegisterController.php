@@ -250,7 +250,8 @@ class RegisterController extends Controller
 
         $phonecode = $this->get_mobile_code($phone);
 
-        return $phonecode;
+
+        $phone = 0;
 
         $name = 'xybeta注册验证';
 
@@ -260,7 +261,9 @@ class RegisterController extends Controller
 
         $result = $sms->send("$phone","$name","$content","$code");
 
-        return $result;
+        return array('err_code'=>'0');
+
+        return get_object_vars($result);
     }
 
 
