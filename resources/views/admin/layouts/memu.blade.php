@@ -16,11 +16,12 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header header header-demo">
         <div class="layui-main">
-            <a class="logo" href="{{url('/admin/admin')}}">
-                X-admin v1.0
-            </a>
+            <a class="logo" href="{{url('/admin/admin')}}">hello word</a>
             <ul class="layui-nav" lay-filter="">
-                <li class="layui-nav-item"><img src="{{asset('templates/admin/images/logo.png')}}" class="layui-circle" style="border: 2px solid #A9B7B7;" width="35px" alt=""></li>
+                <li class="layui-nav-item">
+
+                    <img src="{{ Auth::guard('admin')->user()->pic }}" class="layui-circle" style="border: 2px solid #A9B7B7;" width="35px" alt="">
+                </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">{{ Auth::guard('admin')->user()->nickname}}</a>
                     <dl class="layui-nav-child"> <!-- 二级菜单 -->
@@ -34,7 +35,7 @@
                       <i class="layui-icon" style="top: 1px;">&#xe63a;</i>
                   </a>
                   </li> -->
-                <li class="layui-nav-item x-index"><a href="/">前台首页</a></li>
+                <li class="layui-nav-item x-index"><a href="/" target="_blank">前台首页</a></li>
             </ul>
         </div>
     </div>
@@ -78,6 +79,14 @@
                         <dd class="">
                             <a href="javascript:;" _href="{{ url('admin/goods') }}">
                                 <cite>商品列表</cite>
+                            </a>
+                        </dd>
+                        </dd>
+
+                        <dd class="">
+                        <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/goodstag') }}">
+                                <cite>商品标签</cite>
                             </a>
                         </dd>
                         </dd>
@@ -230,7 +239,7 @@
                                 <cite>角色管理</cite>
                             </a>
                         </dd>
-                        
+
                         <!-- <dd class="">
                             <a href="javascript:;" _href="{{ url('admin/adminjurisdiction') }}">
                                 <cite>权限分类</cite>

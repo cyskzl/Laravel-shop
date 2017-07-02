@@ -10,11 +10,21 @@ use App\Permission;
 
 class PermissionController extends Controller
 {
+    protected $perms;
+
+	public function __construct()
+	{
+		$this->perms = new Permission;
+	}
+    
     /**
      * @return  view    权限规则列表页
      */
     public function index()
     {
+        //判断是否有权限访问列表
+        $this->perms->adminPerms('admin', 'permission_list');
+
         $permission = Permission::OrderBy('id', 'desc')->paginate(10);
 
         return view('admin.main.permission.index', compact('permission'));
@@ -26,6 +36,8 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
+        //判断是否有权限访问修改
+        $this->perms->adminPerms('admin', 'edit_permission');
         $permission = Permission::find($id);
         return view('admin.main.permission.edit', compact('permission'));
     }
@@ -74,17 +86,20 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        //判断是否有权限访问列表
+        $this->perms->adminPerms('admin', 'create_permission');
+
         //json数据转为对象
-                $json  = json_decode($request->json);
+        $json  = json_decode($request->json);
 
-                $perms = new Permission;
-                $perms->name = $json->name;
-                $perms->description = $json->description;
+        $perms = new Permission;
+        $perms->name = $json->name;
+        $perms->description = $json->description;
 
-                if ($perms->save()) {
-                    $perms['success'] = 1;
-                    return json_encode($perms);
-                }
+        if ($perms->save()) {
+            $perms['success'] = 1;
+            return json_encode($perms);
+        }
 
     }
 
@@ -96,6 +111,12 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
+        //判断是否有权限删除
+		$error = $this->perms->adminDelPerms('admin', 'delete_pimission');
+		if ($error) {
+			return $error;
+		}
+
         $permission = Permission::where('id', '=', $id)->first();
        if ($permission) {
            $res = Permission::where('id', '=', $id)->delete();

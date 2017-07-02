@@ -11,11 +11,11 @@
 |
 */
 
-//DB::listen(function($sql) {
-////dump($sql);
-//    echo $sql->sql;
-//// dump($sql->bindings);
-//});
+// DB::listen(function($sql) {
+// //dump($sql);
+//    echo $sql->sql.'<br>';
+// // dump($sql->bindings);
+// });
 
 Route::get('/', function () {
     return redirect('home');
@@ -134,6 +134,7 @@ Route::group(['prefix' => 'admin'], function (){
         Route::resource('/goodsattr', 'Admin\GoodsAttributeController');
         //商品品牌
         Route::resource('/brand', 'Admin\BrandController');
+        Route::resource('/goodstag', 'Admin\GoodsTagController');
         //活动管理
         Route::resource('/activity', 'Admin\ActivityController');
         // 活动商品管理
@@ -218,6 +219,3 @@ Route::group(['prefix' => 'admin'], function (){
     });
 
 });
-
-
-

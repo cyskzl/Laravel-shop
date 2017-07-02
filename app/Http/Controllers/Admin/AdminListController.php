@@ -49,7 +49,6 @@ class AdminListController extends Controller
 	 * @return  view    添加管理员页
 	 */
 	public function create()
-
 	{
         //判断是否有权限添加
 	    $this->perms->adminPerms('admin', 'create_role');
@@ -65,6 +64,7 @@ class AdminListController extends Controller
      */
 	public function store(Request $request)
 	{
+
 
 		//获取新管理员信息
         $json = json_decode($request->json);
@@ -85,6 +85,7 @@ class AdminListController extends Controller
 	   $user->nickname = $json->nickname;
 	   $user->password = bcrypt($json->password);
 	   $user->email    = $json->email;
+	   $user->pic    = $json->img;
 	   $user->status   = $json->status;
 
 	   //保存新建管理员的信息

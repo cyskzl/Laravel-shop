@@ -16,6 +16,7 @@ class EntrustSetupTables extends Migration
             $table->string('nickname')->unique()->comment('管理员名称');
             $table->string('email')->unique()->comment('管理员邮箱');
             $table->string('password')->comment('密码');
+            $table->string('pic')->default('templates/admin/images/admin_default.png')->comment('头像');
             $table->tinyInteger('status')->default('1')->comment('状态');
             $table->rememberToken();
             $table->timestamp('last_login_time')->comment('上次登录时间');
