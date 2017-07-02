@@ -40,7 +40,7 @@
                                     <input type="text" name="tel" placeholder="请填写手机号码" id="phone">
                                     <div class="code clearfix">
                                         <input type="text" name="phone_code" placeholder="请填写图形验证码">
-                                        <span id="phone_code">发送验证码</span>
+                                        <button id="phone_code" type="button">获取验证码</button>
                                     </div>
                                     <input type="password" name="password" placeholder="设置密码" id="pass">
                                     <input type="password" name="repassword" placeholder="确认密码" id="pass_again">
@@ -91,8 +91,14 @@
             $(this).attr('src', '/home/register/code?random=' + Math.random());
         });
 
+
         //获取手机验证码
         $('#phone_code').on('click',function () {
+
+
+            var than = $(this);
+
+//            console.log(than);
 
             var phone = $('#phone').val();
 
@@ -101,6 +107,7 @@
             var boot = regex.test(phone);
 
             if (!boot){
+
                 $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码不合法</p>');
                 return false;
             }
@@ -110,10 +117,33 @@
                 type:"POST",
                 data:{'phone':phone},
                 success:function (data) {
-                    console.log(data);
+
+                    if(data.err_code == 0){
+                        console.log(than);
+                        settime(than);
+                    }
+
                 }
             })
         })
+
+        var countdown=60;
+
+        function settime(obj) {
+            if (countdown == 0) {
+                obj.attr("disabled",false);
+                obj.html("获取验证码");
+                countdown = 60;
+                return;
+            } else {
+                obj.attr("disabled", true);
+                obj.html("重新发送(" + countdown + ")");
+                countdown--;
+            }
+            setTimeout(function() {
+                    settime(obj) }
+                ,1000)
+        }
     </script>
 
 @endsection

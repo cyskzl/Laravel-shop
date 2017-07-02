@@ -19,6 +19,7 @@ class CreateConfigTable extends Migration
             $table->string('value')->comment('配置值');
             $table->string('inc_type')->default('')->comment('类型');
             $table->string('desc')->default('')->comment('描述');
+
             $table->timestamps();
         });
     }
