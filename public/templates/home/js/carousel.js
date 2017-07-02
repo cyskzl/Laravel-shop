@@ -73,4 +73,46 @@ window.onload = function () {
     play();
     container.onmouseover = stop;
     container.onmouseout = play;
+
+
+    var left = document.getElementById('left');
+    var right = document.getElementById('right');
+    var putaway = document.getElementById('putaway');
+
+    function newGoods(offset){
+        var putleft = parseFloat(putaway.style.left) + offset;
+        putaway.style.left = putleft + 'px';
+        if (putleft > 0) {
+            putaway.style.left = -1120 + 'px';
+        } else if (putleft < -1120) {
+            putaway.style.left = 0 + 'px';
+        }
+
+    };
+
+    left.onclick = function (){
+        newGoods(1120);
+    };
+
+    right.onclick = function (){
+        newGoods(-1120);
+    };
+
+    // $('.right').click(function()
+    // {
+    //     $('.putaway-around').animate(
+    //         {
+    //             left:'-1120px'
+    //         },1000);
+    // })
+    // $('.left').click(function()
+    // {
+    //     $('.putaway-around').animate(
+    //         {
+    //             left:'0px'
+    //         },1000);
+    // });
+
+
 };
+

@@ -15,7 +15,7 @@ class CreateSpecGoodsPriceTable extends Migration
         Schema::create('spec_goods_price', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('goods')->unsigned()->default(0)->comment('商品的ID');
+            $table->integer('goods_id')->unsigned()->default(0)->comment('商品的ID');
             $table->string('key')->default('')->comment('规格键名');
             $table->decimal('price', 10, 2)->default(0)->comment('价格');
             $table->integer('store_count')->unsigned()->default(10)->comment('库存数量');

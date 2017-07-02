@@ -38,8 +38,15 @@ class UserController extends Controller
         $user['login_name'] = $request->input('email');
         $user['password'] = $request->input('password');
         $is_check = boolval($request->input('is_check'));
-        if(\Auth::attempt($user, $is_check)){
+
+        $user = [
+            'login_name' => $request->get('email'),
+            'password' => $request->get('password')
+        ];
+//        dd(\Auth::attempt($user));
+        if(\Auth::attempt($user,$is_check)){
             return redirect('/home');
+
         }else {
             return back()->withInput()->with(['fail'=>'用户名或密码错误']);
         }
@@ -49,6 +56,6 @@ class UserController extends Controller
     public function logOut()
     {
         \Auth::logout();
-        return redirect('/home/login');
+        return redirect('home/login');
     }
 }

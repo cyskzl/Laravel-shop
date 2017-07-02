@@ -60,7 +60,7 @@
 									<input type="submit" id="submit" class="btn-submit" value="立即注册" >
 								</div>
 								<div class="clause clearfix">
-									<input type="checkbox" id="check" name="check" >
+									<input type="checkbox" id="check" name="is_check" >
 									<span class="clause-font" >接受Wconcept隐私条款</span>
 									<a href="" class="clause-font">去登陆</a>
 								</div>

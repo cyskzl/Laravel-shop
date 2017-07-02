@@ -21,8 +21,14 @@
         <!-- 顶部 -->
         <div class="header_top left">
             <ul class="header_top_left left">
-                <li><a href="{{ asset('home/register') }}">注册</a></li>
-                <li><a href="{{ asset('home/login') }}">登录</a></li>
+                @if(Auth::check())
+                    <li><a href="">{{Auth::user()->login_name}}</a></li>
+                    <li><a href="{{ url('home/logOut') }}">退出登录</a></li>
+                @else
+                    <li><a href="{{ url('home/register') }}">注册</a></li>
+                    <li><a href="{{ url('home/login') }}">登录</a></li>
+                @endif
+
                 <li class="header_top_left_li">下载APP
                     <a href="javascript:">
                         <img class="header_top_left_code" src="{{ asset('templates/home/uploads/down_app.png') }}" alt="">

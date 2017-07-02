@@ -20,6 +20,7 @@ class CreateUsersLoginTable extends Migration
             $table->string('login_name')->comment('登录账号');
             $table->string('password')->comment('登录密码');
             $table->string('last_login_ip')->comment('最后一次登录IP');
+            $table->string('remember_token')->default('')->comment('token');
             $table->timestamp('last_login_at')->comment('最后一次登录时间');
             $table->softDeletes()->comment('删除时间');
             $table->timestamps();

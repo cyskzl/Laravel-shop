@@ -136,7 +136,7 @@ class RegisterController extends Controller
 
         $user = DB::table('users_register')
             ->where('email','=',$email)
-            ->where('phone',$phone)
+            ->where('tel',$phone)
             ->get();
 
         if($user){
@@ -178,7 +178,9 @@ class RegisterController extends Controller
                 $uinfo = UserRegister::find($uid);
                 $userinfo = new UserInfo();
                 $userinfo->user_id = $uid;
+//                $userinfo->nickname = $uinfo->email;
                 $userinfo->email = $uinfo->email;
+//                $userinfo->avatar = '';
                 $infoId = $userinfo->save();
                 if (!$infoId) {
                     return view('home.validatefail',['info'=>'回到首页']);

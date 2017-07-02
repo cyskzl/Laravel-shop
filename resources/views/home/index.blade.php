@@ -42,80 +42,99 @@
 			</a>
 		</div>
 		<!--最新上架-->
-		<div class="putaway width">
+		<div class="putaway width clear">
 			<!--标题-->
 			<div class="title">
 				<h2>最新上架</h2>
-				<a href="javascript:">MORE</a>
+				<a href="javascript:;">MORE</a>
 			</div>
 			<!--可视页面-->
 			<div class="putaway-over width">
 				<!--整个div-->
 				<!--按钮-->
 				<div class="button">
-					<div class="left">
+					<div class="left" id='left'>
 						<img src="{{asset('/templates/home/uploads/zuo.png')}}" alt="" />
 					</div>
-					<div class="right">
+					<div class="right" id='right'>
 						<img src="{{asset('/templates/home/uploads/you.png')}}" alt="" />
 					</div>
 				</div>
-				<div class="putaway-around clear">
-				<!--按钮-->
-					<!--点击切换每张-->
+				<div class="putaway-around clear" id="putaway" style="left: 0px;">
+					<!--点击切换效果(总共八张图片)-->
 					<!--第一张-->
-					<div class="putshow">
-						<a href="javascript:">
-							<img src="" alt="" />
+					<div class="putshow ">
+						<a href="javascript;">
+							<img src="{{asset('/templates/home/images/1.jpg')}}" alt="" />
 							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
 							<span class="price">¥&nbsp;627</span>
 						</a>
 					</div>
 					<!--第二张-->
 					<div class="putshow">
-						<a href="javascript:">
-							<img src="" alt="" />
+						<a href="javascript;">
+							<img src="{{asset('/templates/home/images/2.jpg')}}" alt="" />
 							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
 							<span class="price">¥&nbsp;627</span>
 						</a>
 					</div>
 					<!--第三张-->
 					<div class="putshow">
-						<a href="javascript:">
-							<img src="" alt="" />
+						<a href="javascript;">
+							<img src="{{asset('/templates/home/images/3.jpg')}}" alt="" />
 							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
 							<span class="price">¥&nbsp;627</span>
 						</a>
 					</div>
 					<!--第四张-->
 					<div class="putshow">
-						<a href="javascript:">
-							<img src="" alt="" />
+						<a href="javascript;">
+							<img src="{{asset('/templates/home/images/4.jpg')}}" alt="" />
 							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
 							<span class="price">¥&nbsp;627</span>
 						</a>
 					</div>
-					<!--第五张  开始设置隐藏-->
+					<!--第五张-->
 					<div class="putshow">
-						<a href="javascript:">
-							<img src="" alt="" />
+						<a href="javascript;">
+							<img src="{{asset('/templates/home/images/5.jpg')}}" alt="" />
 							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
 							<span class="price">¥&nbsp;627</span>
 						</a>
 					</div>
+					<!--第六张-->
 					<div class="putshow">
-						<a href="javascript:">
-							<img src="" alt="" />
+						<a href="javascript;">
+							<img src="{{asset('/templates/home/images/6.jpg')}}" alt="" />
 							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
 							<span class="price">¥&nbsp;627</span>
 						</a>
 					</div>
+					<!--第七张-->
+					<div class="putshow">
+						<a href="javascript;">
+							<img src="{{asset('/templates/home/images/7.jpg')}}" alt="" />
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
+							<span class="price">¥&nbsp;627</span>
+						</a>
+					</div>
+					<!--第八张-->
+					<div class="putshow">
+						<a href="javascript;">
+							<img src="{{asset('/templates/home/images/8.jpg')}}" alt="" />
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
+							<span class="price">¥&nbsp;627</span>
+						</a>
+					</div>
+
 				</div>
 			</div>
 		</div>
