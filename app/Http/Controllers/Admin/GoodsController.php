@@ -24,6 +24,7 @@ class GoodsController extends Controller
       public function index(Request $request)
     {
         $typeinfos = GoodsType::select('id', 'name')->get();
+        $brands = Brand::select()->get();
         //分页查询以keyword为搜索关键字
         $goods= Goods::orderBy('sort', 'desc')
             ->where(function($query) use ($request){
@@ -38,9 +39,14 @@ class GoodsController extends Controller
                 if (!empty($typename)) {
                     $query->where('type_id', 'like', '%' . $typename . '%');
                 }
+                //品牌检索
+                $brand= $request->input('brandslect');
+                if (!empty($brand)) {
+                    $query->where('brand_id', 'like', '%' . $brand . '%');
+                }
 
             })->paginate(10);
-        return view('admin.main.goods.index', ['request' => $request, 'goods' =>$goods, 'typeinfos' => $typeinfos ]);
+        return view('admin.main.goods.index', ['request' => $request, 'brands' => $brands ,'goods' =>$goods, 'typeinfos' => $typeinfos ]);
     }
 
     /**
@@ -80,6 +86,7 @@ class GoodsController extends Controller
         } else {
             $cate = $data['cat_id'];
         }
+//        dd($cate);
         //赋值
         $goods->cat_id = $cate;
         //编号如果用户不写则自动生成
@@ -193,10 +200,10 @@ class GoodsController extends Controller
 
         $cat_id = explode('_', $good->cat_id);
         //0就是最大的分类id   1  2级分类  2  3级分类
-        if($cat_id[1]){
-            $max_cat = Category::where('level', '=','0,'.$cat_id[0], 'and', 'pid', '=', $cat_id[0])->get();
-//            dd($max_cat);
-        }
+//        if($cat_id[1]){
+//            $max_cat = Category::where('level', '=','0,'.$cat_id[0], 'and', 'pid', '=', $cat_id[0])->get();
+////            dd($max_cat);
+//        }
 //        dd($cat_id);
         $fatcates   =  Category::where('pid', '=', '0')->select()->get();
         $brands  =  Brand::select()->get();

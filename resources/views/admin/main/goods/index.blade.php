@@ -31,14 +31,19 @@
                     <select  name="modules" >
                         <option value="">-请选择品牌-</option>
                         <option value="">所有品牌</option>
-                        <option value="1">layer</option>
+                        @foreach($brands as $brand )
+                        <option value="{{$brand->id}}" @if($request->brand == $brand->id) selected @endif>{{$brand->name}}</option>
+                            @endforeach
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width:100px">
                     <select name="modules" >
                         <option value="">-请选择上下架-</option>
                         <option value="">全部</option>
-                        <option value="1">layer</option>
+
+                        <option value="1">上架</option>
+                        <option value="1">下架</option>
+
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width:100px">
@@ -185,7 +190,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-4">
                 {{--{{$specs->links()}}--}}
-                {!! $goods->appends($request->only(['keyword', 'typename']))->render() !!}
+                {!! $goods->appends($request->only(['keyword', 'typename','brandslect']))->render() !!}
             </div>
         </div>
     </div>

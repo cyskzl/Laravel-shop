@@ -281,11 +281,30 @@ article, section, aside, header, footer,  figure, menu, nav, summary {
 	font-size: 14px;
 	color: #626161;
 }
-.header_top_bottom_people a:nth-child(1){	
-	background:url(../uploads/women.png) no-repeat; 
+/*.header_top_bottom_people a:nth-child(1){	*/
+	/*background:url(../uploads/women.png) no-repeat; */
+	/*background-size:67px 37px;*/
+	/*color: #fff;*/
+/*}*/
+
+.women{
+	background:url(../public/png/women.png) no-repeat;
 	background-size:67px 37px;
 	color: #fff;
 }
+
+.men{
+	background:url(../public/png/men.png) no-repeat;
+	background-size:67px 37px;
+	color: #fff;
+}
+
+.design{
+	background:url(../public/png/design.png) no-repeat;
+	background-size:67px 37px;
+	color: #fff;
+}
+
 .header_logo{
 	width: 156px;
 	height: 45px;

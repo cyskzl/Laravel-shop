@@ -11,11 +11,11 @@
 |
 */
 
-// DB::listen(function($sql) {
-// //dump($sql);
-//    echo $sql->sql.'<br>';
-// // dump($sql->bindings);
-// });
+//DB::listen(function($sql) {
+//dump($sql);
+////    echo $sql->sql;
+//// dump($sql->bindings);
+//});
 
 Route::get('/', function () {
     return redirect('home');
@@ -25,7 +25,9 @@ Route::get('/', function () {
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
     // 首页
-    Route::get('/{category_id?}', 'IndexController@index')->where('category_id', '[0-9]+');
+    Route::any('/{category_id?}', 'IndexController@index')->where('category_id', '[0-9]+');
+    //分类
+    Route::any('/catalog/category_id/{{id?}}','IndexController@catalog')->where('id', '[0-9]+');
     // 注册页面(默认邮箱注册email)
     Route::get('/register', 'RegisterController@register');
     // 登录界面
@@ -92,6 +94,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/privacyclause', 'PersonalController@privacyClause');
     // 个人中心-设置（地址管理）
     Route::resource('/address', 'AddressController');
+
+
 
 
 
