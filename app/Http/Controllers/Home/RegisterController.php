@@ -291,8 +291,13 @@ class RegisterController extends Controller
         $status = TempEmail::create(['user_id' => $phone, 'uuid' => $code]);
 
         if ($status){
-            
+
             return $code;
         }
+    }
+
+    public function toPhoneRegister(Request $request)
+    {
+
     }
 }
