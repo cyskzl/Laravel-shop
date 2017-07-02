@@ -2,9 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>
-            X-admin v1.0
-        </title>
+        <title>Hello Word</title>
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -18,8 +16,9 @@
             <blockquote class="layui-elem-quote">
                 欢迎使用x-admin 后台模版！<span class="f-14">v1.0</span>官方交流群： 519492808
             </blockquote>
-            <p>登录次数：18 </p>
-            <p>上次登录IP：222.35.131.79.1  上次登录时间： 2017-01-01 11:19:55</p>
+            <p>登录次数：{{ $request->session()->get('login_num') }} </p>
+
+            <p>上次登录IP：{{ $request->session()->get('last_login_ip') }}  上次登录时间： {{ $request->session()->get('last_login_time') }}</p>
             <fieldset class="layui-elem-field layui-field-title site-title">
               <legend><a name="default">信息统计</a></legend>
             </fieldset>
@@ -49,7 +48,7 @@
                         <td>0</td>
                         <td>0</td>
                         <td>0</td>
-                        <td>0</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>昨日</td>
@@ -86,95 +85,63 @@
                 <tbody>
                     <tr>
                         <th width="30%">服务器计算机名</th>
-                        <td><span id="lbServerName">http://127.0.0.1/</span></td>
+                        <td><span id="lbServerName">{{ $_SERVER['SERVER_NAME'] }}</span></td>
                     </tr>
                     <tr>
                         <td>服务器IP地址</td>
-                        <td>192.168.1.1</td>
+                        <td>{{ $_SERVER['SERVER_ADDR'] }}</td>
                     </tr>
                     <tr>
                         <td>服务器域名</td>
-                        <td>x.xuebingsi.com</td>
+                        <td>{{ $_SERVER["HTTP_HOST"] }}</td>
                     </tr>
                     <tr>
                         <td>服务器端口 </td>
-                        <td>80</td>
+                        <td>{{ $_SERVER['SERVER_PORT'] }}</td>
                     </tr>
-                    <tr>
-                        <td>服务器IIS版本 </td>
-                        <td>Microsoft-IIS/6.0</td>
-                    </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>本文件所在文件夹 </td>
                         <td>D:\WebSite\HanXiPuTai.com\XinYiCMS.Web\</td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td>服务器操作系统 </td>
-                        <td>Microsoft Windows NT 5.2.3790 Service Pack 2</td>
+                        <td>{{ php_uname() }}</td>
                     </tr>
                     <tr>
                         <td>系统所在文件夹 </td>
-                        <td>C:\WINDOWS\system32</td>
+                        <td>{{ $_SERVER['DOCUMENT_ROOT'] }}</td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>服务器脚本超时时间 </td>
                         <td>30000秒</td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td>服务器的语言种类 </td>
-                        <td>Chinese (People's Republic of China)</td>
+                        <td>{{ $_SERVER['HTTP_ACCEPT_LANGUAGE'] }}</td>
                     </tr>
                     <tr>
-                        <td>.NET Framework 版本 </td>
-                        <td>2.050727.3655</td>
+                        <td>PHP版本 </td>
+                        <td>{{ $_SERVER ['SERVER_SOFTWARE'] }}</td>
                     </tr>
                     <tr>
                         <td>服务器当前时间 </td>
-                        <td>2017-01-01 12:06:23</td>
+                        <td>{{ date("Y-m-d G:i:s") }}</td>
                     </tr>
                     <tr>
-                        <td>服务器IE版本 </td>
-                        <td>6.0000</td>
-                    </tr>
-                    <tr>
-                        <td>服务器上次启动到现在已运行 </td>
-                        <td>7210分钟</td>
-                    </tr>
-                    <tr>
-                        <td>逻辑驱动器 </td>
-                        <td>C:\D:\</td>
-                    </tr>
-                    <tr>
-                        <td>CPU 总数 </td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>CPU 类型 </td>
-                        <td>x86 Family 6 Model 42 Stepping 1, GenuineIntel</td>
-                    </tr>
-                    <tr>
-                        <td>虚拟内存 </td>
-                        <td>52480M</td>
-                    </tr>
-                    <tr>
-                        <td>当前程序占用内存 </td>
-                        <td>3.29M</td>
-                    </tr>
-                    <tr>
-                        <td>Asp.net所占内存 </td>
-                        <td>51.46M</td>
+                        <td>脚本所占内存 </td>
+                        <td>{{ get_cfg_var ("memory_limit")?get_cfg_var("memory_limit"):"无" }}</td>
                     </tr>
                     <tr>
                         <td>当前Session数量 </td>
-                        <td>8</td>
+                        <td>{{ count($request->session()->all()) }}</td>
                     </tr>
                     <tr>
-                        <td>当前SessionID </td>
-                        <td>gznhpwmp34004345jz2q3l45</td>
+                        <td>当前Cookie数量 </td>
+                        <td>{{ count($request->cookie()) }}</td>
                     </tr>
                     <tr>
                         <td>当前系统用户名 </td>
-                        <td>NETWORK SERVICE</td>
+                        <td>{{ \Auth::guard('admin')->user()->nickname }}</td>
                     </tr>
                 </tbody>
             </table>

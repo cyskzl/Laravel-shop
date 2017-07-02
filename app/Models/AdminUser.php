@@ -14,11 +14,11 @@ class AdminUser extends Authenticatable
     use EntrustUserTrait;
 
     //定义表名
-    protected $table = 'admin_users';
+    protected $table    = 'admin_users';
 
     //定义批量添加
     protected $fillable = [
-    	'nickname', 'password', 'email', 'status','role_id'
+    	'nickname', 'password', 'email', 'status','last_login_time', 'last_login_ip','login_num','pic'
     ];
 
 
@@ -76,6 +76,6 @@ class AdminUser extends Authenticatable
         return $this->isInRoles($permission->roles);
     }
 
-    
+
 
 }

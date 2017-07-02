@@ -25,43 +25,44 @@ class PermissionTabelSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
         //创建初始管理员用户
         $admin_user = AdminUser::create([
-            'nickname'=>'admin',
-            'email'=>'admin@qq.com',
-            'password'=>bcrypt('admin'),
-            'status'=>'1'
+            'nickname'         =>'admin',
+            'email'            =>'admin@qq.com',
+            'password'         =>bcrypt('admin'),
+            'pic'              => 'templates/admin/images/admin_default.png',
+            'status'           =>'1'
         ]);
 
         //创建初始角色
         $role = Role::create([
-            'name'=>'admin',
-            'display_name'=>'管理员',
-            'description'=>'管理员'
+            'name'             =>'admin',
+            'display_name'     =>'管理员',
+            'description'      =>'管理员'
         ]);
 
         //创建相应的权限
         $permission = [
             [
-                'name'=>'admin_list',
-                'display_name'=>'管理员列表',
-                'description'=>'管理员列表'
+                'name'         =>'admin_list',
+                'display_name' =>'管理员列表',
+                'description'  =>'管理员列表'
             ],
 
             [
-                'name'=>'create_admin',
-                'display_name'=>'创建管理员',
-                'description'=>'创建管理员'
+                'name'         =>'create_admin',
+                'display_name' =>'创建管理员',
+                'description'  =>'创建管理员'
             ],
 
             [
-                'name'=>'edit_admin',
-                'display_name'=>'修改管理员',
-                'description'=>'修改管理员'
+                'name'         =>'edit_admin',
+                'display_name' =>'修改管理员',
+                'description'  =>'修改管理员'
             ],
 
             [
-                'name'=>'delete_admin',
-                'display_name'=>'删除管理员',
-                'description'=>'删除管理员'
+                'name'         =>'delete_admin',
+                'display_name' =>'删除管理员',
+                'description'  =>'删除管理员'
             ],
         ];
 

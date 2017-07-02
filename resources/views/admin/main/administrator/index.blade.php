@@ -41,6 +41,7 @@
                     <tr>
                         <th><input type="checkbox" name="" value=""></th>
                         <th>ID</th>
+                        <th>头像</th>
                         <th>登录名</th>
                         <th>邮箱</th>
                         <th>角色</th>
@@ -52,6 +53,7 @@
                 <tbody>
                 @if(count($search) > 0)
                     @foreach($search as $row)
+
                         @if( $row->id == 1)
                             <tr id = "admin">
                                 {{--{{dd($admin_user)}}--}}
@@ -60,6 +62,9 @@
                                 </td>
 
                                 <td>{{ $row->id }}</td>
+                                <td style="width: 80px;">
+                                    <img src="{{ asset(rtrim($row->pic, ',')) }}" alt="{{ $row->nickname }}" width="60" height="60" style="border: 2px solid #A9B7B7;border-radius: 100%;">
+                                </td>
 
                                 <td>{{ $row->nickname }}</td>
 
@@ -90,6 +95,10 @@
                             </td>
 
                             <td>{{ $row->id }}</td>
+
+                            <td style="width: 80px;">
+                                <img src="{{ asset(rtrim($row->pic, ',')) }}" alt="{{ $row->nickname }}" width="60" height="60" style="border: 2px solid #A9B7B7;border-radius: 100%;">
+                            </td>
 
                             <td>{{ $row->nickname }}</td>
 
