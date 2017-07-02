@@ -56,9 +56,10 @@
         <!-- 搜索区 -->
         <div class="header_top_bottom left">
             <div class="header_top_bottom_people left">
-                <a href="{{ url('home/') }}" data-currentcategoryid="0">女士</a>
-                <a href="{{ url('home/2') }}" data-currentcategoryid="1">男士</a>
-                <a href="{{ url('home/3') }}" data-currentcategoryid="2">创意生活</a>
+
+                <a href="{{ url('home/') }}/{{$onemaam->id}}" data-currentcategoryid="0">{{$onemaam->name}}</a>
+                <a href="{{ url('home/') }}/{{$onemam->id}}"data-currentcategoryid="1">{{$onemam->name}}</a>
+                <a href="{{ url('home/') }}/{{$onelife->id}}" data-currentcategoryid="2">{{$onelife->name}}</a>
             </div>
             <div class="header_logo left">
                 <img src="{{ asset('templates/home/uploads/logo (1).png') }}" alt="">
@@ -87,145 +88,81 @@
                     <a href="javascript:">新品</a>
                     <div class="header_nav_left_new">
                         <div class="elastic_no">
-
+                            {{--女士--}}
+                            @if($cateId == 1)
+                            @foreach($goodsmaams as $goodsmaam)
                             <div class="header_nav_left_new_one">
-                                <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
+                                <img src="{{rtrim( $goodsmaam->original_img, ',')}}" alt="">
+                                <span class="font_sm">品牌</span>
+                                <span class="font">{{$goodsmaam->goods_name}}</span>
+                                <span class="money">¥ {{$goodsmaam->shop_price}}</span>
                             </div>
-
+                            @endforeach
+                                {{--男士--}}
+                                @elseif($cateId == 2)
+                                @foreach($goodsmams as $goodsmam)
+                                    <div class="header_nav_left_new_one">
+                                        <img src="{{rtrim( $goodsmam->original_img, ',')}}" alt="">
+                                        <span class="font_sm">品牌</span>
+                                        <span class="font">{{$goodsmam->goods_name}}</span>
+                                        <span class="money">¥ {{$goodsmam->shop_price}}</span>
+                                    </div>
+                                @endforeach
+                                {{--创意生活--}}
+                                @elseif($cateId == 3)
+                                @foreach($goodslife as $life)
+                                    <div class="header_nav_left_new_one">
+                                        <img src="{{rtrim( $life->original_img, ',')}}" alt="">
+                                        <span class="font_sm">品牌</span>
+                                        <span class="font">{{$life->goods_name}}</span>
+                                        <span class="money">¥ {{$life->shop_price}}</span>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
-                <div id="header_nav_left_new">
-                    <a href="javascript:">服饰</a>
-                    <div class="header_nav_left_new">
-                        <div class="elastic_no">
-                            <div class="header_nav_left_new_one_text">
-                                <a href="javascript:">帽衫／卫衣</a>
-                                <a href="javascript:">衬衫</a>
-                                <a href="javascript:">毛衣／针织衫</a>
-                                <a href="javascript:">T恤</a>
-                                <a href="javascript:">大衣／风衣</a>
-                                <a href="javascript:">夹克</a>
-                                <a href="javascript:">便服</a>
-                                <a href="javascript:">牛仔</a>
-                                <a href="javascript:">西装</a>
-                                <a href="javascript:">皮衣</a>
-                                <a href="javascript:">连衣裙</a>
-                                <a href="javascript:">半身裙</a>
-                                <a href="javascript:">休闲裤</a>
-                                <a href="javascript:">运动裤</a>
-                                <a href="javascript:">西裤</a>
-                                <a href="javascript:">羽绒服／棉服</a>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
 
-                        </div>
-                    </div>
-                </div>
-                <div id="header_nav_left_new">
-                    <a href="javascript:">鞋履</a>
-                    <div class="header_nav_left_new">
-                        <div class="elastic_no">
-                            <div class="header_nav_left_new_one_text">
-                                <a href="javascript:">帽衫／卫衣</a>
-                                <a href="javascript:">衬衫</a>
-                                <a href="javascript:">毛衣／针织衫</a>
-                                <a href="javascript:">T恤</a>
-                                <a href="javascript:">大衣／风衣</a>
-                                <a href="javascript:">夹克</a>
-                                <a href="javascript:">便服</a>
-                                <a href="javascript:">牛仔</a>
-                                <a href="javascript:">西装</a>
-                                <a href="javascript:">皮衣</a>
-                                <a href="javascript:">连衣裙</a>
-                                <a href="javascript:">半身裙</a>
-                                <a href="javascript:">休闲裤</a>
-                                <a href="javascript:">运动裤</a>
-                                <a href="javascript:">西裤</a>
-                                <a href="javascript:">羽绒服／棉服</a>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
+                    {{--女士--}}
+                    @if($cateId == 1)
+                        @foreach($twomaan as $tmaan)
+                        <div id="header_nav_left_new">
+                            <a href="{{url('catalog/category_id/')}}/{{$tmaan->id}}">{{$tmaan->name}}</a>
+                            <div class="header_nav_left_new">
+                                <div class="elastic_no">
+                                    {{--3级分类--}}
+                                    <div class="header_nav_left_new_one_text">
+                                        {{$tmaan->level}}
+                                    @foreach($threeman as $treemaan)
+                                            {{$treemaan->level}}
+                                        <a href="{{url('/catalog/category_id/')}}/{{$treemaan->id}}">{{$treemaan->name}}</a>
+                                    @endforeach
+                                    </div>
 
-                        </div>
-                    </div>
-                </div>
-                <div id="header_nav_left_new">
-                    <a href="javascript:">包袋</a>
-                    <div class="header_nav_left_new">
-                        <div class="elastic_no">
-                            <div class="header_nav_left_new_one_text">
-                                <a href="javascript:">帽衫／卫衣</a>
-                                <a href="javascript:">衬衫</a>
-                                <a href="javascript:">毛衣／针织衫</a>
-                                <a href="javascript:">T恤</a>
-                                <a href="javascript:">大衣／风衣</a>
-                                <a href="javascript:">夹克</a>
-                                <a href="javascript:">便服</a>
-                                <a href="javascript:">牛仔</a>
-                                <a href="javascript:">西装</a>
-                                <a href="javascript:">皮衣</a>
-                                <a href="javascript:">连衣裙</a>
-                                <a href="javascript:">半身裙</a>
-                                <a href="javascript:">休闲裤</a>
-                                <a href="javascript:">运动裤</a>
-                                <a href="javascript:">西裤</a>
-                                <a href="javascript:">羽绒服／棉服</a>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
+                                    <div class="header_nav_left_new_one">
+                                        <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
+                                        <span class="font_sm">LOOKAST</span>
+                                        <span class="font">翻领短袖开叉连衣裙_黄色</span>
+                                        <span class="money">¥ 715</span>
+                                    </div>
 
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div id="header_nav_left_new">
-                    <a href="javascript:">饰品.其他</a>
-                    <div class="header_nav_left_new">
-                        <div class="elastic_no">
-                            <div class="header_nav_left_new_one_text">
-                                <a href="javascript:">帽衫／卫衣</a>
-                                <a href="javascript:">衬衫</a>
-                                <a href="javascript:">毛衣／针织衫</a>
-                                <a href="javascript:">T恤</a>
-                                <a href="javascript:">大衣／风衣</a>
-                                <a href="javascript:">夹克</a>
-                                <a href="javascript:">便服</a>
-                                <a href="javascript:">牛仔</a>
-                                <a href="javascript:">西装</a>
-                                <a href="javascript:">皮衣</a>
-                                <a href="javascript:">连衣裙</a>
-                                <a href="javascript:">半身裙</a>
-                                <a href="javascript:">休闲裤</a>
-                                <a href="javascript:">运动裤</a>
-                                <a href="javascript:">西裤</a>
-                                <a href="javascript:">羽绒服／棉服</a>
-                            </div>
-                            <div class="header_nav_left_new_one">
-                                <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
-                                <span class="font_sm">LOOKAST</span>
-                                <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                <span class="money">¥ 715</span>
-                            </div>
+                         @endforeach
 
-                        </div>
-                    </div>
-                </div>
+
+                    {{--男士--}}
+                    @elseif($cateId == 2)
+                        {{--创意生活--}}
+                    @elseif($cateId == 3)
+                        @endif
+                    {{--2级分类--}}
+
+
+
+
+
                 <div>
                     <a href="javascript:">博主控</a>
                 </div>

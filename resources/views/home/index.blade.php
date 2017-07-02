@@ -575,58 +575,55 @@
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script src="{{asset('/templates/home/js/carousel.js')}}"></script>
 	<script type="text/javascript">
+        $(function(){
+            if (!$.session.get("currentCategoryId")){
 
-		$(function(){
-			if (!$.session.get("currentCategoryId")){
+                $('.header_top_bottom_people a')[0].setAttribute('class','women');
+                $('.header_top_bottom_people a')[0].style='color:#fff';
 
-				$('.header_top_bottom_people a')[0].setAttribute('class','women');
-				$('.header_top_bottom_people a')[0].style='color:#fff';
+            } else {
 
-			} else {
+                var id = $.session.get("currentCategoryId");
+                var img = $.session.get("currentCategoryImg");
+                $('.header_top_bottom_people a')[id].setAttribute('class',''+ img +'');
+                $('.header_top_bottom_people a')[id].style='color:#fff';
 
-				var id = $.session.get("currentCategoryId");
-				var img = $.session.get("currentCategoryImg");
-				$('.header_top_bottom_people a')[id].setAttribute('class',''+ img +'');
-				$('.header_top_bottom_people a')[id].style='color:#fff';
+            }
 
-			}
+        });
 
-		});
+        // 女士，男士，创意生活切换
+        $(".header_top_bottom_people a").click(function(){
 
-	    // 女士，男士，创意生活切换
-	    $(".header_top_bottom_people a").click(function(){
+            //导航背景色随频道颜色改变
+            var currentId = $(this).data("currentcategoryid"),navBg;
 
-			//导航背景色随频道颜色改变
+            var img = imgClass(currentId);
+            $(this).addClass(''+ img +'').css('color','#fff').siblings("a").removeClass().css('color','#626161');
+            // 女士，男士，创意生活切换
 
-			var currentId = $(this).data("currentcategoryid"),navBg;
-			// console.log($(this));
-			var img = imgClass(currentId);
-
-	        $(this).addClass(''+ img +'').css('color','#fff').siblings("a").removeClass().css('color','#626161');
-			// 女士，男士，创意生活切换
-
-			$.session.set('currentCategoryId', currentId);
-			$.session.set('currentCategoryImg',''+ img +'');
+            $.session.set('currentCategoryId', currentId);
+            $.session.set('currentCategoryImg',''+ img +'');
             window.location.href=''+ $(this).attr('href') +'';
             return false;
-	    });
+        });
 
-		function imgClass(currentId){
+        function imgClass(currentId){
 
- 		   var img = '';
- 		//    console.log(currentId );
- 			   if(currentId == 0){
- 				//    navBg = "#f54b73";
- 				img = 'women';
-			}else if(currentId == 1){
- 				//    navBg = "#505c82";
- 				img = 'men';
-			}else if(currentId == 2){
- 				//    navBg = "#a4d7d8";
- 				img = 'design';
- 		   }
-		   return img;
-		}
+            var img = '';
+            //    console.log(currentId );
+            if(currentId == 0){
+                //    navBg = "#f54b73";
+                img = 'women';
+            }else if(currentId == 1){
+                //    navBg = "#505c82";
+                img = 'men';
+            }else if(currentId == 2){
+                //    navBg = "#a4d7d8";
+                img = 'design';
+            }
+            return img;
+        }
 
 	</script>
 

@@ -169,7 +169,7 @@ class CommonController extends Controller
         $type = $request->input('type');
 
         //返回分组规格对应的名称与规格
-        $spec = Spec::select(DB::raw('spec.*, spec_item.spec_id,group_concat(spec_item.item) AS specitem,group_concat(spec_item.id) AS specid'))
+        $spec = Spec::select(DB::raw('spec.*, spec_item.spec_id, group_concat(spec_item.item) AS specitem , group_concat(spec_item.id) AS specid'))
             ->join('spec_item', 'spec.id', '=', 'spec_item.spec_id')
             ->where('type_id','=',$type)
             ->groupby('spec.name')
