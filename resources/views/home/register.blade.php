@@ -40,7 +40,7 @@
 									<input type="text" id="email" name="email" placeholder="请填写邮箱" id="email" value="{{old('email')}}"><span style="color:#C73F49;"></span>
 									<div class="code clearfix">
 
-										<input type="text" name="validate_code" placeholder="请填写图形验证码" ">
+										<input type="text" name="validate_code" placeholder="请填写图形验证码">
 										<span>
                             				<img src="{{url('home/register/code')}}" class="validate_code">
                         				</span>
@@ -60,7 +60,7 @@
 									<input type="submit" id="submit" class="btn-submit" value="立即注册" >
 								</div>
 								<div class="clause clearfix">
-									<input type="checkbox" id="check" name="is_check" >
+									<input type="checkbox" id="check" name="check" >
 									<span class="clause-font" >接受Wconcept隐私条款</span>
 									<a href="" class="clause-font">去登陆</a>
 								</div>
