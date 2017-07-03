@@ -17,28 +17,42 @@
                         <input type="checkbox"  onclick="$('input[name*=\'goods_id\']').prop('checked', this.checked);">
                     </th>
                     <th width="70%">商品名称</th>
-                    <th>商品原价</th>
+                    <th>商品规格</th>
+                    <th>价格</th>
                     <th>库存</th>
-                    <th>折扣（例：95）</th>
+                    <th>折扣（例：95折）</th>
                     <th>活动价</th>
                     <th>活动数量</th>
                 </tr>
                 @foreach($goods as $good)
+                    @foreach($good['specGoodsPrice'] as $key=>$value)
+                        @if($key == 0)
                     <tr>
-                        <td>
+                        <td rowspan="{{count($good['specGoodsPrice'])}}" align="center" valign="center" >
                             <input type="checkbox" name="goods_id" value="{{$good->goods_id}}">
                         </td>
-                        <td>{{$good->goods_name}}</td>
-                        <td>{{$good->shop_price}}</td>
-                        <td>{{$good->store_count}}</td>
-                    </tr>
+                        {{--{{dd($good['specGoodsPrice'][0]->id)}}--}}
+                        <td  rowspan="{{count($good['specGoodsPrice'])}}">{{$good->goods_name}}</td>
+                        @endif
+                        @if($key >0)
+                            <tr>
+                            @endif
+                                {{dump($value)}}
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>3</td>
+                                <td>3</td>
+                                <td>3</td>
+                        @endforeach
+                        </tr>
                 @endforeach
             </table>
 
             <div class="container">
                 <div class="row">
                     <div class="col-xs-9">
-                        {{ $goods->links() }}
+                        {!! $goods->appends($request->only(['keyword']))->render() !!}
                     </div>
                     <div class="col-xs-3" style="margin-top:14px">
                         <button id="submit" class="layui-btn">确认提交</button>

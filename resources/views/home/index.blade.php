@@ -163,127 +163,93 @@
 			<!--商品分类-->
 			<div class="category-list">
 				<ul class="clear">
-					<li><a href="javascript:">衬衫</a></li>
-					<li><a href="javascript:">T恤</a></li>
-					<li><a href="javascript:">裙装</a></li>
-					<li><a href="javascript:">牛仔</a></li>
-					<li><a href="javascript:">泳装</a></li>
-					<li><a href="javascript:">裤装</a></li>
-					<li><a href="javascript:">凉鞋/凉拖</a></li>
-					<li><a href="javascript:">包类</a></li>
+					<li class="borl">衬衫</li>
+					<li>T恤</li>
+					<li>裙装</li>
+					<li>牛仔</li>
+					<li>泳装</li>
+					<li>裤装</li>
+					<li>凉鞋/凉拖</li>
+					<li>包类</li>
 				</ul>
 			</div>
 			<!--全部展示的商品-->
 			<div class="category-around width">
-				<!--第一列-->
+				<!--第一列  衬衫-->
 				<div class="category-show width cen ">
 					<div class="cateshow ">
-							<a href="javascript:">
-								<img src="{{asset('/templates/home/uploads/1.jpg')}}" alt="" class="img">
-								<span class="brand color">NUMBERING</span>
-								<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-								<span class="price">¥&nbsp;627</span>
-							</a>
+						<a href="javascript;">
+							<img src="{{asset('/templates/home/images/1.jpg')}}" alt="" / class="img">
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">1不对称水晶钻圆环耳钉_金色</span>
+							<span class="price">¥&nbsp;627</span>
+						</a>
 					</div>
 					<div class="cateshow">
-							<a href="javascript:" >
-								<img src="" alt=""  class="img">
-								<span class="brand color">NUMBERING</span>
-								<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-								<span class="price">¥&nbsp;627</span>
-							</a>
+						<a href="javascript;" >
+							<img src="{{asset('/templates/home/images/2.jpg')}}" alt="" / class="img">
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="price">¥&nbsp;627</span>
+						</a>
 					</div>
 					<div class="cateshow">
-							<a href="javascript:" >
-								<img src="" alt=""  class="img">
-								<span class="brand color">NUMBERING</span>
-								<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-								<span class="price">¥&nbsp;627</span>
-							</a>
+						<a href="javascript;" >
+							<img src="{{asset('/templates/home/images/3.jpg')}}" alt="" / class="img">
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="price">¥&nbsp;627</span>
+						</a>
 					</div>
 					<div class="cateshow">
-							<a href="javascript:" >
-								<img src="" alt=""  class="img">
-								<span class="brand color">NUMBERING</span>
-								<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-								<span class="price">¥&nbsp;627</span>
-							</a>
+						<a href="javascript;" >
+							<img src="{{asset('/templates/home/images/4.jpg')}}" alt="" / class="img">
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="price">¥&nbsp;627</span>
+						</a>
 					</div>
 
 				</div>
-				<!--第二列-->
-				<div class="category-show width cen">
-						<div class="cateshow ">
-								<a href="javascript:">
-									<img src="{{asset('/templates/home/uploads/2.jpg')}}" alt=""  class="img">
-									<span class="brand color">NUMBERING</span>
-									<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-									<span class="price">¥&nbsp;627</span>
-								</a>
-						</div>
-						<div class="cateshow">
-								<a href="javascript:" >
-									<img src="" alt=""  class="img">
-									<span class="brand color">NUMBERING</span>
-									<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-									<span class="price">¥&nbsp;627</span>
-								</a>
-						</div>
-						<div class="cateshow">
-								<a href="javascript:" >
-									<img src="" alt=""  class="img">
-									<span class="brand color">NUMBERING</span>
-									<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-									<span class="price">¥&nbsp;627</span>
-								</a>
-						</div>
-						<div class="cateshow">
-								<a href="javascript:" >
-									<img src="" alt=""  class="img">
-									<span class="brand color">NUMBERING</span>
-									<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-									<span class="price">¥&nbsp;627</span>
-								</a>
-						</div>
-				</div>
-				<!--第三列-->
+				<!--第二列 T恤-->
 				<div class="category-show width cen">
 					<div class="cateshow ">
-							<a href="javascript:">
-								<img src="{{asset('/templates/home/uploads/1.jpg')}}" alt=""  class="img">
-								<span class="brand color">NUMBERING</span>
-								<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-								<span class="price">¥&nbsp;627</span>
-							</a>
+						<a href="javascript;">
+							<img src="{{asset('/templates/home/images/5.jpg')}}" alt="" / class="img">
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">2不对称水晶钻圆环耳钉_金色</span>
+							<span class="price">¥&nbsp;627</span>
+						</a>
 					</div>
 					<div class="cateshow">
-							<a href="javascript:" >
-								<img src="" alt=""  class="img">
-								<span class="brand color">NUMBERING</span>
-								<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-								<span class="price">¥&nbsp;627</span>
-							</a>
+						<a href="javascript;" >
+							<img src="{{asset('/templates/home/images/6.jpg')}}" alt="" / class="img">
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">2不对称水晶钻圆环耳钉_金色</span>
+							<span class="price">¥&nbsp;627</span>
+						</a>
 					</div>
 					<div class="cateshow">
-							<a href="javascript:" >
-								<img src="" alt=""  class="img">
-								<span class="brand color">NUMBERING</span>
-								<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-								<span class="price">¥&nbsp;627</span>
-							</a>
+						<a href="javascript;" >
+							<img src="{{asset('/templates/home/images/7.jpg')}}" alt="" / class="img">
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="price">¥&nbsp;627</span>
+						</a>
 					</div>
 					<div class="cateshow">
-							<a href="javascript:" >
-								<img src="" alt=""  class="img">
-								<span class="brand color">NUMBERING</span>
-								<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-								<span class="price">¥&nbsp;627</span>
-							</a>
+						<a href="javascript;" >
+							<img src="{{asset('/templates/home/images/8.jpg')}}" alt="" / class="img">
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
+							<span class="price">¥&nbsp;627</span>
+						</a>
 					</div>
-
 				</div>
+
 			</div>
 		</div>
+
 
 		<!--热门品牌-->
 		<div class="hot-brand width">

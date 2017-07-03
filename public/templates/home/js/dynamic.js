@@ -36,5 +36,4 @@ scrolltop.onclick = function()
 //回到顶部结束
 
 
-//轮播图开始
-//var 
+
