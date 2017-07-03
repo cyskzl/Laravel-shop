@@ -17,7 +17,7 @@ class CreateUsersRegisterTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('主键');
             $table->string('tel')->default('')->index()->comment('会员手机号码');
-            $table->string('email')->unique()->comment('会员邮箱地址');
+            $table->string('email')->index()->default('')->comment('会员邮箱地址');
             $table->string('password')->comment('会员密码');
             $table->string('third_party_id')->nullable()->comment('第三方 ID');
             $table->string('status')->default(0)->comment('用户状态|0未激活 1激活');

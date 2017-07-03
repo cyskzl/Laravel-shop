@@ -98,21 +98,14 @@ window.onload = function () {
         newGoods(-1120);
     };
 
-    // $('.right').click(function()
-    // {
-    //     $('.putaway-around').animate(
-    //         {
-    //             left:'-1120px'
-    //         },1000);
-    // })
-    // $('.left').click(function()
-    // {
-    //     $('.putaway-around').animate(
-    //         {
-    //             left:'0px'
-    //         },1000);
-    // });
-
-
 };
 
+$('.category-list ul li').each(function()
+{
+    $(this).mouseover(function()
+    {
+        $(this).addClass('borl').siblings().removeClass('borl');
+        var index = $(this).index();
+        $('.category-show').eq(index).css({'z-index':'3','opacity': 1}).siblings().css({'z-index':'-1','opacity': 0});
+    });
+});
