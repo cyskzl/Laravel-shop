@@ -48,6 +48,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/email_register/validate_email', 'RegisterController@validateEmailCode');
     // 手机注册界面
     Route::get('/phone_register', 'RegisterController@phoneRegister');
+    // 手机注册跳转界面
+    Route::post('/phone_register', 'RegisterController@toPhoneRegister');
     // 登录信息处理
     Route::post('/doLogin', 'UserController@doLogin');
     // 退出登录

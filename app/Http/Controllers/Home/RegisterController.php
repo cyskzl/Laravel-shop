@@ -248,10 +248,14 @@ class RegisterController extends Controller
             return '{"error":1}';
         }
 
+        $isuser = UserRegister::where('tel',$phone)->get();
+
+        if (empty($isuser)){
+
+            return '{"error":2}';
+        }
+
         $phonecode = $this->get_mobile_code($phone);
-
-
-        $phone = 0;
 
         $name = 'xybeta注册验证';
 
@@ -268,7 +272,7 @@ class RegisterController extends Controller
 
 
     //生成手机验证码
-    protected function get_mobile_code($phone)
+    protected function get_mobile_code($phone = 0)
     {
 
         $data = TempEmail::where('user_id',$phone)->get()->toArray();
@@ -277,7 +281,7 @@ class RegisterController extends Controller
 
             $code = $data[0]['uuid'];
 
-            if ($data[0]['created_at'] < (date('Y-m-d H:i:s',time() + 600))){
+            if (date('Y-m-d H:i:s',time($data[0]['created_at']) + 600) < date('Y-m-d H:i:s')){
 
                 return $code;
             }else{
@@ -296,8 +300,92 @@ class RegisterController extends Controller
         }
     }
 
+    //手机注册提交
     public function toPhoneRegister(Request $request)
     {
+        $this->validate($request,[
+            'tel'=>'required | regex:/^1[34578][0-9]{9}$/',
+            'password'=>'required | between:6,16',
+            'repassword'=>'required | between:6,16 | same:password',
+            'phone_code'=>'required | size:5',
+            'check'=>'accepted',
+        ],[
+            'required'=>':attribute必须填写',
+            'email'=>':attribute格式不正确',
+            'between'=>':attribute长度必须介于6和16之间',
+            'same'=>'密码与:attribute不符 ',
+            'size'=>':attribute长度不对',
+            'accepted'=>'请勾选:attribute',
+        ],[
+            'tel'=>'手机',
+            'password'=>'密码 ',
+            'repassword'=>'确认密码',
+            'phone_code'=>'验证码',
+            'check'=>'服务条款',
+        ]);
+
+
+        $phoneCode = $request->input('phone_code');
+
+        $phone = $request->input('tel');
+
+        $tempData = TempEmail::where('user_id',$phone)->get();
+
+        $date = $tempData[0]->created_at;
+
+        $code = $tempData[0]->uuid;
+
+        $pass = $request->input('password');
+
+        $pattern  =  '/^[1][34578]\d{9}$/' ;
+
+        $bool = preg_match($pattern,$phone);
+
+        $isuser = UserRegister::where('tel',$phone)->get();
+
+        if (!empty($isuser)){
+
+            return back()->withInput()->with(['fail'=>'该手机号码已注册!']);
+        }
+
+        if(!$bool){
+
+            return back()->withInput()->with(['fail'=>'手机号非法!']);
+        }
+
+        if(date('Y-m-d H:i:s',time($date) + 1200) < date('Y-m-d H:i:s')){
+            return back()->withInput()->with(['fail'=>'验证码过时，请重新获取']);
+        }
+
+        if ($phoneCode != $code ){
+
+            return back()->withInput()->with(['fail'=>'验证码不正确']);
+        }
+
+        if ($pass != $request->input('repassword')){
+            return back()->withInput()->with(['fail'=>'密码与确认密码不相同']);
+        }
+
+        $user = new UserRegister;
+
+        $user->tel = $phone;
+
+        $user->password =  Hash::make($pass);
+
+        $user->status = 1;
+
+        $user->register_ip = $request->ip();
+
+        if ($user->save()){
+
+            return view('home.validatefail',['info'=>'回到首页']);
+
+        }else{
+
+            return back()->withInput()->with(['fail'=>'注册失败,请您重新填写用户信息']);
+        }
+
+
 
     }
 }

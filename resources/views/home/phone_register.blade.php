@@ -37,12 +37,22 @@
                             <form action="{{url('home/phone_register')}}" method="POST">
                                 {{csrf_field()}}
                                 <div class="reg-inner">
+                                    <span style="color:mediumvioletred;">
+										{{ $errors->first('tel') }}
+									</span>
                                     <input type="text" name="tel" placeholder="请填写手机号码" id="phone">
                                     <div class="code clearfix">
                                         <input type="text" name="phone_code" placeholder="请填写图形验证码">
                                         <button id="phone_code" type="button">获取验证码</button>
+                                        {{ $errors->first('phone_code') }}
                                     </div>
+                                    <span style="color:mediumvioletred;">
+										{{ $errors->first('password') }}
+									</span>
                                     <input type="password" name="password" placeholder="设置密码" id="pass">
+                                    <span style="color:mediumvioletred;">
+										{{ $errors->first('repassword') }}
+									</span>
                                     <input type="password" name="repassword" placeholder="确认密码" id="pass_again">
                                     <input type="submit" id="submit" class="btn-submit" value="立即注册" >
                                 </div>
@@ -106,6 +116,8 @@
 
             var boot = regex.test(phone);
 
+            $('#phone').prev('p').remove();
+
             if (!boot){
 
                 $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码不合法</p>');
@@ -118,9 +130,27 @@
                 data:{'phone':phone},
                 success:function (data) {
 
+                    data = JSON.parse(data);
+
+                    console.log(data);
+
                     if(data.err_code == 0){
-                        console.log(than);
+
                         settime(than);
+                    }
+
+                    if(data.error == 1){
+
+                        $('#phone').prev('p').remove();
+                        $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码不合法</p>');
+                        return false;
+                    }
+
+                    if(data.error ==2){
+
+                        $('#phone').prev('p').remove();
+                        $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码已注册</p>');
+                        return false;
                     }
 
                 }

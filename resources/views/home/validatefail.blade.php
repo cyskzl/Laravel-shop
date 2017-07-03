@@ -20,11 +20,11 @@
 
         setTimeout(function () {
 
-            window.location.href= 'http://zw1.com/home';
+            window.location.href= 'http://{{ $_SERVER["HTTP_HOST"] }}';
         }, 3000);
 
         function skip(){
-            window.location.href= 'http://zw1.com/home';
+            window.location.href= 'http://{{ $_SERVER["HTTP_HOST"] }}';
         }
     </script>
 @endsection
