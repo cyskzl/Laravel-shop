@@ -15,7 +15,7 @@ class RegionController extends Controller
     /**
      *
      */
-
+    //ajax 三级联动获取地址
     public  function show(Request $request)
     {
         $id =  $request->input('id');

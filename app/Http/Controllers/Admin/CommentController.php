@@ -39,10 +39,11 @@ class CommentController extends Controller
 
         //查询评论信息
             $data = GoodsComment::where('users_register.email','like','%'.$username.'%')
+                ->where('users_register.tel','like','%'.$username.'%')
                 ->where('goods_comment.comment_info','like','%'.$content.'%')
                 ->join('users_register','goods_comment.user_id','=','users_register.id')
-                ->join('goods','goods_comment.goods_id','=','goods.id')
-                ->select('goods_comment.*','users_register.email','goods.goods_title')
+                ->join('goods','goods_comment.goods_id','=','goods.goods_id')
+                ->select('goods_comment.*','users_register.email','goods.goods_name')
                 ->get();
 
         //统计总数
