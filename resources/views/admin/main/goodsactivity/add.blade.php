@@ -37,13 +37,18 @@
                         @if($key >0)
                             <tr>
                             @endif
-                                {{dump($value)}}
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>3</td>
-                                <td>3</td>
-                                <td>3</td>
+                             {{--{{dd($allSpec[$good->goods_id])}}--}}
+                                @for($i=0;$i<count($allSpec[$good->goods_id]);$i++)
+                                    @foreach($allSpec[$good->goods_id][$i] as $spec)
+                                        {{dump($spec)}}
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                    @endforeach
+                                @endfor
                         @endforeach
                         </tr>
                 @endforeach

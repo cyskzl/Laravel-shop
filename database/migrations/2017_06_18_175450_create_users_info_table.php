@@ -22,7 +22,7 @@ class CreateUsersInfoTable extends Migration
             $table->string('email')->comment('用户邮箱');
             $table->string('tel')->default('')->comment('用户手机号码');
             $table->tinyInteger('sex')->nullable()->comment('性别：1男2女');
-            $table->string('avatar')->default('')->nullable()->comment('头像');
+            $table->string('avatar')->default('/templates/home/images/avatar.jpg')->nullable()->comment('头像');
             $table->string('id_number')->nullable()->comment('身份证号');
             $table->string('answer_1')->nullable()->comment('密保问题1');
             $table->string('answer_2')->nullable()->comment('密保问题2');
