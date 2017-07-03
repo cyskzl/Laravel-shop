@@ -95,7 +95,7 @@
                     <div class="header_nav_left_new">
                         <div class="elastic_no">
                             {{--女士--}}
-                            @if($cateId == 1)
+                            @if($cateId == 1 || $cateId == '')
                             @foreach($goodsmaams as $goodsmaam)
                             <div class="header_nav_left_new_one">
                                 <img src="{{rtrim( $goodsmaam->original_img, ',')}}" alt="">
@@ -130,7 +130,7 @@
                 </div>
 
                     {{--女士--}}
-                    @if($cateId == 1)
+                    @if($cateId == 1 || $cateId == '')
                         @foreach($twomaan as $tmaan)
                         <div id="header_nav_left_new">
                             <a href="{{url('catalog/category_id/')}}/{{$tmaan->id}}">{{$tmaan->name}}</a>
@@ -138,24 +138,42 @@
                                 <div class="elastic_no">
                                     {{--3级分类--}}
                                     <div class="header_nav_left_new_one_text">
-                                        {{$tmaan->level}}
-                                    @foreach($threeman as $treemaan)
-                                            {{$treemaan->level}}
-                                        <a href="{{url('/catalog/category_id/')}}/{{$treemaan->id}}">{{$treemaan->name}}</a>
+                                    @foreach($threemaan as $treemaan)
+                                        {{--{{$treemaan->id}}--}}
+                                            @if($tmaan->id == $treemaan->pid)
+                                                     <a href="{{url('/catalog/category_id/')}}/{{$treemaan->id}}">{{$treemaan->name}}</a>
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    @foreach($arr as $goodsthreemm)
+
+
+                                    @foreach($goodsthreemm as $value)
+
+                                            {{$tmaan->id}}
+{{--{{dump($value)}}--}}                @if(strpos($value->cat_id,'170'))
+                                                <div class="header_nav_left_new_one">
+                                                <img src="{{rtrim($value->original_img, ',')}}" alt="">
+                                                <span class="font_sm">品牌</span>
+                                                <span class="font">{{$value->goods_name}}</span>
+                                                <span class="money">¥ {{$value->shop_price}}</span>
+                                                </div>
+
+
+                                            @endif
+
+
+
+                                        @endforeach
+
+
                                     @endforeach
-                                    </div>
-
-                                    <div class="header_nav_left_new_one">
-                                        <img src="{{ asset('templates/home/uploads/wimg_450700745_2945817.jpg') }}" alt="">
-                                        <span class="font_sm">LOOKAST</span>
-                                        <span class="font">翻领短袖开叉连衣裙_黄色</span>
-                                        <span class="money">¥ 715</span>
-                                    </div>
-
+                                    {{--@endforeach--}}
                                 </div>
                             </div>
                         </div>
-                         @endforeach
+                    @endforeach
 
 
                     {{--男士--}}

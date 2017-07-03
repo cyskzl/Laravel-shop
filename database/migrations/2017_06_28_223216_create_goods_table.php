@@ -15,7 +15,7 @@ class CreateGoodsTable extends Migration
         Schema::create('goods', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('goods_id');
-            $table->integer('cat_id')->nullable()->default(0)->comment('分类ID');
+            $table->string('cat_id')->nullable()->default(0)->comment('分类ID');
             $table->string('goods_sn')->default('')->comment('商品编号');
             $table->string('goods_name')->nullable()->default('')->comment('商品名称');
             $table->integer('click_count')->unsigned()->default(0)->comment('点击数');

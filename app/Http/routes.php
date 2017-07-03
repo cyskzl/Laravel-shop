@@ -10,10 +10,10 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
+//
 //DB::listen(function($sql) {
-//dump($sql);
-////    echo $sql->sql;
+////dump($sql);
+//    echo $sql->sql;
 //// dump($sql->bindings);
 //});
 
