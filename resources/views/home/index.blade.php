@@ -544,7 +544,7 @@
 
 @section('shop')
 	<div class="cart">
-		<a href="">
+		<a href="{{ url('home/shoppingcart') }}">
 			<i></i>
 			<p>购物车</p>
 			<b>0</b>

@@ -94,7 +94,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/usermanual', 'PersonalController@userManual');
     // 个人中心-服务中心（隐私条款）
     Route::get('/privacyclause', 'PersonalController@privacyClause');
-    // 个人中心-设置（地址管理）
+    // 个人中心（地址管理）
     Route::resource('/address', 'AddressController');
 
 

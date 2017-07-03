@@ -19,7 +19,7 @@ window.onscroll = function()
 }
 scrolltop.onclick = function()
 {
-	
+
 	times = setInterval(function()
 	{
 		//获取滚动条离顶部的高度
@@ -30,7 +30,7 @@ scrolltop.onclick = function()
 			clearInterval(times);
 		}
 		console.log(document.documentElement.scrollTop);
-	},30);	
+	},30);
 }
 
 //回到顶部结束
