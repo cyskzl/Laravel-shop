@@ -9,7 +9,7 @@
 	border-bottom:none;
 }
 .order{
-	width: 100%;
+	/*width: 100%;*/
 	height: 209px;
 	margin: 20px auto;
 	border: 1px solid #d9d9d9;
@@ -74,7 +74,8 @@
 	text-align: center;
 }
 .order_bottom_style>div>span:nth-child(3){
-	margin-left: 150px;
+	margin-left: 120px;
+	padding-right: 30px;
 }
 .order_bottom_style_details{
 	width: 512px;
@@ -87,6 +88,10 @@
 	display: flex;
 	border-right: 1px solid #d9d9d9;
 }
+.order_bottom_style_details>div:last-child{
+	border-right:none
+}
+
 .order_none>p{
 	display: flex;
 	line-height: 30px;

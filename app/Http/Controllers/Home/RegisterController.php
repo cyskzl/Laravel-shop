@@ -257,17 +257,34 @@ class RegisterController extends Controller
 
         $phonecode = $this->get_mobile_code($phone);
 
+        //判断返回的一个错误号。防止一分钟多次获取验证码.
+        if ($phonecode == 1){
+
+            return '{"error":4}';
+        }
+
         $name = 'xybeta注册验证';
 
         $content = '{code:"'. $phonecode .'",name:"xxx"}';
 
         $code = 'SMS_71285782';
 
+        $phone = 0;
+
         $result = $sms->send("$phone","$name","$content","$code");
 
-        return array('err_code'=>'0');
+        $resultarr = get_object_vars($result);
 
-        return get_object_vars($result);
+
+        if (@$resultarr['result']['err_code'] == '0'){
+
+            return '{"error":0}';
+
+            TempEmail::where('user_id',$phone)->update(['deadline'=>date('Y-m-d H:i:s')]);
+
+        }
+
+        return '{"error":3}';
     }
 
 
@@ -280,6 +297,12 @@ class RegisterController extends Controller
         if (!empty($data)){
 
             $code = $data[0]['uuid'];
+
+            if (date('Y-m-d H:i:s',time($data[0]['deadline']) + 59) < date('Y-m-d H:i:s')){
+
+                //防止获取验证码攻击，一分钟只能请求一次.返回错误号1;
+                return 1;
+            }
 
             if (date('Y-m-d H:i:s',time($data[0]['created_at']) + 600) < date('Y-m-d H:i:s')){
 
@@ -384,8 +407,6 @@ class RegisterController extends Controller
 
             return back()->withInput()->with(['fail'=>'注册失败,请您重新填写用户信息']);
         }
-
-
 
     }
 }

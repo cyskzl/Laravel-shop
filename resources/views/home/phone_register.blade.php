@@ -43,7 +43,7 @@
                                     <input type="text" name="tel" placeholder="请填写手机号码" id="phone">
                                     <div class="code clearfix">
                                         <input type="text" name="phone_code" placeholder="请填写图形验证码">
-                                        <button id="phone_code" type="button">获取验证码</button>
+                                        <button id="phone_code" type="button" data-id="0">获取验证码</button>
                                         {{ $errors->first('phone_code') }}
                                     </div>
                                     <span style="color:mediumvioletred;">
@@ -54,7 +54,7 @@
 										{{ $errors->first('repassword') }}
 									</span>
                                     <input type="password" name="repassword" placeholder="确认密码" id="pass_again">
-                                    <input type="submit" id="submit" class="btn-submit" value="立即注册" >
+                                    <button class="btn-submit" type="submit" id="submit">立即注册</button>
                                 </div>
                                 <div class="clause clearfix">
                                     <input type="checkbox" id="check" name="check" >
@@ -105,8 +105,19 @@
         //获取手机验证码
         $('#phone_code').on('click',function () {
 
-
             var than = $(this);
+
+            than.attr('data-id','1');
+
+            function show() {
+                than.attr('disabled',false)
+            }
+
+            than.attr("disabled", true);
+
+
+
+            setTimeout("$('#phone_code').removeAttr('disabled')",1000);
 
 //            console.log(than);
 
@@ -134,29 +145,32 @@
 
                     console.log(data);
 
-                    if(data.err_code == 0){
-
-                        settime(than);
+                    switch (data.error){
+                        case '0':
+                            settime(than);
+                            break;
+                        case '1':
+                            errinfo($('#phone'),'手机号码不合法');
+                            break;
+                        case '2':
+                            errinfo($('#phone'),'手机号码已注册');
+                            break;
+                        case '3':
+                            than.html("重新发送");
+                            break;
+                        case '4':
+                            errinfo($('#phone'),'请勿重复获取验证码');
+                            break;
                     }
 
-                    if(data.error == 1){
-
-                        $('#phone').prev('p').remove();
-                        $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码不合法</p>');
-                        return false;
-                    }
-
-                    if(data.error ==2){
-
-                        $('#phone').prev('p').remove();
-                        $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码已注册</p>');
-                        return false;
-                    }
 
                 }
-            })
-        })
+            });
 
+        });
+
+
+        //成功发送验证码后锁定获取按钮60秒。
         var countdown=60;
 
         function settime(obj) {
@@ -170,10 +184,27 @@
                 obj.html("重新发送(" + countdown + ")");
                 countdown--;
             }
+
             setTimeout(function() {
                     settime(obj) }
                 ,1000)
         }
+
+        //输出ajax获取验证码返回的错误信息
+        function errinfo(obj,info) {
+            obj.prev('p').remove();
+            $('#phone').css('border-color','red').before("<p style='text-align: center;color: red'>" + info +"</p>");
+            return false;
+        }
+
+        $("form").submit(function(e){
+            var dataid = $('#phone_code').attr('data-id');
+            if (dataid == '0'){
+                $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">请先获手机取验证码</p>');
+                return false;
+            }
+        });
+
     </script>
 
 @endsection

@@ -11,11 +11,9 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="{{asset('templates/admin/css/x-admin.css')}}" media="all">
     <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{asset('templates/admin/lib/layui/css/layui.css')}}">
     <script src="{{asset('templates/admin/js/jquery.min.js')}}" charset="utf-8"></script>
     <script src="{{asset('templates/admin/lib/bootstrap/js/bootstrap.js')}}" charset="utf-8"></script>
-    <script src="{{asset('templates/admin/lib/bootstrap/js/bootstrap-datetimepicker.min.js')}}" charset="utf-8"></script>
-    <script src="{{asset('templates/admin/lib/bootstrap/js/bootstrap-datetimepicker.zh-CN.js')}}" charset="utf-8"></script>
 </head>
 <body>
 <div class="x-nav">
@@ -30,11 +28,25 @@
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
                 <label class="layui-form-label">日期范围</label>
+
                 <div class="layui-input-inline">
-                    <input class="form_datetime form-control" type="text" value="2016-03-07" size="16">
+                    <input class="layui-input" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                </div>
+
+                <div class="layui-input-inline">
+                    <input class="layui-input" placeholder="截止时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
                 </div>
                 <div class="layui-input-inline">
-                    <input class="layui-input" placeholder="截止日" id="LAY_demorange_e">
+                    <div class="layui-input-block">
+                        <select name="interest" lay-filter="aihao">
+                            <option value=""></option>
+                            <option value="0">写作</option>
+                            <option value="1" selected="">阅读</option>
+                            <option value="2">游戏</option>
+                            <option value="3">音乐</option>
+                            <option value="4">旅行</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="layui-input-inline">
                     <input type="text" name="username"  placeholder="标题" autocomplete="off" class="layui-input">
@@ -104,22 +116,8 @@
 <script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
 <script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
 <script>
-    layui.use(['laydate','element','laypage','layer'], function(){
-        $ = layui.jquery;//jquery
-        laydate = layui.laydate;//日期插件
-        lement = layui.element();//面包导航
-        laypage = layui.laypage;//分页
-        layer = layui.layer;//弹出层
-
-        //以上模块根据需要引入
-        laypage({
-            cont: 'page'
-            ,pages: 100
-            ,first: 1
-            ,last: 100
-            ,prev: '<em><</em>'
-            ,next: '<em>></em>'
-        });
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
 
         var start = {
             min: laydate.now()
@@ -148,6 +146,7 @@
             end.elem = this
             laydate(end);
         }
+
     });
 
     //批量删除提交

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Home;
 
+use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -101,6 +102,7 @@ class OrderController extends Controller
      */
     public function alreadyOrder()
     {
+        
         return view('home.personal.order.alreadyOrder');
     }
 

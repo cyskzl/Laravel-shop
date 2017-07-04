@@ -16,8 +16,9 @@ class CreateDeliveryMethod extends Migration
         Schema::create('delivery_method',function (Blueprint $table){
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('发货方式id');
-            $table->string('pay_name')->comment('发货名称');
-            $table->string('pay_desc')->defalut("")->comment('描述');
+            $table->string('name')->comment('快递名称');
+            $table->decimal('price',10,2)->defaule(0.00)->comment('邮费');
+            $table->string('desc')->defalut("")->comment('描述');
             $table->tinyInteger('enabled')->default(0)->comment('开关');
             $table->timestamps();
             $table->softDeletes()->comment('删除时间');
