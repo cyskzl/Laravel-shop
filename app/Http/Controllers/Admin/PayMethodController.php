@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Home;
+namespace App\Http\Controllers\Admin;
 
-use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class OrderController extends Controller
+class PayMethodController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +16,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('home.orders.submit_order');
+        //
     }
 
     /**
@@ -28,7 +27,6 @@ class OrderController extends Controller
     public function create()
     {
         //
-        return view('home.orders.payment');
     }
 
     /**
@@ -85,42 +83,5 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * 个人中心-订单详情（待付款订单）
-     */
-    public function waitOrder()
-    {
-        return view('home.personal.order.waitOrder');
-    }
-
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * 个人中心-订单详情（已付款订单）
-     */
-    public function alreadyOrder()
-    {
-        
-        return view('home.personal.order.alreadyOrder');
-    }
-
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * 个人中心-订单详情（已取消订单）
-     */
-    public function cancelOrder()
-    {
-        return view('home.personal.order.cancelOrder');
-    }
-
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * 个人中心-订单详情（退款/退货订单）
-     */
-    public function refundOrder()
-    {
-        return view('home.personal.order.refundOrder');
     }
 }

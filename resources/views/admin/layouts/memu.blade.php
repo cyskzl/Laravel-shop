@@ -335,6 +335,16 @@
                             </a>
                         </dd>
                         <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/deliverymethod') }}">
+                                <cite>发货方式设置</cite>
+                            </a>
+                        </dd>
+                        <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/paymethod') }}">
+                                <cite>支付方式设置</cite>
+                            </a>
+                        </dd>
+                        <dd class="">
                             <a href="javascript:;" _href="./sys-qq.html">
                                 <cite>第三方登录</cite>
                             </a>

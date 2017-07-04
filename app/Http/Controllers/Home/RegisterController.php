@@ -408,7 +408,5 @@ class RegisterController extends Controller
             return back()->withInput()->with(['fail'=>'注册失败,请您重新填写用户信息']);
         }
 
-
-
     }
 }

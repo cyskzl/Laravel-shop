@@ -165,6 +165,12 @@ Route::group(['prefix' => 'admin'], function (){
         //商品评论管理
         Route::resource('/comment', 'Admin\CommentController');
 
+        //设置发货快递方式
+        Route::resource('/deliverymethod', 'Admin\DeliverMethodController');
+
+        //设置支付方式
+        Route::resource('/paymethod', 'Admin\PayMethodController');
+
         //意见反馈
         Route::resource('/feedback', 'Admin\FeedbackController');
 
