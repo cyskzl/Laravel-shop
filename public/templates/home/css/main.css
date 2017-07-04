@@ -175,7 +175,7 @@ main .banner .dot {
   bottom: 5px;
   left: 50%;
 }
-main .banner .dot p{
+main .banner .dot i{
   display:inline-block;
   width: 8px;
   height: 8px;

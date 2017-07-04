@@ -58,7 +58,8 @@
                 <li>商品物流</li>
             </ul>
             <div class="layui-tab-content" style="height: 1900px;">
-                <div class="layui-tab-item ">
+
+                <div class="layui-tab-item  layui-show">
 
                     <div class="layui-form-item">
                         <label class="layui-form-label" style="width: 100px">商品名称</label>
@@ -103,12 +104,11 @@
                         <div class="layui-input-inline" >
                             <select name="cat_id_02" lay-filter="cate_02">
                                 <option value="">请选择商品分类</option>
-                                <option value="">请选择商品分类</option>
+                                {{--<option value="">请选择商品分类</option>--}}
                             </select>
                         </div>
                         <div class="layui-input-inline">
-                            <select name="cat_id_03">
-                                <option value="">请选择商品分类</option>
+                            <select name="cat_id_03" lay-filter="cate_03">
                                 <option value="">请选择商品分类</option>
                             </select>
                         </div>
@@ -233,12 +233,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="layui-tab-item layui-show">
+                <div class="layui-tab-item">
                     {{--商品模型--}}
                     <div class="layui-form-item">
                         <label class="layui-form-label"  style="width: 100px">商品模型</label>
                         <div class="layui-input-block">
-                            <select name="type_id" lay-filter="brand_id">
+                            <select name="type_id" lay-filter="choice-mod">
                                 <option value="">请选择模型</option>
                                 <option value="0">请选择模型</option>
                                 @foreach($types as $type)
@@ -283,9 +283,7 @@
 
 @section('js')
     <script>
-        //        <select name="cat_id" onchange="get_category(this.value,'cat_id_2','0')">
 
-        var Company;
         layui.use(['form','element','layer','layedit'], function(){
             $ = layui.jquery;
             var form = layui.form()
@@ -293,8 +291,9 @@
                 ,layedit = layui.layedit;
             var element = layui.element();
             $form = $('form');
-
+            //获取商品分类信息
             form.on('select(filter)', function(data){
+//                console.log(data.value);
                 if(data.value !== null){
                     $form.find('select[name=cat_id_02]').children().remove();
                     $.ajax({
@@ -303,53 +302,68 @@
                         dataType : 'json',
                         data     :  {'_token': '{{csrf_token()}}', 'fatcate': data.value},
                         success:function (data){
+                            var str = '';
                             for(var i=0; i<data.length; i++){
                                 var id = data[i]['id'];
                                 var name = data[i]['name'];
-                                var str = '';
-                                var char = '';
-                                char += '<option value="">请选择商品分类</option>';
+
                                 str += '<option value="'+id+'">'+name+'</option>';
-                                $form.find('select[name=cat_id_02]').prepend(char).append(str);
                             }
+                            var char = '';
+                            char += '<option value="">请选择商品分类</option><option value="">请选择商品分类</option>';
+                            $form.find('select[name=cat_id_02]').prepend(char).append(str);
                             form.render();
                         }
                     });
 
                 }
             });
+            //获取三级分类信息
             form.on('select(cate_02)', function(data){
+//            console.log(data.value);
+                var cate_02 = data.value;
                 if(data.value !== null){
-                    $form.find('select[name=cat_id_03]').children().remove();
-                    $.ajax({
-                        type     : 'post',
-                        url      : '/admin/ajaxCate',
-                        dataType : 'json',
-                        data     :  {'_token': '{{csrf_token()}}', 'three': data.value},
-                        success:function (data){
-
-                            for(var i=0; i<data.length; i++){
-                                var id = data[i]['id'];
-                                var name = data[i]['name'];
-//                                console.log(id);
-//                                console.log();
-                                var str = '';
-                                var char = '';
-                                char += '<option value="">请选择商品分类</option>';
-                                str += '<option value="'+id+'">'+name+'</option>';
-                                $form.find('select[name=cat_id_03]').prepend(char).append(str);
-                            }
-                            form.render();
+                $form.find('select[name=cat_id_03]').children().remove();
+                $.ajax({
+                    type     : 'post',
+                    url      : '/admin/ajaxCate',
+                    dataType : 'json',
+                    data     :  {'_token': '{{csrf_token()}}', 'three': data.value},
+                    success:function (data){
+                        var str = '';
+                        var char = '';
+                        for(var i=0; i<data.length; i++){
+                            var id = data[i]['id'];
+                            var name = data[i]['name'];
+                            str += '<option value="'+id+'">'+name+'</option>';
                         }
-                    });
+
+                        char += '<option value="">请选择商品分类</option><option value="">请选择商品分类</option>';
+                        if(data.status == 0){
+//                                alert(1);
+                            $form.find('select[name=cat_id_03]').children().remove();
+                        }
+//                            console.log(char);
+                        $form.find('select[name=cat_id_03]').prepend(char).append(str);
+                        form.render();
+                    }
+                });
 
                 }
             });
 
+            //获取规格列表
+            form.on('select(choice-mod)',function(data){
 
-            form.on('select(brand_id)',function(data){
 //                console.log(data.elem); //得到select原始DOM对象
-//                console.log(data.value); //得到被选中的值
+                console.log(data.value); //得到被选中的值
+                var newType = $('select[name="type_id" ]').attr('type_id', data.value);
+                if($('select[name="type_id" ]').attr('type_id') !== newType){
+                    $('#table-mod').children().remove();
+                }
+                if(data.value == 0){
+                    $('#table-mod').children().remove();
+                }
                 if(data.value !== 0){
                     $('.mod').children().remove();
                     $.ajax({
@@ -388,10 +402,8 @@
                         dataType: 'json',
                         data: {'_token': '{{csrf_token()}}', 'type': data.value},
                         success: function (data) {
-//                            console.log(data);
                             var str = '';
                             for(var i=0;i<data.length;i++){
-//                                console.log(data[i]['attr_input_type']);
                                 var com = '';
                                 var strtext = '';
                                 var strtextarea = '';
@@ -436,10 +448,11 @@
 
                         }
                     });
+                    //模型添加
                     form.on('checkbox(spec_che)', function(data){
+
                         var step = {
                             createSku:function(){
-//                                alert(1);
                                 var skuObj = $(".Father").has("input[type='checkbox']:checked");
 
                                 if (skuObj.length < 1) {
@@ -454,17 +467,13 @@
                                 var arrayItem = new Array();
                                 // 保存所有的信息
                                 var arrayInfo = new Array();
-//                                console.log($);
                                 $.each(skuObj, function(i, item){
 
                                     // 压入要生成标题数组中
                                     arrayInfo[i] = new Array();
-//                                    return false;
                                     arrayInfo[i].push($(this).find("td").first().html());
-//                                    console.log();
                                     // 要获取 规格值和对应的id
                                     var order = new Array();
-//                                    order.push(data.value);
                                     $(this).find("input[type='checkbox']:checked").each(function (){
                                         order.push($(this).val()); // 这里将当前规格下的规格项 写入数组order
                                     });
@@ -491,11 +500,8 @@
                                 for (var i = 0; i < arrayInfo.length; i ++) {
                                     arrayTitle[i] = arrayInfo[i][0];  // 标题数组
                                     arrayItem[i] = arrayInfo[i][1];
-//                                    console.log(arrayInfo[i]);
                                 };
 
-//                                 console.log(arrayTitle, arrayItem);
-//                                 console.log(step.combine(arrayItem));
                                 // 获取到了 笛卡尔积 数组
                                 var arrayDkej = step.combine(arrayItem);
                                 var row = [];
@@ -506,14 +512,12 @@
                                 for(var n=arrayItem.length-1; n>-1; n--) {
                                     //总条数除以arr2内每个数组的长度
                                     row[n] = parseInt(rowspan/arrayItem[n].length);
-                                    // console.log(row[n]);
                                     rowspan = row[n];
                                 }
 
                                 row.reverse();
                                 var str = "";
                                 var len = arrayDkej[0].length;
-//                                console.log( arrayDkej[0]);
                                 for (var i=0; i<arrayDkej.length; i++) {
                                     var tmp = "";
                                     var itemsId = "";  // 用来做对应的price和sotre的input框的name值
@@ -521,22 +525,20 @@
                                         var item = arrayDkej[i][j].split("_");
                                         if (itemsId == "") {
                                             itemsId = itemsId +""+item[1];
-//                                            console.log(itemsId);
+
                                         } else {
                                             itemsId = itemsId + "_"+ item[1];
 
                                         }
-//                                        console.log(itemsId);
+
                                         if(i%row[j]==0 && row[j]>1) {
                                             tmp += "<td rowspan='"+ row[j] +"'>"+item[0]+"</td>";
                                         }else if(row[j]==1){
                                             tmp += "<td>"+item[0]+"</td>";
                                         }
-//                                         console.log(tmp);
                                     }
-                                    str += "<tr>" + tmp + "<td><input type='text' name='"+itemsId+"[]'/></td>" + "<td><input type='text' name='"+itemsId+"[]'/></td>" + "</tr>";
+                                    str += "<tr>" + tmp + "<td><input type='text' name='items["+itemsId+"][price]'/></td>" + "<td><input type='text' name='it["+itemsId+"][store_count]'/></td>" + "</tr>";
                                 }
-//                                1293_123_123
                                 // 创建标题
                                 step.clearTable();
                                 table = $("#table-mod");
@@ -571,8 +573,7 @@
                                 return r;
                             },
                         };
-
-
+                        //调用
                         step.createSku();
 
 
@@ -588,7 +589,6 @@
         upload(uploadPath,token);
         //实例化删除函数
         delimg(uploadPath);
-
         // 实例化上传函数
         oneUpload(uploadPath,token);
         // 实例化删除函数

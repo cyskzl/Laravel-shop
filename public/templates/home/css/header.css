@@ -396,7 +396,7 @@ article, section, aside, header, footer,  figure, menu, nav, summary {
 .header_nav_right>div:hover>a{
 	background-color:#556289;
 }
-.header_nav_left_new{
+#header_nav_left_new{
 	width: 1099px;
 	height: 323px;
 	background-color:#fff;
@@ -405,7 +405,7 @@ article, section, aside, header, footer,  figure, menu, nav, summary {
 	left: 0;
 	display: none;
 }
-.header_nav_left_new>div{
+#header_nav_left_new>div{
 	width: 1068px;
 	height: 300px;
 	margin: 12.5px auto;
