@@ -94,90 +94,90 @@
             {{--</div>--}}
         {{--</div>--}}
         <!-- 头部nav -->
-        {{--<div class="header_nav left">--}}
-            {{--<div class="header_nav_left left">--}}
-                {{--<div id="header_nav_left_nab">--}}
-                    {{--<!--<a href="javascript:">6.18</a>-->--}}
-                    {{--<div class="header_nav_left_nab">--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--导航分类请求ajax--}}
-                {{--@if($cateId == 1 || $cateId == '')--}}
-                    {{--@foreach($twomaan as $tmaan)--}}
-                {{--<div id="header_nav_left_new" class="CateNav">--}}
-                    {{--<a href="{{url('catalog/category_id/')}}/{{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>--}}
-                    {{--<div class="header_nav_left_new">--}}
-                        {{--<div class="elastic_no">--}}
-                            {{--<div class="header_nav_left_new_one_text">--}}
-                                {{--3级分类--}}
-                            {{--</div>--}}
-                            {{--2级分类下的商品图片--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                        {{--@endforeach--}}
-                    {{--@elseif($cateId == 2)--}}
-                    {{--@foreach($twoman as $tman)--}}
-                        {{--<div id="header_nav_left_new" class="CateNav">--}}
-                            {{--<a href="{{url('catalog/category_id/')}}/{{$tman->id}}" route="{{$cateId}}" data-id="{{$tman->id}}" >{{$tman->name}}</a>--}}
-                            {{--<div class="header_nav_left_new">--}}
-                                {{--<div class="elastic_no">--}}
-                                    {{--<div class="header_nav_left_new_one_text">--}}
-                                        {{--3级分类--}}
-                                    {{--</div>--}}
-                                    {{--2级分类下的商品图片--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--@endforeach--}}
+        <div class="header_nav left">
+            <div class="header_nav_left left">
+                <div id="header_nav_left_nab">
+                    <!--<a href="javascript:">6.18</a>-->
+                    <div class="header_nav_left_nab">
+                    </div>
+                </div>
+                导航分类请求ajax
+                @if($cateId == 1 || $cateId == '')
+                    @foreach($twomaan as $tmaan)
+                <div id="header_nav_left_new" class="CateNav">
+                    <a href="{{url('catalog/category_id/')}}/{{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
+                    <div class="header_nav_left_new">
+                        <div class="elastic_no">
+                            <div class="header_nav_left_new_one_text">
+                                3级分类
+                            </div>
+                            2级分类下的商品图片
+                        </div>
+                    </div>
+                </div>
+                        @endforeach
+                    @elseif($cateId == 2)
+                    @foreach($twoman as $tman)
+                        <div id="header_nav_left_new" class="CateNav">
+                            <a href="{{url('catalog/category_id/')}}/{{$tman->id}}" route="{{$cateId}}" data-id="{{$tman->id}}" >{{$tman->name}}</a>
+                            <div class="header_nav_left_new">
+                                <div class="elastic_no">
+                                    <div class="header_nav_left_new_one_text">
+                                        3级分类
+                                    </div>
+                                    2级分类下的商品图片
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
 
 
-                        {{--@endif--}}
-                {{--<div>--}}
-                    {{--<a href="javascript:">博主控</a>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-            {{--<div class="header_nav_right right">--}}
-                {{--<div class="header_nav_right_one">--}}
-                    {{--<a href="javascript:">潮流推荐</a>--}}
-                    {{--<div id="header_nav_right_recommended">--}}
-                        {{--<div>--}}
-                            {{--<h3>促销</h3>--}}
-                            {{--<img src="{{asset('/templates/home/uploads/170612_newweb_03.jpg')}}" alt="">--}}
-                        {{--</div>--}}
-                        {{--<div>--}}
-                            {{--<h3>穿搭</h3>--}}
-                            {{--<img src="{{asset('/templates/home/uploads/170612_newweb_03.jpg')}}" alt="">--}}
-                        {{--</div>--}}
-                        {{--<div>--}}
-                            {{--<h3>设计师</h3>--}}
-                            {{--<img src="{{asset('/templates/home/uploads/170612_newweb_03.jpg')}}" alt="">--}}
-                        {{--</div>--}}
-                        {{--<div>--}}
-                            {{--<h3>明星同款</h3>--}}
-                            {{--<img src="{{asset('/templates/home/uploads/170612_newweb_03.jpg')}}" alt="">--}}
-                        {{--</div>--}}
-                        {{--<div>--}}
-                            {{--<h3>最新韩流</h3>--}}
-                            {{--<img src="{{asset('/templates/home/uploads/170612_newweb_03.jpg')}}" alt="">--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="header_nav_right_two ">--}}
-                    {{--<a href="javascript:">活动专区</a>--}}
-                    {{--<div id="header_nav_right_area">--}}
-                        {{--<div>--}}
-                            {{--<h3><a href="">热门话题</a></h3>--}}
-                            {{--<img src="{{asset('/templates/home/uploads/topicBanner.png')}}" alt="">--}}
-                        {{--</div>--}}
-                        {{--<div>--}}
-                            {{--<h3><a href="">最新活动</a></h3>--}}
-                            {{--<img src="{{asset('/templates/home/uploads/kv.png')}}" alt="">--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
+                        @endif
+                <div>
+                    <a href="javascript:">博主控</a>
+                </div>
+            </div>
+            <div class="header_nav_right right">
+                <div class="header_nav_right_one">
+                    <a href="javascript:">潮流推荐</a>
+                    <div id="header_nav_right_recommended">
+                        <div>
+                            <h3>促销</h3>
+                            <img src="{{asset('/templates/home/uploads/170612_newweb_03.jpg')}}" alt="">
+                        </div>
+                        <div>
+                            <h3>穿搭</h3>
+                            <img src="{{asset('/templates/home/uploads/170612_newweb_03.jpg')}}" alt="">
+                        </div>
+                        <div>
+                            <h3>设计师</h3>
+                            <img src="{{asset('/templates/home/uploads/170612_newweb_03.jpg')}}" alt="">
+                        </div>
+                        <div>
+                            <h3>明星同款</h3>
+                            <img src="{{asset('/templates/home/uploads/170612_newweb_03.jpg')}}" alt="">
+                        </div>
+                        <div>
+                            <h3>最新韩流</h3>
+                            <img src="{{asset('/templates/home/uploads/170612_newweb_03.jpg')}}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="header_nav_right_two ">
+                    <a href="javascript:">活动专区</a>
+                    <div id="header_nav_right_area">
+                        <div>
+                            <h3><a href="">热门话题</a></h3>
+                            <img src="{{asset('/templates/home/uploads/topicBanner.png')}}" alt="">
+                        </div>
+                        <div>
+                            <h3><a href="">最新活动</a></h3>
+                            <img src="{{asset('/templates/home/uploads/kv.png')}}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--主体内容-->
