@@ -92,6 +92,15 @@ main .title ul li:last-child{
     border: 1px solid #2D2D2D;
     font-size: 12px;
 }
+.buy .productOption .term ul li div.flex input{
+    margin: 10px 10px 0 0;
+    width: 40px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border: 1px solid #2D2D2D;
+    font-size: 12px;
+}
 .buy .productOption .term ul li div.flex  div:first-child{
     background: #6D6D6D;
     color: white;
@@ -105,7 +114,7 @@ main .title ul li:last-child{
     width: 100%;
     height: 100%;
 }
-.buy .productOption .term ul li div.size div div{
+.buy .productOption .term ul li div.size div input{
     float: left;
     margin: 10px 25px 9px 0;
     width: 35px;
