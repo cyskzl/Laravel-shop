@@ -67,11 +67,7 @@
 }
 
 
-.layui-upload-icon {
-    display: block;
-    margin: 0 15px;
-    text-align: center;
-}
+
 .site-demo-upload .layui-upload-button {
     background-color: rgba(0,0,0,.2);
     color: rgba(255,255,255,1);
