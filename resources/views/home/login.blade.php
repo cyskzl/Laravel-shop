@@ -28,7 +28,7 @@
                 <form action="{{url('home/doLogin')}}" method="post">
                     {{csrf_field()}}
                     <div class="reg-inner">
-                        <input type="email" placeholder="请填写邮箱" id="email" name="email" value="{{old('email')}}">
+                        <input type="text" placeholder="请填写邮箱或手机号" id="email" name="username" value="{{old('email')}}">
                         <span style="color:mediumvioletred;">
                             {{ $errors->first('email') }}
                         </span>

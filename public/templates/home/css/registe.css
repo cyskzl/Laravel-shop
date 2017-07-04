@@ -89,6 +89,15 @@
 	text-indent: 10px;
 	border: 1px solid #2D2D2D;
 }
+.reg-inner button{
+	display: block;
+	width: 100%;
+	margin-bottom: 25px;
+	height: 45px;
+	outline: none;
+	text-indent: 10px;
+	border: 1px solid #2D2D2D;
+}
 .code>input{
 	width: 60%;
 	float: left;

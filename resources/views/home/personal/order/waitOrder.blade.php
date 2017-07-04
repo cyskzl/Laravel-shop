@@ -5,6 +5,7 @@
 @section('style')
 	<link rel="stylesheet" href="{{asset('/templates/home/css/personal.css')}}"/>
 	<link rel="stylesheet" href="{{asset('/templates/home/css/order.css')}}"/>
+	<link rel="stylesheet" href="{{asset('/templates/home/css/orders/order.css')}}"/>
 @endsection
 
 @section('main')
@@ -34,9 +35,58 @@
 			<!-- 待付款订单 -->
 			<div class="personal_tab">
 				<div class="tab_paid">
-					<div class="empty-box">
-						<span class="icn-empty-order"></span>
-						<span>没有符合条件的订单，请尝试其他搜索条件。</span>
+					{{--<div class="empty-box">--}}
+						{{--<span class="icn-empty-order"></span>--}}
+						{{--<span>没有符合条件的订单，请尝试其他搜索条件。</span>--}}
+					{{--</div>--}}
+					<div class="order">
+						<div class="order_top">
+							<p>2017-04-14 09:31:34</p>
+							<p>订单号:
+								<span>51153683762</span>
+							</p>
+						</div>
+
+						<div class="order_bottom">
+							<div class="order_bottom_style">
+								<div>
+									<div class="order_bottom_style_img">
+										<img src="./uploads/kv.png" alt="">
+									</div>
+									<div>
+										<p>美商海盗船(USCorsair) Gaming系列 K70 LUX RGB 幻彩背光机械游戏键盘 黑色 茶袖</p>
+									</div>
+									<span>×1</span>
+								</div>
+								<div>
+									<div class="order_bottom_style_img">
+										<img src="./uploads/kv.png" alt="">
+									</div>
+									<div>
+										<p>美商海盗船(USCorsair) Gaming系列 K70 LUX RGB 幻彩背光机械游戏键盘 黑色 茶袖</p>
+									</div>
+									<span>×1</span>
+								</div>
+							</div>
+							<div class="order_bottom_style_details">
+								<div class="order_none">
+									<p>杨济阳</p>
+								</div>
+								<div>
+									<div class="order_money">
+										<p>总额¥1299.00</p>
+										<p>货到付款</p>
+									</div>
+								</div>
+								<div>
+									<div class="order_money_off">
+										<p>已取消</p>
+										<a href="javascript:" class="colorsb">订单详情</a>
+									</div>
+
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

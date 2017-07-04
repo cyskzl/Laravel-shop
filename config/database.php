@@ -106,6 +106,8 @@ return [
 
     'redis' => [
 
+        'clinet' => 'phpredis',
+
         'cluster' => false,
 
         'default' => [
