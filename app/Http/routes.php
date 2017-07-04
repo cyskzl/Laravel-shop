@@ -71,9 +71,18 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::resource('/orders', 'OrderController');
     // 个人中心(默认为设置-个人信息 home.personal.set.personnalInfo)
     Route::get('/personal', 'PersonalController@index');
-    Route::post('/personal/editpass/{id}', 'PersonalController@editPass');
-    Route::post('/personal/editname/{id}', 'PersonalController@editName');
-    Route::post('/personal/editrealname/{id}', 'PersonalController@editRealName');
+    //修改密码
+    Route::post('/personal/editPass/{id}', 'PersonalController@editPass');
+    //修改昵称
+    Route::post('/personal/editName/{id}', 'PersonalController@editName');
+    //修改真实姓名
+    Route::post('/personal/editRealname/{id}', 'PersonalController@editRealName');
+    //修改头像
+    Route::post('/personal/editAvatar/{id}', 'PersonalController@editAvatar');
+    //修改性别
+    Route::post('/personal/editSex/{id}', 'PersonalController@editSex');
+    //修改会员生日
+    Route::post('/personal/editBirthday/{id}', 'PersonalController@editBirthday');
     // 个人中心-交易管理（浏览记录）
     Route::get('/browseLog', 'PersonalController@browseLog');
     // 个人中心-交易管理（收藏夹）

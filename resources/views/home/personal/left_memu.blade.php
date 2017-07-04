@@ -1,7 +1,11 @@
 <div class="personal_left fl">
     <dl>
 
-        <dt class="personal_info"><a href="javascript:;"><img src="{{ asset(''.$user->avatar.'') }}" alt=""/></a></dt>
+        <dt class="personal_info">
+            <a href="javascript:;">
+                <img src="{{ asset(''.$user->avatar.'') }}" alt="" width="50" height="40"/>
+            </a>
+        </dt>
 
         <dd class="phone">{{ $user->nickname }}</dd>
 
