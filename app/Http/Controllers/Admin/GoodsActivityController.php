@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Good;
 use App\Models\Goods;
 use App\Models\Spec;
+use App\Models\SpecGoodsPrice;
 use App\Models\SpecItem;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -47,30 +48,48 @@ class GoodsActivityController extends Controller
 		$this->perms->adminPerms('admin, goods', 'create_goodsactivity');
 //        $spec_item = [];
 //        $key = [];
-        //
-        $all = [];
-        $goods = Goods::with('specGoodsPrice')->paginate(3);
-        $good = $goods->toArray();
-//        dump($good['data'][0]['spec_goods_price']);
-        foreach($good['data'] as $k=>$spec_goods_price){
-//            dd($spec_goods_price);
-            foreach($spec_goods_price['spec_goods_price'] as $key){
-//                dd($key);
-                $spec_item_id = explode('_',$key['key']);
-//                dump($spec_item_id);
-                foreach($spec_item_id as $id){
-//                    dump($id);
-                    $spec_id = SpecItem::where('id',$id)->pluck('item','spec_id');
-                    foreach($spec_id as $id=>$item){
-                        $spec = Spec::where('id',$id)->pluck('name')->first();
-                        $all[$key['goods_id']][]4 = $spec.$item;
-                    }
+        //存储商品所有规格的空数组
+        $allSpec = [];
+        // 商品表的商品信息获取并分页
+//        $goods = Goods::with('specGoodsPrice')->paginate(3);
+//        $good = $goods->toArray();
 
+
+        $goods_id = Goods::all()->pluck('goods_id');
+//        dd($goods_id);
+//        $good = [];
+        //获取与goods表关联的images表数据
+        foreach($goods_id as $id){
+            $goods = Goods::find($id);
+            $good[] = $goods->specGoodsPrice;
+        }
+//        dd($good);
+        foreach($good as $id=>$spec){
+//            dump($k);
+//            $a[$goods_id[$k]] = [];
+//            dump($a);
+            foreach($spec as $a=>$spec_key){
+//                dd($spec_key);
+                $key = explode('_',$spec_key->key);
+//                $price[$goods_id[$k]] = $spec_key->price;
+
+//                dump($price);a[$k]
+                $spec_info= '';
+                foreach($key as $k){
+                    $spec_item = SpecItem::find($k);
+//                    dd($spec_item);
+
+                    $specAll = $spec_item->spec;
+//                    dump($specAll);
+                    $spec_info .= $specAll->name.':'.$spec_item->item;
                 }
+                $goodSpec[$goods_id[$id]][] = $spec_info.",价格:".$spec_key->price;
+
             }
         }
-        dd($all);
-//        return view('admin.main.goodsactivity.add',compact('goods','request'));
+
+
+        return view('admin.main.goodsactivity.add',compact('goods','request','goodSpec'));
     }
 
     /**

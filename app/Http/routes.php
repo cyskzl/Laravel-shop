@@ -10,14 +10,14 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
+//
 //DB::listen(function($sql) {
 //dump($sql);
 ////    echo $sql->sql;
 //// dump($sql->bindings);
 //});
 
-Route::get('/', function () {
+Route::get('/1', function () {
     return redirect('home');
 });
 
@@ -25,9 +25,14 @@ Route::get('/', function () {
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
     // 首页
+//    Route::any('/{category_id?}', 'IndexController@index' , function($category_id = 1) {});
     Route::any('/{category_id?}', 'IndexController@index')->where('category_id', '[0-9]+');
+    //ajax新品
+    Route::any('/newgoods', 'IndexController@newgoods');
     //分类
     Route::any('/catalog/category_id/{{id?}}','IndexController@catalog')->where('id', '[0-9]+');
+    //导航
+    Route::any('/getAjaxCate','IndexController@getAjaxCate');
     // 注册页面(默认邮箱注册email)
     Route::get('/register', 'RegisterController@register');
     // 登录界面
