@@ -12,12 +12,12 @@
 */
 //
 //DB::listen(function($sql) {
-////dump($sql);
-//    echo $sql->sql;
+//dump($sql);
+////    echo $sql->sql;
 //// dump($sql->bindings);
 //});
 
-Route::get('/', function () {
+Route::get('/1', function () {
     return redirect('home');
 });
 
@@ -25,9 +25,14 @@ Route::get('/', function () {
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
     // 首页
+//    Route::any('/{category_id?}', 'IndexController@index' , function($category_id = 1) {});
     Route::any('/{category_id?}', 'IndexController@index')->where('category_id', '[0-9]+');
+    //ajax新品
+    Route::any('/newgoods', 'IndexController@newgoods');
     //分类
     Route::any('/catalog/category_id/{{id?}}','IndexController@catalog')->where('id', '[0-9]+');
+    //导航
+    Route::any('/getAjaxCate','IndexController@getAjaxCate');
     // 注册页面(默认邮箱注册email)
     Route::get('/register', 'RegisterController@register');
     // 登录界面
@@ -48,6 +53,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/email_register/validate_email', 'RegisterController@validateEmailCode');
     // 手机注册界面
     Route::get('/phone_register', 'RegisterController@phoneRegister');
+    // 手机注册跳转界面
+    Route::post('/phone_register', 'RegisterController@toPhoneRegister');
     // 登录信息处理
     Route::post('/doLogin', 'UserController@doLogin');
     // 退出登录
@@ -92,7 +99,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/usermanual', 'PersonalController@userManual');
     // 个人中心-服务中心（隐私条款）
     Route::get('/privacyclause', 'PersonalController@privacyClause');
-    // 个人中心-设置（地址管理）
+    // 个人中心（地址管理）
     Route::resource('/address', 'AddressController');
 
 

@@ -6,12 +6,12 @@
 	height: 200px;
 	position:fixed;
 	left:50%;
-  top: 50%;
-  margin-left:590px;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  z-index: 20;
+    top: 50%;
+    margin-left:590px;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    z-index: 20;
 }
 .shoppingcar .cart{
     width: 56px;
@@ -71,7 +71,7 @@
   justify-content: space-between;
 }
 span {
-  display: block;
+  /*display: block;*/
   padding-top: 5px;
   text-align: center;
 }
@@ -149,33 +149,28 @@ main .title a {
   border: 1px solid #2d2d2d;
   text-align: center;
 }
-  /*广告banner*/
 main .banner {
+  /*广告banner*/
   position: relative;
   overflow: hidden;
   margin: 20px auto;
-  width:1100px;
-  height: 460px;
 }
-/*轮播图*/
 main .banner .silder {
-  position:absolute;
   height: 460px;
   width: 500%;
 }
-main .banner .silder img {
+main .banner .silder a img {
   display:block;
   float: left;
   width:1100px;
   height: 460px;
 }
-/*轮播图的小圆点*/
 main .banner .dot {
   position: absolute;
   bottom: 5px;
   left: 50%;
 }
-main .banner .dot p{
+main .banner .dot i{
   display:inline-block;
   width: 8px;
   height: 8px;
@@ -197,13 +192,13 @@ main .banner .arrow{
 main .banner .arrow1{
 	background:url(../uploads/zuo.png)no-repeat;
 	background-size:25px;
-	left: 27px;
+	left: 29px;
 	
 }
 main .banner .arrow2{
-	background:url(../uploads/you.png) no-repeat;
+	background:url(../uploads/you.png)no-repeat;
 	background-size:25px;
-	right:-48px;
+	right:-45px;
 }
  /*小广告smallbanner*/
 main .smallbanner {
@@ -231,13 +226,12 @@ main .putaway-over:hover .button {
   /*隐藏按钮*/
   display: block;
 }
-  /*点击切换效果*/
 main .putaway-over {
+  /*点击切换效果*/
   position: relative;
-  height: 428px;
 }
 main .putaway-over .button {
-  /*display: none;*/
+  display: none;
 }
 main .putaway-over .button .left,
 main .putaway-over .button .right {
@@ -253,11 +247,10 @@ main .putaway-over .button .right img {
 main .putaway-over .button .right {
   right: 0px;
 }
-  /*整个图片的*/
 main .putaway-over .putaway-around {
-  position: absolute;
-  width:300%;
-  /*width:2240px;*/
+  position: relative;
+  /*整个图片的*/
+  width: 300%;
 }
 main .putaway-over .putaway-around .putshow {
   float: left;
@@ -287,9 +280,10 @@ main .designer .interview a img {
   height: 258px;
   overflow: hidden;
 }
-
+main .category {
   /*热门品类*/
   /*全部展示的商品*/
+}
 main .category .category-list {
   margin-bottom: 25px;
 }
@@ -306,20 +300,20 @@ main .category .category-list ul li{
   z-index: 3;
 }
 main .category .category-list .borl{
-   color: #2d2d2d;
-   border-bottom: 3px solid #2d2d2d;
+  color: #2d2d2d;
+  border-bottom: 3px solid #2d2d2d;
 }
 main .category .category-around {
   position: relative;
   height: 424px;
 }
-  /*展示的每列商品*/
+/*展示的每列商品*/
 main .category .category-around .category-show {
   position: absolute;
 }
 main .category .category-around .category-show:not(:nth-of-type(1)){
   opacity:0;
-}
+
 main .hot-brand .hot-brand-list {
   width: 100%;
 }
@@ -400,7 +394,9 @@ main .design .design-list .design-show img {
 main .promotion {
   /*促销*/
 }
+main .promotion .promotion-banner {
   /*小广告*/
+}
 main .promotion .promotion-banner img {
   width: 540px;
   height: 260px;

@@ -25,25 +25,6 @@
                         <input type="text" id="name" name="name" required="" lay-verify="required" value="{{ $roles->name }}" autocomplete="off" class="layui-input">
                     </div>
                 </div>
-
-                <!-- <div class="layui-form-item">
-                    <label for="name" class="layui-form-label">
-                        <span class="x-red">*</span>角色标识
-                    </label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="name" name="display_name" required="" lay-verify="required" value="{{ $roles->display_name }}" autocomplete="off" class="layui-input">
-                    </div>
-                </div> -->
-                <!-- <div class="layui-form-item">
-                    <label for="name" class="layui-form-label">
-                        <span class="x-red">*</span>角色标识
-                    </label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="name" name="name" required="" lay-verify="required" value="1"
-                               autocomplete="off" class="layui-input">
-                    </div>
-                </div> -->
-
                 <div class="layui-form-item layui-form-text">
                     <label for="desc" class="layui-form-label">
                         描述

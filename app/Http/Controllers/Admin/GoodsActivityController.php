@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Models\Good;
+use App\Models\Goods;
+use App\Models\Spec;
+use App\Models\SpecItem;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -37,14 +40,37 @@ class GoodsActivityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
 
         //判断是否有权限添加
 		$this->perms->adminPerms('admin, goods', 'create_goodsactivity');
+//        $spec_item = [];
+//        $key = [];
+        //
+        $all = [];
+        $goods = Goods::with('specGoodsPrice')->paginate(3);
+        $good = $goods->toArray();
+//        dump($good['data'][0]['spec_goods_price']);
+        foreach($good['data'] as $k=>$spec_goods_price){
+//            dd($spec_goods_price);
+            foreach($spec_goods_price['spec_goods_price'] as $key){
+//                dd($key);
+                $spec_item_id = explode('_',$key['key']);
+//                dump($spec_item_id);
+                foreach($spec_item_id as $id){
+//                    dump($id);
+                    $spec_id = SpecItem::where('id',$id)->pluck('item','spec_id');
+                    foreach($spec_id as $id=>$item){
+                        $spec = Spec::where('id',$id)->pluck('name')->first();
+                        $all[$key['goods_id']][]4 = $spec.$item;
+                    }
 
-        $goods = Good::orderBy('goods_id','desc')->paginate(5);
-        return view('admin.main.goodsactivity.add',compact('goods'));
+                }
+            }
+        }
+        dd($all);
+//        return view('admin.main.goodsactivity.add',compact('goods','request'));
     }
 
     /**
