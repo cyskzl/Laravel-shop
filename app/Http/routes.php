@@ -17,16 +17,20 @@
 //// dump($sql->bindings);
 //});
 
-Route::get('/1', function () {
+Route::get('/', function () {
     return redirect('home');
 });
 
 
-Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
+Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'web'], function () {
 
     // 首页
-//    Route::any('/{category_id?}', 'IndexController@index' , function($category_id = 1) {});
-    Route::any('/{category_id?}', 'IndexController@index')->where('category_id', '[0-9]+');
+//    Route::any('/',  function($category_id = '1') {
+//
+//
+//
+//    });
+    Route::any('/{category_id?}', 'IndexController@homeIndex')->where('category_id', '[0-9]+');
     //ajax新品
     Route::any('/newgoods', 'IndexController@newgoods');
     //分类

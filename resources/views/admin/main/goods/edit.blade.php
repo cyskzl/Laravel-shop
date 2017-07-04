@@ -233,14 +233,14 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label"  style="width: 100px">商品模型</label>
                         <div class="layui-input-block">
-                            <select name="type_id" lay-filter="choice-mod" data-key="{{$key}}">
-                                <option value="">请选择模型</option>
-                                <option value="0">请选择模型</option>
-                                @foreach($types as $type)
-                                    <option value="{{$type->id}}" @if($type->id == $good->goods_type) selected @endif>{{$type->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            {{--<select name="type_id" lay-filter="choice-mod" data-key="{{$key}}">--}}
+                                {{--<option value="">请选择模型</option>--}}
+                                {{--<option value="0">请选择模型</option>--}}
+                                {{--@foreach($types as $type)--}}
+                                    {{--<option value="{{$type->id}}" @if($type->id == $good->goods_type) selected @endif>{{$type->name}}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
+                        {{--</div>--}}
                     </div>
                     <div id="model" class="model">
                         <table id="attr" class="layui-table attr" lay-skin="row">

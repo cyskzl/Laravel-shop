@@ -107,6 +107,7 @@ class GoodsController extends Controller
         $goods->keywords = $data['keywords'];
         $goods->goods_content = $data['goods_content'];
         $goods->goods_type = $data['type_id'];
+
         //价格阶梯
         if($data['price_ladder']) {
             $price_ladder = $data['price_ladder'];
@@ -208,8 +209,9 @@ class GoodsController extends Controller
         $fatcates   =  Category::where('pid', '=', '0')->select()->get();
         $brands  =  Brand::select()->get();
         $types = GoodsType::select()->get();
-        $key = $spec_goods_price->key;
-        return view('admin.main.goods.edit', ['brands' => $brands, 'fatcates' => $fatcates, 'types' => $types, 'good' => $good , 'key' => $key] );
+//        $key = $spec_goods_price->key;
+        return view('admin.main.goods.edit', ['brands' => $brands, 'fatcates' => $fatcates, 'types' => $types, 'good' => $good ] );
+//        return view('admin.main.goods.edit', ['brands' => $brands, 'fatcates' => $fatcates, 'types' => $types, 'good' => $good , 'key' => $key] );
     }
 
     /**

@@ -26,73 +26,34 @@
     <!-- 头部 -->
     <div class="header clearfix">
         <!-- 顶部 -->
-        <div class="header_top left">
-            <ul class="header_top_left left">
-                @if(Auth::check())
-                    <li><a href="{{ url('home/personal') }}">{{Auth::user()->login_name}}</a></li>
-                    <li><a href="{{ url('home/logOut') }}">退出登录</a></li>
-                @else
-                    <li><a href="{{ url('home/register') }}">注册</a></li>
-                    <li><a href="{{ url('home/login') }}">登录</a></li>
-                @endif
-
-                <li class="header_top_left_li">下载APP
-                    <a href="javascript:">
-                        <img class="header_top_left_code" src="{{ asset('templates/home/uploads/down_app.png') }}" alt="">
-                    </a>
-                </li>
-            </ul>
-            <ul class="header_top_right right">
-                <li>我的订单</li>
-                <li>收藏</li>
-                <li>消息</li>
-                <li class="header_top_right_li">个人中心&nbsp;
-                    <span>
-						<img src="{{ asset('templates/home/uploads/pCenter_qian.png') }}" alt="">
-					</span>
-                    <div class="header_top_right_div">
-                        <a href="javascript:">购物车</a>
-                        <a href="javascript:">收藏夹</a>
-                        <a href="javascript:">W积分</a>
-                        <a href="javascript:">优惠券</a>
-                    </div>
-                </li>
-                <li>客户服务</li>
-                <li class="header_top_left_li_two">关注我们
-                    <a href="javascript:" class="header_top_left_li_two_ding">
-                        <img class="header_top_left_code_two" src="{{ asset('templates/home/uploads/down_app.png') }}" alt="">
-                    </a>
-                </li>
-
-            </ul>
-        </div>
+        @include('home.layouts.top')
         <!-- 搜索区 -->
-        {{--<div class="header_top_bottom left">--}}
-            {{--<div class="header_top_bottom_people left">--}}
-                {{--<a href="{{ url('home/') }}/{{$onemaam->id}}" data-currentcategoryid="0">{{$onemaam->name}}</a>--}}
-                {{--<a href="{{ url('home/') }}/{{$onemam->id}}"data-currentcategoryid="1">{{$onemam->name}}</a>--}}
+        <div class="header_top_bottom left">
+            <div class="header_top_bottom_people left">
+                <a href="{{ url('home/') }}/{{$onemaam->id}}" data-currentcategoryid="0">{{$onemaam->name}}</a>
+                <a href="{{ url('home/') }}/{{$onemam->id}}"data-currentcategoryid="1">{{$onemam->name}}</a>
                 {{--<a href="{{ url('home/') }}/{{$onelife->id}}" data-currentcategoryid="2">{{$onelife->name}}</a>--}}
-            {{--</div>--}}
-            {{--<div class="header_logo left">--}}
-                {{--<img src="{{asset('/templates/home/uploads/logo (1).png')}}" alt="">--}}
-            {{--</div>--}}
-            {{--<div class="header_search right">--}}
-                {{--<div>--}}
-                    {{--<input type="text" class="header_searchForm left" placeholder="请输入搜索内容" style="outline:none">--}}
-                    {{--<a href="javascript:" id="header_searchin">--}}
-                        {{--<img src="{{asset('/templates/home/uploads/icon_searchin.png')}}" alt="">--}}
-                    {{--</a>--}}
-                {{--</div>--}}
-                {{--<ul class="left">--}}
-                    {{--<li><a href="javascript:">SALONDEJU</a></li>--}}
-                    {{--<li><a href="javascript:">ANDERSSON BELL</a></li>--}}
-                    {{--<li><a href="javascript:">FIND KAPOOR</a></li>--}}
-                    {{--<li><a href="javascript:">MONTS</a></li>--}}
-                    {{--<li><a href="javascript:">BIBYSEOB</a></li>--}}
-                    {{--<li><a href="javascript:">Yuul Yie</a></li>--}}
-                {{--</ul>--}}
-            {{--</div>--}}
-        {{--</div>--}}
+            </div>
+            <div class="header_logo left">
+                <img src="{{asset('/templates/home/uploads/logo (1).png')}}" alt="">
+            </div>
+            <div class="header_search right">
+                <div>
+                    <input type="text" class="header_searchForm left" placeholder="请输入搜索内容" style="outline:none">
+                    <a href="javascript:" id="header_searchin">
+                        <img src="{{asset('/templates/home/uploads/icon_searchin.png')}}" alt="">
+                    </a>
+                </div>
+                <ul class="left">
+                    <li><a href="javascript:">SALONDEJU</a></li>
+                    <li><a href="javascript:">ANDERSSON BELL</a></li>
+                    <li><a href="javascript:">FIND KAPOOR</a></li>
+                    <li><a href="javascript:">MONTS</a></li>
+                    <li><a href="javascript:">BIBYSEOB</a></li>
+                    <li><a href="javascript:">Yuul Yie</a></li>
+                </ul>
+            </div>
+        </div>
         <!-- 头部nav -->
         <div class="header_nav left">
             <div class="header_nav_left left">
@@ -105,7 +66,7 @@
                 @if($cateId == 1 || $cateId == '')
                     @foreach($twomaan as $tmaan)
                 <div id="header_nav_left_new" class="CateNav">
-                    <a href="{{url('catalog/category_id/')}}/{{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
+                    <a id="butt" href="{{url('catalog/category_id/')}}/{{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
                     <div class="header_nav_left_new">
                         <div class="elastic_no">
                             <div class="header_nav_left_new_one_text">
@@ -115,9 +76,9 @@
                         </div>
                     </div>
                 </div>
-                        @endforeach
+                    @endforeach
                     @elseif($cateId == 2)
-                    @foreach($twoman as $tman)
+                    @foreach($twomam as $tman)
                         <div id="header_nav_left_new" class="CateNav">
                             <a href="{{url('catalog/category_id/')}}/{{$tman->id}}" route="{{$cateId}}" data-id="{{$tman->id}}" >{{$tman->name}}</a>
                             <div class="header_nav_left_new">
@@ -130,9 +91,7 @@
                             </div>
                         </div>
                     @endforeach
-
-
-                        @endif
+                    @endif
                 <div>
                     <a href="javascript:">博主控</a>
                 </div>
@@ -215,64 +174,84 @@
 
 @yield('js')
 <script src="{{asset('/templates/home/js/index.js')}}"></script>
-{{--<script type="text/javascript">--}}
-    {{--//导航栏--}}
-    {{--$('.CateNav').mouseenter (function (){--}}
-        {{--var that = $(this);--}}
-        {{--//判断是男士还是女士,生活--}}
-        {{--var cate_id ={{$cateId}}--}}
-            {{--bool = that.find('a').first().attr('exists') ;--}}
-        {{--var pid = that.find('a').first().attr('data-id');--}}
-        {{--if (!bool) {--}}
-            {{--var str = '';--}}
-            {{--var goodsstr = '';--}}
-            {{--var goodsnew = '';--}}
-            {{--$("div").siblings(".CateNav").eq(0).find('.elastic_no').children().first().remove();--}}
-            {{--$.ajax({--}}
-                {{--type: "POST",--}}
-                {{--url: "/home/getAjaxCate",--}}
-                {{--data: {'_token': '{{csrf_token()}}', 'pid': pid, 'cate_id': cate_id},--}}
-                {{--success: function (data) {--}}
-                    {{--that.find('header_nav_left_new_one_text').children().remove();--}}
-                    {{--that.find('.header_nav_left_new_one').remove();--}}
-                    {{--$("div").siblings(".CateNav").eq(0).find('.elastic_no').children().remove();--}}
-                    {{--for(var z=0;z<data.newgoods.length;z++){--}}
-                        {{--var original_img = data.newgoods[z]['original_img'] ;--}}
-                        {{--original_img=original_img.substring(0,original_img.length-1);--}}
-                        {{--goodsnew +=  '<div class="header_nav_left_new_one">';--}}
-                        {{--goodsnew += '<a href="/home/catalog/category_id/'+data.newgoods[z]['goods_id']+'"><img src='+original_img+' >';--}}
-                        {{--goodsnew += '<span class="font_sm">'+data.brand[z]+'</span>';--}}
-                        {{--goodsnew += '<span class="font">'+data.newgoods[z]['goods_name']+'</span>';--}}
-                        {{--goodsnew += '<span class="money">¥ '+data.newgoods[z]['shop_price']+'</span>';--}}
-                        {{--goodsnew += '</a></div>';--}}
+<script type="text/javascript">
+    //导航栏
+    $('.CateNav').mouseenter (function (){
+        var that = $(this);
+        //判断是男士还是女士,生活
+        var cate_id ={{$cateId}}
+            bool = that.find('a').first().attr('exists') ;
+        //获取pid
+        var pid = that.find('a').first().attr('data-id');
+        //判断是否是第一个
+        var index =  $('.CateNav').index(this);
+        //第一个是新品
+        if (!bool) {
+            if(index == '0'){
+                var goodsnew = '';
+                //请求ajax 前先清除里面的内
+                $("div").siblings(".CateNav").eq(0).find('.elastic_no').children().remove();
+                $.ajax({
+                    type: "POST",
+                    url: "/home/newgoods",
+                    data: {'_token': '{{csrf_token()}}', 'pid': pid, 'cate_id': cate_id},
+                    success: function (data) {
+                        //取得新品数据
+                        for(var z=0;z<data.newgoods.length;z++){
+                            var original_img = data.newgoods[z]['original_img'] ;
+                            original_img=original_img.substring(0,original_img.length-1);
+                            goodsnew +=  '<div class="header_nav_left_new_one">';
+                            goodsnew += '<a href="/home/catalog/category_id/'+data.newgoods[z]['goods_id']+'"><img src='+original_img+' >';
+                            goodsnew += '<span class="font_sm">'+data.brand[z]+'</span>';
+                            goodsnew += '<span class="font">'+data.newgoods[z]['goods_name']+'</span>';
+                            goodsnew += '<span class="money">¥ '+data.newgoods[z]['shop_price']+'</span>';
+                            goodsnew += '</a></div>';
+                        }
+                        //添加新品图片
+                        $("div").siblings(".CateNav").eq(0).find('.elastic_no').remove('.header_nav_left_new_one_text').append(goodsnew);
+                        //往最大的div添加属性
+                        that.attr('exists', '1');
+                    }
+                });
+        } else {
+                var str = '';
+                var goodsstr = '';
+                //第一次前清除里面的内容
+                that.find('header_nav_left_new_one_text').children().remove();
+                that.find('.header_nav_left_new_one').remove();
+                $.ajax({
+                    type: "POST",
+                    url: "/home/getAjaxCate",
+                    data: {'_token': '{{csrf_token()}}', 'pid': pid, 'cate_id': cate_id},
+                    success: function (data) {
+                        //遍历分类
+                        var cate = data.cate;
+                        for(var i=0; i<cate.length; i++) {
+                            str += ' <a href="/home/catalog/category_id/'+cate[i]['id']+'">'+cate[i]['name']+'</a>';
+                        }
+                        //遍历商品图片
+                        for(var j=0; j<data.goods.length;j++){
+                            var original_img = data.goods[j]['original_img'] ;
+                            original_img=original_img.substring(0,original_img.length-1);
+                            goodsstr += '<div class="header_nav_left_new_one">';
+                            goodsstr += '<a href="/home/catalog/category_id/'+data.goods[j]['goods_id']+'"><img src='+original_img+' >';
+                            goodsstr += '<span class="font_sm">'+data.brand[j]+'</span>';
+                            goodsstr += '<span class="font">'+data.goods[j]['goods_name']+'</span>';
+                            goodsstr += '<span class="money">¥ '+data.goods[j]['shop_price']+'</span>';
+                            goodsstr += '</a></div>';
+                        }
+                        //添加
+                        that.find('.header_nav_left_new_one_text').append(str);
+                        that.find('.elastic_no').append(goodsstr);
+                        that.find('a').first().attr('exists', '1');
+                    }
+                });
+            }
+        }
 
-                    {{--}--}}
-                    {{--//遍历分类--}}
-                    {{--var cate = data.cate;--}}
-                    {{--for(var i=0; i<cate.length; i++) {--}}
-                        {{--str += ' <a href="/home/catalog/category_id/'+cate[i]['id']+'">'+cate[i]['name']+'</a>';--}}
-                    {{--}--}}
-                    {{--//遍历商品图片--}}
-                    {{--for(var j=0; j<data.goods.length;j++){--}}
-                        {{--var original_img = data.goods[j]['original_img'] ;--}}
-                        {{--original_img=original_img.substring(0,original_img.length-1);--}}
-                        {{--goodsstr += '<div class="header_nav_left_new_one">';--}}
-                        {{--goodsstr += '<a href="/home/catalog/category_id/'+data.goods[j]['goods_id']+'"><img src='+original_img+' >';--}}
-                        {{--goodsstr += '<span class="font_sm">'+data.brand[j]+'</span>';--}}
-                        {{--goodsstr += '<span class="font">'+data.goods[j]['goods_name']+'</span>';--}}
-                        {{--goodsstr += '<span class="money">¥ '+data.goods[j]['shop_price']+'</span>';--}}
-                        {{--goodsstr += '</a></div>';--}}
-                    {{--}--}}
-                    {{--that.find('.header_nav_left_new_one_text').append(str);--}}
-                    {{--that.find('.elastic_no').append(goodsstr);--}}
-{{--//                    that.find('.elastic_no').append(goodsnew);--}}
-                    {{--$("div").siblings(".CateNav").eq(0).find('.elastic_no').append(goodsnew);--}}
-{{--//                    that.eq(0).append(goodsnew);--}}
-                    {{--that.find('a').first().attr('exists', '1');--}}
-                {{--},--}}
-            {{--});--}}
-        {{--}--}}
-    {{--});--}}
+
+
+    });
 
     {{--//新品--}}
 
@@ -304,28 +283,33 @@
         {{--$(this).addClass(''+ img +'').css('color','#fff').siblings("a").removeClass().css('color','#626161');--}}
         {{--// 女士，男士，创意生活切换--}}
 
-        {{--$.session.set('currentCategoryId', currentId);--}}
-        {{--$.session.set('currentCategoryImg',''+ img +'');--}}
-        {{--window.location.href=''+ $(this).attr('href') +'';--}}
-        {{--return false;--}}
-    {{--});--}}
+        $.session.set('currentCategoryId', currentId);
+
+        $.session.set('currentCategoryImg',''+ img +'');
+        window.location.href=''+ $(this).attr('href') +'';
+        return false;
+    });
 
     {{--function imgClass(currentId){--}}
 
-        {{--var img = '';--}}
-        {{--//    console.log(currentId );--}}
-        {{--if(currentId == 0){--}}
-            {{--//    navBg = "#f54b73";--}}
-            {{--img = 'women';--}}
-        {{--}else if(currentId == 1){--}}
-            {{--//    navBg = "#505c82";--}}
-            {{--img = 'men';--}}
-        {{--}else if(currentId == 2){--}}
-            {{--//    navBg = "#a4d7d8";--}}
-            {{--img = 'design';--}}
-        {{--}--}}
-        {{--return img;--}}
-    {{--}--}}
+        var img = '';
+        //    console.log(currentId );
+        if(currentId == 0){
+            //    navBg = "#f54b73";
+            img = 'women';
+            {{--{{define('Index', '1')}}--}}
+            {{--{{$request->session()->put('Index', '1')}}--}}
+     }else if(currentId == 1){
+            //    navBg = "#505c82";
+            img = 'men';
+            {{--{{define('Index', '2')}}--}}
+{{--            {{$request->session()->put('Index', '2')}}--}}
+        }else if(currentId == 2){
+            //    navBg = "#a4d7d8";
+            img = 'design';
+        }
+        return img;
+    }
 
 {{--</script>--}}
 </body>
