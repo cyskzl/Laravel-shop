@@ -35,7 +35,7 @@
 	                <div class="tab_paid">
 	                    <div class="empty-box">
 	                        <span class="icn-empty-address"></span>
-	                        <a class="address_btn" href="javascript:;">新增地址</a>
+	                        <a class="address_btn" href="{{ url('home/address/create')  }}">新增地址</a>
 	                    </div>
 	                </div>
 	            </div>

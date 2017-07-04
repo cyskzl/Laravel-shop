@@ -6,6 +6,15 @@
 	<link rel="stylesheet" href="{{asset('/templates/home/css/personal.css')}}"/>
 	<link rel="stylesheet" href="{{asset('/templates/home/css/section.css')}}"/>
 	<link rel="stylesheet" href="{{asset('/templates/home/css/personalInfo.css')}}"/>
+	<style media="screen">
+	.personal_infomation .site-demo-upload span {
+		width: 100%;
+		text-align: left;
+		padding-right: 0px;
+	}
+
+
+	</style>
 @endsection
 
 @section('main')
@@ -35,28 +44,21 @@
 	                <div class="tab_personal">
 	                    <ul class="personal_infomation">
 	                        <li>
-	                            <div class="head_portrait ">
-	                                <div class="head_portrait_img">
-	                                    <img src="{{ asset(''.$user->avatar.'') }}" alt=""/>
-	                                </div>
-	                                <a class="ladda-button" href="javascript:;">上传头像</a>
-	                            </div>
-
 								<div class="site-demo-upload">
-									  <img id="LAY_demo_upload" src="http://res.layui.com/images/fly/fly.jpg">
-									  <div class="site-demo-upbar">
-									    <div class="layui-box layui-upload-button"><form target="layui-upload-iframe" method="get" key="set-mine" enctype="multipart/form-data" action="/test/upload.json"><input type="file" name="file" class="layui-upload-file" id="test"></form><span class="layui-upload-icon"><i class="layui-icon"></i>上传图片</span></div>
-									  </div>
-									</div>
+								  <img id="LAY_demo_upload" src="{{ asset(''.$user->avatar.'') }}">
+								  <div class="site-demo-upbar">
+								    <input type="file" name="file" class="layui-upload-file" id="avatar">
+								  </div>
+								</div>
 	                        </li>
 	                        <li>
 	                            <span>手机号码</span>{{ $user->tel }}
 	                        </li>
 							<li>
 							   <span>真实姓名</span>
-							   <p>{{ $user->realname  }}</p>
-							   <a href="#editrealname" class="edit_realname">修改真实姓名</a>
-							   <div id="editrealname" style="display:none;">
+							   <p>{{ $user->realname or '未填写' }}</p>
+							   <a href="#edit_realname" class="edit_realname">修改真实姓名</a>
+							   <div id="edit_realname" style="display:none;">
 								   <!-- <div class="change_form_bg"></div> -->
 								   <div class="change_form">
 									   <div class="close">
@@ -84,9 +86,9 @@
 						   </li>
 	                        <li>
 	                            <span>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</span>
-	                            <p>{{ $user->nickname  }}</p>
-	                            <a href="#editname" class="edit_name">修改昵称</a>
-								<div id="editname" style="display:none;">
+	                            <p>{{ $user->nickname or $user->tel }}</p>
+	                            <a href="#edit_name" class="edit_name">修改昵称</a>
+								<div id="edit_name" style="display:none;">
 									<!-- <div class="change_form_bg"></div> -->
 									<div class="change_form">
 				                        <div class="close">
@@ -112,11 +114,82 @@
 				                    </div>
 								</div>
 	                        </li>
+
+							<li>
+							   <span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</span>
+							   <p>
+								   @if ($user->sex == '1')
+								   		男
+									@elseif ($user->sex == '2')
+										女
+									@elseif ($user->sex == '3')
+										保密
+									@else
+										未知
+									@endif
+							   </p>
+							   <a href="#edit_sex" class="edit_sex">修改性别</a>
+							   <div id="edit_sex" style="display:none;">
+								   <!-- <div class="change_form_bg"></div> -->
+								   <div class="change_form">
+									   <div class="close">
+										   <img src="{{ asset('templates/home/images/closeItems.png') }}">
+									   </div>
+									   <div class="title">修改性别</div>
+									   <form action="" method="post" autocomplete="off" id="form-pass" class="scaffold-form layui-form" enctype="multipart/form-data">
+										   <input name="_token" type="hidden" value="{{ csrf_token() }}">
+											   <div class="layui-form-item">
+												    <label class="layui-form-label">性别</label>
+												    <div class="layui-input-block">
+												      <input type="radio" name="sex" value="1" title="男" {{ $user->sex == '1' ? 'checked' : '' }}>
+												      <input type="radio" name="sex" value="2" title="女" {{ $user->sex == '2' ? 'checked' : '' }}>
+												      <input type="radio" name="sex" value="3" title="保密" {{ $user->sex == '3' ? 'checked' : '' }}>
+												    </div>
+												</div>
+									   </form>
+									   <p class="btn_block">
+										   <input type="button" id="submit_sex" class="btn_submit " value="保存">
+									   </p>
+
+								   </div>
+							   </div>
+						   </li>
+
+						   	<li>
+							   	<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日</span>
+								<p>{{ $user->birthday }}</p>
+							   	<a href="#edit_birthday" id="modaltrigger" class="edit_birthday">修改生日</a>
+							   	<div id="edit_birthday" style="display:none;">
+							   		<!-- <div class="change_form_bg"></div> -->
+							   		<div class="change_form">
+							   			<div class="close">
+							   				<img src="{{ asset('templates/home/images/closeItems.png') }}">
+							   			</div>
+							   			<div class="title">修改生日</div>
+							   			<form action="" method="post" autocomplete="off" id="form-pass" class="scaffold-form" enctype="multipart/form-data">
+							   				<input name="_token" type="hidden" value="{{ csrf_token() }}">
+
+											<div class="form_content">
+													<label class="layui-form-label">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日</label>
+												<div class="layui-inline">
+													<input name="birthday" class="layui-input" placeholder="{{ $user->birthday }}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" value="{{ $user->birthday }}">
+
+											</div>
+											</div>
+							   			</form>
+							   			<div class="btn_block">
+							   				<input type="button" id="submit_birthday" class="btn_submit " value="保存">
+							   			</div>
+
+							   		</div>
+							   	</div>
+						    </li>
+
 	                        <li>
 	                            <span>修改密码</span>
 	                            <p>＊＊＊＊＊＊＊＊</p>
-	                            <a href="#editpassword" id="modaltrigger" class="edit_pass">修改密码</a>
-								<div id="editpassword" style="display:none;">
+	                            <a href="#edit_password" id="modaltrigger" class="edit_pass">修改密码</a>
+								<div id="edit_password" style="display:none;">
 									<!-- <div class="change_form_bg"></div> -->
 									<div class="change_form">
 				                        <div class="close">
@@ -152,6 +225,8 @@
 							<li>
 	                            <span>注册时间</span>{{ $user->created_at }}
 	                        </li>
+
+
 	                    </ul>
 	                </div>
 	            </div>
@@ -190,7 +265,7 @@
 
 		//修改密码
 		$(function(){
-		  $('.edit_pass').leanModal({ top: 110, overlay: 0.45, closeButton: ".close" });
+			$('.edit_pass').leanModal({ top: 110, overlay: 0.45, closeButton: ".close" });
 		});
 
 		var token = $("input[name='_token']").val();
@@ -234,7 +309,7 @@
 
 			//执行Ajax认证请求
 			$.ajax({
-				url:"{{ url('home/personal/editpass/'.Auth::user()->user_id) }}",
+				url:"{{ url('home/personal/editPass/'.Auth::user()->user_id) }}",
 				type:'post',
 				datatype:'json',
 				data:{
@@ -264,7 +339,7 @@
 
 		//修改昵称
 		$(function(){
-		  $('.edit_name').leanModal({ top: 110, overlay: 0.45, closeButton: ".close" });
+			$('.edit_name').leanModal({ top: 110, overlay: 0.45, closeButton: ".close" });
 		});
 
 		$('#submit_name').on('click', function(){
@@ -277,7 +352,7 @@
 				return false;
 			}
 
-			var url = "{{ url('home/personal/editname/'.Auth::user()->user_id) }}";
+			var url = "{{ url('home/personal/editName/'.Auth::user()->user_id) }}";
 			var data = userAjax(url,nickname.val());
 
 			console.log(data);
@@ -296,7 +371,7 @@
 
 		//修改真实姓名
 		$(function(){
-		  $('.edit_realname').leanModal({ top: 110, overlay: 0.45, closeButton: ".close" });
+			$('.edit_realname').leanModal({ top: 110, overlay: 0.45, closeButton: ".close" });
 		});
 
 		$('#submit_realname').on('click', function(){
@@ -309,7 +384,7 @@
 				return false;
 			}
 			// console.log( JSON.stringify( realname.val() ) );
-			var url = "{{ url('home/personal/editrealname/'.Auth::user()->user_id) }}";
+			var url = "{{ url('home/personal/editRealname/'.Auth::user()->user_id) }}";
 			var data = userAjax(url,realname.val());
 
 			// console.log(data);
@@ -325,6 +400,61 @@
 			return false;
 		});
 
+
+		//修改性别
+		$(function(){
+			$('.edit_sex').leanModal({ top: 110, overlay: 0.45, closeButton: ".close" });
+		});
+
+		$('#submit_sex').on('click', function(){
+
+			var sex = $("input[name='sex']:checked").val();
+
+			var url = "{{ url('home/personal/editSex/'.Auth::user()->user_id) }}";
+
+			var data = userAjax(url,sex);
+
+			if (data.success == 1) {
+				layer.alert(data.info, {icon: 1});
+
+				location.reload();
+			} else {
+				layer.alert(data.info, {icon: 7});
+				return false;
+			}
+
+		});
+
+
+		//修改生日
+		$(function(){
+			$('.edit_birthday').leanModal({ top: 110, overlay: 0.45, closeButton: ".close" });
+		});
+
+		$('#submit_birthday').on('click', function(){
+
+			var birthday = $("input[name='birthday']");
+			if (birthday.val().length == 0) {
+				layer.alert('日期不能为空！', {icon: 7});
+				return false;
+			}
+
+			var url = "{{ url('home/personal/editBirthday/'.Auth::user()->user_id) }}";
+			var data = userAjax(url,birthday.val());
+
+			if (data.success == 1) {
+				layer.alert(data.info, {icon: 1});
+
+				location.reload();
+			} else {
+				layer.alert(data.info, {icon: 7});
+				return false;
+			}
+
+		});
+
+
+		//封装Ajax
 		function userAjax(url,data){
 			var res = '';
 			$.ajax({
@@ -344,20 +474,59 @@
 			return res;
 		}
 
+		layui.use('laydate', function(){
+			var laydate = layui.laydate;
+
+			var start = {
+				min: laydate.now()
+				,max: '2099-06-16'
+				,istoday: false
+				,choose: function(datas){
+				  end.min = datas; //开始日选好后，重置结束日的最小日期
+				  end.start = datas //将结束日的初始值设定为开始日
+
+				}
+			};
+
+	  	});
+
+		//图片上传
+		layui.use('upload', function(){
+
+			  layui.upload({
+				url: "{{ url('home/personal/editavatar/'.Auth::user()->user_id) }}",
+				ext: 'jpg|png|gif',
+				elem: '#avatar', //指定原始元素，默认直接查找class="layui-upload-file"
+				method: 'post', //上传接口的http类型
+				before: function(input){
+				  var data = {'_token':token};
+				  extra_data(input,data);
+
+				},
+				success: function(res){
+
+					if (res.success == 1) {
+						LAY_demo_upload.src = res.url;
+						layer.msg(res.info);
+
+					} else {
+
+						layer.msg(res.info);
+					}
 
 
-	layui.use('upload', function(){
+				}
+			  });
+		});
 
-		  layui.upload({
-		    url: '/test/upload.json'
-		    ,elem: '#avater' //指定原始元素，默认直接查找class="layui-upload-file"
-		    ,method: 'get' //上传接口的http类型
-		    ,success: function(res){
-		      LAY_demo_upload.src = res.url;
-		    }
-		  });
-	});
-
+	//图片上传自定义参数封装
+	function extra_data(input,data){
+		var item=[];
+		$.each(data,function(k,v){
+			item.push('<input type="hidden" name="'+k+'" value="'+v+'">');
+		})
+		$(input).after(item.join(''));
+	}
 	</script>
 
 @endsection

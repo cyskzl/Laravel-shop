@@ -36,6 +36,7 @@ class UserController extends Controller
         ]);
 
 
+
 //        $user['login_name'] = $request->input('email');
 //        $user['password'] = $request->input('password');
 //        $is_check = boolval($request->input('is_check'));

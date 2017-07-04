@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="{{asset('/templates/home/iconfont2/iconfont.css')}}">
 	<script src="{{asset('/templates/home/js/jquery-1.7.2.min.js')}}"></script>
 	<script src="{{asset('/templates/home/js/header.js')}}"></script>
-	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
+	<!-- <script src="{{asset('/templates/home/js/dynamic.js')}}"></script> -->
 	<script src="{{asset('/templates/home/js/shopCart.js')}}"></script>
 @endsection
 
@@ -145,7 +145,7 @@
 	            </tbody>
 	            <tfoot>
 	                <tr>
-	                    <th colspan="4" class="allMoney-th">商品总金额：<span class="allMoney myf">￥<span id="allMoney" class="allMoney">220</span></span></th>
+	                    <th colspan="4" class="allMoney-th">商品总金额：<span class="allMoney myf">￥<span id="allMoney" class="allMoney">2220</span></span></th>
 	                    <th colspan="2"><span class="settlement">去结算</span></th>
 	                </tr>
 	            </tfoot>
@@ -155,5 +155,5 @@
 	        <img src="./uploads/icon_notice.png" alt=""/>
 	        多选产品时我们可能会给您分开发货
 	    </div>
+<script src="{{asset('/templates/home/js/shopCar.js')}}"></script>
 @endsection
-

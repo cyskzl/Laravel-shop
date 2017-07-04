@@ -9,17 +9,21 @@ use App\Http\Controllers\Controller;
 use App\Models\UserLogin;
 use App\Models\Userinfo;
 use Hash;
+
 class PersonalController extends Controller
 {
+    public function __construct()
+    {
+        $user = Userinfo::where('user_id', '=', \Auth::user()->user_id)->first();
+        view()->share('user', $user);
+    }
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-设置-个人信息
      */
     public function index()
     {
-        $user = Userinfo::where('user_id', '=', \Auth::user()->user_id)->first();
-
-        return view('home.personal.set.personalInfo', compact('user'));
+        return view('home.personal.set.personalInfo');
     }
 
     /**
@@ -105,7 +109,13 @@ class PersonalController extends Controller
         return view('home.personal.service.privacyClause');
     }
 
-    //修改密码
+    /**
+     * 修改密码
+     *
+     * @param  Request $request
+     * @param  $id
+     * @return string
+     */
     public function editPass(Request $request,$id)
     {
 
@@ -177,7 +187,14 @@ class PersonalController extends Controller
     }
 
 
-    //修改昵称
+    /**
+     * 修改昵称
+     *
+     * @param  Request $request
+     * @param  $id
+     * @return string
+     *
+     */
     public function editName(Request $request, $id)
     {
         $request->nickname    = $request->data;
@@ -213,7 +230,13 @@ class PersonalController extends Controller
         }
     }
 
-    //修改真实姓名
+    /**
+     * 修改真实姓名
+     *
+     * @param  Request $request
+     * @param  $id
+     * @return string
+     */
     public function editRealName(Request $request, $id)
     {
         $request->realname  = $request->data;
@@ -232,7 +255,7 @@ class PersonalController extends Controller
         if ($user) {
 
             //判断是否更新成功
-            if ($user->where('user_id', '=', $id)->update(['realname'=>$request->realname])){
+            if ( $user->where('user_id', '=', $id)->update(['realname'=>$request->realname]) ){
                 $error['success'] = 1;
                 $error['info']    = '真实姓名修改成功！';
                 return json_encode($error);
@@ -249,5 +272,102 @@ class PersonalController extends Controller
         }
     }
 
-    
+    /**
+     * 修改头像
+     *
+     * @param  Request $request
+     * @param  $id
+     * @return string
+     */
+    public function editAvatar(Request $request, $id)
+    {
+        if($request->hasFile('file')){
+            //获取图片
+            $file =  $request  ->   file('file');
+            //获取图片原始名称
+            $clientName = $file-> getClientOriginalName();
+            //获取临时文件夹中的文件名称
+            $tmpName    = $file-> getFileName();
+            //上传文件原始路径
+            $realPath   = $file-> getRealPath();
+            //上传文件后缀
+            $entension  = $file-> getClientOriginalExtension();
+            //文件类型
+            $fileType   = $file-> getMimeType();
+            //定义新文件名称
+            $newName    = date('Ymdhis').rand(00000,99999).'.'.$entension;
+            //移动文件
+            $path = $file -> move('Uploads/avatar/'.date('Ymd'), $newName);
+
+            if ( Userinfo::where('user_id', $id)->update(['avatar' => $path]) ) {
+
+                $error['success'] = 1;
+                $error['url']     = "".url($path)."";
+                $error['info']    = '上传成功';
+                return json_encode($error);
+            } else {
+                \Storage::delete(url($path));
+                $error['success'] = 0;
+                $error['info']    = '上传失败';
+                return json_encode($error);
+            }
+
+        } else {
+            $error['success'] = 0;
+            $error['info']    = '没有文件上传';
+            return json_encode($error);
+        }
+
+    }
+
+    /**
+     * 修改性别
+     *
+     * @param  Request $request
+     * @param  $id
+     * @return string
+     */
+    public function editSex(Request $request, $id)
+    {
+
+        if ( Userinfo::where('user_id', $id)->update(['sex' => $request->data]) ) {
+            $error['success'] = 1;
+            $error['info']    = '修改成功';
+            return json_encode($error);
+        }
+
+        $error['success'] = 0;
+        $error['info']    = '修改失败';
+        return json_encode($error);
+    }
+
+    /**
+     * 修改会员生日
+     *
+     * @param  Request $request
+     * @param  $id
+     * @return string
+     */
+    public function editBirthday(Request $request, $id)
+    {
+        //判断是否为空
+        if (empty($request->data)) {
+            $error['success'] = 0;
+            $error['info']    = '日期不能为空！';
+            return json_encode($error);
+        }
+
+        //判断是否更新成功
+        if ( Userinfo::where('user_id', $id)->update(['birthday' => $request->data]) ) {
+
+            $error['success'] = 1;
+            $error['info']    = '修改成功';
+            return json_encode($error);
+        }
+
+        $error['success'] = 0;
+        $error['info']    = '修改失败';
+        return json_encode($error);
+    }
+
 }
