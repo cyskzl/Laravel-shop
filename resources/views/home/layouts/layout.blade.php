@@ -6,12 +6,91 @@
     <link rel="stylesheet" href="{{asset('/templates/home/css/public.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/header.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/footer.css')}}"/>
+    <link rel="stylesheet" href="{{asset('/templates/admin/lib/layui/css/layui.css')}}"/>
+    {{--<link rel="stylesheet" href="{{asset('/templates/home/bootstrap/css/bootstrap.min.css')}}"/>--}}
     {{--<link rel="stylesheet" href="{{asset('/templates/home/bootstrap/css/bootstrap.min.css')}}"/>--}}
     {{--<script src="{{asset('/templates/home/js/registe.js')}}"></script>--}}
     <script src="{{asset('/templates/home/js/jquery-1.7.2.min.js')}}"></script>
     <script src="{{asset('/templates/home/js/jquery.cookie.js')}}"></script>
     <script src="{{asset('/templates/home/js/jquery-session.js')}}"></script>
+    <script src="{{asset('/templates/home/js/jquery.leanModal.min.js')}}"></script>
+    <script src="{{asset('/templates/admin/lib/layui/layui.js')}}"></script>
 
+    <style media="screen">
+    #lean_overlay {
+        position: fixed;
+        z-index:100;
+        top: 0px;
+        left: 0px;
+        height:100%;
+        width:100%;
+        background: #000;
+        display: none;
+    }
+    .site-demo-upload {
+        position: relative;
+        background: #e2e2e2;
+    }
+    .site-demo-upload, .site-demo-upload img {
+        width: 200px;
+        height: 200px;
+        border-radius: 100%;
+    }
+    img {
+    display: inline-block;
+    border: none;
+}
+
+.layui-btn, .layui-inline, img {
+    vertical-align: middle;
+}
+.site-demo-upload .site-demo-upbar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -18px 0 0 -56px;
+}
+.layui-upload-button input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    font-size: 100px;
+    width: 100%;
+    height: 100%;
+}
+
+.layui-upload-button input, .layui-upload-file {
+    opacity: .01;
+    filter: Alpha(opacity=1);
+    cursor: pointer;
+}
+
+
+.layui-upload-icon {
+    display: block;
+    margin: 0 15px;
+    text-align: center;
+}
+.site-demo-upload .layui-upload-button {
+    background-color: rgba(0,0,0,.2);
+    color: rgba(255,255,255,1);
+}
+
+.layui-upload-button {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    min-width: 60px;
+    height: 38px;
+    line-height: 38px;
+    border: 1px solid #DFDFDF;
+    border-radius: 2px;
+    overflow: hidden;
+    background-color: #fff;
+    color: #666;
+}
+    </style>
     @yield('style')
 </head>
 <body>
@@ -22,7 +101,7 @@
         <div class="header_top left">
             <ul class="header_top_left left">
                 @if(Auth::check())
-                    <li><a href="">{{Auth::user()->login_name}}</a></li>
+                    <li><a href="{{ url('home/personal') }}">{{Auth::user()->login_name}}</a></li>
                     <li><a href="{{ url('home/logOut') }}">退出登录</a></li>
                 @else
                     <li><a href="{{ url('home/register') }}">注册</a></li>

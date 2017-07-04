@@ -1,8 +1,9 @@
 <div class="personal_left fl">
     <dl>
 
-        <dt class="personal_info"><a href="javascript:;"><img src="./uploads/personal.jpg" alt=""/></a></dt>
-        <dd class="phone">13843838438</dd>
+        <dt class="personal_info"><a href="javascript:;"><img src="{{ asset(''.$user->avatar.'') }}" alt=""/></a></dt>
+
+        <dd class="phone">{{ $user->nickname }}</dd>
 
         <dt class="level1">交易管理</dt>
         <dd><a href="{{ url('home/browseLog') }}" data-memu="0">浏览记录</a></dd>

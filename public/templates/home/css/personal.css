@@ -113,16 +113,104 @@ main a{
 
 
 
+/*弹出层*/
+.personal_center .personal_main .change_form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: -255px;
+    z-index: 10;
+    width: 510px;
+    background: #fff;
+    padding: 28px 28px 38px 28px;
+}
+
+.personal_center .personal_main .change_form .close {
+    width: 16px;
+    height: 16px;
+    float: right;
+}
+.personal_center .personal_main .change_form .close img {
+    width: 100%;
+}
+
+.personal_center .personal_main .change_form .title {
+    border-bottom: 1px solid #d9d9d9;
+    font-size: 18px;
+    color: #626161;
+    text-align: center;
+    padding-top: 12px;
+    padding-bottom: 24px;
+}
+.personal_center .personal_main .change_form .form_content {
+    padding: 50px 30px;
+}
+
+.personal_center .personal_main  .change_form .form_content p:first-child {
+    padding-top: 24px;
+}
+
+.personal_center .personal_main .change_form .form_content p {
+    padding-top: 24px;
+}
 
 
+.personal_center .personal_main  li p {
+    display: inline-block;
+}
 
+.personal_center .personal_main  .change_form .form_content p label {
+    text-align: justify;
+    text-justify: distribute-all-lines;
+    -moz-text-align-last: justify;
+    text-align-last: justify;
+    width: 90px;
+    padding-right: 20px;
+    font-size: 14px;
+    color: #626161;
+    display: inline-block;
+}
 
+.personal_center .personal_main .change_form .form_content p .input-password {
+    width: 298px;
+    height: 35px;
+    line-height: 35px;
+    border: solid 1px #626161;
+    padding: 0 13px;
+}
 
+.personal_center .personal_main .change_form .btn_block {
+    width: 100%;
+    text-align: center;
+}
 
+.personal_center .personal_main li p {
+    display: inline-block;
+}
 
+.personal_center .personal_main .change_form .form_content p {
+    word-break: break-all !important;
+}
 
-
-
+.personal_center .personal_main  .change_form .btn_block .btn_submit {
+    width: 121px;
+    height: 44px;
+    background-color: #282828;
+    border: solid 1px #2d2d2d;
+    font-size: 12px;
+    color: #ffffff;
+}
+.personal_center .personal_main .change_form_bg {
+    background-color: rgba(0, 0, 0, 0.2);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=true,startColorstr=#33000000,endColorstr=#33000000);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 5;
+}
 
 
 
