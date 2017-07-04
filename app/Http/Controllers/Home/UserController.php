@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function login()
     {
-
+        // dd(bcrypt('dasuan'));
         return view('home.login');
     }
 
@@ -38,7 +38,7 @@ class UserController extends Controller
         $user['login_name'] = $request->input('email');
         $user['password'] = $request->input('password');
         $is_check = boolval($request->input('is_check'));
-
+        
         $user = [
             'login_name' => $request->get('email'),
             'password' => $request->get('password')

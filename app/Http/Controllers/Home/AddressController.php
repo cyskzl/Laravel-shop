@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Models\Userinfo;
 class AddressController extends Controller
 {
     /**
@@ -16,7 +16,8 @@ class AddressController extends Controller
      */
     public function index()
     {
-        return view('home.personal.set.address');
+        $user = Userinfo::where('user_id', '=', \Auth::user()->user_id)->first();
+        return view('home.personal.set.address', compact('user'));
     }
 
     /**

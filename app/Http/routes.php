@@ -66,6 +66,9 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::resource('/orders', 'OrderController');
     // 个人中心(默认为设置-个人信息 home.personal.set.personnalInfo)
     Route::get('/personal', 'PersonalController@index');
+    Route::post('/personal/editpass/{id}', 'PersonalController@editPass');
+    Route::post('/personal/editname/{id}', 'PersonalController@editName');
+    Route::post('/personal/editrealname/{id}', 'PersonalController@editRealName');
     // 个人中心-交易管理（浏览记录）
     Route::get('/browseLog', 'PersonalController@browseLog');
     // 个人中心-交易管理（收藏夹）
