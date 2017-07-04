@@ -4,7 +4,7 @@ main{
     padding-bottom: 50px;
 }
 
-/*ÉÌÆ·Ð¡×Ö·ÖÀà*/
+/*ï¿½ï¿½Æ·Ð¡ï¿½Ö·ï¿½ï¿½ï¿½*/
 main .title{
     width: 1100px;
     height: 36px;
@@ -27,13 +27,13 @@ main .title ul li:last-child{
     cursor: default;
 }
 
-/*sÉÌÆ·¹ºÂò¿ò*/
+/*sï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .buy{
     width: 100%;
     height: 600px;
     margin: 5px auto;
 }
-/*ÉÌÆ·´óÍ¼Õ¹Ê¾*/
+/*ï¿½ï¿½Æ·ï¿½ï¿½Í¼Õ¹Ê¾*/
 .buy .bigimgShow{
     width: 435px;
     height: 600px;
@@ -44,7 +44,7 @@ main .title ul li:last-child{
 }
 
 
-/*ÉÌÆ·Ìõ¼þÉ¸Ñ¡*/
+/*ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½É¸Ñ¡*/
 .buy .productOption{
     width: 570px;
     height: 600px;
@@ -79,13 +79,13 @@ main .title ul li:last-child{
     left: 75px;
 }
 .buy .productOption .term ul li div.flex{
-    width: 24%;
+    /*width: 24%;*/
     height: 100%;
     justify-content: space-between;
 }
 .buy .productOption .term ul li div.flex div{
-    margin: 10px 0;
-    width: 60px;
+    margin: 10px 10px 0 0;
+    width: 40px;
     height: 24px;
     line-height: 24px;
     text-align: center;
@@ -96,7 +96,7 @@ main .title ul li:last-child{
     background: #6D6D6D;
     color: white;
 }
-/*³ßÂë*/
+/*ï¿½ï¿½ï¿½ï¿½*/
 .buy .productOption .term ul li div.size{
     width: 80%;
     height: 100%;
@@ -119,7 +119,7 @@ main .title ul li:last-child{
     background: #6D6D6D;
     color: white;
 }
-/*¹ºÂòÊýÁ¿*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .buy .productOption .term ul li div.number input{
     width: 45px;
     height: 18px;
@@ -135,7 +135,7 @@ main .title ul li:last-child{
     color: #6D6D6D;
 }
 
-/*¹ºÎï³µ*/
+/*ï¿½ï¿½ï¿½ï³µ*/
 .buy .car{
     width: 160px;
     height: 50px;
@@ -154,7 +154,7 @@ main .title ul li:last-child{
     background: #FF6677;
 }
 
-/*·¢»õ·½Ê½&ÍË»»Ìõ¿î*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½&ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .buy .productOption .way ul li span:first-child{
     color: #cccccc;
     font-size: 14px;
@@ -189,7 +189,7 @@ main .title ul li:last-child{
     height: 14px;
 }
 
-/*ÊÕ²Ø*/
+/*ï¿½Õ²ï¿½*/
 .buy .coll{
     width: 160px;
     height: 50px;
@@ -215,7 +215,7 @@ main .title ul li:last-child{
     border: 1px solid #999;
 }
 
-/*²é¿´Ìõ¿î*/
+/*ï¿½é¿´ï¿½ï¿½ï¿½ï¿½*/
 main .clause{
     right: 20px;
     bottom: 130px;
@@ -226,12 +226,12 @@ main .clause a{
     text-decoration:underline;
 }
 
-/*ÉÌÆ·ÍÆ¼ö&ÉÌÆ·ÏêÇé*/
+/*ï¿½ï¿½Æ·ï¿½Æ¼ï¿½&ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½*/
 .main-footer{
     width: 1100px;
     margin: 60px auto;
 }
-/*ÍÆ¼öÉÌÆ·*/
+/*ï¿½Æ¼ï¿½ï¿½ï¿½Æ·*/
 .main-footer .fl{
     width: 140px;
 }
@@ -258,7 +258,7 @@ main .clause a{
     width: 140px;
     text-align: center;
 }
-/*²úÆ·ÑùÊ½*/
+/*ï¿½ï¿½Æ·ï¿½ï¿½Ê½*/
 .main-footer .fl ul li span.cp-img{
     height: 186px;
 }
@@ -266,7 +266,7 @@ main .clause a{
     width: 100%;
     height: 100%;
 }
-/*²úÆ·ÅÆ×Ó*/
+/*ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½*/
 .main-footer .fl span.cp-brand{
     height: 15px;
     padding-top: 10px;
@@ -274,7 +274,7 @@ main .clause a{
     font-size: 10px;
     color: #cccccc;
 }
-/*²úÆ·Ãû×Ö*/
+/*ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½*/
 .main-footer .fl span.cp-name{
     height: 25px;
     line-height: 25px;
@@ -285,7 +285,7 @@ main .clause a{
     text-overflow:ellipsis;
     overflow: hidden;
 }
-/*²úÆ·¼Û¸ñ*/
+/*ï¿½ï¿½Æ·ï¿½Û¸ï¿½*/
 .main-footer .fl span.cp-price{
     font-size: 18px;
     font-weight: 700;
@@ -294,7 +294,7 @@ main .clause a{
     color: #2D2D2D;
 }
 
-/*²úÆ·ÏêÇé*/
+/*ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½*/
 .main-footer .fr{
     width: 935px;
     padding-bottom: 30px;
@@ -305,7 +305,7 @@ main .clause a{
     top: 100px;
     left: 75px;
 }
-/*ÉÌÆ·ÏêÇéÑ¡Ïî*/
+/*ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½*/
 .main-footer .fr .details-title{
     width: 935px;
     height: 40px;
@@ -321,7 +321,7 @@ main .clause a{
 .main-footer .fr .details-title li.under{
     border-bottom: 2px solid #4D4D4D;
 }
-/*²úÆ·ÏêÇéÕ¹Ê¾*/
+/*ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½Õ¹Ê¾*/
 .main-footer .fr .cp-details{
     width: 750px;
 }
@@ -406,7 +406,7 @@ main .clause a{
     color: #aaaaaa;
 }
 
-/*¹ºÎïÐëÖª*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öª*/
 .main-footer .fr .question{
     width: 750px;
 }
@@ -426,7 +426,7 @@ main .clause a{
     text-align: center;
 }
 
-/*ÆÀÂÛÇø*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .main-footer .fr .comment{
     border: 1px solid #4D4D4D;
     left: 0;
@@ -507,7 +507,7 @@ main .clause a{
     margin:20px 50px;
 }
 
-/*±ê×¼³ßÂë*/
+/*ï¿½ï¿½×¼ï¿½ï¿½ï¿½ï¿½*/
 .main-footer .fr .sizechart{
     width: 735px;
 }
@@ -516,7 +516,7 @@ main .clause a{
 }
 
 
-/*µ¯³ö¿ò*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .popup{
     top: 0;
     left: 0;

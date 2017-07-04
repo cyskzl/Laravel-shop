@@ -71,7 +71,7 @@
   justify-content: space-between;
 }
 span {
-  display: block;
+  /*display: block;*/
   padding-top: 5px;
   text-align: center;
 }

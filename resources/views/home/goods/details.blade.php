@@ -34,46 +34,59 @@
 
 	        <!-- 商品大图展示-->
 	        <div class="bigimgShow fl rela">
-	            <img src="{{asset('/templates/home/public/img/6.jpg')}}" alt="" class="abso"/>
+	            <img src="{{asset(trim($goodinfo->original_img,','))}}">
 	        </div>
-
+			{{--<div class="imgShow psa" style="position:absolute;vertical-align:middle;width:448px;heigth:110px;display:inline-block;background-color:rgba(0, 0, 0, 0.25);box-sizing:border-box;">--}}
+				{{--<div class="imgView">--}}
+					{{--<div id="productImgBanner" class="owl-carousel2">--}}
+						{{--<a class="item product_card" href="javascript:;">--}}
+							{{--<img src="http://img01.wconceptimg.cn/media/catalog/product/w/i/wimg_450699648_2951840.jpg" alt="">--}}
+						{{--</a>--}}
+						{{--<a class="item product_card" href="javascript:;">--}}
+							{{--<img src="http://img01.wconceptimg.cn/media/catalog/product/w/i/wimg_450699648_2936451.jpg" alt="">--}}
+						{{--</a>--}}
+					{{--</div>--}}
+				{{--</div>--}}
+			{{--</div>--}}
 	        <!-- 商品条件筛选-->
 	        <div class="productOption fr">
 
 	            <!-- 商品标签-->
 	            <div class="ware-title">
-	                <span class="Black">THISISNEVERTHAT</span><br>
-	                <span class="B4d">简约方形拉链运动风手包_朱黄色</span><br>
-	                <span class="S3c">C450702134</span>
+	                <span class="Black">{{$brand[0]}}</span><br>
+	                <span class="B4d">{{$goodinfo->goods_name}}</span><br>
+	                <span class="S3c">{{$goodinfo->goods_sn}}</span>
 	            </div>
 
 	            <!-- 条件筛选-->
 	            <div class="term">
 	                <ul>
 	                    <!-- 商品价格-->
-	                    <li><span>价格：</span><span class="B4d">￥272</span></li>
-	                    <li><span>含税价：</span><span>￥304.37</span></li>
+	                    <li><span>价格：</span><span class="B4d">￥{{$goodinfo->shop_price}}</span></li>
+	                    {{--<li><span>含税价：</span><span>￥304.37</span></li>--}}
 	                    <!-- 商品颜色-->
 	                    <li>
-	                        <span class="fl">颜色：</span>
+	                        <span class="fl">{{$spec_name[0]}}：</span>
 	                        <div class="color flex fl">
-	                            <div>橙色</div>
-	                            <div>橙色</div>
+	                            @foreach($spec_item[0] as $k=>$one_item)
+									<div class="key1" goods_id="{{$goodinfo->goods_id}}" key1= '{{$spec_id[0][$k]}}'>{{$one_item}}</div>
+								@endforeach
 	                        </div>
 	                    </li>
 	                    <!-- 商品尺寸-->
 	                    <li>
-	                        <span class="fl">尺码：</span>
+	                        <span class="fl">{{$spec_name[1]}}：</span>
 	                        <div class="size fl">
 	                            <div>
-	                                <div>S</div>
-	                                <div>M</div>
+	                                @foreach($spec_item[1] as $i=>$two_item)
+										<div class="key2" goods_id="{{$goodinfo->goods_id}} "key2="{{$spec_id[1][$i]}}">{{$two_item}}</div>
+									@endforeach
 	                            </div>
-	                            <div class="none">
-	                                <div>L</div>
-	                                <div>XL</div>
-	                                <div>XXL</div>
-	                            </div>
+	                            {{--<div class="none">--}}
+	                                {{--<div>L</div>--}}
+	                                {{--<div>XL</div>--}}
+	                                {{--<div>XXL</div>--}}
+	                            {{--</div>--}}
 	                        </div>
 	                    </li>
 	                    <!-- 购买数量-->
@@ -204,62 +217,63 @@
 
 	            <!-- 商品详情-->
 	            <div class="cp-details clearfix">
+					{!! $goodinfo->goods_content !!}
 	                <!-- 产品名称-->
-	                <div class="D1">
-	                    <h3>产品详情</h3>
-	                    <span>方形外观，侧拉链，logo细节，简约运动风手包。</span>
-	                </div>
-	                <!-- 产品参数-->
-	                <div class="D2">
-	                    <h3>产品参数</h3>
-	                    <ul>
-	                        <li>原产地:韩国</li>
-	                        <li>面料/材质:锦纶100%</li>
-	                        <li>性别:男士</li>
-	                        <li>性别:男士</li>
-	                    </ul>
-	                </div>
-	                <!-- 产品规格-->
-	                <div class="D3 rela">
-	                    <h3>尺码信息</h3>
-	                    <p class="abso">参考尺寸(cm)</p>
-	                    <table>
-	                        <tbody>
-	                            <tr>
-	                                <td class="tit"></td>
-	                                <td>OS</td>
-	                            </tr>
-	                            <tr>
-	                                <td class="tit">长</td>
-	                                <td>17</td>
-	                            </tr>
-	                            <tr>
-	                                <td class="tit">短</td>
-	                                <td>7</td>
-	                            </tr>
-	                        </tbody>
-	                    </table>
-	                </div>
+	                {{--<div class="D1">--}}
+	                    {{--<h3>产品详情</h3>--}}
+	                    {{--<span>方形外观，侧拉链，logo细节，简约运动风手包。</span>--}}
+	                {{--</div>--}}
+	                {{--<!-- 产品参数-->--}}
+	                {{--<div class="D2">--}}
+	                    {{--<h3>产品参数</h3>--}}
+	                    {{--<ul>--}}
+	                        {{--<li>原产地:韩国</li>--}}
+	                        {{--<li>面料/材质:锦纶100%</li>--}}
+	                        {{--<li>性别:男士</li>--}}
+	                        {{--<li>性别:男士</li>--}}
+	                    {{--</ul>--}}
+	                {{--</div>--}}
+	                {{--<!-- 产品规格-->--}}
+	                {{--<div class="D3 rela">--}}
+	                    {{--<h3>尺码信息</h3>--}}
+	                    {{--<p class="abso">参考尺寸(cm)</p>--}}
+	                    {{--<table>--}}
+	                        {{--<tbody>--}}
+	                            {{--<tr>--}}
+	                                {{--<td class="tit"></td>--}}
+	                                {{--<td>OS</td>--}}
+	                            {{--</tr>--}}
+	                            {{--<tr>--}}
+	                                {{--<td class="tit">长</td>--}}
+	                                {{--<td>17</td>--}}
+	                            {{--</tr>--}}
+	                            {{--<tr>--}}
+	                                {{--<td class="tit">短</td>--}}
+	                                {{--<td>7</td>--}}
+	                            {{--</tr>--}}
+	                        {{--</tbody>--}}
+	                    {{--</table>--}}
+	                {{--</div>--}}
 	                <!-- 产品样式-->
-	                <div class="D4 clearfix">
-	                    <ul class="clearfix">
-	                        <li><img src="{{asset('/templates/home/public/img/2.jpg')}}" alt=""/></li>
-	                        <li><img src="{{asset('/templates/home/public/img/3.jpg')}}" alt=""/></li>
-	                        <li><img src="{{asset('/templates/home/public/img/4.jpg')}}" alt=""/></li>
-	                        <li><img src="./public/img/2.jpg" alt=""/></li>
-	                        <li><img src="./public/img/3.jpg" alt=""/></li>
-	                        <li><img src="./public/img/4.jpg" alt=""/></li>
-	                        <img src="{{asset('/templates/home/public/img/8.jpg')}}" alt=""/>
-	                        <span>
-	                            THISISNEVERTHAT始创于2009年，主要突出韩系街头风格，
-	                            同时越来越多地融入高街元素。
-	                            扎扎实实地融合传统美式工装、街头、
-	                            滑板元素等传统街头品牌根基的风格，
-	                            独到地诠释品牌对美式休闲的见解。
-	                        </span>
-	                    </div>
-	                </div>
-	            </div>
+	                {{--<div class="D4 clearfix">--}}
+	                    {{--<ul class="clearfix">--}}
+	                        {{--<li><img src="{{asset('/templates/home/public/img/2.jpg')}}" alt=""/></li>--}}
+	                        {{--<li><img src="{{asset('/templates/home/public/img/3.jpg')}}" alt=""/></li>--}}
+	                        {{--<li><img src="{{asset('/templates/home/public/img/4.jpg')}}" alt=""/></li>--}}
+	                        {{--<li><img src="./public/img/2.jpg" alt=""/></li>--}}
+	                        {{--<li><img src="./public/img/3.jpg" alt=""/></li>--}}
+	                        {{--<li><img src="./public/img/4.jpg" alt=""/></li>--}}
+	                        {{--<img src="{{asset('/templates/home/public/img/8.jpg')}}" alt=""/>--}}
+	                        {{--<span>--}}
+	                            {{--THISISNEVERTHAT始创于2009年，主要突出韩系街头风格，--}}
+	                            {{--同时越来越多地融入高街元素。--}}
+	                            {{--扎扎实实地融合传统美式工装、街头、--}}
+	                            {{--滑板元素等传统街头品牌根基的风格，--}}
+	                            {{--独到地诠释品牌对美式休闲的见解。--}}
+	                        {{--</span>--}}
+	                    {{--</div>--}}
+	                {{--</div>--}}
+	            {{--</div>--}}
 
 	            <!-- 购物须知-->
 	            <div class=" question none">
@@ -385,4 +399,33 @@
 @endsection
 @section('js')
 	<script src="{{asset('/templates/home/js/page.js')}}"></script>
+	<script>
+	$('.key1').click(function(){
+		// console.log($(this).attr('spec_id'));
+		var key1 =  $(this).attr('key1');
+		var goods_id = $(this).attr('goods_id');
+		var key2 = $('.key2');
+		var key  = [];
+		for(var i=0;i<key2.length;i++){
+			key[i] = key2[i].getAttribute('key2');
+		}
+//		console.log(key);return false;
+		$.ajax({
+			type:'POST',
+			url:'./ajaxdetail',
+			dataType:'json',
+			data:{'_token':'{{csrf_token()}}','goods_id':goods_id,'key1':key1},
+			success: function(data){
+//				console.log(data);return false;
+				if(data){
+					for(var i=0;i<data.length;i++){
+					    if(key.indexOf(data[i]) > -1){
+							key2[i].style.background = rgb(109, 109, 109);
+						}
+					}
+				}
+			}
+		});
+	});
+	</script>
 @endsection

@@ -46,50 +46,43 @@ class GoodsActivityController extends Controller
 
         //判断是否有权限添加
 		$this->perms->adminPerms('admin, goods', 'create_goodsactivity');
-//        $spec_item = [];
-//        $key = [];
-        //存储商品所有规格的空数组
-        $allSpec = [];
+
         // 商品表的商品信息获取并分页
-//        $goods = Goods::with('specGoodsPrice')->paginate(3);
+        $goodsAll = Goods::with('specGoodsPrice')->paginate(3);
 //        $good = $goods->toArray();
-
-
-        $goods_id = Goods::all()->pluck('goods_id');
-//        dd($goods_id);
-//        $good = [];
-        //获取与goods表关联的images表数据
-        foreach($goods_id as $id){
-            $goods = Goods::find($id);
-            $good[] = $goods->specGoodsPrice;
-        }
-//        dd($good);
-        foreach($good as $id=>$spec){
-//            dump($k);
-//            $a[$goods_id[$k]] = [];
-//            dump($a);
-            foreach($spec as $a=>$spec_key){
-//                dd($spec_key);
-                $key = explode('_',$spec_key->key);
-//                $price[$goods_id[$k]] = $spec_key->price;
-
-//                dump($price);a[$k]
-                $spec_info= '';
-                foreach($key as $k){
-                    $spec_item = SpecItem::find($k);
-//                    dd($spec_item);
-
-                    $specAll = $spec_item->spec;
-//                    dump($specAll);
-                    $spec_info .= $specAll->name.':'.$spec_item->item;
-                }
-                $goodSpec[$goods_id[$id]][] = $spec_info.",价格:".$spec_key->price;
-
-            }
-        }
-
-
-        return view('admin.main.goodsactivity.add',compact('goods','request','goodSpec'));
+//        $goods_id = Goods::all()->pluck('goods_id');
+////        dd($goods_id);
+////        $good = [];
+//        //获取与goods表关联的images表数据
+//        foreach($goods_id as $id){
+//            $goods = Goods::find($id);
+//            $good[] = $goods->specGoodsPrice;
+//        }
+////        dd($good);
+//        foreach($good as $id=>$spec){
+////            dump($k);
+////            $a[$goods_id[$k]] = [];
+////            dump($a);
+//            foreach($spec as $a=>$spec_key){
+////                dd($spec_key);
+//                $key = explode('_',$spec_key->key);
+////                $price[$goods_id[$k]] = $spec_key->price;
+//
+////                dump($price);a[$k]
+//                $spec_info= '';
+//                foreach($key as $k){
+//                    $spec_item = SpecItem::find($k);
+////                    dd($spec_item);
+//
+//                    $specAll = $spec_item->spec;
+////                    dump($specAll);
+//                    $spec_info .= $specAll->name.':'.$spec_item->item;
+//                }
+//                $goodSpec[$goods_id[$id]][] = $spec_info.",价格:".$spec_key->price;
+//            }
+//        }
+////        dump($good);
+        return view('admin.main.goodsactivity.add',compact('goodsAll','request'));
     }
 
     /**

@@ -65,6 +65,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/goodsList/product', 'GoodController@goodsProduct');
     // 商品详情页
     Route::get('/goodsDetail/{goods_id}', 'GoodController@goodsDetail');
+    // 商品规格ajax验证
+    Route::post('/goodsDetail/ajaxdetail','GoodController@ajaxDetail');
     // 购物车
     Route::resource('/shoppingcart', 'ShoppingCartController');
     // 订单页
