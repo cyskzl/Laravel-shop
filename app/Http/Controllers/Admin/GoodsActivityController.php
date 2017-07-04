@@ -88,9 +88,8 @@ class GoodsActivityController extends Controller
             }
         }
 
-        dump($goodSpec);
 
-        return view('admin.main.goodsactivity.add',compact('goods','request','allSpec'));
+        return view('admin.main.goodsactivity.add',compact('goods','request','goodSpec'));
     }
 
     /**
