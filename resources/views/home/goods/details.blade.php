@@ -69,7 +69,7 @@
 	                        <span class="fl">{{$spec_name[0]}}：</span>
 	                        <div class="color flex fl">
 	                            @foreach($spec_item[0] as $k=>$one_item)
-									<div class="key1" goods_id="{{$goodinfo->goods_id}}" key1= '{{$spec_id[0][$k]}}'>{{$one_item}}</div>
+										<input class="key1" type="text" name="key1" value="{{$one_item}}" size="1" goods_id="{{$goodinfo->goods_id}}" key1= '{{$spec_id[0][$k]}}' readonly>
 								@endforeach
 	                        </div>
 	                    </li>
@@ -79,7 +79,7 @@
 	                        <div class="size fl">
 	                            <div>
 	                                @foreach($spec_item[1] as $i=>$two_item)
-										<div class="key2" goods_id="{{$goodinfo->goods_id}} "key2="{{$spec_id[1][$i]}}">{{$two_item}}</div>
+										<input class="key2" goods_id="{{$goodinfo->goods_id}}" key2="{{$spec_id[1][$i]}}" name="key2" value="{{$two_item}}" size="1" readonly>
 									@endforeach
 	                            </div>
 	                            {{--<div class="none">--}}
@@ -408,6 +408,8 @@
 		var key  = [];
 		for(var i=0;i<key2.length;i++){
 			key[i] = key2[i].getAttribute('key2');
+            key2[i].style.background = 'white';
+            key2[i].style.color = 'black';
 		}
 //		console.log(key);return false;
 		$.ajax({
@@ -420,7 +422,11 @@
 				if(data){
 					for(var i=0;i<data.length;i++){
 					    if(key.indexOf(data[i]) > -1){
-							key2[i].style.background = rgb(109, 109, 109);
+							key2[0].style.background = 'rgb(109, 109, 109)';
+							key2[0].style.color = 'white';
+                            key2[i].style.display = 'inline';
+						}else {
+					        key2[i].style.display = 'none';
 						}
 					}
 				}

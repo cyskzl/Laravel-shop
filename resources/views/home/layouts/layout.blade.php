@@ -16,9 +16,6 @@
     <script src="{{asset('/templates/home/js/jquery.leanModal.min.js')}}"></script>
     <script src="{{asset('/templates/admin/lib/layui/layui.js')}}"></script>
 
-    <style media="screen">
-
-    </style>
     @yield('style')
 </head>
 <body>
@@ -26,8 +23,9 @@
     <!-- 头部 -->
     <div class="header clearfix">
         <!-- 顶部 -->
-        @include('home.layouts.top')
-        <!-- 搜索区 -->
+
+    @include('home.layouts.top')
+    <!-- 搜索区 -->
         <div class="header_top_bottom left">
             <div class="header_top_bottom_people left">
                 <a href="{{ url('home/') }}/{{$onemaam->id}}" data-currentcategoryid="0">{{$onemaam->name}}</a>
@@ -62,36 +60,36 @@
                     <div class="header_nav_left_nab">
                     </div>
                 </div>
-                导航分类请求ajax
+                {{--导航分类请求ajax--}}
                 @if($cateId == 1 || $cateId == '')
                     @foreach($twomaan as $tmaan)
-                <div id="header_nav_left_new" class="CateNav">
-                    <a id="butt" href="{{url('catalog/category_id/')}}/{{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
-                    <div class="header_nav_left_new">
-                        <div class="elastic_no">
-                            <div class="header_nav_left_new_one_text">
-                                3级分类
+                        <div id="header_nav_left_new" class="CateNav">
+                            <a id="butt" href="{{url('catalog/category_id/')}}/{{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
+                            <div class="header_nav_left_new">
+                                <div class="elastic_no">
+                                    <div class="header_nav_left_new_one_text">
+                                        {{--3级分类--}}
+                                    </div>
+                                    {{--2级分类下的商品图片--}}
+                                </div>
                             </div>
-                            2级分类下的商品图片
                         </div>
-                    </div>
-                </div>
                     @endforeach
-                    @elseif($cateId == 2)
+                @elseif($cateId == 2)
                     @foreach($twomam as $tman)
                         <div id="header_nav_left_new" class="CateNav">
                             <a href="{{url('catalog/category_id/')}}/{{$tman->id}}" route="{{$cateId}}" data-id="{{$tman->id}}" >{{$tman->name}}</a>
                             <div class="header_nav_left_new">
                                 <div class="elastic_no">
                                     <div class="header_nav_left_new_one_text">
-                                        3级分类
+                                        {{--3级分类--}}
                                     </div>
-                                    2级分类下的商品图片
+                                    {{--2级分类下的商品图片--}}
                                 </div>
                             </div>
                         </div>
                     @endforeach
-                    @endif
+                @endif
                 <div>
                     <a href="javascript:">博主控</a>
                 </div>
@@ -213,7 +211,7 @@
                         that.attr('exists', '1');
                     }
                 });
-        } else {
+            } else {
                 var str = '';
                 var goodsstr = '';
                 //第一次前清除里面的内容
@@ -253,35 +251,35 @@
 
     });
 
-    {{--//新品--}}
+    //新品
 
 
-    {{--$(function(){--}}
-        {{--if (!$.session.get("currentCategoryId")){--}}
+    $(function(){
+        if (!$.session.get("currentCategoryId")){
 
-            {{--$('.header_top_bottom_people a')[0].setAttribute('class','women');--}}
-            {{--$('.header_top_bottom_people a')[0].style='color:#fff';--}}
+            $('.header_top_bottom_people a')[0].setAttribute('class','women');
+            $('.header_top_bottom_people a')[0].style='color:#fff';
 
-        {{--} else {--}}
+        } else {
 
-            {{--var id = $.session.get("currentCategoryId");--}}
-            {{--var img = $.session.get("currentCategoryImg");--}}
-            {{--$('.header_top_bottom_people a')[id].setAttribute('class',''+ img +'');--}}
-            {{--$('.header_top_bottom_people a')[id].style='color:#fff';--}}
+            var id = $.session.get("currentCategoryId");
+            var img = $.session.get("currentCategoryImg");
+            $('.header_top_bottom_people a')[id].setAttribute('class',''+ img +'');
+            $('.header_top_bottom_people a')[id].style='color:#fff';
 
-        {{--}--}}
+        }
 
-    {{--});--}}
+    });
 
-    {{--// 女士，男士，创意生活切换--}}
-    {{--$(".header_top_bottom_people a").click(function(){--}}
+    // 女士，男士，创意生活切换
+    $(".header_top_bottom_people a").click(function(){
 
-        {{--//导航背景色随频道颜色改变--}}
-        {{--var currentId = $(this).data("currentcategoryid"),navBg;--}}
-{{--//        console.log(currentId);--}}
-        {{--var img = imgClass(currentId);--}}
-        {{--$(this).addClass(''+ img +'').css('color','#fff').siblings("a").removeClass().css('color','#626161');--}}
-        {{--// 女士，男士，创意生活切换--}}
+        //导航背景色随频道颜色改变
+        var currentId = $(this).data("currentcategoryid"),navBg;
+//        console.log(currentId);
+        var img = imgClass(currentId);
+        $(this).addClass(''+ img +'').css('color','#fff').siblings("a").removeClass().css('color','#626161');
+        // 女士，男士，创意生活切换
 
         $.session.set('currentCategoryId', currentId);
 
@@ -290,7 +288,7 @@
         return false;
     });
 
-    {{--function imgClass(currentId){--}}
+    function imgClass(currentId){
 
         var img = '';
         //    console.log(currentId );
@@ -299,11 +297,11 @@
             img = 'women';
             {{--{{define('Index', '1')}}--}}
             {{--{{$request->session()->put('Index', '1')}}--}}
-     }else if(currentId == 1){
+        }else if(currentId == 1){
             //    navBg = "#505c82";
             img = 'men';
             {{--{{define('Index', '2')}}--}}
-{{--            {{$request->session()->put('Index', '2')}}--}}
+            {{--            {{$request->session()->put('Index', '2')}}--}}
         }else if(currentId == 2){
             //    navBg = "#a4d7d8";
             img = 'design';
@@ -311,6 +309,6 @@
         return img;
     }
 
-{{--</script>--}}
+</script>
 </body>
 </html>
