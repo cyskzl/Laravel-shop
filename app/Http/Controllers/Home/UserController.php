@@ -12,10 +12,11 @@ use Symfony\Component\HttpFoundation\Cookie;
 class UserController extends Controller
 {
 
-    public function login()
+    public function login(Request $request)
     {
+        $cateId = $request->session()->get('Index');
         // dd(bcrypt('dasuan'));
-        return view('home.login');
+        return view('home.login',compact('cateId'));
     }
 
     /**

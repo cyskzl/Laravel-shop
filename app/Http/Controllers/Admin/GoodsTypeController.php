@@ -90,7 +90,7 @@ class GoodsTypeController extends Controller
                 'msg'    => '名称不能为空'
             ];
             return $data;
-            return false;
+
         }
 
         if (GoodsType::where('id', $id)->update($data)) {

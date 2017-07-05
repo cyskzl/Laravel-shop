@@ -24,17 +24,12 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
-    // 首页
-//    Route::any('/',  function($category_id = '1') {
-//
-//
-//
-//    });
+
     Route::any('/{category_id?}', 'IndexController@homeIndex')->where('category_id', '[0-9]+');
     //ajax新品
     Route::any('/newgoods', 'IndexController@newgoods');
     //分类
-    Route::any('/catalog/category_id/{{id?}}','IndexController@catalog')->where('id', '[0-9]+');
+    Route::any('/catalog/category_id/{id?}','IndexController@cataLog')->where('id', '[0-9]+');
     //导航
     Route::any('/getAjaxCate','IndexController@getAjaxCate');
     // 注册页面(默认邮箱注册email)
@@ -66,8 +61,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/logOut', 'UserController@logOut');
     // 商品列表页
     Route::get('/goodsList/{category_id}', 'GoodController@goodsList');
-    // 商品新品列表页（本周与今日最新）
-    Route::get('/goodsList/product', 'GoodController@goodsProduct');
+//    // 商品新品列表页（本周与今日最新）
+//    Route::get('/goodsList/product', 'GoodController@goodsProduct');
     // 商品详情页
     Route::get('/goodsDetail/{goods_id}', 'GoodController@goodsDetail');
     // 商品规格ajax验证

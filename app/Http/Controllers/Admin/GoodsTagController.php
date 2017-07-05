@@ -19,7 +19,7 @@ class GoodsTagController extends Controller
 		$this->perms = new Permission;
 	}
 
-    public function index()
+    public function index(Request $request)
     {
         //判断是否有权限访问列表
         $this->perms->adminPerms('admin, goods', 'goodstag_list');
@@ -27,27 +27,33 @@ class GoodsTagController extends Controller
         $tags  = GoodsTag::orderBy('tag_id', 'desc')->paginate(10);
 
 
-        return view('admin.main.goodstag.index', compact('tags'));
+        return view('admin.main.goodstag.index', compact('tags','request'));
     }
 
+    public function create()
+    {
+
+        return  view('admin.main.goodstag.create' );
+    }
     public function store(Request $request)
     {
         //判断是否有权限修改
         $this->perms->adminPerms('admin,goods', 'create_goodstag');
-
-        $tag = GoodsTag::create(['tag_name'=>$request->tag_name]);
-
-        if($tag){
-            $tag['success'] = 1;
-            $tag['info'] = '添加成功';
-
-            return json_encode($tag);
+        $data = json_decode($request->json,true);
+        $tags = new GoodsTag();
+        $tags->tag_name = $data['tag_name'];
+        if($tags->save()){
+            $data = [
+                'status' => 1,
+                'msg'    => '添加成功'
+            ];
         } else {
-
-            $tag['success'] = 0;
-            $tag['info'] = '添加失败';
-            return json_encode($tag);
+            $data = [
+                'status' => 2,
+                'msg'    => '添加失败'
+            ];
         }
+        return $data;
 
     }
 
@@ -56,32 +62,36 @@ class GoodsTagController extends Controller
         //判断是否有权限修改
         $this->perms->adminPerms('admin,goods', 'edit_goodstag');
 
-        $tag = GoodsTag::where('tag_id','=', $id)->first();
+        $tag = GoodsTag::find($id);
+
 
         return view('admin.main.goodstag.edit', compact('tag'));
     }
 
     public function update(Request $request, $id)
     {
-        $tag = GoodsTag::where('tag_id', '=', $id)->first();
-        if ($tag) {
-
-            $res = $tag->where('tag_id', '=', $id)
-                       ->update(['tag_name'=>$request->tag_name]);
-            if ($res){
-                $error['success'] = 1;
-                $error['info']    = '修改成功！';
-                return json_encode($error);
+        if ($id) {
+            $data = json_decode($request->json,true);
+            $tags = GoodsTag::find($id);
+            $tags->tag_name = $data['tag_name'];
+            if($tags->save()){
+                $msg = [
+                    'status'  => '0',
+                    'success' => '修改成功'
+                ];
             } else {
-                $error['success'] = 0;
-                $error['info']    = '修改失败！';
-                return json_encode($error);
+                $msg = [
+                    'status'  => '1',
+                    'success' => '修改失败'
+                ];
             }
         } else {
-            $error['success'] = 0;
-            $error['info']    = '修改失败,未找到相关信息！';
-            return json_encode($error);
+            $msg = [
+                'status'  => '2',
+                'success' => '修改失败,请稍后再试!'
+            ];
         }
+        return $msg;
     }
 
     public function destroy(Request $request, $id)
