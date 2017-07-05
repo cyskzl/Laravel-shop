@@ -102,27 +102,21 @@
         });
 
         //输出ajax获取验证码返回的错误信息
-        function errinfo(obj,info) {
-            console.log(info);
-            obj.prev('p').remove();
-            var str = '<p style="text-align: center;color: red">' + info +'</p>';
-            obj.css('border-color','red').before(str);
-            return false;
-        }
+//        function errinfo(obj,info) {
+//            console.log(info);
+//            obj.prev('p').remove();
+//            obj.css('border-color','red').before('<p style="text-align: center;color: red">' + info +'</p>');
+//            return false;
+//        }
 
 
         //获取手机验证码
         $('#phone_code').on('click',function () {
 
-            var that = $('#phone');
-
             var than = $(this);
 
             than.attr('data-id','1');
 
-            function show() {
-                than.attr('disabled',false)
-            }
 
             than.attr("disabled", true);
 
@@ -134,7 +128,8 @@
             var phone = $('#phone').val();
 
             if (phone == ''){
-                errinfo(that,'请填写手机号码');
+                $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">请填写手机号码</p>');
+                return false;
             }
 
             var regex = /^[1][34578]\d{9}$/;
@@ -164,19 +159,21 @@
                             settime(than);
                             break;
                         case '1':
-                            errinfo($('#phone'),'手机号码不合法');
+                            $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码不合法</p>');
+                            return false;
                             break;
                         case '2':
-                            errinfo($('#phone'),'手机号码已注册');
+                            $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码已注册</p>');
+                            return false;
                             break;
                         case '3':
                             than.html("重新发送");
                             break;
                         case '4':
-                            errinfo($('#phone'),'请勿重复获取验证码');
+                            $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">请勿重复获取验证码</p>');
+                            return false;
                             break;
                     }
-
 
                 }
             });

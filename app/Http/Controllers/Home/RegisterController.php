@@ -272,10 +272,13 @@ class RegisterController extends Controller
 
         $phone = 0;
 
-        $result = $sms->send("$phone","$name","$content","$code");
+//        $result = $sms->send("$phone","$name","$content","$code");
+
+
+        return '{"error":0}';
 
         $resultarr = get_object_vars($result);
-
+        return '{"error":0}';
 
         if (is_array($resultarr['result']['err_code'])){
 
@@ -409,7 +412,7 @@ class RegisterController extends Controller
     }
 
     //事物创建帐号
-    public function createUser(array $data)
+    public function createUser($data)
     {
         DB::transaction(function() use($data){
             $user = new UserRegister;
