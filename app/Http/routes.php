@@ -40,9 +40,6 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 登录界面
     Route::get('/login', 'UserController@login');
 
-
-
-
     // 验证码生成
     Route::get('/register/code', 'RegisterController@createCode');
     // 手机验证码发送
@@ -127,7 +124,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 //    });
 
 
-});
+//});
 
 //prefix => 前缀
     // 后台首页

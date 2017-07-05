@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Home;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\CateMiddleGoods;
 use App\Models\Goods;
 use App\Models\GoodsTag;
 use App\Models\Spec;
 use App\Models\SpecGoodsPrice;
 use App\Models\SpecItem;
+use App\Models\TagMiddleGoods;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -25,23 +27,41 @@ class GoodController extends Controller
     {
         $cateId = $request->session()->get('Index');
 
+        $twocate = $request->route('category_id');
+//        dd($twocate);
         //标签
-//        $tags = GoodsTag::all();
-        $array = [];
-//        foreach($tags as $tag){
-//
-////            $arrcom = explode('_',$tag->cate_id);
-//            //2下标为3级id，在查数据库
-//
-//            $arr = Category::where('id','=',$arrcom[2])->get();
-//            $array[] = $arr;
-//        }
-        $tags = Category::select(DB::raw('goods_category.*,goods_tag.*'))
-            ->join('goods_tag', 'goods_tag.three_cate_id', '=', 'goods_category.id')
-            ->get();
-        dump($tags);
+        if($cateId == 1){
+            //女士
+//            select goods_tag.tag_name,cate_middle_goods.*,goods_category.id,goods_category.pid,goods_category.level,group_concat(goods_category.name)
+// from `cate_middle_goods` inner join `goods_category` on `cate_middle_goods`.`cate_id` = `goods_category`.`id` inner join `goods_tag` on
+//            `goods_tag`.`tag_id` = `cate_middle_goods`.`tags_id` where `level` like '0,1%' GROUP BY goods_tag.tag_name
+            $tags = CateMiddleGoods::select(DB::raw('goods_tag.tag_name,cate_middle_goods.*,goods_category.id,goods_category.pid,goods_category.level,group_concat(goods_category.name) as goodcatename'))
+                ->where('level', 'like', '0,'.$cateId.'%')
+                ->groupby('goods_tag.tag_name')
+                ->join('goods_category', 'cate_middle_goods.cate_id', '=', 'goods_category.id')
+                ->join('goods_tag', 'goods_tag.tag_id', '=', 'cate_middle_goods.tags_id')
+                ->get();
 
-        return view('home.goods.list', ['cateId' => $cateId , 'tags' =>$tags]);
+            $goods = TagMiddleGoods::join('goods', 'tags_middle_goods.goods_id', '=', 'goods.goods_id')
+                ->where('goods.cat_id', 'like', $cateId.'_'.$twocate.'%')
+                ->join('goods_tag', 'goods_tag.tag_id', '=', 'tags_middle_goods.tags_id')->get();
+
+//            $goods = Goods::where('is_new', '=', '1')->where('cat_id', 'like', $cateId.'%')->orderBy('goods_id','desc')->get();
+
+            dump($tags);
+//dd($goods);
+        } else {
+            //男士
+            $tags = CateMiddleGoods::join('goods_category', 'cate_middle_goods.cate_id', '=', 'goods_category.id')
+                ->where('level', 'like', '0,'.$cateId.'%')
+                ->join('goods_tag', 'goods_tag.tag_id', '=', 'cate_middle_goods.tags_id')->get();
+            $goods = TagMiddleGoods::join('goods', 'tags_middle_goods.goods_id', '=', 'goods.goods_id')
+                ->where('goods.cat_id', 'like', $cateId.'_'.$twocate.'%')
+                ->join('goods_tag', 'goods_tag.tag_id', '=', 'tags_middle_goods.tags_id')->get();
+
+        }
+
+        return view('home.goods.list', ['cateId' => $cateId , 'tags' =>$tags, 'goods' => $goods ]);
     }
 
     /**

@@ -30,23 +30,18 @@
 			<div class="page_product_all">
 				<dl>
 					<dt>全部产品</dt>
-					@foreach($tags as $tag)
-					<dd id="page_all_a" class="page_all_a">
-						<span><img src="{{asset('\templates\home\uploads\icon_tree_menu.png')}}" alt=""></span>
-
-						<a href="javascript:">{{$tag->tag_name}}</a>
-
-					</dd>
-
-
-					<dd id="page_all_aone" class="page_all_none" style="display: block;">
-						{{--<a href="javascript:">全部上衣</a>--}}
-						<a href="javascript:">{{$tag->name}}</a>
-
-					</dd>
-					@endforeach
-
-
+						{{--男女士标签加规格--}}
+						@foreach($tags as $tag)
+						<dd id="page_all_a" class="page_all_a">
+							<span><img src="{{asset('\templates\home\uploads\icon_tree_menu.png')}}" alt=""></span>
+							<a href="javascript:">{{$tag->tag_name}}</a>
+						</dd>
+						<dd id="page_all_aone" data-value=" {{$tag->goodcatename}}" class="page_all_none goodcatename" style="display: block;">
+							{{--<a href="javascript:">全部上衣</a>--}}
+							<a href="javascript:">{{$tag->goodcatename}}</a>
+						</dd>
+						@endforeach
+					</dl>
 				<!-- 商品文字列表底部img -->
 				<div class="page_product_all_twoimg">
 					<img src="{{asset('\templates\home\uploads\750x364.jpg')}}" alt="">
@@ -64,16 +59,17 @@
 					</a>
 				</div>
 				<div class="page_product_bottom">
+				@foreach($goods as $good)
 					<a href="javascript:">
 						<span>
-							<img src="{{asset('/templates/home/images/wimg_450704747_2979539.jpg')}}" alt="">
+							<img style='width:220px;height:293px' src="{{rtrim($good->original_img,',')}}" alt="">
 						</span>
-						<p class="text">OUTSTANDINGORDINARY</p>
-						<p class="text">字母点缀卷边裤脚短裤_白色</p>
-						<p class="text">¥ 318</p>
+						<p class="text">{{$good->brand_id}}</p>
+						<p class="text">{{$good->goods_name}}</p>
+						<p class="text">¥ {{$good->shop_price}}</p>
 					</a>
 
-
+				@endforeach
 				</div>
 			</div>
 		</div>
@@ -96,6 +92,16 @@
 
 @section('js')
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
+	<script>
+		var goodcatename = $('.goodcatename').attr('data-value');
+		var catename = goodcatename.split(',');
+		var str = '';
+		for(var j=0; j< catename.length;j++){
+			str += '<a>'+catename[j]+'</a>';
+
+		}
+		$('.goodcatename').append(str);
+	</script>
 @endsection
 
 

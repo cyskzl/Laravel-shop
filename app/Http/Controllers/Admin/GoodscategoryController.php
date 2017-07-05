@@ -17,7 +17,7 @@ class GoodscategoryController extends Controller
     public function index(Request $request)
     {
         //分页查询以keyword为搜索关键字
-        $cate = Category::select(DB::raw('*, concat(level,",",id) as paths '))->orderBy('paths', 'desc')
+        $cate = Category::select(DB::raw('*, concat(level,",",id) as paths '))->orderBy('paths', 'asc')
                 ->where(function($query) use ($request){
                     //关键字
                     $keyword = $request->input('keyword');
