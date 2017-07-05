@@ -8,8 +8,10 @@ use App\Models\Category;
 use App\Models\GoodsAttr;
 use App\Models\GoodsAttribute;
 use App\Models\GoodsImages;
+use App\Models\GoodsTag;
 use App\Models\GoodsType;
 use App\Models\SpecGoodsPrice;
+use App\Models\TagMiddleGoods;
 use DB;
 use App\Models\Goods;
 use App\Http\Requests;
@@ -24,6 +26,7 @@ class GoodsController extends Controller
       public function index(Request $request)
     {
         $typeinfos = GoodsType::select('id', 'name')->get();
+
         $brands = Brand::select()->get();
         //分页查询以keyword为搜索关键字
         $goods= Goods::orderBy('sort', 'desc')
@@ -54,11 +57,11 @@ class GoodsController extends Controller
      */
     public function create()
     {
-
+        $tags = GoodsTag::all();
         $fatcates   =  Category::where('pid', '=', '0')->select()->get();
         $brands  =  Brand::select()->get();
         $types = GoodsType::select()->get();
-        return view('admin.main.goods.create', ['brands' => $brands, 'fatcates' => $fatcates, 'types' => $types]);
+        return view('admin.main.goods.create', ['tags' => $tags,'brands' => $brands, 'fatcates' => $fatcates, 'types' => $types]);
     }
 
     /**
@@ -107,7 +110,6 @@ class GoodsController extends Controller
         $goods->keywords = $data['keywords'];
         $goods->goods_content = $data['goods_content'];
         $goods->goods_type = $data['type_id'];
-
         //价格阶梯
         if($data['price_ladder']) {
             $price_ladder = $data['price_ladder'];
@@ -124,6 +126,10 @@ class GoodsController extends Controller
             //获取商品goods_id
             $goods_id = $goods->goods_id;
             $type_id = $data['type_id'];
+            $tags = $data['tag_id'];
+           if(!empty($tags)){
+               $goods->tags()->sync($tags);
+           }
             //图片相册
             if(!empty($data['image_url'])){
                 $data['image_url'];
@@ -246,6 +252,9 @@ class GoodsController extends Controller
             $specGoodsPrice = $goods->specGoodsPrice()->get();
 
             if(!empty($goods)){
+                    //删除与标签管关联的表
+                    TagMiddleGoods::where('goods_id', '=', $goods->goods_id)->delete();
+
                 //同时删除数据
                 //删除spec_goods_price数据
                 if(!empty($specGoodsPrice)){

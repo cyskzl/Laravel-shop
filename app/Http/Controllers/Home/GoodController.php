@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Home;
 
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Goods;
+use App\Models\GoodsTag;
 use App\Models\Spec;
 use App\Models\SpecGoodsPrice;
 use App\Models\SpecItem;
@@ -19,9 +21,27 @@ class GoodController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 商品列表页
      */
-    public function goodsList()
+    public function goodsList(Request $request)
     {
-        return view('home.goods.list');
+        $cateId = $request->session()->get('Index');
+
+        //标签
+//        $tags = GoodsTag::all();
+        $array = [];
+//        foreach($tags as $tag){
+//
+////            $arrcom = explode('_',$tag->cate_id);
+//            //2下标为3级id，在查数据库
+//
+//            $arr = Category::where('id','=',$arrcom[2])->get();
+//            $array[] = $arr;
+//        }
+        $tags = Category::select(DB::raw('goods_category.*,goods_tag.*'))
+            ->join('goods_tag', 'goods_tag.three_cate_id', '=', 'goods_category.id')
+            ->get();
+        dump($tags);
+
+        return view('home.goods.list', ['cateId' => $cateId , 'tags' =>$tags]);
     }
 
     /**

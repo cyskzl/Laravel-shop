@@ -7,6 +7,9 @@ use App\Http\Requests;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Input;
+
 
 class IndexController extends Controller
 {
@@ -16,12 +19,17 @@ class IndexController extends Controller
      * @param int $category_id 路由默认值为1，为女的，2为男的
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function homeIndex( Request $request, $category_id = 1)
+    public function homeIndex( Request $request)
     {
+//        $cateId = $category_id;
 
-        $cateId = $category_id ;
-//        $cateId = $request->session()->get('Index');
-//        dump($cateId);
+        $cateId = Input::get('categoryId');
+
+       if($cateId == '1'){
+           $request->session()->set('Index', '1');
+       } else {
+           $request->session()->set('Index', '2');
+       }
         //获取后缀的id 1, 女士默认，2男士,3 生活
         // $cateId = $category_id;
         return view('home.index', ['request' => $request ,'cateId' => $cateId ]);
@@ -174,6 +182,12 @@ class IndexController extends Controller
         //获取新品商品  1是新品  0不是
         $newgoods = Goods::where('is_new', '=', '1')->where('cat_id', 'like', $cateId.'%')->orderBy('goods_id','desc')->take(6)->get();
         return $newgoods;
+
+    }
+
+    public function cataLog (Request $request)
+    {
+        $cateId =  $request->route('id');
 
     }
 

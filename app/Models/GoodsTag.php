@@ -8,9 +8,7 @@ class GoodsTag extends Model
 {
     protected $table    = 'goods_tag';
 
-    protected $fillable = [
-        'tag_name'
-    ];
+    protected $primaryKey = 'tag_id';
 
 
 }
