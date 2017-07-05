@@ -72,7 +72,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 购物车
     Route::resource('/shoppingcart', 'ShoppingCartController');
     // 需登录界面
-    Route::group(['middleware'=>'auth'],function(){
+    // Route::group(['middleware'=>'auth'],function(){
         // 订单页
         Route::resource('/orders', 'OrderController');
         // 个人中心(默认为设置-个人信息 home.personal.set.personnalInfo)
@@ -124,7 +124,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 //    });
 
 
-//});
+});
 
 //prefix => 前缀
     // 后台首页
