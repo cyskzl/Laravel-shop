@@ -54,69 +54,71 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/phone_register', 'RegisterController@phoneRegister');
     // 手机注册跳转界面
     Route::post('/phone_register', 'RegisterController@toPhoneRegister');
-    Route::group(['middleware'=>'auth'],function(){
     // 登录信息处理
     Route::post('/doLogin', 'UserController@doLogin');
     // 退出登录
     Route::get('/logOut', 'UserController@logOut');
     // 商品列表页
     Route::get('/goodsList/{category_id}', 'GoodController@goodsList');
-//    // 商品新品列表页（本周与今日最新）
-//    Route::get('/goodsList/product', 'GoodController@goodsProduct');
+    //    // 商品新品列表页（本周与今日最新）
+    //    Route::get('/goodsList/product', 'GoodController@goodsProduct');
     // 商品详情页
     Route::get('/goodsDetail/{goods_id}', 'GoodController@goodsDetail');
     // 商品规格ajax验证
     Route::post('/goodsDetail/ajaxdetail','GoodController@ajaxDetail');
-//    // 加入到购物车（ajax提交缓存处理）
+    //    // 加入到购物车（ajax提交缓存处理）
     Route::post('/shoppingcart/shoppingcache', 'ShoppingCartController@shoppingCache');
     // 购物车
     Route::resource('/shoppingcart', 'ShoppingCartController');
-    // 订单页
-    Route::resource('/orders', 'OrderController');
-    // 个人中心(默认为设置-个人信息 home.personal.set.personnalInfo)
-    Route::get('/personal', 'PersonalController@index');
-    //修改密码
-    Route::post('/personal/editPass/{id}', 'PersonalController@editPass');
-    //修改昵称
-    Route::post('/personal/editName/{id}', 'PersonalController@editName');
-    //修改真实姓名
-    Route::post('/personal/editRealname/{id}', 'PersonalController@editRealName');
-    //修改头像
-    Route::post('/personal/editAvatar/{id}', 'PersonalController@editAvatar');
-    //修改性别
-    Route::post('/personal/editSex/{id}', 'PersonalController@editSex');
-    //修改会员生日
-    Route::post('/personal/editBirthday/{id}', 'PersonalController@editBirthday');
-    // 个人中心-交易管理（浏览记录）
-    Route::get('/browseLog', 'PersonalController@browseLog');
-    // 个人中心-交易管理（收藏夹）
-    Route::get('/favorites', 'PersonalController@favorites');
-    // 个人中心-订单详情（待付款订单）
-    Route::get('/waitorder', 'OrderController@waitOrder');
-    // 个人中心-订单详情（已付款订单）
-    Route::get('/alreadyorder', 'OrderController@alreadyOrder');
-    // 个人中心-订单详情（已取消订单）
-    Route::get('/cancelorder', 'OrderController@cancelOrder');
-    // 个人中心-订单详情（退款/退货订单）
-    Route::get('/refundorder', 'OrderController@refundOrder');
-    // 个人中心-个人中心（积分）
-    Route::get('/integral', 'PersonalController@integral');
-    // 个人中心-个人中心（会员等级）
-    Route::get('/memberlevel', 'PersonalController@memberLevel');
-    // 个人中心-个人中心（优惠劵）
-    Route::get('/coupon', 'PersonalController@coupon');
-    // 个人中心-个人中心（评论）
-    Route::get('/comment', 'CommentController@comment');
-    // 个人中心-服务中心（最新消息）
-    Route::get('/newest', 'PersonalController@newest');
-    // 个人中心-服务中心（常见问题）
-    Route::get('/comproblem', 'PersonalController@comProblem');
-    // 个人中心-服务中心（用户手册）
-    Route::get('/usermanual', 'PersonalController@userManual');
-    // 个人中心-服务中心（隐私条款）
-    Route::get('/privacyclause', 'PersonalController@privacyClause');
-    // 个人中心（地址管理）
-    Route::resource('/address', 'AddressController');
+    // 需登录界面
+    Route::group(['middleware'=>'auth'],function(){
+
+        // 订单页
+        Route::resource('/orders', 'OrderController');
+        // 个人中心(默认为设置-个人信息 home.personal.set.personnalInfo)
+        Route::get('/personal', 'PersonalController@index');
+        //修改密码
+        Route::post('/personal/editPass/{id}', 'PersonalController@editPass');
+        //修改昵称
+        Route::post('/personal/editName/{id}', 'PersonalController@editName');
+        //修改真实姓名
+        Route::post('/personal/editRealname/{id}', 'PersonalController@editRealName');
+        //修改头像
+        Route::post('/personal/editAvatar/{id}', 'PersonalController@editAvatar');
+        //修改性别
+        Route::post('/personal/editSex/{id}', 'PersonalController@editSex');
+        //修改会员生日
+        Route::post('/personal/editBirthday/{id}', 'PersonalController@editBirthday');
+        // 个人中心-交易管理（浏览记录）
+        Route::get('/browseLog', 'PersonalController@browseLog');
+        // 个人中心-交易管理（收藏夹）
+        Route::get('/favorites', 'PersonalController@favorites');
+        // 个人中心-订单详情（待付款订单）
+        Route::get('/waitorder', 'OrderController@waitOrder');
+        // 个人中心-订单详情（已付款订单）
+        Route::get('/alreadyorder', 'OrderController@alreadyOrder');
+        // 个人中心-订单详情（已取消订单）
+        Route::get('/cancelorder', 'OrderController@cancelOrder');
+        // 个人中心-订单详情（退款/退货订单）
+        Route::get('/refundorder', 'OrderController@refundOrder');
+        // 个人中心-个人中心（积分）
+        Route::get('/integral', 'PersonalController@integral');
+        // 个人中心-个人中心（会员等级）
+        Route::get('/memberlevel', 'PersonalController@memberLevel');
+        // 个人中心-个人中心（优惠劵）
+        Route::get('/coupon', 'PersonalController@coupon');
+        // 个人中心-个人中心（评论）
+        Route::get('/comment', 'CommentController@comment');
+        // 个人中心-服务中心（最新消息）
+        Route::get('/newest', 'PersonalController@newest');
+        // 个人中心-服务中心（常见问题）
+        Route::get('/comproblem', 'PersonalController@comProblem');
+        // 个人中心-服务中心（用户手册）
+        Route::get('/usermanual', 'PersonalController@userManual');
+        // 个人中心-服务中心（隐私条款）
+        Route::get('/privacyclause', 'PersonalController@privacyClause');
+        // 个人中心（地址管理）
+        Route::resource('/address', 'AddressController');
 
 
     });

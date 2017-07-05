@@ -59,38 +59,46 @@ class GoodController extends Controller
      */
     public function goodsDetail(Request $request,$goods_id)
     {
+        // 页面分类id，区分所属顶级分类
         $cateId = $request->session()->get('Index');
 
+        // 获取商品详细信息，便于详情页以及查找规格价格，属性
         $goodinfo = Goods::find($goods_id);
-//        dd($goodinfo);
+
+        // 获取商品的类型id，用于获取商品规格项（颜色、尺寸。。）
         $type_id = $goodinfo->goods_type;
 
+        // 获取品牌id，用于查找商品品牌信息
         $brand_id = $goodinfo->brand_id;
 
+        // 获取商品品牌信息，用于详情页展示
         $brand = Brand::where('id',$brand_id)->pluck('name')->toArray();
 
-        $spec = Spec::where('type_id',$type_id)->pluck('name','id');
+//        // 通过商品的类型id，获取商品的规格名与规格id，用于查找商品价格
+//        $spec = Spec::where('type_id',$type_id)->pluck('name','id');
 
+        // 通过商品ID获取商品的所有规格项
         $spec_key = SpecGoodsPrice::where('goods_id',$goods_id)->get();
-//        dd($spec_key);
-//        dd($spec_key[0]->key);
+
+        // 拆分规格项值，用于详情页的第一列的规格展示，并且判断商品此规格项对应下的商品规格项有几个规格
         $one_key = explode('_',$spec_key[0]->key)[0];
 
+        // 通过上述的第一个商品规格项，通过模糊查询得到第一个规格对应的下一规格项
         $key1_info = SpecGoodsPrice::where('goods_id',$goods_id)->where('key','like',$one_key.'_%')->pluck('key');
-//        dd($key1_info);
-//        dd($first_key);
+
+        // 通过遍历获取得到商品的第一个规格项的下一规格项的所有信息
         foreach($key1_info as $key2){
             $two_key[] = explode('_',$key2)[1];
         }
-//        dd($two_key);
-//        foreach($spec_key as $key){
-//            $good_key = explode('_',$key->key);
-//        }
+
+        // 通过商品的类型ID得到该商品的类型对应的所有规格项
         $specdetali = Spec::select(DB::raw('spec.*, spec_item.spec_id, group_concat(spec_item.item) AS specitem , group_concat(spec_item.id) AS specid'))
         ->join('spec_item', 'spec.id', '=', 'spec_item.spec_id')
         ->where('type_id','=',$type_id)
         ->groupby('spec.name')
         ->get();
+
+        // 拆分规格项的信息，得到规格名spec_name、规格值spec_item,规格id
         foreach($specdetali as $k=>$detail){
             $spec_name[$k] = $detail->name;
             $spec_item[$k] = explode(',',$detail->specitem);
@@ -134,21 +142,28 @@ class GoodController extends Controller
      */
     public function ajaxDetail(Request $request)
     {
+        // 商品ID
         $goods_id = $request->input('goods_id');
+        // 商品规格的key（如：32_20里的32）
         $key1 = $request->input('key1');
+        // 商品规格的看key（全拼）
         $key2 = $request->input('key2');
+        // 通过请求不同的key值得到所需的数值
+        // 32_23
+        // key1存在，说明需要查找对应的key1（32）的商品有有哪些key2（23.。。）
         if(!empty($key1)){
             $keyinfo = SpecGoodsPrice::where('goods_id',$goods_id)->where('key','like',$key1.'_%')->pluck('key');
-//            dump($keyinfo);
+            // 遍历拆解key值
             foreach ($keyinfo as $k=>$v){
                 $key[$k] = explode('_',$v)[1];
             }
             return $key;
 
         }
+        // key2（32_23）存在,则需要获取商品的价格
         if(!empty($key2)){
             $goodprice = SpecGoodsPrice::where('goods_id',$goods_id)->where('key',$key2)->pluck('price');
-
+            // 返回价格
             return $goodprice[0];
 
         }

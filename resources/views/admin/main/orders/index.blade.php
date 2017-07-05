@@ -116,7 +116,7 @@
 <script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
 <script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
 <script>
-    layui.use('laydate', function(){
+    layui.use(['form','layer','laydate'], function(){
         var laydate = layui.laydate;
 
         var start = {
