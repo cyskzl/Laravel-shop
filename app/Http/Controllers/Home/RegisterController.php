@@ -226,7 +226,8 @@ class RegisterController extends Controller
 
     public function phoneRegister()
     {
-        return view('home.phone_register');
+        $cateId = 1;
+        return view('home.phone_register',compact('cateId'));
     }
 
     public function validatePhone(Request $request)
@@ -276,7 +277,7 @@ class RegisterController extends Controller
         $resultarr = get_object_vars($result);
 
 
-        if (@$resultarr['result']['err_code'] == '0'){
+        if (is_array($resultarr['result']['err_code'])){
 
             return '{"error":0}';
 
@@ -294,7 +295,7 @@ class RegisterController extends Controller
 
         $data = TempEmail::where('user_id',$phone)->get()->toArray();
 
-        if (!empty($data)){
+        if (count($data)>0){
 
             $code = $data[0]['uuid'];
 
@@ -307,6 +308,7 @@ class RegisterController extends Controller
             if (date('Y-m-d H:i:s',time($data[0]['created_at']) + 600) < date('Y-m-d H:i:s')){
 
                 return $code;
+
             }else{
 
                 TempEmail::where('user_id',$phone)->delete();
@@ -364,9 +366,9 @@ class RegisterController extends Controller
 
         $bool = preg_match($pattern,$phone);
 
-        $isuser = UserRegister::where('tel',$phone)->get();
+        $isuser = UserRegister::where('tel',$phone)->get(['tel']);
 
-        if (!empty($isuser)){
+        if (count($isuser)>0){
 
             return back()->withInput()->with(['fail'=>'该手机号码已注册!']);
         }
@@ -389,17 +391,13 @@ class RegisterController extends Controller
             return back()->withInput()->with(['fail'=>'密码与确认密码不相同']);
         }
 
-        $user = new UserRegister;
 
-        $user->tel = $phone;
+        $userstatus = $this->createUser($request);
 
-        $user->password =  Hash::make($pass);
 
-        $user->status = 1;
+        if ($userstatus){
 
-        $user->register_ip = $request->ip();
-
-        if ($user->save()){
+            TempEmail::where('user_id', '=', $phone)->delete();
 
             return view('home.validatefail',['info'=>'回到首页']);
 
@@ -407,6 +405,43 @@ class RegisterController extends Controller
 
             return back()->withInput()->with(['fail'=>'注册失败,请您重新填写用户信息']);
         }
+
+    }
+
+    //事物创建帐号
+    public function createUser(array $data)
+    {
+        DB::transaction(function() use($data){
+            $user = new UserRegister;
+
+            $user->tel = $data->input('tel');
+
+            $user->password =  Hash::make($data->input('password'));
+
+            $user->status = 1;
+
+            $user->register_ip = $data->ip();
+
+            if ($user->save()){
+                $uid = $user->id;
+
+                $userlogin = new UserLogin();
+                $userlogin->user_id = $uid;
+                $userlogin->login_name = $user->tel;
+                $userlogin->password = $user->password;
+                $userlogin->last_login_ip = $data->ip();
+                $userlogin->last_login_at = $user->created_at;
+
+                if(!$userlogin->save()){
+                    return false;
+                }
+
+            }else{
+                return false;
+            }
+        });
+
+        return true;
 
     }
 }

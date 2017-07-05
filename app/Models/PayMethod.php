@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class PayMethod extends Model
 {
     //
+    protected $table = 'pay_method';
+
 }
