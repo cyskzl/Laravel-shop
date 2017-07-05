@@ -26,6 +26,7 @@ class UserController extends Controller
      */
     public function doLogin(Request $request)
     {
+
         $this->validate($request,[
             'username'=>'required',
             'password'=>'required | between:6,16',
@@ -59,12 +60,9 @@ class UserController extends Controller
             $user['login_name'] = $username;
 
             $user['password'] = $request->input('password');
+
             $is_check = boolval($request->input('is_check'));
 
-            $user = [
-                'login_name' => $request->get('username'),
-                'password' => $request->get('password')
-            ];
 //        dd(\Auth::attempt($user));
             if(\Auth::attempt($user,$is_check)){
                 return redirect('/home');
@@ -76,7 +74,6 @@ class UserController extends Controller
         }else{
             return back()->withInput()->with(['fail'=>'用户名不符']);
         }
-
 
     }
 

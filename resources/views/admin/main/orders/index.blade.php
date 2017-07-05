@@ -24,7 +24,7 @@
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
 <div class="x-body">
-    <form class="layui-form x-center" action="" style="width:800px">
+    <form class="layui-form x-center" action="">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
                 <label class="layui-form-label">日期范围</label>
@@ -36,17 +36,43 @@
                 <div class="layui-input-inline">
                     <input class="layui-input" placeholder="截止时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
                 </div>
-                <div class="layui-input-inline">
-                    <div class="layui-input-block">
-                        <select name="interest" lay-filter="aihao">
-                            <option value=""></option>
-                            <option value="0">写作</option>
-                            <option value="1" selected="">阅读</option>
-                            <option value="2">游戏</option>
-                            <option value="3">音乐</option>
-                            <option value="4">旅行</option>
-                        </select>
-                    </div>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <select name="pay_status" lay-filter="pay_status">
+                        <option value="">支付状态</option>
+                        <option value="0">未支付</option>
+                        <option value="1">已支付</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <select name="pay_code" lay-filter="pay_code">
+                        <option value="">支付方式</option>
+                        <option value="0">微信支付</option>
+                        <option value="1">支付宝</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <select name="shipping_status" lay-filter="shipping_status">
+                        <option value="">发货状态</option>
+                        <option value="0">未发货</option>
+                        <option value="1">已发货</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <select name="order_status" lay-filter="order_status">
+                        <option value>订单状态</option>
+                        <option value="0">待确认</option>
+                        <option value="1">已确认</option>
+                        <option value="3">已收货</option>
+                        <option value="3">已取消</option>
+                        <option value="3">已完成</option>
+                        <option value="3">已作废</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <select name="keytype" lay-filter="keytype">
+                        <option value="0">收货人</option>
+                        <option value="1">订单编号</option>
+                    </select>
                 </div>
                 <div class="layui-input-inline">
                     <input type="text" name="username"  placeholder="标题" autocomplete="off" class="layui-input">
@@ -116,7 +142,7 @@
 <script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
 <script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
 <script>
-    layui.use('laydate', function(){
+    layui.use(['form', 'layedit', 'laydate'], function(){
         var laydate = layui.laydate;
 
         var start = {

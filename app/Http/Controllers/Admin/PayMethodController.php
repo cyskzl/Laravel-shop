@@ -94,9 +94,6 @@ class PayMethodController extends Controller
             return $data;
         }
 
-
-
-
     }
 
     /**
