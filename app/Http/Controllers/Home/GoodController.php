@@ -32,6 +32,7 @@ class GoodController extends Controller
     {
         return view('home.goods.product');
     }
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 商品详情页
@@ -47,8 +48,22 @@ class GoodController extends Controller
         $brand = Brand::where('id',$brand_id)->pluck('name')->toArray();
 
         $spec = Spec::where('type_id',$type_id)->pluck('name','id');
-//        dd($spec);
 
+        $spec_key = SpecGoodsPrice::where('goods_id',$goods_id)->get();
+//        dd($spec_key);
+//        dd($spec_key[0]->key);
+        $one_key = explode('_',$spec_key[0]->key)[0];
+
+        $key1_info = SpecGoodsPrice::where('goods_id',$goods_id)->where('key','like',$one_key.'_%')->pluck('key');
+//        dd($key1_info);
+//        dd($first_key);
+        foreach($key1_info as $key2){
+            $two_key[] = explode('_',$key2)[1];
+        }
+//        dd($two_key);
+//        foreach($spec_key as $key){
+//            $good_key = explode('_',$key->key);
+//        }
         $specdetali = Spec::select(DB::raw('spec.*, spec_item.spec_id, group_concat(spec_item.item) AS specitem , group_concat(spec_item.id) AS specid'))
         ->join('spec_item', 'spec.id', '=', 'spec_item.spec_id')
         ->where('type_id','=',$type_id)
@@ -59,6 +74,7 @@ class GoodController extends Controller
             $spec_item[$k] = explode(',',$detail->specitem);
             $spec_id[$k] = explode(',',$detail->specid);
         }
+
 //        dump($spec_name);
 //        dump($spec_item);
 //        dd($spec_id);
@@ -86,9 +102,14 @@ class GoodController extends Controller
 //        dump($spec_name);
 //        dd($specitem);
 //        dd($specinfo);
-        return view('home.goods.details',compact('specdetali','goodinfo','brand','spec_name','spec_item','spec_id'));
+        return view('home.goods.details',compact('specdetali','goodinfo','brand','spec_name','spec_item','spec_id','two_key'));
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     * 处理详情页的规格和价格的ajax请求
+     */
     public function ajaxDetail(Request $request)
     {
         $goods_id = $request->input('goods_id');
@@ -96,20 +117,30 @@ class GoodController extends Controller
         $key2 = $request->input('key2');
         if(!empty($key1)){
             $keyinfo = SpecGoodsPrice::where('goods_id',$goods_id)->where('key','like',$key1.'_%')->pluck('key');
+//            dump($keyinfo);
             foreach ($keyinfo as $k=>$v){
-                $key[$k] = trim($v,$key1.'_');
+                $key[$k] = explode('_',$v)[1];
             }
             return $key;
 
         }
+        if(!empty($key2)){
+            $goodprice = SpecGoodsPrice::where('goods_id',$goods_id)->where('key',$key2)->pluck('price');
+
+            return $goodprice[0];
+
+        }
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * 购物车页
-     */
-    public function shopCart()
-    {
-        return view('home.goods.shopCart');
-    }
+
+//    public function shoppingCache(Request $request)
+//    {
+//        $goods_id = $request->input('goods_id');
+//        $goods_name = $request->input('goods_name');
+//        $specone = $request->input('specone');
+//        $spectwo = $request->input('spectwo');
+//        $num = $request->input('num');
+//        $price = $request->input('price');
+//        return $goods_name;
+//    }
 }

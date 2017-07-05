@@ -87,4 +87,9 @@ class ShoppingCartController extends Controller
     {
         //
     }
+
+    public function shoppingCache(Request $request)
+    {
+        //
+    }
 }

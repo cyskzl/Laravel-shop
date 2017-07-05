@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class UserController extends Controller
 {
+
     public function login()
     {
         // dd(bcrypt('dasuan'));
@@ -60,7 +61,7 @@ class UserController extends Controller
             $is_check = boolval($request->input('is_check'));
 
             $user = [
-                'login_name' => $request->get('email'),
+                'login_name' => $request->get('username'),
                 'password' => $request->get('password')
             ];
 //        dd(\Auth::attempt($user));

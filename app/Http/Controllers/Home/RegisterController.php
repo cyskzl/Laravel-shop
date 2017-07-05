@@ -189,7 +189,7 @@ class RegisterController extends Controller
                 // 增加用户登录表信息
                 $userlogin = new UserLogin();
                 $userlogin->user_id = $uid;
-                $userlogin->login_name = $uid;
+                $userlogin->login_name = $uinfo->email;
                 $userlogin->password = $uinfo->password;
                 $userlogin->last_login_ip = $request->ip();
                 $userlogin->last_login_at = $nowtime;
