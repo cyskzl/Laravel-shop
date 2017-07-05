@@ -67,7 +67,7 @@ $(function(){
             checkArr[i] = $(check[i]).val();
         }
 
-        var url = 'shoppingcart/1';
+        var url = 'home/shoppingcart/1';
 
         shopAjax(url, 'delete', JSON.stringify(checkArr));
 

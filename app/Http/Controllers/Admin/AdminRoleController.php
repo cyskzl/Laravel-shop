@@ -104,7 +104,7 @@ class AdminRoleController extends Controller
         $permissions  = Permission::all();
         //获取已有的权限
         $myPermissions = $roles->permissions;
-
+        dd($myPermissions,$permissions);
         return view('admin.main.adminrole.edit', compact('permissions', 'myPermissions', 'roles'));
     }
 
