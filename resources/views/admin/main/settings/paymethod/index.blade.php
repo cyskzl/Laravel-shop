@@ -7,7 +7,7 @@
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 @endsection
 @section('x-body')
-    <form class="layui-form " action="{{url('admin/deliverymethod')}}" style="width:800px">
+    <form class="layui-form " action="{{url('admin/paymethod')}}" style="width:800px">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
                 <label class="layui-form-label">搜索</label>
@@ -24,7 +24,7 @@
 
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
         {{--<a href="{{url('admin/goodscategory/create')}}"><button class="layui-btn" ><i class="layui-icon">&#xe608;</i>增加</button></a>--}}
-        <button class="layui-btn" onclick="question_add('添加快递','{{ url('admin/deliverymethod/create') }}','800','500')"><i
+        <button class="layui-btn" onclick="question_add('添加快递','{{ url('admin/paymethod/create') }}','800','500')"><i
                     class="layui-icon">&#xe608;</i>添加
         </button>
         <span class="x-right" style="line-height:40px">共有数据：{{$sum}}  条</span></xblock>
@@ -38,10 +38,10 @@
                 ID
             </th>
             <th>
-                快递名称
+                支付名称
             </th>
             <th>
-                邮费
+                开关
             </th>
             <th>
                 描述
@@ -52,7 +52,7 @@
         </tr>
         </thead>
         <center id="x-link">
-            @foreach($delvery as $v)
+            @foreach($paydata as $v)
                 <tr>
                     <td>
                         <input type="checkbox" value="1" name="">
@@ -61,16 +61,16 @@
                         {{ $v->id }}
                     </td>
                     <td>
-                        {{$v->name}}
+                        {{$v->pay_name}}
                     </td>
                     <td>
-                        {{ $v->price }}
+                        {{ $v->enabled }}
                     </td>
                     <td>
-                        {{$v->desc =  $v->desc?:"无描述"}}
+                        {{$v->pay_desc =  $v->pay_desc?:"无描述"}}
                     </td>
                     <td class="td-manage">
-                        <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/deliverymethod/{{$v->id}}/edit','{{$v->id}}','','510')"
+                        <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/paymethod/{{$v->id}}/edit','{{$v->id}}','','510')"
                            class="ml-5" style="text-decoration:none">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
@@ -127,7 +127,7 @@
                 //                console.log(url);
                 $.ajax({
                     type: 'DELETE',
-                    url:  '{{url('/admin/deliverymethod/')}}'+'/'+id,
+                    url:  '{{url('/admin/paymethod/')}}'+'/'+id,
                     dataType: 'json',
                     data: { '_token':'{{csrf_token()}}', '_method': 'DELETE', 'id': id },
                     success:function (data){

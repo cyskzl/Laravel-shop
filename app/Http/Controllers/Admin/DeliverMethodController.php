@@ -18,9 +18,15 @@ class DeliverMethodController extends Controller
     public function index(Request $request)
     {
 
-        $delvery = DelveryMethod::orderBy('id', 'desc')->paginate(10);
+        $delvery = DelveryMethod::orderBy('id', 'desc')->where(function ($query) use ($request){
 
-        $sum = DelveryMethod::count();
+            if (!empty($request->input('keyword'))){
+                $query->where('name','like','%'.$request->input('keyword').'%');
+            }
+
+        })->paginate(10);
+
+        $sum = count($delvery);
 
         return view('admin.main.settings/deliverymethod.index',compact('delvery','request','sum'));
     }

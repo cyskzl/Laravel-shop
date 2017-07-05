@@ -99,7 +99,7 @@
 	border: 1px solid #2D2D2D;
 }
 .code>input{
-	width: 60%;
+	width: 50%;
 	float: left;
 }
 .code>button{
@@ -108,11 +108,15 @@
 	height: 45px;
 	line-height: 45px;
 	text-align: center;
-	width: 30%;
+	width: 40%;
 	background: #000;
 	margin-left: 5%;
 	color:#fff;
 
+}
+.code>button:active{
+	font-size: 16px;
+	background: #212020;
 }
 .btn-submit{
 	text-indent: 0px;
