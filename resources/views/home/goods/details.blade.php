@@ -12,7 +12,6 @@
 
 @endsection
 
-
 @section('main')
 	<!--主体内容-->
 	    <!-- 商品小字分类介绍-->
@@ -54,7 +53,7 @@
 	            <!-- 商品标签-->
 	            <div class="ware-title">
 	                <span class="Black">{{$brand[0]}}</span><br>
-	                <span class="B4d">{{$goodinfo->goods_name}}</span><br>
+	                <span class="B4d" id="goods_name">{{$goodinfo->goods_name}}</span><br>
 	                <span class="S3c">{{$goodinfo->goods_sn}}</span>
 	            </div>
 
@@ -62,11 +61,11 @@
 	            <div class="term">
 	                <ul>
 	                    <!-- 商品价格-->
-	                    <li><span>价格：</span><span class="B4d">￥{{$goodinfo->shop_price}}</span></li>
+	                    <li><span>价格：</span><span class="B4d" id="price">￥{{$goodinfo->shop_price}}</span></li>
 	                    {{--<li><span>含税价：</span><span>￥304.37</span></li>--}}
 	                    <!-- 商品颜色-->
 	                    <li>
-	                        <span class="fl">{{$spec_name[0]}}：</span>
+	                        <span class="fl" id="spec_one">{{$spec_name[0]}}：</span>
 	                        <div class="color flex fl">
 	                            @foreach($spec_item[0] as $k=>$one_item)
 										<input class="key1" type="text" name="key1" value="{{$one_item}}" size="1" goods_id="{{$goodinfo->goods_id}}" key1= '{{$spec_id[0][$k]}}' readonly>
@@ -75,7 +74,7 @@
 	                    </li>
 	                    <!-- 商品尺寸-->
 	                    <li>
-	                        <span class="fl">{{$spec_name[1]}}：</span>
+	                        <span class="fl" id="spec_two">{{$spec_name[1]}}：</span>
 	                        <div class="size fl">
 	                            <div>
 	                                @foreach($spec_item[1] as $i=>$two_item)
@@ -103,7 +102,7 @@
 
 	            <!-- 购物车-->
 	            <div class="car">
-	                <a href="javascript:">加入购物车</a>
+	                <a href="javascript:" id="addcart">加入购物车</a>
 	            </div>
 
 	            <!-- 发货方式&退换条款-->
@@ -218,63 +217,6 @@
 	            <!-- 商品详情-->
 	            <div class="cp-details clearfix">
 					{!! $goodinfo->goods_content !!}
-	                <!-- 产品名称-->
-	                {{--<div class="D1">--}}
-	                    {{--<h3>产品详情</h3>--}}
-	                    {{--<span>方形外观，侧拉链，logo细节，简约运动风手包。</span>--}}
-	                {{--</div>--}}
-	                {{--<!-- 产品参数-->--}}
-	                {{--<div class="D2">--}}
-	                    {{--<h3>产品参数</h3>--}}
-	                    {{--<ul>--}}
-	                        {{--<li>原产地:韩国</li>--}}
-	                        {{--<li>面料/材质:锦纶100%</li>--}}
-	                        {{--<li>性别:男士</li>--}}
-	                        {{--<li>性别:男士</li>--}}
-	                    {{--</ul>--}}
-	                {{--</div>--}}
-	                {{--<!-- 产品规格-->--}}
-	                {{--<div class="D3 rela">--}}
-	                    {{--<h3>尺码信息</h3>--}}
-	                    {{--<p class="abso">参考尺寸(cm)</p>--}}
-	                    {{--<table>--}}
-	                        {{--<tbody>--}}
-	                            {{--<tr>--}}
-	                                {{--<td class="tit"></td>--}}
-	                                {{--<td>OS</td>--}}
-	                            {{--</tr>--}}
-	                            {{--<tr>--}}
-	                                {{--<td class="tit">长</td>--}}
-	                                {{--<td>17</td>--}}
-	                            {{--</tr>--}}
-	                            {{--<tr>--}}
-	                                {{--<td class="tit">短</td>--}}
-	                                {{--<td>7</td>--}}
-	                            {{--</tr>--}}
-	                        {{--</tbody>--}}
-	                    {{--</table>--}}
-	                {{--</div>--}}
-	                <!-- 产品样式-->
-	                {{--<div class="D4 clearfix">--}}
-	                    {{--<ul class="clearfix">--}}
-	                        {{--<li><img src="{{asset('/templates/home/public/img/2.jpg')}}" alt=""/></li>--}}
-	                        {{--<li><img src="{{asset('/templates/home/public/img/3.jpg')}}" alt=""/></li>--}}
-	                        {{--<li><img src="{{asset('/templates/home/public/img/4.jpg')}}" alt=""/></li>--}}
-	                        {{--<li><img src="./public/img/2.jpg" alt=""/></li>--}}
-	                        {{--<li><img src="./public/img/3.jpg" alt=""/></li>--}}
-	                        {{--<li><img src="./public/img/4.jpg" alt=""/></li>--}}
-	                        {{--<img src="{{asset('/templates/home/public/img/8.jpg')}}" alt=""/>--}}
-	                        {{--<span>--}}
-	                            {{--THISISNEVERTHAT始创于2009年，主要突出韩系街头风格，--}}
-	                            {{--同时越来越多地融入高街元素。--}}
-	                            {{--扎扎实实地融合传统美式工装、街头、--}}
-	                            {{--滑板元素等传统街头品牌根基的风格，--}}
-	                            {{--独到地诠释品牌对美式休闲的见解。--}}
-	                        {{--</span>--}}
-	                    {{--</div>--}}
-	                {{--</div>--}}
-	            {{--</div>--}}
-
 	            <!-- 购物须知-->
 	            <div class=" question none">
 	                <img src="{{asset('/templates/home/public/png/buy.png')}}" alt=""/>
@@ -347,6 +289,14 @@
 	    </div>
 @endsection
 
+@section('alert')
+<div class="tip">
+    <img src="{{asset('/templates/home/public/png/icon_error.png')}}" alt="">
+    <p id="tip"></p>
+    <span id="close">X</span>
+</div>
+@endsection
+
 @section('footer')
 	<!--查看条框弹出框-->
 	<div class="popup fix none" id="popup">
@@ -397,41 +347,143 @@
 		<img src="{{asset('/templates/home/uploads/go_to_top.png')}}" alt=""  >
 	</div>
 @endsection
+
 @section('js')
 	<script src="{{asset('/templates/home/js/page.js')}}"></script>
 	<script>
-	$('.key1').click(function(){
-		// console.log($(this).attr('spec_id'));
-		var key1 =  $(this).attr('key1');
-		var goods_id = $(this).attr('goods_id');
-		var key2 = $('.key2');
-		var key  = [];
-		for(var i=0;i<key2.length;i++){
-			key[i] = key2[i].getAttribute('key2');
+        $('.key1').eq(0).css({ color: "white", background: "black" });
+        $('.key1').eq(0).siblings().css({ color: "black", background: "white" });
+        var onekey = $('.key1').eq(0).attr('key1');
+        $('.key1').eq(0).attr('onekey','one_key');
+        var goods_id = $('.key1').eq(0).attr('goods_id');
+        var key2 = $('.key2');
+        var key  = [];
+        for(var i=0;i<key2.length;i++){
+            key[i] = key2[i].getAttribute('key2');
             key2[i].style.background = 'white';
             key2[i].style.color = 'black';
-		}
-//		console.log(key);return false;
-		$.ajax({
-			type:'POST',
-			url:'./ajaxdetail',
-			dataType:'json',
-			data:{'_token':'{{csrf_token()}}','goods_id':goods_id,'key1':key1},
-			success: function(data){
-//				console.log(data);return false;
-				if(data){
-					for(var i=0;i<data.length;i++){
-					    if(key.indexOf(data[i]) > -1){
-							key2[0].style.background = 'rgb(109, 109, 109)';
-							key2[0].style.color = 'white';
+        }
+//        console.log(onekey);
+        $.ajax({
+            type:'POST',
+            url:'./ajaxdetail',
+            dataType:'json',
+            data:{'_token':'{{csrf_token()}}','goods_id':goods_id,'key1':onekey},
+            success: function(data){
+                if(data){
+//                    console.log(data);
+                    for(var i=0;i<key.length;i++){
+//                            console.log(key[i]);
+                        if(data.indexOf(key[i]) > -1){
+//                            key2[i].style.background = 'rgb(109, 109, 109)';
+//                            key2[i].style.color = 'white';
                             key2[i].style.display = 'inline';
-						}else {
-					        key2[i].style.display = 'none';
-						}
-					}
-				}
-			}
-		});
-	});
+
+                        }else {
+                            key2[i].style.display = 'none';
+                        }
+                    }
+                }
+            }
+        });
+
+        $('.key1').click(function(){
+            // console.log($(this).attr('spec_id'));
+            $(this).css({ color: "white", background: "black" });
+            $(this).siblings().css({ color: "black", background: "white" });
+            var that = $(this);
+            var key1 =  $(this).attr('key1');
+            $(this).attr('onekey','one_key');
+            $(this).siblings().removeAttr('onekey');
+//            var goods_id = $(this).attr('goods_id');
+    //		console.log(key);return false;
+            $.ajax({
+                type:'POST',
+                url:'./ajaxdetail',
+                dataType:'json',
+                data:{'_token':'{{csrf_token()}}','goods_id':goods_id,'key1':key1},
+                success: function(data){
+    //				console.log(data);return false;
+                    if(data){
+                        for(var i=0;i<key.length;i++){
+//                            console.log(key[i]);
+                            if(data.indexOf(key[i]) > -1){
+//                                    key2[i].style.background = 'rgb(109, 109, 109)';
+    //                                key2[i].style.color = 'white';
+                                key2[i].style.display = 'inline';
+                            }else {
+                                key2[i].style.display = 'none';
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.key2').click(function(){
+            var twokey = $(this).attr('key2');
+            $(this).css({ color: "white", background: "black" });
+            $(this).siblings().css({ color: "black", background: "white" });
+            $(this).attr('twokey', 'two_key');
+            $(this).siblings().removeAttr('twokey');
+            var that = $('.key1[onekey=one_key]');
+            var onekey = that.attr('key1');
+//                console.log(onekey);
+            if(onekey){
+                $.ajax({
+                    type:'POST',
+                    url:'./ajaxdetail',
+                    dataType:'json',
+                    data:{'_token':'{{csrf_token()}}','goods_id':goods_id,'key2':onekey+'_'+twokey},
+                    success: function(data) {
+                        if(data){
+//                                console.log(data);
+                            $('#price').html('￥'+data.toFixed(2));
+                        }
+                        return false;
+                    }
+                });
+            }
+
+        });
+
+        $('#addcart').on('click', function(){
+            var onevalue = $('.key1[onekey=one_key]').val();
+            var twovalue = $('.key2[twokey=two_key]').val();
+            var spec_one = $('#spec_one').html();
+            var spec_two = $('#spec_two').html();
+            var num = $('#number').val();
+            var price = $('#price').text();
+            var goods_name =$('#goods_name').html();
+            if(!onevalue || !twovalue){
+                $('#alert').show("fast",function(){
+                    $('#tip').text('Tip:请选择商品');
+                });
+                return false;
+            } else {
+
+                // 将商品详情存入Cookie
+                 var goods_shop = JSON.stringify({"goods_id":goods_id,"specone":spec_one+':'+onevalue,'spectwo':spec_two+':'+twovalue,'num':num,'price':price,'goods_name':goods_name});
+                $.ajax({
+                    type:'POST',
+                    url:'{{url('home/shoppingcart/shoppingcache')}}',
+                    dataType:'json',
+                    data:{'_token':'{{csrf_token()}}','goods_shop':goods_shop},
+                    success: function(data) {
+                        if (data) {
+                            $('#alert').show("fast", function () {
+                                $('#tip').text('Tip:加入购物车成功！');
+                            });
+                            return false;
+                        }
+                    }
+                });
+
+            }
+        });
+
+        $('#close').click(function(){
+            $('#alert').hide();
+        });
 	</script>
 @endsection

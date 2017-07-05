@@ -88,4 +88,9 @@ class ShoppingCartController extends Controller
         $req = json_decode($request->json);
         dd($req);
     }
+
+    public function shoppingCache(Request $request)
+    {
+        //
+    }
 }

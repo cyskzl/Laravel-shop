@@ -162,6 +162,11 @@ return [
         iscms\Alisms\AlidayuServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
 
+        /**
+         * 调试工具
+         */
+        Barryvdh\Debugbar\ServiceProvider::class,
+
     ],
 
     /*
@@ -209,6 +214,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'UUID' => Webpatser\Uuid\Uuid::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

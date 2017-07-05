@@ -70,6 +70,19 @@
                 </div>
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">商品标签</label>
+            <div class="layui-input-block">
+
+                @foreach($tags as $v)
+
+                    <input name="tag_id[]" value="{{$v->tag_id}}" type="checkbox"  title="{{$v->tag_name}}"
+                           @foreach($catemiddle as $value) @if($v->tag_id == $value->tags_id) checked  @endif @endforeach
+                    >
+
+                @endforeach
+            </div>
+        </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">描述</label>
             <div class="layui-input-block">
@@ -93,15 +106,20 @@
                 , layer = layui.layer
                 , layedit = layui.layedit;
             form.on('submit(save)', function(data){
-                console.log(data);
+
+                var a = $("input[name='tag_id[]']:checked");
+                var arr = new Array();
+                for(var i=0;i< a.length;i++){
+                    arr[i] = $(a[i]).val();
+                }
                 $.ajax({
                     type: 'post',
                     url:  "/admin/goodscategory/"+data.field.id,
                     dataType: 'json',
-                    data: { '_token':'{{csrf_token()}}', '_method':'PUT' ,  'json': JSON.stringify(data.field) },
+                    data: { '_token':'{{csrf_token()}}', '_method':'PUT' ,  'json': JSON.stringify(data.field), 'tags':JSON.stringify(arr)},
                     success:function (data){
                         //失败
-                        console.log(data);
+//                        console.log(data);
                         if(data.status == 1){
                             layer.msg(data.msg, {icon: 5,time:1000});
                         } else if(data.status == 3){

@@ -28,8 +28,8 @@
     <!-- 搜索区 -->
         <div class="header_top_bottom left">
             <div class="header_top_bottom_people left">
-                <a href="{{ url('home/') }}/{{$onemaam->id}}" data-currentcategoryid="0">{{$onemaam->name}}</a>
-                <a href="{{ url('home/') }}/{{$onemam->id}}"data-currentcategoryid="1">{{$onemam->name}}</a>
+                <a href="{{ url('home/') }}/?categoryId={{$onemaam->id}}" data-currentcategoryid="0">{{$onemaam->name}}</a>
+                <a href="{{ url('home/') }}/?categoryId={{$onemam->id}}"data-currentcategoryid="1">{{$onemam->name}}</a>
                 {{--<a href="{{ url('home/') }}/{{$onelife->id}}" data-currentcategoryid="2">{{$onelife->name}}</a>--}}
             </div>
             <div class="header_logo left">
@@ -64,7 +64,7 @@
                 @if($cateId == 1 || $cateId == '')
                     @foreach($twomaan as $tmaan)
                         <div id="header_nav_left_new" class="CateNav">
-                            <a id="butt" href="{{url('catalog/category_id/')}}/{{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
+                            <a id="butt" href="{{url('home/goodsList/')}}/{{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
                             <div class="header_nav_left_new">
                                 <div class="elastic_no">
                                     <div class="header_nav_left_new_one_text">
@@ -78,7 +78,7 @@
                 @elseif($cateId == 2)
                     @foreach($twomam as $tman)
                         <div id="header_nav_left_new" class="CateNav">
-                            <a href="{{url('catalog/category_id/')}}/{{$tman->id}}" route="{{$cateId}}" data-id="{{$tman->id}}" >{{$tman->name}}</a>
+                            <a href="{{url('home/goodsList/')}}/{{$tman->id}}" route="{{$cateId}}" data-id="{{$tman->id}}" >{{$tman->name}}</a>
                             <div class="header_nav_left_new">
                                 <div class="elastic_no">
                                     <div class="header_nav_left_new_one_text">
@@ -199,7 +199,7 @@
                             var original_img = data.newgoods[z]['original_img'] ;
                             original_img=original_img.substring(0,original_img.length-1);
                             goodsnew +=  '<div class="header_nav_left_new_one">';
-                            goodsnew += '<a href="/home/catalog/category_id/'+data.newgoods[z]['goods_id']+'"><img src='+original_img+' >';
+                            goodsnew += '<a href="/home/goodsDetail/'+data.newgoods[z]['goods_id']+'"><img src='+original_img+' >';
                             goodsnew += '<span class="font_sm">'+data.brand[z]+'</span>';
                             goodsnew += '<span class="font">'+data.newgoods[z]['goods_name']+'</span>';
                             goodsnew += '<span class="money">¥ '+data.newgoods[z]['shop_price']+'</span>';
@@ -232,7 +232,7 @@
                             var original_img = data.goods[j]['original_img'] ;
                             original_img=original_img.substring(0,original_img.length-1);
                             goodsstr += '<div class="header_nav_left_new_one">';
-                            goodsstr += '<a href="/home/catalog/category_id/'+data.goods[j]['goods_id']+'"><img src='+original_img+' >';
+                            goodsstr += '<a href="/home//goodsDetail/'+data.goods[j]['goods_id']+'"><img src='+original_img+' >';
                             goodsstr += '<span class="font_sm">'+data.brand[j]+'</span>';
                             goodsstr += '<span class="font">'+data.goods[j]['goods_name']+'</span>';
                             goodsstr += '<span class="money">¥ '+data.goods[j]['shop_price']+'</span>';
@@ -295,13 +295,14 @@
         if(currentId == 0){
             //    navBg = "#f54b73";
             img = 'women';
-            {{--{{define('Index', '1')}}--}}
-            {{--{{$request->session()->put('Index', '1')}}--}}
+            {{--{{Config::set('calculations.Index', '1')}}--}}
+            {{--            {{$request->session()->set('Index', '1')}}--}}
+
         }else if(currentId == 1){
             //    navBg = "#505c82";
             img = 'men';
-            {{--{{define('Index', '2')}}--}}
-            {{--            {{$request->session()->put('Index', '2')}}--}}
+            {{--            {{$request->session()->set('Index', '2')}}--}}
+            {{--            {{Config::set('calculations.Index', '2')}}--}}
         }else if(currentId == 2){
             //    navBg = "#a4d7d8";
             img = 'design';

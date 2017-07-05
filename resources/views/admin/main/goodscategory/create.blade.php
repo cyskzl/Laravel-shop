@@ -74,7 +74,16 @@
                 </div>
             </div>
         </div>
-            <div class="layui-form-item layui-form-text">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">商品标签</label>
+            <div class="layui-input-block">
+                @foreach($tags as $v)
+                    <input name="tag_id[]" value="{{$v->tag_id}}" type="checkbox"  title="{{$v->tag_name}}">
+                @endforeach
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">描述</label>
                 <div class="layui-input-block">
                     <textarea name="describe" placeholder="请输入描述" class="layui-textarea"></textarea>
@@ -115,13 +124,19 @@
             });
 
             form.on('submit(add)', function(data){
-                console.log(data);
+
+                var a = $("input[name='tag_id[]']:checked");
+                var arr = new Array();
+                for(var i=0;i< a.length;i++){
+                    arr[i] = $(a[i]).val();
+                }
+
                 //发异步，把数据提交给php
                 $.ajax({
                     type: 'post',
                     url:  '/admin/goodscategory',
                     dataType: 'json',
-                    data: { '_token':'{{csrf_token()}}',  'json': JSON.stringify(data.field) },
+                    data: { '_token':'{{csrf_token()}}',  'json': JSON.stringify(data.field),'tags':JSON.stringify(arr) },
                     success:function (data){
 //                        console.log(data);
                         //失败

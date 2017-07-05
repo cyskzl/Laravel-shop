@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\PayMethod;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -14,9 +15,22 @@ class PayMethodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $paydata = PayMethod::orderBy('id', 'desc')->where(function ($query) use ($request){
+
+            if (!empty($request->input('keyword'))){
+                $query->where('name','like','%'.$request->input('keyword').'%');
+            }
+
+        })->paginate(10);
+
+        $sum = count($paydata);
+
+        return view('admin.main.settings/paymethod.index',compact('paydata','request','sum'));
+
+
     }
 
     /**
@@ -27,6 +41,7 @@ class PayMethodController extends Controller
     public function create()
     {
         //
+        return view('admin.main.settings/paymethod.create');
     }
 
     /**
@@ -38,6 +53,50 @@ class PayMethodController extends Controller
     public function store(Request $request)
     {
         //
+        $data = json_decode($request->input('json'),true);
+
+        if (empty($data['name'])){
+            $data = [
+                'status' => 2,
+                'msg'    => '快递名称不可为空'
+            ];
+            return $data;
+        }
+
+        if ($data['enabled'] === '0'){
+
+            $enabled = $data['enabled'];
+
+        }else{
+
+            $enabled = 1;
+        }
+
+        $payModel = new PayMethod();
+
+        $payModel->pay_name = $data['name'];
+
+        $payModel->pay_desc = $data['desc'];
+
+        $payModel->enabled = $enabled;
+
+        if ($payModel->save()){
+            $data = [
+                'status' => 0,
+                'msg'    => '添加成功'
+            ];
+            return $data;
+        }else{
+            $data = [
+                'status' => 1,
+                'msg'    => '添加失败'
+            ];
+            return $data;
+        }
+
+
+
+
     }
 
     /**
@@ -60,6 +119,11 @@ class PayMethodController extends Controller
     public function edit($id)
     {
         //
+        $payMethod = PayMethod::where('id',$id)->get();
+
+        $payMethod = $payMethod[0];
+
+        return view('admin.main.settings/paymethod.edit',compact('payMethod'));
     }
 
     /**
@@ -72,6 +136,39 @@ class PayMethodController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $data = json_decode($request->input('json'),true);
+
+        if ($id != $data['id']){
+            $data = [
+                'status' => 1,
+                'msg'    => '修改失败,请刷新'
+            ];
+            return $data;
+        }
+
+        $paymethod = PayMethod::find($id);
+
+        $paymethod->pay_name = $data['name'];
+
+        $paymethod->enabled = $data['enabled'];
+
+        $paymethod->pay_desc = $data['desc'];
+
+        if ($paymethod->save()){
+            $data = [
+                'status' => 0,
+                'msg'    => '修改成功'
+            ];
+            return $data;
+
+        }else{
+
+            $data = [
+                'status' => 2,
+                'msg'    => '修改失败'
+            ];
+            return $data;
+        }
     }
 
     /**
@@ -83,5 +180,14 @@ class PayMethodController extends Controller
     public function destroy($id)
     {
         //
+        $del = PayMethod::where('id',$id)->delete();
+
+        if ($del){
+            //删除成功返回
+            return 0;
+        }else{
+            //删除失败返回
+            return 1;
+        }
     }
 }

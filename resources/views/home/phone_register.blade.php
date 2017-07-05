@@ -101,9 +101,20 @@
             $(this).attr('src', '/home/register/code?random=' + Math.random());
         });
 
+        //输出ajax获取验证码返回的错误信息
+        function errinfo(obj,info) {
+            console.log(info);
+            obj.prev('p').remove();
+            var str = '<p style="text-align: center;color: red">' + info +'</p>';
+            obj.css('border-color','red').before(str);
+            return false;
+        }
+
 
         //获取手机验证码
         $('#phone_code').on('click',function () {
+
+            var that = $('#phone');
 
             var than = $(this);
 
@@ -116,12 +127,15 @@
             than.attr("disabled", true);
 
 
-
             setTimeout("$('#phone_code').removeAttr('disabled')",1000);
 
 //            console.log(than);
 
             var phone = $('#phone').val();
+
+            if (phone == ''){
+                errinfo(that,'请填写手机号码');
+            }
 
             var regex = /^[1][34578]\d{9}$/;
 
@@ -190,12 +204,6 @@
                 ,1000)
         }
 
-        //输出ajax获取验证码返回的错误信息
-        function errinfo(obj,info) {
-            obj.prev('p').remove();
-            $('#phone').css('border-color','red').before("<p style='text-align: center;color: red'>" + info +"</p>");
-            return false;
-        }
 
         $("form").submit(function(e){
             var dataid = $('#phone_code').attr('data-id');

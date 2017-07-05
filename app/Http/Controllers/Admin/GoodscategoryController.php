@@ -1,11 +1,13 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Models\CateMiddleGoods;
 use Illuminate\Http\Request;
 use DB;
 use Storage;
 use App\Http\Requests;
 use App\Models\Category;
+use App\Models\GoodsTag;
 use App\Http\Controllers\Controller;
 class GoodscategoryController extends Controller
 {
@@ -40,15 +42,25 @@ class GoodscategoryController extends Controller
      */
     public function store(Request $request)
     {
+
+        $tags = json_decode($request->tags, true);
+
         //插入数据
         $data = self::tree($request);
-
+//        $cate = new Category();
         //是否有status这个键
         if(array_key_exists('status', $data)){
             return $data;
         }
             //保存
-            if (DB::table('goods_category')->insert($data)) {
+        $id = DB::table('goods_category')->insertGetId($data);
+            if ($id) {
+                $cate =Category::find($id);
+                if(!empty($tags)){
+                    //添加关联表tags_id  cate_middle_tags
+                    $cate->tags()->sync($tags);
+                }
+
                 $data = [
                     'status' => 0,
                     'msg'    => '添加成功'
@@ -71,8 +83,9 @@ class GoodscategoryController extends Controller
     {
         //商品分类添加
         $cates = self::getCates();
+        $tags = GoodsTag::all();
 
-        return view('admin.main.goodscategory.create', ['cates' => $cates]);
+        return view('admin.main.goodscategory.create', ['tags' => $tags,'cates' => $cates]);
     }
 
     /**
@@ -90,10 +103,16 @@ class GoodscategoryController extends Controller
     public function edit($id)
     {
         $info = Category::find($id);
+
         //pid路径添加
         $cates = self::getCates();
         $img = rtrim($info->img, ',');
-        return view('admin.main.goodscategory.edit', ['cates' => $cates, 'info' => $info, 'img' => $img]);
+        //所有的标签
+        $tags = GoodsTag::all();
+        //已有的值
+        $catemiddle = CateMiddleGoods::where( 'cate_id', '=', $id)->get();
+
+        return view('admin.main.goodscategory.edit', ['catemiddle' => $catemiddle,'tags' => $tags,'tags' => $tags,'cates' => $cates, 'info' => $info, 'img' => $img]);
     }
 
     /**
@@ -107,12 +126,20 @@ class GoodscategoryController extends Controller
     {
         //插入数据
         $data = self::tree($request);
+
+        $tags = json_decode($request->tags, true);
+//        dd($tags);
         //是否有status这个键
         if(array_key_exists('status', $data)){
             return $data;
         }
         //保存
         if(Category::where('id', $id)->update($data)){
+            $cate =Category::find($id);
+            if(!empty($tags)){
+                //添加关联表tags_id  cate_middle_tags
+                $cate->tags()->sync($tags);
+            }
             $data = [
                 'status' => 0,
                 'msg'    => '添加成功'
@@ -136,7 +163,7 @@ class GoodscategoryController extends Controller
     {
         //分类删除id
         $cates = Category::findOrFail($id);
-        $map = "level like '%.$id.%'";
+
         $row = Category::where('level', 'like', '%'.$id.'%')->get();
 
         if(!$row->count()){
@@ -145,6 +172,8 @@ class GoodscategoryController extends Controller
                 @unlink('./'.date('Ymd').$img);
             }
             Category::destroy([$id]);
+            //删除标签表
+            CateMiddleGoods::where('cate_id','=', $id)->delete();
             //没数据返回给页面ajax
             return 2;
         } else {
@@ -192,9 +221,10 @@ class GoodscategoryController extends Controller
         //清除put和csfr_field的请求
         $data = json_decode($request->json,true);
 
-        if( array_key_exists('_token', $data) ||  array_key_exists('_method', $data)){
+        if( array_key_exists('_token', $data) ||  array_key_exists('_method', $data) ||  array_key_exists('tag_id[]', $data)){
             unset($data['_token']);
             unset($data['_method']);
+            unset($data['tag_id[]']);
         }
 
         $category = new Category();

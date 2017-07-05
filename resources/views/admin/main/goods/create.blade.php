@@ -124,6 +124,16 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 100px">商品标签</label>
+                        <div class="layui-input-block">
+                            @foreach($tags as $v)
+                            <input name="tag_id[]" value="{{$v->tag_id}}" type="checkbox"  title="{{$v->tag_name}}">
+                            @endforeach
+                        </div>
+                    </div>
+
                     <div class="layui-form-item">
                         <label class="layui-form-label" style="width: 100px">供应商</label>
                         <div class="layui-input-inline" style="margin-left: 10px">

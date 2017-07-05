@@ -24,17 +24,12 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
-    // 首页
-//    Route::any('/',  function($category_id = '1') {
-//
-//
-//
-//    });
+
     Route::any('/{category_id?}', 'IndexController@homeIndex')->where('category_id', '[0-9]+');
     //ajax新品
     Route::any('/newgoods', 'IndexController@newgoods');
     //分类
-    Route::any('/catalog/category_id/{{id?}}','IndexController@catalog')->where('id', '[0-9]+');
+    Route::any('/catalog/category_id/{id?}','IndexController@cataLog')->where('id', '[0-9]+');
     //导航
     Route::any('/getAjaxCate','IndexController@getAjaxCate');
     // 注册页面(默认邮箱注册email)
@@ -42,9 +37,9 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 登录界面
     Route::get('/login', 'UserController@login');
 
-    Route::group(['middleware'=>'auth'],function(){
 
-    });
+
+
     // 验证码生成
     Route::get('/register/code', 'RegisterController@createCode');
     // 手机验证码发送
@@ -59,18 +54,21 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/phone_register', 'RegisterController@phoneRegister');
     // 手机注册跳转界面
     Route::post('/phone_register', 'RegisterController@toPhoneRegister');
+    Route::group(['middleware'=>'auth'],function(){
     // 登录信息处理
     Route::post('/doLogin', 'UserController@doLogin');
     // 退出登录
     Route::get('/logOut', 'UserController@logOut');
     // 商品列表页
     Route::get('/goodsList/{category_id}', 'GoodController@goodsList');
-    // 商品新品列表页（本周与今日最新）
-    Route::get('/goodsList/product', 'GoodController@goodsProduct');
+//    // 商品新品列表页（本周与今日最新）
+//    Route::get('/goodsList/product', 'GoodController@goodsProduct');
     // 商品详情页
     Route::get('/goodsDetail/{goods_id}', 'GoodController@goodsDetail');
     // 商品规格ajax验证
     Route::post('/goodsDetail/ajaxdetail','GoodController@ajaxDetail');
+//    // 加入到购物车（ajax提交缓存处理）
+    Route::post('/shoppingcart/shoppingcache', 'ShoppingCartController@shoppingCache');
     // 购物车
     Route::resource('/shoppingcart', 'ShoppingCartController');
     // 订单页
@@ -121,7 +119,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::resource('/address', 'AddressController');
 
 
-
+    });
 
 
 });
