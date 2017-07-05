@@ -54,7 +54,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/phone_register', 'RegisterController@phoneRegister');
     // 手机注册跳转界面
     Route::post('/phone_register', 'RegisterController@toPhoneRegister');
-    Route::group(['middleware'=>'auth'],function(){
+// Route::group(['middleware'=>'auth'],function(){
     // 登录信息处理
     Route::post('/doLogin', 'UserController@doLogin');
     // 退出登录
@@ -119,7 +119,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::resource('/address', 'AddressController');
 
 
-    });
+    // });
 
 
 });
