@@ -45,8 +45,9 @@
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             @foreach($permissions as $permission)
-                                          <input type="checkbox" name="perms[]" title="{{ $permission->description }}" value="{{ $permission->id }}"
-                                          @if($myPermissions->contains($permission)) checked @endif >
+                                              <input type="checkbox" name="perms[]" title="{{ $permission->description }}" value="{{ $permission->id }}"
+                                              @if($myPermissions->contains($permission))    checked 
+                                              @endif >
                                           @endforeach
                                         </div>
                                       </div>

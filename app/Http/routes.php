@@ -22,6 +22,9 @@ Route::get('/', function () {
 });
 
 
+
+
+
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
 
@@ -73,7 +76,6 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::resource('/shoppingcart', 'ShoppingCartController');
     // 需登录界面
     Route::group(['middleware'=>'auth'],function(){
-
         // 订单页
         Route::resource('/orders', 'OrderController');
         // 个人中心(默认为设置-个人信息 home.personal.set.personnalInfo)

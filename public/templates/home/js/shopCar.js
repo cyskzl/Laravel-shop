@@ -20,12 +20,13 @@ $('.plus').click(function () {
     //获取增加后的数量
     var newNum = $(this).parent().find('input[class*=num]');
     //获取单价
-    var price = $(this).parent().prev().find('.uniPrice').text();
+
+    var price = $(this).parent().prev().find('.uniPrice').text().substr(1);
     //数量与单价相乘
     var sum = newNum.val() * price;
     //更新小计
     $(this).parent().next().find('#subtotal').text(sum);
-    total ()
+    total ();
 });
 
 $('.reduce').click(function () {
@@ -45,13 +46,14 @@ $('.reduce').click(function () {
     //获取减去后的数量
     var newNum = $(this).parent().find('input[class*=num]');
     //获取单价
-    var price = $(this).parent().prev().find('.uniPrice').text();
+    var price = $(this).parent().prev().find('.uniPrice').text().substr(1);
     //数量与单价相乘
+    console.log(price);
     var sum = newNum.val() * price;
     //更新小计
     $(this).parent().next().find('#subtotal').text(sum);
     //更新总金额
-    total ()
+    total ();
 });
 
 //进行总金额统计
@@ -59,12 +61,14 @@ function total () {
 
     var subtotal = $('td #subtotal');
     var sum = 0;
-
     for (var i=0; i < subtotal.length; i++) {
 
         sum += parseFloat(subtotal[i].innerHTML);
 
     }
 
+    if ( isNaN(sum) ) {
+        sum = '00';
+    }
     $('#allMoney').text(sum + '.00');
 }

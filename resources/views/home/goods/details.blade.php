@@ -33,7 +33,7 @@
 
 	        <!-- 商品大图展示-->
 	        <div class="bigimgShow fl rela">
-	            <img src="{{asset(trim($goodinfo->original_img,','))}}">
+	            <img src="{{asset(trim($goodinfo->original_img,','))}}"id="goods_img">
 	        </div>
 			{{--<div class="imgShow psa" style="position:absolute;vertical-align:middle;width:448px;heigth:110px;display:inline-block;background-color:rgba(0, 0, 0, 0.25);box-sizing:border-box;">--}}
 				{{--<div class="imgView">--}}
@@ -351,6 +351,14 @@
 @section('js')
 	<script src="{{asset('/templates/home/js/page.js')}}"></script>
 	<script>
+
+		layui.use(['layer', 'form'], function () {
+			var layer = layui.layer,
+				form = layui.form();
+
+		});
+
+
         $('.key1').eq(0).css({ color: "white", background: "black" });
         $('.key1').eq(0).siblings().css({ color: "black", background: "white" });
         var onekey = $('.key1').eq(0).attr('key1');
@@ -449,7 +457,10 @@
 
         $('#addcart').on('click', function(){
             var onevalue = $('.key1[onekey=one_key]').val();
+            var goods_img = $('#goods_img').attr('src');
             var twovalue = $('.key2[twokey=two_key]').val();
+            var key1 = $('.key1[onekey=one_key]').attr('key1');
+            var key2 = $('.key2[twokey=two_key]').attr('key2');
             var spec_one = $('#spec_one').html();
             var spec_two = $('#spec_two').html();
             var num = $('#number').val();
@@ -462,23 +473,44 @@
                 return false;
             } else {
 
-                // 将商品详情存入Cookie
-                 var goods_shop = JSON.stringify({"goods_id":goods_id,"specone":spec_one+':'+onevalue,'spectwo':spec_two+':'+twovalue,'num':num,'price':price,'goods_name':goods_name});
+
+                 var goods_shop = JSON.stringify({
+					 "goods_id": goods_id,
+					 "specone" : spec_one + onevalue,
+					 'spectwo' : spec_two + twovalue,
+					 'num'  : num,
+					 'price': price,
+					 'goods_name': goods_name,
+					 'key1': key1,
+					 'key2': key2,
+					 'img' : goods_img
+				 });
+
                 $.ajax({
                     type:'POST',
                     url:'{{url('home/shoppingcart/shoppingcache')}}',
                     dataType:'json',
                     data:{'_token':'{{csrf_token()}}','goods_shop':goods_shop},
-                    success: function(data) {
-                        if (data) {
-                            $('#alert').show("fast", function () {
-                                $('#tip').text('Tip:加入购物车成功！');
-                            });
-                            return false;
-                        }
+                    success: function(res) {
+                        if (res.success == 1) {
+							layer.open({
+								content: res.info
+								,btn: ['去购车结算', '继续购物']
+								,yes: function(index, layero){
+									location.href = "{{ url('home/shoppingcart') }}";
+								}
+								,btn2: function(index, layero){}
+								,cancel: function(){}
+							});
+						} else {
+							$('#alert').show("fast",function(){
+			                    $('#tip').text('Tip:' + res.info);
+			                });
+						}
+
                     }
                 });
-
+				return false;
             }
         });
 
