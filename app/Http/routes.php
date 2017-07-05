@@ -22,6 +22,9 @@ Route::get('/', function () {
 });
 
 
+
+
+
 Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
 
