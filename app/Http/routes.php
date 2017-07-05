@@ -37,9 +37,6 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 登录界面
     Route::get('/login', 'UserController@login');
 
-
-
-
     // 验证码生成
     Route::get('/register/code', 'RegisterController@createCode');
     // 手机验证码发送
@@ -54,7 +51,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::get('/phone_register', 'RegisterController@phoneRegister');
     // 手机注册跳转界面
     Route::post('/phone_register', 'RegisterController@toPhoneRegister');
-    Route::group(['middleware'=>'auth'],function(){
+//    Route::group(['middleware'=>'auth'],function(){
     // 登录信息处理
     Route::post('/doLogin', 'UserController@doLogin');
     // 退出登录
@@ -122,7 +119,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     });
 
 
-});
+//});
 
 //prefix => 前缀
     // 后台首页

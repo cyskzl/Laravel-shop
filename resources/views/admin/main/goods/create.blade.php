@@ -129,7 +129,7 @@
                         <label class="layui-form-label" style="width: 100px">商品标签</label>
                         <div class="layui-input-block">
                             @foreach($tags as $v)
-                            <input name="tag_id[]" value="{{$v->tag_id}}" type="checkbox"  title="{{$v->tag_name}}">
+                                <input name="tag_id[]" value="{{$v->tag_id}}" type="checkbox"  title="{{$v->tag_name}}">
                             @endforeach
                         </div>
                     </div>
@@ -297,8 +297,8 @@
         layui.use(['form','element','layer','layedit'], function(){
             $ = layui.jquery;
             var form = layui.form()
-                ,layer = layui.layer
-                ,layedit = layui.layedit;
+                    ,layer = layui.layer
+                    ,layedit = layui.layedit;
             var element = layui.element();
             $form = $('form');
             //获取商品分类信息
@@ -333,31 +333,31 @@
 //            console.log(data.value);
                 var cate_02 = data.value;
                 if(data.value !== null){
-                $form.find('select[name=cat_id_03]').children().remove();
-                $.ajax({
-                    type     : 'post',
-                    url      : '/admin/ajaxCate',
-                    dataType : 'json',
-                    data     :  {'_token': '{{csrf_token()}}', 'three': data.value},
-                    success:function (data){
-                        var str = '';
-                        var char = '';
-                        for(var i=0; i<data.length; i++){
-                            var id = data[i]['id'];
-                            var name = data[i]['name'];
-                            str += '<option value="'+id+'">'+name+'</option>';
-                        }
+                    $form.find('select[name=cat_id_03]').children().remove();
+                    $.ajax({
+                        type     : 'post',
+                        url      : '/admin/ajaxCate',
+                        dataType : 'json',
+                        data     :  {'_token': '{{csrf_token()}}', 'three': data.value},
+                        success:function (data){
+                            var str = '';
+                            var char = '';
+                            for(var i=0; i<data.length; i++){
+                                var id = data[i]['id'];
+                                var name = data[i]['name'];
+                                str += '<option value="'+id+'">'+name+'</option>';
+                            }
 
-                        char += '<option value="">请选择商品分类</option><option value="">请选择商品分类</option>';
-                        if(data.status == 0){
+                            char += '<option value="">请选择商品分类</option><option value="">请选择商品分类</option>';
+                            if(data.status == 0){
 //                                alert(1);
-                            $form.find('select[name=cat_id_03]').children().remove();
-                        }
+                                $form.find('select[name=cat_id_03]').children().remove();
+                            }
 //                            console.log(char);
-                        $form.find('select[name=cat_id_03]').prepend(char).append(str);
-                        form.render();
-                    }
-                });
+                            $form.find('select[name=cat_id_03]').prepend(char).append(str);
+                            form.render();
+                        }
+                    });
 
                 }
             });
