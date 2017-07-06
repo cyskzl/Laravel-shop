@@ -62,37 +62,96 @@ $(function () {
     });
     var token = $('input[name=_token]').val();
     //结算
-    $('.settlement').on('click', function () {
-        var check = $('input[name="subBox"]:checked');
+    // $('.settlement').on('click', function () {
+    //
+    //     var check = $('input[name="subBox"]:checked');
+    //     var goods_name   = $('.cart_img').next();
+    //     var spectwo = $('.spectwo');
+    //     var specone = $('.specone');
+    //     var price   = $('.uniPrice');
+    //     var img   = $('.cart_img');
+    //     var num   = $('.num');
+    //     var total   = $('.allMoney');
+    //
+    //
+    //     // console.log(spectwo);
+    //     if (check.length == 0) {
+    //         layer.alert('请选择需要购买的产品！', {icon: 7});
+    //         return false;
+    //     }
+    //
+    //     $.ajaxSetup({
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         }
+    //     });
+    //
+    //
+    //     var checkArr = new Array();
+    //
+    //     for (var i = 0; i < check.length; i++) {
+    //
+    //         checkArr[i] = new Array();
+    //         checkArr[i]['goods_id'] = $(check[i]).val();
+    //         checkArr[i]['img'] = $(img[i]).attr('src');
+    //         checkArr[i]['goods_name'] = $(goods_name[i]).text();
+    //         checkArr[i]['spectwo'] = $(spectwo[i]).text();
+    //         checkArr[i]['specone'] = $(specone[i]).text();
+    //         checkArr[i]['price'] = $(price[i]).text().substr(1);
+    //         checkArr[i]['num'] = $(num[i]).val();
+    //
+    //
+    //     }
+    //     console.log(checkArr);
+    //
+    //     var postStr = {}
+    //
+    //     $(checkArr).each(function (i) {
+    //         postStr['goods_id'] = this.goods_id;
+    //         postStr['img'] = this.img;
+    //
+    //     })
+    //
+    //     // postStr['_token'] = token;
+    //
+    //     // var postStr = {
+    //     //     'json': JSON.stringify(checkArr),
+    //     //     '_token': token,
+    //     // }
+    //
+    //     console.log(postStr);
+    //
+    //     $.ajax({
+    //         url: 'shopOrders',
+    //         type: 'post',
+    //         datatype: 'json',
+    //         data: postStr,
+    //         traditional: true,
+    //         success: function (res) {
+    //             console.log(res);
+    //         }
+    //     });
+    //
+    //
+    // });
 
-        if (check.length == 0) {
-            layer.alert('请选择需要购买的产品！', {icon: 7});
-            return false;
-        }
-        var checkArr = new Array();
-        for (var i = 0; i < check.length; i++) {
-            checkArr[i] = $(check[i]).val();
-        }
 
-        var url = 'home/shoppingcart/1';
-
-        shopAjax(url, 'delete', JSON.stringify(checkArr));
-
-    });
-
-
-    function shopAjax(url, type, data) {
-        $.ajax({
-            url: url,
-            type: type,
-            datatype: 'json',
-            data: {
-                'json': data,
-                '_token': token,
-            },
-            success: function (res) {
-                console.log(res);
-            }
-        });
-    }
+    //
+    // function shopAjax(url, type, data) {
+    //     $.ajax({
+    //         url: url,
+    //         type: type,
+    //         datatype: 'json',
+    //         data: {
+    //             'json': data,
+    //             '_token': token,
+    //         },
+    //         traditional: true,
+    //         success: function (res) {
+    //             console.log(res);
+    //         }
+    //     });
+    // }
 });
+
+//

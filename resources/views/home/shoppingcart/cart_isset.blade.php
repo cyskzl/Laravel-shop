@@ -10,6 +10,7 @@
 	<!-- <script src="{{asset('/templates/home/js/dynamic.js')}}"></script> -->
 	<script src="{{asset('/templates/admin/lib/layui/layui.js')}}"></script>
 	<script src="{{asset('/templates/home/js/shopCart.js')}}"></script>
+
 	<style media="screen">
 		.m0a {
 	    	margin: 0 auto;
@@ -45,8 +46,8 @@
 
 @section('main')
 	<!-- 内容 -->
-	@if ($goods_shop)
-	    <form action="">
+	@if ($_SESSION['goods_shop'])
+	    <form action="shopOrders" method="post">
 	        <table id="car">
 
 	            <thead>
@@ -60,20 +61,21 @@
 	            </tr>
 	            </thead>
 	            <tbody id="goodsBox">
+				{{--{{$_SESSION['goods_shop']}}--}}
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					@foreach($goods_shop as $goods)
+					@foreach($_SESSION['goods_shop'] as $goods)
 		                <tr>
 							<input type="hidden" name="goods_id" value="{{ $goods['goods_id'] }}">
 		                    <td align="center" width="60">
 		                        <input name="subBox" type="checkbox" value="{{ $goods['goods_id'] }}" />
 		                    </td>
 		                    <td align="center">
-		                        <img src="{{ asset('templates/home/images/wimg_450677010_2817349.jpg') }}" alt="商品一"/>
+		                        <img class="cart_img" src="{{ asset(''.$goods['img'].'') }}" alt="商品一"/>
 		                        <a href="{{ url('home/goodsDetail/').'/'.$goods['goods_id'] }}" target="_blank">{{ $goods['goods_name'] }}</a>
 		                        <div class="operationInfo">
 		                            <div class="operationInfoWrap flex">
-										<p>{{ $goods['spectwo'] }}</p>
-		                                <p>{{ $goods['specone'] }}</p>
+										<p class="spectwo">{{ $goods['spectwo'] }}</p>
+		                                <p class="specone">{{ $goods['specone'] }}</p>
 		                            </div>
 		                        </div>
 
@@ -87,7 +89,7 @@
 		                        <input class="num" type="text" value="{{ $goods['num'] }}" disabled>
 		                        <a class="plus" href="javascript:;">+</a>
 		                    </td>
-		                    <td align="center" class="totalMoney"><span>￥<span id="subtotal">{{ number_format($goods['num'] * ltrim($goods['price'], '￥'), 2) }}</span></span></td>
+		                    <td align="center" class="totalMoney"><span>￥<span id="subtotal">{{ number_format($goods['num'] * ltrim($goods['price'], '￥'), 2, '.','') }}</span></span></td>
 		                    <td align="center"><span class="delGoods iconfont icon-shanchu1 del"></span></td>
 		                </tr>
 					@endforeach
@@ -100,6 +102,7 @@
 	            </tfoot>
 
 	        </table>
+			<input type="submit" value="11">
 	    </form>
 	    <div class="cart-notice">
 	        <img src="{{ asset('templates/home/uploads/icon_notice.png') }}" alt=""/>

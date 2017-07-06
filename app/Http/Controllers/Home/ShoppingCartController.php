@@ -21,9 +21,10 @@ class ShoppingCartController extends Controller
         // 购物车无商品时
 //        return view('home.shoppingcart.cart_empty');
         // 购物车有商品时
+//        session_start();
+        // $goods_shop = $request->session()->get('goods_shop');
+//        $_SESSION['goods_shop'] = 'aaa';
 
-        $goods_shop = $request->session()->get('goods_shop');
-        dd($request->session()->get('goods_shop'));
         return view('home.shoppingcart.cart_isset', compact('goods_shop'));
     }
 
@@ -45,8 +46,10 @@ class ShoppingCartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
     }
+
 
     /**
      * Display the specified resource.
@@ -106,13 +109,39 @@ class ShoppingCartController extends Controller
 
         //获取商品数据
         $goods = json_decode($request->goods_shop, true);
+//        dd($goods);
+        $goods_id = $goods['goods_id'].'_'.$goods['key1'].'_'.$goods['key2'];
+        if ( empty( $_SESSION['goods_shop'][$goods_id] ) ) {
 
-        if (!Auth::check()) {
-            $request->session()->push('goods_shop', $goods);
-            $error['success'] = 1;
-            $error['info']    = '加入购物车成功！';
-            return json_encode($error);
+            $_SESSION['goods_shop'][$goods['goods_id']] = $goods;
+//            dd($_SESSION['goods_shop'][$goods['goods_id']]);
+
+        } else {
+                $is_goods = $_SESSION['goods_shop'][$goods['goods_id']];
+
+            if ( $is_goods['goods_id'] == $goods['goods_id'] ) {
+
+                if ( $is_goods['specone'] == $goods['specone'] && $is_goods['spectwo'] == $goods['spectwo'] ) {
+
+                    $is_goods['num'] = $is_goods['num'] + $goods['num'];
+                    $_SESSION['goods_shop'][$goods['goods_id']] = $is_goods;
+                    $error['success'] = 1;
+                    $error['info']    = '加入购物车成功！';
+                    return json_encode($error);
+                }
+
+            }
         }
+
+
+
+//        dd($request->session()->get('goods_shop'));
+//         if (!Auth::check()) {
+//             $request->session()->push('goods_shop', $goods);
+//             $error['success'] = 1;
+//             $error['info']    = '加入购物车成功！';
+//             return json_encode($error);
+//         }
 
     }
 }
