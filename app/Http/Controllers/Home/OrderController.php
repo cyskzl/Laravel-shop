@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Models\UserInfo;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
 
@@ -10,6 +11,11 @@ use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {
+        $user = UserInfo::where('user_id', '=', \Auth::user()->user_id)->first();
+        view()->share('user', $user);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -91,36 +97,39 @@ class OrderController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-订单详情（待付款订单）
      */
-    public function waitOrder()
+    public function waitOrder(Request $request)
     {
-        return view('home.personal.order.waitOrder');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.order.waitOrder',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-订单详情（已付款订单）
      */
-    public function alreadyOrder()
+    public function alreadyOrder(Request $request)
     {
-        
-        return view('home.personal.order.alreadyOrder');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.order.alreadyOrder',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-订单详情（已取消订单）
      */
-    public function cancelOrder()
+    public function cancelOrder(Request $request)
     {
-        return view('home.personal.order.cancelOrder');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.order.cancelOrder',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-订单详情（退款/退货订单）
      */
-    public function refundOrder()
+    public function refundOrder(Request $request)
     {
-        return view('home.personal.order.refundOrder');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.order.refundOrder',compact('cateId'));
     }
 }

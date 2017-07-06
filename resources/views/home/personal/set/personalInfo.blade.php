@@ -494,7 +494,7 @@
 		layui.use('upload', function(){
 
 			  layui.upload({
-				url: "{{ url('home/personal/editavatar/'.Auth::user()->user_id) }}",
+				url: "{{ url('home/personal/editAvatar/'.Auth::user()->user_id) }}",
 				ext: 'jpg|png|gif',
 				elem: '#avatar', //指定原始元素，默认直接查找class="layui-upload-file"
 				method: 'post', //上传接口的http类型

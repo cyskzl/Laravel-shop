@@ -248,9 +248,8 @@ Route::group(['prefix' => 'admin'], function (){
         //系统日志
         Route::get('systemlog', 'Admin\AdminController@SystemLog');
 
-        //城市多级联动获取数据
-        Route::get('/region','Admin\RegionController@show');
 
     });
-
+    //城市多级联动获取数据
+    Route::get('/region','Admin\RegionController@show');
 });

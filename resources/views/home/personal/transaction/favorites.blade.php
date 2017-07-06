@@ -5,6 +5,7 @@
 @section('style')
 	<link rel="stylesheet" href="{{asset('/templates/home/css/personal.css')}}"/>
 	<link rel="stylesheet" href="{{asset('/templates/home/css/favorites.css')}}"/>
+	<link rel="stylesheet" href="{{asset('/templates/home/css/newest.css')}}"/>
 @endsection
 
 @section('main')
@@ -31,44 +32,52 @@
 	            </ul>
 
 	            <!-- 收藏夹 -->
-	            <div class="personal_tab">
-	                <div class="tab_viewed">
-	                    <div class="productList">
-	                        <div class="infinite-scroll-wrapper clearfix">
-	                            <a class="product_card new_line" href="javascript:;">
-	                                <span class="product_img"><img src="./images/wimg_450446613_2512047.jpg" alt=""/></span>
-	                                <span class="brand">it MICHAA</span>
-	                                <span class="name">露肩荷叶边叠层雪纺衬衣_白色</span>
-	                                <span class="price">¥ 168</span>
-	                            </a>
-	                            <a class="product_card new_line" href="javascript:;">
-	                                <span class="product_img"><img src="./images/wimg_450446613_2512047.jpg" alt=""/></span>
-	                                <span class="brand">it MICHAA</span>
-	                                <span class="name">露肩荷叶边叠层雪纺衬衣_白色</span>
-	                                <span class="price">¥ 168</span>
-	                            </a>
-	                            <a class="product_card new_line" href="javascript:;">
-	                                <span class="product_img"><img src="./images/wimg_450446613_2512047.jpg" alt=""/></span>
-	                                <span class="brand">it MICHAA</span>
-	                                <span class="name">露肩荷叶边叠层雪纺衬衣_白色</span>
-	                                <span class="price">¥ 168</span>
-	                            </a>
-	                            <a class="product_card new_line" href="javascript:;">
-	                                <span class="product_img"><img src="./images/wimg_450446613_2512047.jpg" alt=""/></span>
-	                                <span class="brand">it MICHAA</span>
-	                                <span class="name">露肩荷叶边叠层雪纺衬衣_白色</span>
-	                                <span class="price">¥ 168</span>
-	                            </a>
-	                            <a class="product_card new_line" href="javascript:;">
-	                                <span class="product_img"><img src="./images/wimg_450446613_2512047.jpg" alt=""/></span>
-	                                <span class="brand">it MICHAA</span>
-	                                <span class="name">露肩荷叶边叠层雪纺衬衣_白色</span>
-	                                <span class="price">¥ 168</span>
-	                            </a>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
+				<div class="personal_tab">
+					<div class="tab_paid">
+						<div class="empty-box">
+							<span class="icn-empty-order"></span>
+							<span>暂无数据</span>
+						</div>
+					</div>
+				</div>
+	            {{--<div class="personal_tab">--}}
+	                {{--<div class="tab_viewed">--}}
+	                    {{--<div class="productList">--}}
+	                        {{--<div class="infinite-scroll-wrapper clearfix">--}}
+	                            {{--<a class="product_card new_line" href="javascript:;">--}}
+	                                {{--<span class="product_img"><img src="./images/wimg_450446613_2512047.jpg" alt=""/></span>--}}
+	                                {{--<span class="brand">it MICHAA</span>--}}
+	                                {{--<span class="name">露肩荷叶边叠层雪纺衬衣_白色</span>--}}
+	                                {{--<span class="price">¥ 168</span>--}}
+	                            {{--</a>--}}
+	                            {{--<a class="product_card new_line" href="javascript:;">--}}
+	                                {{--<span class="product_img"><img src="./images/wimg_450446613_2512047.jpg" alt=""/></span>--}}
+	                                {{--<span class="brand">it MICHAA</span>--}}
+	                                {{--<span class="name">露肩荷叶边叠层雪纺衬衣_白色</span>--}}
+	                                {{--<span class="price">¥ 168</span>--}}
+	                            {{--</a>--}}
+	                            {{--<a class="product_card new_line" href="javascript:;">--}}
+	                                {{--<span class="product_img"><img src="./images/wimg_450446613_2512047.jpg" alt=""/></span>--}}
+	                                {{--<span class="brand">it MICHAA</span>--}}
+	                                {{--<span class="name">露肩荷叶边叠层雪纺衬衣_白色</span>--}}
+	                                {{--<span class="price">¥ 168</span>--}}
+	                            {{--</a>--}}
+	                            {{--<a class="product_card new_line" href="javascript:;">--}}
+	                                {{--<span class="product_img"><img src="./images/wimg_450446613_2512047.jpg" alt=""/></span>--}}
+	                                {{--<span class="brand">it MICHAA</span>--}}
+	                                {{--<span class="name">露肩荷叶边叠层雪纺衬衣_白色</span>--}}
+	                                {{--<span class="price">¥ 168</span>--}}
+	                            {{--</a>--}}
+	                            {{--<a class="product_card new_line" href="javascript:;">--}}
+	                                {{--<span class="product_img"><img src="./images/wimg_450446613_2512047.jpg" alt=""/></span>--}}
+	                                {{--<span class="brand">it MICHAA</span>--}}
+	                                {{--<span class="name">露肩荷叶边叠层雪纺衬衣_白色</span>--}}
+	                                {{--<span class="price">¥ 168</span>--}}
+	                            {{--</a>--}}
+	                        {{--</div>--}}
+	                    {{--</div>--}}
+	                {{--</div>--}}
+	            {{--</div>--}}
 	            <!-- 收藏夹 -->
 	        </div>
 

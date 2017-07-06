@@ -109,7 +109,7 @@
 	            <div class="way">
 	                <ul>
 	                    <li>
-	                        <span>发货方式：</span>
+	                        <span> 发货方式：</span>
 	                        <span>韩国仓直发 包邮 6～14个工作日送达</span>
 	                    </li>
 	                    <li>

@@ -21,27 +21,30 @@ class PersonalController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-设置-个人信息
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home.personal.set.personalInfo');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.set.personalInfo',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-交易管理（浏览记录）
      */
-    public function browseLog()
+    public function browseLog(Request $request)
     {
-        return view('home.personal.transaction.browseLog');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.transaction.browseLog',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-交易管理（收藏夹）
      */
-    public function favorites()
+    public function favorites(Request $request)
     {
-        return view('home.personal.transaction.favorites');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.transaction.favorites',compact('cateId'));
     }
 
 
@@ -50,63 +53,70 @@ class PersonalController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-个人中心（积分）
      */
-    public function integral()
+    public function integral(Request $request)
     {
-        return view('home.personal.userinfo.integral');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.userinfo.integral',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-个人中心（会员等级）
      */
-    public function memberLevel()
+    public function memberLevel(Request $request)
     {
-        return view('home.personal.userinfo.memberLevel');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.userinfo.memberLevel',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-个人中心（优惠劵）
      */
-    public function coupon()
+    public function coupon(Request $request)
     {
-        return view('home.personal.userinfo.coupon');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.userinfo.coupon',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-服务中心（最新消息）
      */
-    public function newest()
+    public function newest(Request $request)
     {
-        return view('home.personal.service.newest');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.service.newest',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-服务中心（常见问题）
      */
-    public function comProblem()
+    public function comProblem(Request $request)
     {
-        return view('home.personal.service.comProblem');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.service.comProblem',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-服务中心（用户手册）
      */
-    public function userManual()
+    public function userManual(Request $request)
     {
-        return view('home.personal.service.userManual');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.service.userManual',compact('cateId'));
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-服务中心（隐私条款）
      */
-    public function privacyClause()
+    public function privacyClause(Request $request)
     {
-        return view('home.personal.service.privacyClause');
+        $cateId = $request->session()->get('Index');
+        return view('home.personal.service.privacyClause',compact('cateId'));
     }
 
     /**
