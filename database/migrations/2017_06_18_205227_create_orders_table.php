@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('订单ID');
-            $table->string('sn')->index()->comment('订单编号');
+            $table->string('sn')->unique()->comment('订单编号');
             $table->unsignedInteger('user_id')->index()->comment('用户ID');
             $table->tinyInteger('order_status')->default(0)->comment('订单状态-3作废订单-2无效订单-1已取消0带确认1已确认2已收货3完成');
             $table->tinyInteger('shipping_status')->default(0)->unsigned()->comment('发货状态0未发货1已发货2部分发货');

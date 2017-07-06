@@ -79,13 +79,13 @@
                 {{$v->id}}
             </td>
             <td>
-                {{$v->email}}
+                {{$v->login_name}}
             </td>
             <td >
                 {{$v->comment_info}}
             </td>
             <td >
-                {{$v->goods_title}}
+                {{$v->goods_name}}
             </td>
             <td >
                 @if($v->is_show == 1)

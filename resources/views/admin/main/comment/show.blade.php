@@ -8,76 +8,104 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{asset('templates/admin/css/goodscomment/comment_replay_style.css')}}">
-    <script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
-    <script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
 </head>
 <body>
 <div data-role="content" class="container ui-content" role="main">
     <ul class="content-reply-box mg10">
-        <li class="odd">
-            <a class="user ui-link" href="#"><img class="img-responsive avatar_" src="images/avatar-1.png" alt=""><span class="user-name">奔波儿灞</span></a>
-            <div class="reply-content-box">
-                <span class="reply-time">03-08 15：00</span>
-                <div class="reply-content pr">
-                    <span class="arrow">&nbsp;</span>
-                    为什么小鑫的名字里有三个金呢？
-                </div>
-            </div>
-        </li>
+        @foreach($data as $v)
+            @if($v->user_id)
+                <li class="odd">
+                    <a class="user ui-link" href="#"><img class="img-responsive avatar_" src="images/avatar-1.png" alt="">
+                        <span class="user-name">{{$v->login_name}}</span>
+                    </a>
+                    <div class="reply-content-box">
+                        <span class="reply-time">{{$v->created_at}}</span>
+                        <div class="reply-content pr">
+                            <span class="arrow">&nbsp;</span>
+                            {{$v->reply_info}}
+                        </div>
+                    </div>
+                </li>
+            @endif
+
+            @if($v->admin_id)
         <li class="even">
-            <a class="user ui-link" href="#">
-                <img class="img-responsive avatar_" src="images/avatar-1.png" alt="">
-                <span class="user-name">灞波儿奔</span>
-            </a>
             <div class="reply-content-box">
-                <span class="reply-time">03-08 15：10</span>
+                <span class="reply-time">{{$v->created_at}}</span>
+                <a class="user ui-link" href="#">
+                    <img class="img-responsive avatar_" src="images/avatar-1.png" alt="">
+                    <span class="user-name">{{$v->nickname}}</span>
+                </a>
                 <div class="reply-content pr">
                     <span class="arrow">&nbsp;</span>
-                    他命里缺金，所以取名叫鑫，有些人命里缺水，就取名叫淼，还有些人命里缺木就叫森。
+                    {{$v->reply_info}}
                 </div>
             </div>
         </li>
-        <li class="odd">
-            <a class="user ui-link" href="#">
-                <img class="img-responsive avatar_" src="images/avatar-1.png" alt="">
-                <span class="user-name">奔波儿灞</span>
-            </a>
-            <div class="reply-content-box">
-                <span class="reply-time">03-08 15：20</span>
-                <div class="reply-content pr">
-                    <span class="arrow">&nbsp;</span>
-                    那郭晶晶命里缺什么？
-                </div>
-            </div>
-        </li>
-        <li class="even">
-            <a class="user ui-link" href="#">
-                <img class="img-responsive avatar_" src="images/avatar-1.png" alt="">
-                <span class="user-name">灞波儿奔</span>
-            </a>
-            <div class="reply-content-box">
-                <span class="reply-time">03-08 15：30</span>
-                <div class="reply-content pr">
-                    <span class="arrow">&nbsp;</span>
-                    此处省略一百字...
-                </div>
-            </div>
-        </li>
+                @endif
+        @endforeach
+
     </ul>
     <ul class="form-horizontal row">
-        <div class="form-group">
-            <div class="col-sm-10">
-                <textarea class="form-control" rows="2"></textarea>
+            <div class="form-group">
+                <div class="col-sm-10">
+                    <textarea class="form-control" rows="2" name="reply_info"></textarea>
+                </div>
+                <div class="col-sm-2">
+                    <p></p>
+                    <a class="btn btn-info" href="javascript:;" onclick="level_update(this,'{{$id}}')">回复</a>
+                </div>
             </div>
-            <div class="col-sm-2">
-                <p></p>
-                <button type="button" class="btn btn-info">回复</button>
-            </div>
-        </div>
-
-
-
     </ul>
+    <script src="{{asset('templates/admin/lib/layui/layui.js')}}" charset="utf-8"></script>
+    <script src="{{asset('templates/admin/js/x-layui.js')}}" charset="utf-8"></script>
+    <script>
+        layui.use(['element','laypage','layer','form'], function(){
+            $ = layui.jquery;//jquery
+            lement = layui.element();//面包导航
+            laypage = layui.laypage;//分页
+            layer = layui.layer;//弹出层
+            form = layui.form();//弹出层
+
+
+        });
+
+
+            function level_update(obj,id) {
+                layer.confirm('确认要提交吗？', function (index) {
+                    //发异步修改数据
+                    var str = $('.form-control').val();
+
+                    if(str == ''){
+                        layer.msg('回复内容不可为空', {icon: 2, time: 1000});
+                        return false;
+                    }
+
+                    $.ajax({
+                        type: "PUT",
+                        url: './' + id,
+                        data: {'_token': '{{csrf_token()}}', 'reply_info': str, '_method': 'PUT'},
+                        success: function (data) {
+
+                            if (data == 0) {
+                                layer.msg('修改成功!', {icon: 1, time: 1000});
+                            } else if (data == 2){
+                                layer.msg('回复内容不可为空', {icon: 2, time: 1000});
+                            }else {
+                                layer.msg('操作失败!', {icon: 2, time: 1000});
+
+                            }
+
+                            self.location.reload();
+                        }
+                    });
+                })
+            };
+
+
+
+
+    </script>
 </div>
 </body>
 </html>

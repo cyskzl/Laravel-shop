@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Permission;
 
@@ -37,13 +38,16 @@ class CommentController extends Controller
         //获取搜索提交过来的内容
         $content = $request->input('content');
 
+//        $data = GoodsComment::all();
+//
+//        dd($data);
+
         //查询评论信息
-            $data = GoodsComment::where('users_register.email','like','%'.$username.'%')
-                ->where('users_register.tel','like','%'.$username.'%')
+            $data = GoodsComment::where('users_login.login_name','like','%'.$username.'%')
                 ->where('goods_comment.comment_info','like','%'.$content.'%')
-                ->join('users_register','goods_comment.user_id','=','users_register.id')
+                ->join('users_login','goods_comment.user_id','=','users_login.user_id')
                 ->join('goods','goods_comment.goods_id','=','goods.goods_id')
-                ->select('goods_comment.*','users_register.email','goods.goods_name')
+                ->select('goods_comment.*','users_login.login_name','goods.goods_name')
                 ->get();
 
         //统计总数
@@ -99,10 +103,16 @@ class CommentController extends Controller
     public function show($id)
     {
 
-//       $data =  GoodsCommentReply::join('users_register','goods_comment_reply.user_id','users_register.id')
-//                                    ->where('comment_id', '=', $id)->get();
+//        $data = GoodsCommentReply::all();
+//        dd($data);
 
-       return view('admin.main.comment.show');
+       $data =  GoodsCommentReply::where('comment_id', '=', $id)
+           ->leftJoin('admin_users','goods_comment_reply.admin_id','=','admin_users.id')
+           ->leftJoin('users_login','goods_comment_reply.user_id','=','users_login.user_id')
+           ->select('goods_comment_reply.*','users_login.login_name','admin_users.nickname')
+           ->get();
+
+       return view('admin.main.comment.show',compact('data','id'));
 
     }
 
@@ -141,5 +151,33 @@ class CommentController extends Controller
         }
 
         return '{"error":"0"}';
+    }
+
+    public function update(Request $request,$id)
+    {
+        if (!$id){
+            return 1;
+        }
+
+        if ($request->input('reply_info') == ""){
+            return 2;
+        }
+
+        $reply = new GoodsCommentReply();
+
+        $adminid = Auth::guard('admin')->user()->id;
+
+        $reply->comment_id = $id;
+
+        $reply->admin_id = $adminid;
+
+        $reply->reply_info = $request->input('reply_info');
+
+        if ($reply->save()){
+            return 0;
+        }else{
+            return 1;
+        }
+
     }
 }

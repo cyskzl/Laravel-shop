@@ -18,7 +18,6 @@ class CreateGoodsCommentTable extends Migration
             $table->increments('id')->comment('商品评论ID');
             $table->unsignedInteger('goods_id')->comment('商品ID,goods表的主键');
             $table->unsignedInteger('order_id')->index()->comment('订单编号|订单表GUID');
-            $table->unsignedInteger('cargo_id')->index()->comment('商品ID,cargo表的主键');
             $table->unsignedInteger('user_id')->index()->comment('用户ID,user表的主键');
             $table->string('ip_address',4)->comment('IP地址');
             $table->string('img',255)->nullable()->comment('晒单图片');

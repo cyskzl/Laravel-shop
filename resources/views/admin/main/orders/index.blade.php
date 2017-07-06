@@ -24,17 +24,17 @@
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 </div>
 <div class="x-body">
-    <form class="layui-form x-center" action="">
+    <form class="layui-form x-center" action="{{url('admin/orders')}}">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
                 <label class="layui-form-label">日期范围</label>
 
                 <div class="layui-input-inline">
-                    <input class="layui-input" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                    <input class="layui-input" name="add_time_begin" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
                 </div>
 
                 <div class="layui-input-inline">
-                    <input class="layui-input" placeholder="截止时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                    <input class="layui-input" name="add_time_end" placeholder="截止时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
                 </div>
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="pay_status" lay-filter="pay_status">
@@ -46,8 +46,9 @@
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="pay_code" lay-filter="pay_code">
                         <option value="">支付方式</option>
-                        <option value="0">微信支付</option>
-                        <option value="1">支付宝</option>
+                        @foreach($payMethod as $v)
+                        <option value="{{$v->id}}">{{$v->pay_name}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width: 100px;">
@@ -62,20 +63,22 @@
                         <option value>订单状态</option>
                         <option value="0">待确认</option>
                         <option value="1">已确认</option>
-                        <option value="3">已收货</option>
-                        <option value="3">已取消</option>
+                        <option value="2">已收货</option>
                         <option value="3">已完成</option>
-                        <option value="3">已作废</option>
+                        <option value="-1">已取消</option>
+                        <option value="-2">无效订单</option>
+                        <option value="-3">已作废</option>
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="keytype" lay-filter="keytype">
+                        <option value>请选择</option>
                         <option value="0">收货人</option>
                         <option value="1">订单编号</option>
                     </select>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="text" name="username"  placeholder="标题" autocomplete="off" class="layui-input">
+                    <input type="text" name="keywords"  value="{{$request->input('keywords')}}" placeholder="标题" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-input-inline" style="width:80px">
                     <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
@@ -83,7 +86,7 @@
             </div>
         </div>
     </form>
-    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="question_add('添加订单','{{ url('orders/create') }}','800','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
+    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="question_add('添加订单','{{ url('orders/create') }}','800','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：{{$sum}} 条</span></xblock>
 
     <!-- 订单管理table -->
 
@@ -136,6 +139,15 @@
             <div class="col-md-8 col-md-offset-4">
 {{--                {{$ordersList->links()}}--}}
             </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-4">
+            {{--{{$specs->links()}}--}}
+{{--            {!! $ordersList->render() !!}--}}
+{{--            {!! $ordersList->appends($request->only(['keywords']))->render() !!}--}}
         </div>
     </div>
 </div>
