@@ -77,15 +77,15 @@
 	                        <span class="fl" id="spec_two">{{$spec_name[1]}}：</span>
 	                        <div class="size fl">
 	                            <div>
-	                                @foreach($spec_item[1] as $i=>$two_item)
-										<input class="key2" goods_id="{{$goodinfo->goods_id}}" key2="{{$spec_id[1][$i]}}" name="key2" value="{{$two_item}}" size="1" readonly>
+									@foreach($spec_item[1] as $i=>$two_item)
+									<input class="key2" goods_id="{{$goodinfo->goods_id}}" key2="{{$spec_id[1][$i]}}" name="key2" value="{{$two_item}}" size="1" readonly>
 									@endforeach
-	                            </div>
-	                            {{--<div class="none">--}}
-	                                {{--<div>L</div>--}}
-	                                {{--<div>XL</div>--}}
-	                                {{--<div>XXL</div>--}}
-	                            {{--</div>--}}
+								</div>
+								{{--<div class="none">--}}
+								{{--<div>L</div>--}}
+								{{--<div>XL</div>--}}
+								{{--<div>XXL</div>--}}
+								{{--</div>--}}
 	                        </div>
 	                    </li>
 	                    <!-- 购买数量-->

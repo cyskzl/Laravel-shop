@@ -114,7 +114,7 @@
 
 				{{--</div>--}}
 				{{--@foreach($goodsTabOneCate as $tabonecate)--}}
-					
+
 				{{--@endforeach--}}
 				<!--第二列 T恤-->
 

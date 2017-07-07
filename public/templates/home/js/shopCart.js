@@ -152,20 +152,15 @@ $(function () {
         var reg = /\,\}/g;
         str = str.replace(reg,'}');
 
-        shopAjax('cartToOrder', 'post', str);
+        var res = shopAjax('cartToOrder', 'post', str);
+        if (res.success == 1) {
 
-        // var jsonstr="[{";
-        // for (var i=0; i<checkArr.length; i++) {
-        //     jsonstr += "\"" + checkArr[i]['session_id'] + "\""+ ":" + "\"" + checkArr[i] + "\",";
-        //
-        //
-        // }
-        // jsonstr = jsonstr.substring(0,jsonstr.lastIndexOf(','));
-        // jsonstr += "}]";
-        // post = JSON.parse(jsonstr);
-        //
-        // console.log(post);
-        // console.log(jsonstr);
+            location.href = res.url;
+        } else {
+
+            layer.alert(res.info, {icon: 7});
+            return false;
+        }
 
     });
 
