@@ -308,7 +308,7 @@
                     $form.find('select[name=cat_id_02]').children().remove();
                     $.ajax({
                         type     : 'post',
-                        url      : '/admin/ajaxCate',
+                        url      : '/admin/ajaxTwoCate',
                         dataType : 'json',
                         data     :  {'_token': '{{csrf_token()}}', 'fatcate': data.value},
                         success:function (data){
@@ -366,7 +366,7 @@
             form.on('select(choice-mod)',function(data){
 
 //                console.log(data.elem); //得到select原始DOM对象
-                console.log(data.value); //得到被选中的值
+//                console.log(data.value); //得到被选中的值
                 var newType = $('select[name="type_id" ]').attr('type_id', data.value);
                 if($('select[name="type_id" ]').attr('type_id') !== newType){
                     $('#table-mod').children().remove();

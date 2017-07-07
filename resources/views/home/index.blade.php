@@ -13,14 +13,14 @@
 			<!--轮播图-->
 			<div class="silder" id="silder-list" style="margin-left:-1100px;">
 					<!--最后一张图片-->
-				<a href=""><img name="car_img" src="{{asset('/templates/home/uploads/sider-3.jpg')}}" alt="" /></a>
+				<a href=""><img name="car_img" src="{{rtrim($carousel[2]['img'],',')}}" ></a>
                     <!--第一张图片-->
-				<a href=""><img name="car_img" src="{{asset('/templates/home/uploads/silder-1.jpg')}}" alt="" /></a>
-				<a href=""><img name="car_img" src="{{asset('/templates/home/uploads/sider-2.jpg')}}" alt="" /></a>
+				<a href=""><img name="car_img" src="{{rtrim($carousel[0]['img'],',')}}"></a>
+				<a href=""><img name="car_img" src="{{rtrim($carousel[1]['img'],',')}}"></a>
 					<!--最后一张图片-->
-				<a href=""><img name="car_img" src="{{asset('/templates/home/uploads/sider-3.jpg')}}" alt="" /></a>
+				<a href=""><img name="car_img" src="{{rtrim($carousel[2]['img'],',')}}" ></a>
 					<!--第一张图片-->
-				<a href=""><img name="car_img" src="{{asset('/templates/home/uploads/silder-1.jpg')}}" alt="" /></a>
+				<a href=""><img name="car_img" src="{{rtrim($carousel[0]['img'],',')}}"></a>
 			</div>
 				<!--小圆点-->
 			<div class="dot" id="round">
@@ -63,78 +63,16 @@
 				<div class="putaway-around clear" id="putaway" style="left: 0px;">
 					<!--点击切换效果(总共八张图片)-->
 					<!--第一张-->
+					@foreach($newest as $newgoods)
 					<div class="putshow ">
-						<a href="javascript;">
-							<img src="{{asset('/templates/home/images/1.jpg')}}" alt="" />
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
+						<a href="{{asset('/home/goodsDetail/'.$newgoods->goods_id)}}">
+							<img src="{{rtrim($newgoods->original_img, ',')}}"  />
+							<span class="brand color">{{getBrand($newgoods->brand_id)}}</span>
+							<span class="name color">{{$newgoods->goods_name}}</span>
+							<span class="price">¥&nbsp;{{$newgoods->shop_price}}</span>
 						</a>
 					</div>
-					<!--第二张-->
-					<div class="putshow">
-						<a href="javascript;">
-							<img src="{{asset('/templates/home/images/2.jpg')}}" alt="" />
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<!--第三张-->
-					<div class="putshow">
-						<a href="javascript;">
-							<img src="{{asset('/templates/home/images/3.jpg')}}" alt="" />
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<!--第四张-->
-					<div class="putshow">
-						<a href="javascript;">
-							<img src="{{asset('/templates/home/images/4.jpg')}}" alt="" />
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<!--第五张-->
-					<div class="putshow">
-						<a href="javascript;">
-							<img src="{{asset('/templates/home/images/5.jpg')}}" alt="" />
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<!--第六张-->
-					<div class="putshow">
-						<a href="javascript;">
-							<img src="{{asset('/templates/home/images/6.jpg')}}" alt="" />
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<!--第七张-->
-					<div class="putshow">
-						<a href="javascript;">
-							<img src="{{asset('/templates/home/images/7.jpg')}}" alt="" />
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<!--第八张-->
-					<div class="putshow">
-						<a href="javascript;">
-							<img src="{{asset('/templates/home/images/8.jpg')}}" alt="" />
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">6的副本不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-
+					@endforeach
 				</div>
 			</div>
 		</div>
@@ -158,94 +96,25 @@
 		<!--热门品类-->
 		<div class="category width">
 			<div class="title">
-				<h2>热门品类</h2>
+				<h2>热门推荐</h2>
 			</div>
 			<!--商品分类-->
 			<div class="category-list">
 				<ul class="clear">
-					<li class="borl">衬衫</li>
-					<li>T恤</li>
-					<li>裙装</li>
-					<li>牛仔</li>
-					<li>泳装</li>
-					<li>裤装</li>
-					<li>凉鞋/凉拖</li>
-					<li>包类</li>
+					@foreach($goodstabcate as $tabcate)
+					<li cate_id = '{{$tabcate->cat_id}}'>{{$tabcate->name}}</li>
+					@endforeach
+					{{--<li class="borl">T恤</li>--}}
 				</ul>
 			</div>
 			<!--全部展示的商品-->
 			<div class="category-around width">
-				<!--第一列  衬衫-->
+				<!--第一列  衬衫 遍历-->
 				<div class="category-show width cen ">
-					<div class="cateshow ">
-						<a href="javascript;">
-							<img src="{{asset('/templates/home/images/1.jpg')}}" alt="" / class="img">
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">1不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<div class="cateshow">
-						<a href="javascript;" >
-							<img src="{{asset('/templates/home/images/2.jpg')}}" alt="" / class="img">
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<div class="cateshow">
-						<a href="javascript;" >
-							<img src="{{asset('/templates/home/images/3.jpg')}}" alt="" / class="img">
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<div class="cateshow">
-						<a href="javascript;" >
-							<img src="{{asset('/templates/home/images/4.jpg')}}" alt="" / class="img">
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
+
 
 				</div>
 				<!--第二列 T恤-->
-				<div class="category-show width cen">
-					<div class="cateshow ">
-						<a href="javascript;">
-							<img src="{{asset('/templates/home/images/5.jpg')}}" alt="" / class="img">
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">2不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<div class="cateshow">
-						<a href="javascript;" >
-							<img src="{{asset('/templates/home/images/6.jpg')}}" alt="" / class="img">
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">2不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<div class="cateshow">
-						<a href="javascript;" >
-							<img src="{{asset('/templates/home/images/7.jpg')}}" alt="" / class="img">
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-					<div class="cateshow">
-						<a href="javascript;" >
-							<img src="{{asset('/templates/home/images/8.jpg')}}" alt="" / class="img">
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-							<span class="price">¥&nbsp;627</span>
-						</a>
-					</div>
-				</div>
 
 			</div>
 		</div>
@@ -517,25 +386,20 @@
 			</div>
 			<!--全部商品-->
 			<div class="hotProduct-list clear">
-				<!--第一件商品-->
+				<!--第一件商品,完成-->
+				@foreach($sales_sum as $sum)
 				<div class="hotProduct-show">
-					<a href="javascript:">
-						<img src=""  alt=""  class="img">
+					<a href="{{url('home/goodsDetail/')}}/{{$sum->goods_id}}">
+						<img src="{{rtrim($sum->original_img,',')}}"  alt=""  class="img">
 						<span class="brand color">NUMBERING</span>
-						<span class="name color nowrap">不对称水晶钻圆环耳钉_金色发大方的说法</span>
-						<span class="price">¥&nbsp;627</span>
+						<span class="name color nowrap">{{$sum->goods_name}}</span>
+						<span class="price">¥&nbsp;{{$sum->shop_price}}</span>
 					</a>
 				</div>
-				<!--第二件商品-->
-				<div class="hotProduct-show">
-					<a href="javascript:">
-						<img src=""  alt=""  class="img">
-						<span class="brand color">NUMBERING</span>
-						<span class="name color nowrap">不对称水晶钻圆环耳钉_金色大方的说法</span>
-						<span class="price">¥&nbsp;627</span>
-					</a>
-				</div>
+				@endforeach
 			</div>
+
+
 			<div class="more">
 				<a href="javascript:">查看更多</a>
 			</div>
@@ -559,6 +423,92 @@
 @section('js')
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script src="{{asset('/templates/home/js/carousel.js')}}"></script>
+	<script>
 
+		var cate_id ={{$cateId}}
+		three_cate_id = $('.clear li').attr('cate_id');
+
+//		 alert($("div").siblings(".category-around").eq(0).find('.category-show'));
+		//判断是否是第一个
+		var str = '';
+		$('.clear li').each(function(){
+			var that = $(this)
+				var thatli = $(this).index();
+//			alert(thatli)
+				if(thatli == '0'){
+					$('.category-show').children().remove();
+					$.ajax({
+						type: "POST",
+						url: "/home/getAjaxTab",
+						data: {'_token': '{{csrf_token()}}', 'three_cate_id': three_cate_id, 'cate_id': cate_id},
+						success: function (data) {
+//							alert(1)
+							for(var i=0;i<data.goods.length;i++){
+								var original_img = data.goods[i]['original_img'] ;
+								original_img=original_img.substring(0,original_img.length-1);
+								str += '<div class="cateshow ">';
+								str += '<a href="javascript;">';
+								str += '<img src='+original_img+'  class="img">';
+								str += '<span class="brand color">'+data.brand[i]+'</span>';
+								str += '<span class="name color">'+data.goods[i]['goods_name']+'</span>';
+								str += '<span class="price">¥&nbsp;'+data.goods[i]['shop_price']+'</span> </a>  </div>';
+							}
+							$('.category-show').append(str);
+//							that.parent().attr('exists', '1');
+						}
+
+
+					});
+				}
+		});
+
+		$('.clear li').mouseenter(function(){
+
+			if($(this).hasClass('borl')){
+
+			var that = $(this);
+			var three_cate_id = that.attr('cate_id');
+				alert(three_cate_id);
+				var arr = three_cate_id.split('_');
+//				alert(arr);
+			var cate_id ={{$cateId}}
+            bool = that.parent().attr('exists') ;
+
+			if(!bool){
+					$('.category-show').children().remove();
+					$.ajax({
+					type: "POST",
+					url: "/home/getAjaxTab",
+					data: {'_token': '{{csrf_token()}}', 'three_cate_id': three_cate_id, 'cate_id': cate_id},
+					success: function (data) {
+						var strs = '';
+						for(var i=0;i<data.goods.length;i++){
+							var original_img = data.goods[i]['original_img'] ;
+							original_img=original_img.substring(0,original_img.length-1);
+							strs += '<div class="cateshow ">';
+							strs += '<a href="javascript;">';
+							strs += '<img src='+original_img+' class="img">';
+							strs += '<span class="brand color">'+data.brand[i]+'</span>';
+							strs += '<span class="name color">'+data.goods[i]['goods_name']+'</span>';
+							strs += '<span class="price">¥&nbsp;'+data.goods[i]['shop_price']+'</span> </a> </div>';
+						}
+						$('.category-show').append(strs);
+						$('.category-show').parent().attr('exists', '1');
+					}
+				})
+			}
+			}
+		});
+
+
+
+
+
+
+
+
+
+
+	</script>
 
 @endsection

@@ -369,7 +369,6 @@
                         success:function (data){
                             //全局变量
 
-
                             var keycom = key.split('_');
 
                             var keysrt = '';

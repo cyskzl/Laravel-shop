@@ -16,7 +16,7 @@ class CreateCarouselsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('轮播图ID');
             $table->string('img')->comment('轮播图 大小（最小1100*460）');
-            $table->tinyInteger('type_id')->comment('分类ID：0女士|1男士|2创意生活');
+            $table->tinyInteger('cate_id')->comment('分类ID：0女士|1男士|2创意生活');
             $table->string('link')->comment('跳转地址');
             $table->string('desc')->comment('描述');
             $table->tinyInteger('status')->default(1)->comment('显示状态: 0 显示 |1不显示 默认为1不显示');
