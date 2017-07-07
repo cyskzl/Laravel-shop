@@ -97,6 +97,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
         Route::get('/waitorder', 'OrderController@waitOrder');
         // 个人中心-订单详情（已付款订单）
         Route::get('/alreadyorder', 'OrderController@alreadyOrder');
+        Route::post('/shopOrders', 'OrderController@shopOrders');
         // 个人中心-订单详情（已取消订单）
         Route::get('/cancelorder', 'OrderController@cancelOrder');
         // 个人中心-订单详情（退款/退货订单）

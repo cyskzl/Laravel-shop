@@ -1,10 +1,6 @@
 /**
  * Created by Garlic on 2017-07-04.
  */
- $(function () {
-
-     $(total());
- });
 
 
 $('.plus').click(function () {
@@ -25,7 +21,12 @@ $('.plus').click(function () {
     //数量与单价相乘
     var sum = newNum.val() * price;
     //更新小计
-    $(this).parent().next().find('#subtotal').text(sum);
+    $(this).parent().next().find('#subtotal').text(sum.toFixed(2));
+    //获取商品id
+    var goods_id = $(this).parent().parent().find($('input[name="subBox"]')).val();
+
+    shopAjax('shoppingcart/'+ goods_id, 'put', newNum.val());
+
     total ();
 });
 
@@ -51,7 +52,7 @@ $('.reduce').click(function () {
     console.log(price);
     var sum = newNum.val() * price;
     //更新小计
-    $(this).parent().next().find('#subtotal').text(sum);
+    $(this).parent().next().find('#subtotal').text(sum.toFixed(2));
     //更新总金额
     total ();
 });
@@ -70,5 +71,24 @@ function total () {
     if ( isNaN(sum) ) {
         sum = '00';
     }
-    $('#allMoney').text(sum + '.00');
+    $('#allMoney').text(sum.toFixed(2));
+}
+
+var token = $("input[name='_token']").val();
+
+function shopAjax(url, type, data) {
+
+    $.ajax({
+        url: url,
+        type: type,
+        datatype: 'json',
+        data: {
+            'data': data,
+            '_token': token,
+        },
+        traditional: true,
+        success: function (res) {
+
+        }
+    });
 }

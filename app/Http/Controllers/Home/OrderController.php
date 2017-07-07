@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\UserInfo;
 
 class OrderController extends Controller
 {
@@ -21,9 +22,11 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home.orders.submit_order');
+        $cateId = $request->session()->get('Index');
+
+        return view('home.orders.submit_order', compact('cateId'));
     }
 
     /**
@@ -45,7 +48,11 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
+    }
+    public  function shopOrders(Request $request)
+    {
+        dd($request->all());
     }
 
     /**
