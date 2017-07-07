@@ -46,7 +46,7 @@
 
 @section('main')
 	<!-- 内容 -->
-	@if (!empty($_SESSION['goods_shop']))
+	@if (!empty( $cart_data ))
 	    <form action="shopOrders" method="post">
 	        <table id="car">
 
@@ -63,7 +63,7 @@
 	            <tbody id="goodsBox">
 				{{--{{$_SESSION['goods_shop']}}--}}
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					@foreach($_SESSION['goods_shop'] as $goods)
+					@foreach($cart_data as $goods)
 		                <tr>
 							<input type="hidden" name="goods_id" value="{{ $goods['goods_id'] }}">
 		                    <td align="center" width="60">

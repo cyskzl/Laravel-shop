@@ -133,7 +133,7 @@ $(function () {
                 +  "\"" + key2 + "\"" + ':' + "\"" + $(key2_arr[i]).val() + "\","
                 +  "\"" + price + "\"" + ':' + "\""  + $(price_arr[i]).text() + "\","
                 +  "\"" + specone + "\"" + ':' + "\"" + $(specone_arr[i]).text() + "\","
-                +  "\"" + goods_id + "\"" + ':'  + "\"" + $(goods_id_arr[i]).val() + "\","
+                +  "\"" + goods_id  + "\"" + ':'  + "\"" + $(goods_id_arr[i]).val() + "\","
                 +  "\"" + goods_name + "\"" + ':' + "\"" + $(goods_name_arr[i]).text() + "\","
                 +  '},';
 

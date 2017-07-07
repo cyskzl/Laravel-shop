@@ -27,8 +27,13 @@ $('.plus').click(function () {
 
     shopAjax('shoppingcart/'+ goods_id, 'put', newNum.val());
 
-    total ();
+    var goods_check = $(this).parent().parent().find($('input[name="subBox"]:checked'));
+    if (goods_check.length > 0) {
+        total ();
+    }
+
 });
+
 
 $('.reduce').click(function () {
     //获取已有的数量
@@ -49,23 +54,31 @@ $('.reduce').click(function () {
     //获取单价
     var price = $(this).parent().prev().find('.uniPrice').text().substr(1);
     //数量与单价相乘
-    console.log(price);
+
     var sum = newNum.val() * price;
     //更新小计
     $(this).parent().next().find('#subtotal').text(sum.toFixed(2));
 
     //获取商品id
     var goods_id = $(this).parent().parent().find($('input[name="subBox"]')).val();
+    //ajax发送修改商品数量
     shopAjax('shoppingcart/'+ goods_id, 'put', newNum.val());
-    
-    //更新总金额
-    total ();
+
+    //判断是否选中，选中则更新总金额
+    var goods_check = $(this).parent().parent().find($('input[name="subBox"]:checked'));
+    if (goods_check.length > 0) {
+        total ();
+    }
 });
 
 //进行总金额统计
 function total () {
 
-    var subtotal = $('td #subtotal');
+    //获取已选中的商品
+    var checkTotal = $('input[name="subBox"]:checked');
+    //获取已选中商品的小计
+    var subtotal = checkTotal.parent().siblings('.totalMoney').find('#subtotal');
+
     var sum = 0;
     for (var i=0; i < subtotal.length; i++) {
 

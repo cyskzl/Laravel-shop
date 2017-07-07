@@ -141,6 +141,6 @@ class OrderController extends Controller
 
     public function cartAjax(Request $request)
     {
-        dd(json_decode($request->data, true));
+
     }
 }
