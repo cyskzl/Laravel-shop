@@ -44,8 +44,7 @@ class IndexController extends Controller
            //选项卡
            $goodstabcate = self::goodsTabCate($cateId);
 
-           $goodsTabOneCate = $goodstabcate[0];
-           dd($goodsTabOneCate);
+
            //销量商品
            $sales_sum = self::sum($cateId);
 
@@ -64,7 +63,7 @@ class IndexController extends Controller
 
        }
 
-        return view('home.index', ['goodsTabOneCate' => $goodsTabOneCate,'sales_sum' => $sales_sum,'goodstabcate' => $goodstabcate,'request' => $request ,'cateId' => $cateId ,'carousel' => $carousel,'newest' => $newest]);
+        return view('home.index', ['sales_sum' => $sales_sum,'goodstabcate' => $goodstabcate,'request' => $request ,'cateId' => $cateId ,'carousel' => $carousel,'newest' => $newest]);
 
     }
     public function goodsTabCate($cateId)
