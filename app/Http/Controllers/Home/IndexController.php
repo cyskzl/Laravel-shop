@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\Input;
 
 class IndexController extends Controller
 {
+    public function search()
+    {
+        $xs = new \XS('goods');
+        $search = $xs->search;
+
+    }
+
     /**
      * 返回给前台首页的数据
      * @param Request $request
