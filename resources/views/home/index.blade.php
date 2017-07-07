@@ -114,14 +114,7 @@
 
 				{{--</div>--}}
 				{{--@foreach($goodsTabOneCate as $tabonecate)--}}
-					<div class="cateshow">
-						<a href="javascript;" >
-							<img src=""   class="img">
-							<span class="brand color">NUMBERING</span>
-							<span class="name color">{{$goodsTabOneCate->goods_name}}</span>
-							<span class="price">¥&nbsp;{{$goodsTabOneCate->shop_price }}</span>
-						</a>
-					</div>
+					
 				{{--@endforeach--}}
 				<!--第二列 T恤-->
 
