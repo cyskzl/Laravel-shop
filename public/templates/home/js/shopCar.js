@@ -53,6 +53,11 @@ $('.reduce').click(function () {
     var sum = newNum.val() * price;
     //更新小计
     $(this).parent().next().find('#subtotal').text(sum.toFixed(2));
+
+    //获取商品id
+    var goods_id = $(this).parent().parent().find($('input[name="subBox"]')).val();
+    shopAjax('shoppingcart/'+ goods_id, 'put', newNum.val());
+    
     //更新总金额
     total ();
 });
