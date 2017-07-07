@@ -101,24 +101,35 @@
 			<!--商品分类-->
 			<div class="category-list">
 				<ul class="clear">
-					@foreach($goodstabcate as $tabcate)
-					<li cate_id = '{{$tabcate->cat_id}}'>{{$tabcate->name}}</li>
+					@foreach($goodstabcate as $k=>$tabcate)
+						@if($k==0)
+					<li cate_id = '{{$tabcate->cat_id}}' exists="1">{{$tabcate->name}}</li>
+							@else
+							<li cate_id = '{{$tabcate->cat_id}}'>{{$tabcate->name}}</li>
+						@endif
+
 					@endforeach
 					{{--<li class="borl">T恤</li>--}}
 				</ul>
 			</div>
 			<!--全部展示的商品-->
-			<div class="category-around width">
-				<!--第一列  衬衫 遍历-->
-				{{--<div class="category-show width cen ">--}}
-
-				{{--</div>--}}
-				{{--@foreach($goodsTabOneCate as $tabonecate)--}}
-
-				{{--@endforeach--}}
-				<!--第二列 T恤-->
-
-
+			<div class="category-around width" id="category-around">
+				<div class="category-show width cen ">
+				@foreach($goodsTabOneCate as $tabonecate)
+					<div class="cateshow">
+						<a href="javascript;" >
+							<img src="{{rtrim($tabonecate->original_img,',')}}"   class="img">
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">{{$tabonecate->goods_name}}</span>
+							<span class="price">¥&nbsp;{{$tabonecate->shop_price }}</span>
+						</a>
+					</div>
+				@endforeach
+				</div>
+				@for($i=2;$i<=count($goodstabcate);$i++)
+					<div class="category-show width cen " id="{{$i}}">
+					</div>
+				@endfor
 			</div>
 		</div>
 
@@ -132,37 +143,16 @@
 			<div class="hot-brand-list">
 				<ul>
 					<!--第一章图片-->
+					@foreach($brands as $brand)
 					<li>
-						<a href="javascript:">
-							<img src="{{asset('/templates/home/uploads/3.jpg')}}" alt="" />
-							<span class="color">Yuul&nbsp;Yie</span>
+						<a href="{{$brand->url}}">
+							<img src="{{rtrim($brand->logo,',')}}">
+							<span class="color">{{$brand->name}}</span>
 						</a>
 					</li>
-					<!--第二张图片-->
-					<li>
-						<a href="javascript:">
-							<img src="{{asset('/templates/home/uploads/3.jpg')}}" alt="" />
-							<span class="color">Yuul&nbsp;Yie</span>
-						</a>
-					</li>
-					<li>
-						<a href="javascript:">
-							<img src="{{asset('/templates/home/uploads/3.jpg')}}" alt="" />
-							<span class="color">Yuul&nbsp;Yie</span>
-						</a>
-					</li>
-					<li>
-						<a href="javascript:">
-							<img src="{{asset('/templates/home/uploads/3.jpg')}}" alt="" />
-							<span class="color">Yuul&nbsp;Yie</span>
-						</a>
-					</li>
-					<li>
-						<a href="javascript:">
-							<img src="{{asset('/templates/home/uploads/3.jpg')}}" alt="" />
-							<span class="color">Yuul&nbsp;Yie</span>
-						</a>
-					</li>
+					@endforeach
+
+
 				</ul>
 			</div>
 		</div>
@@ -427,87 +417,45 @@
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script src="{{asset('/templates/home/js/carousel.js')}}"></script>
 	<script>
-
-		var cate_id ={{$cateId}}
-		three_cate_id = $('.clear li').attr('cate_id');
-		var arr = three_cate_id.split('_');
-//		 alert($("div").siblings(".category-around").eq(0).find('.category-show'));
-		//判断是否是第一个
-		var str = '';
-		{{--$('.clear li').each(function(){--}}
-			{{--var that = $(this);--}}
-				{{--var thatli = $(this).index();--}}
-{{--//			alert(thatli)--}}
-				{{--if(thatli == '0'){--}}
-{{--//					$(this).parent().parent().next().find('.category-show').children().remove();--}}
-					{{--$.ajax({--}}
-						{{--type: "get",--}}
-						{{--url: "/home/getAjaxTab",--}}
-						{{--data: {'_token': '{{csrf_token()}}', 'three_cate_id': arr[2], 'cate_id': cate_id},--}}
-						{{--success: function (data) {--}}
-{{--//							alert(1)--}}
-							{{--str += '<div class="category-show width cen ">';--}}
-							{{--for(var i=0;i<data.goods.length;i++){--}}
-								{{--var original_img = data.goods[i]['original_img'] ;--}}
-								{{--original_img=original_img.substring(0,original_img.length-1);--}}
-
-								{{--str += '<div class="cateshow ">';--}}
-								{{--str += '<a href="javascript;">';--}}
-								{{--str += '<img src='+original_img+'  class="img">';--}}
-								{{--str += '<span class="brand color">'+data.brand[i]+'</span>';--}}
-								{{--str += '<span class="name color">'+data.goods[i]['goods_name']+'</span>';--}}
-								{{--str += '<span class="price">¥&nbsp;'+data.goods[i]['shop_price']+'</span> </a> </div>';--}}
-							{{--}--}}
-							{{--str += '</div>';--}}
-							{{--$('.category-around').append(str);--}}
-{{--//							that.parent().attr('exists', '1');--}}
-						{{--}--}}
-
-					{{--});--}}
-				{{--}--}}
-		{{--});--}}
-
+		//加载选项卡代码
 		$('.clear li').mouseenter(function(){
+			//判断是否有class  borl
+			if($(this).hasClass('borl')){
+				var that = $(this);
+				var three_cate_id = that.attr('cate_id');
+				//切分3级的id
+				var arr = three_cate_id.split('_');
+				var cate_id ={{$cateId}}
+				bool = that.attr('exists') ;
+				//获取时候等于undefined就请求，有自定义的属性值不请求
+				if(!bool){
+					var strs = '';
+						$.ajax({
+						type: "get",
+						url: "/home/getAjaxTab",
+						data: {'_token': '{{csrf_token()}}', 'three_cate_id': arr[2], 'cate_id': cate_id},
+						success: function (data) {
+							//遍历在视图
+							for(var i=0;i<data.goods.length;i++){
+								//清除最后一个字符
+								var original_img = data.goods[i]['original_img'] ;
+								original_img=original_img.substring(0,original_img.length-1);
+								strs += '<div class="cateshow ">';
+								strs += '<a href="javascript;">';
+								strs += '<img src='+original_img+' class="img">';
+								strs += '<span class="brand color">'+data.brand[i]+'</span>';
+								strs += '<span class="name color">'+data.goods[i]['goods_name']+'</span>';
+								strs += '<span class="price">¥&nbsp;'+data.goods[i]['shop_price']+'</span> </a> </div>';
 
-//			if($(this).hasClass('borl')){
-
-//				$(this).parent().parent().next().find('.category-show').children().remove();
-//				console.log($(this).parent('.clear').parent('.category-list').siblings().find('.category-around'));
-			var that = $(this);
-			var three_cate_id = that.attr('cate_id');
-			var arr = three_cate_id.split('_');
-			var cate_id ={{$cateId}}
-            bool = that.attr('exists') ;
-
-			if(!bool){
-//				$('.category-show').children().remove();
-
-					$.ajax({
-					type: "get",
-					url: "/home/getAjaxTab",
-					data: {'_token': '{{csrf_token()}}', 'three_cate_id': arr[2], 'cate_id': cate_id},
-					success: function (data) {
-
-						var strs = '';
-						strs += '<div class="category-show width cen ">';
-						for(var i=0;i<data.goods.length;i++){
-							var original_img = data.goods[i]['original_img'] ;
-							original_img=original_img.substring(0,original_img.length-1);
-							strs = '<div class="cateshow ">';
-							strs += '<a href="javascript;">';
-							strs += '<img src='+original_img+' class="img">';
-							strs += '<span class="brand color">'+data.brand[i]+'</span>';
-							strs += '<span class="name color">'+data.goods[i]['goods_name']+'</span>';
-							strs += '<span class="price">¥&nbsp;'+data.goods[i]['shop_price']+'</span> </a> </div>';
+							}
+							//和li对应索引
+							$('#category-around .category-show').eq( that.index() ).html(strs);
+							//加载成功后在对应的li下加入自定义属性
+							that.attr('exists', '1');
 						}
-						strs += '</div>';
-						$('.category-around').append(strs);
-//						$('.category-show').parent().attr('exists', '1');
-						that.attr('exists', '1');
-					}
-				})
+					})
+				}
 			}
-//			}
 		});
 
 

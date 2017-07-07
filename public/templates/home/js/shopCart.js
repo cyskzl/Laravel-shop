@@ -145,7 +145,7 @@ $(function () {
         //去除多余的逗号
         var reg = /\,\}/g;
         str = str.replace(reg,'}');
-        
+
         var res = shopAjax('cartToOrder', 'post', str);
         if (res.success == 1) {
 
