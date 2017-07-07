@@ -141,6 +141,20 @@ class OrderController extends Controller
 
     public function cartAjax(Request $request)
     {
-        dd(json_decode($request->data, true));
+        if ( $request->data ) {
+
+            $goodsarr = json_decode($request->data, true);
+
+
+            $error['success'] = 1;
+            $error['url']     = url('home/orders');
+            return json_encode($error);
+        }
+
+        $error['success'] = 0;
+        $error['info']    = '未知错误！';
+        return json_encode($error);
+
     }
+
 }
