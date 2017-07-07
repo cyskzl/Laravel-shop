@@ -26,9 +26,6 @@
 	        <div class="goodsInfo">
 	            <h4>商品信息</h4>
 	            <table class="cart-cont comWidth">
-	                <thead>
-	                    <tr><td>韩国仓库</td></tr>
-	                </thead>
 	                <tbody>
 	                    <tr>
 	                        <td>
@@ -62,13 +59,13 @@
 	        <!-- 商品信息 end-->
 
 	        <!-- 优惠 start-->
-	        <div class="integralInfo">
-	            <h4>优惠劵</h4>
-	            <div class="copt">
-	                <div class="copt_text">九折优惠券</div>
-	                <div></div>
-	            </div>
-	        </div>
+	        {{--<div class="integralInfo">--}}
+	            {{--<h4>优惠劵</h4>--}}
+	            {{--<div class="copt">--}}
+	                {{--<div class="copt_text">九折优惠券</div>--}}
+	                {{--<div></div>--}}
+	            {{--</div>--}}
+	        {{--</div>--}}
 	        <!-- 优惠 end-->
 
 	        <!-- 积分 start-->
@@ -84,10 +81,10 @@
 	        <!-- 积分 end-->
 
 	        <!-- 开具发票 start-->
-	        <div class="invoiceInfo">
-	            <h4>开具发票</h4>
-	            <p>海外仓发货商品不开具发票，具体情况请联系客服</p>
-	        </div>
+	        {{--<div class="invoiceInfo">--}}
+	            {{--<h4>开具发票</h4>--}}
+	            {{--<p>海外仓发货商品不开具发票，具体情况请联系客服</p>--}}
+	        {{--</div>--}}
 	        <!-- 开具发票 end-->
 
 	        <!-- 交易信息 start-->
