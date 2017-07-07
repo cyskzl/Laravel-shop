@@ -25,7 +25,7 @@ class ShoppingCartController extends Controller
         // $goods_shop = $request->session()->get('goods_shop');
 //        $_SESSION['goods_shop'] = 'aaa';
 //        dd($_SESSION['goods_shop']);
-        return view('home.shoppingcart.cart_isset', compact('goods_shop'));
+        return view('home.shoppingcart.cart_isset');
     }
 
     /**
@@ -82,6 +82,7 @@ class ShoppingCartController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         if ( $request->data ) {
 
             $_SESSION['goods_shop'][$id]['num'] = $request->data;

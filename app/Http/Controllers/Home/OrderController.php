@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\UserInfo;
+
 
 class OrderController extends Controller
 {
@@ -138,5 +138,10 @@ class OrderController extends Controller
     {
         $cateId = $request->session()->get('Index');
         return view('home.personal.order.refundOrder',compact('cateId'));
+    }
+
+    public function cartAjax(Request $request)
+    {
+        dd(json_decode($request->data, true));
     }
 }

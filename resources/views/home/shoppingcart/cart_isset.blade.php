@@ -75,6 +75,8 @@
 		                        <div class="operationInfo">
 		                            <div class="operationInfoWrap flex">
 										<p class="spectwo">{{ $goods['spectwo'] }}</p>
+										<input type="hidden" name="key1" value="{{ $goods['key1'] }}">
+										<input type="hidden" name="key2" value="{{ $goods['key2'] }}">
 		                                <p class="specone">{{ $goods['specone'] }}</p>
 		                            </div>
 		                        </div>
