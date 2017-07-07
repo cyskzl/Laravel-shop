@@ -1,5 +1,10 @@
 @extends('admin.layouts.layout')
+@section('style')
+    <link rel="stylesheet" href="{{asset('templates/admin/lib/bootstrap/css/bootstrap.css')}}">
+    <script src="{{asset('templates/admin/js/jquery.min.js')}}" charset="utf-8"></script>
+@endsection
 @section('x-nav')
+
     <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
               <a><cite>发货快递设置</cite></a>
@@ -47,12 +52,16 @@
                 描述
             </th>
             <th>
+                开关
+            </th>
+            <th>
                 操作
             </th>
         </tr>
         </thead>
         <center id="x-link">
             @foreach($delvery as $v)
+                <tbody id="x-link" data-id="{{$v->id}}">
                 <tr>
                     <td>
                         <input type="checkbox" value="1" name="">
@@ -69,6 +78,13 @@
                     <td>
                         {{$v->desc =  $v->desc?:"无描述"}}
                     </td>
+                    <td>
+                        @if($v->enabled == 1)
+                            <button class="layui-btn layui-btn-mini layui-btn-normal" name="is_show" value="1">是</button>
+                        @else
+                            <button class="layui-btn layui-btn-mini layui-btn-primary" name="is_show" value="0">否</button>
+                        @endif
+                    </td>
                     <td class="td-manage">
                         <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/deliverymethod/{{$v->id}}/edit','{{$v->id}}','','510')"
                            class="ml-5" style="text-decoration:none">
@@ -80,6 +96,7 @@
                         </a>
                     </td>
                 </tr>
+                </tbody>
         @endforeach
     </table>
     <div class="container">
@@ -145,5 +162,35 @@
 
             });
         }
+
+        //修改显示状态
+        $('button[name=is_show]').on('click',function () {
+
+            var than = $(this);
+
+            var val = $(this).val();
+
+            var mid = $(this).parent().parent().parent().attr('data-id');
+
+            $.ajax({
+                type:'GET',
+                url:'/admin/deliverymethod/' + mid + '/edit',
+                data:{'model':"1"},
+                success:function (data){
+
+                    var obj = JSON.parse(data);
+
+                    if(obj.error == 0){
+
+                        if(val == 0){
+                            than.removeClass('layui-btn-primary').addClass('layui-btn-normal').text('是').val('1');
+                        }else{
+                            than.removeClass('layui-btn-normal').addClass('layui-btn-primary').text('否').val('0');
+                        }
+                    }
+                }
+            });
+        });
+
     </script>
 @endsection

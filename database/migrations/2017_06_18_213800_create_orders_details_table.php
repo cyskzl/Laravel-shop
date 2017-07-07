@@ -18,6 +18,7 @@ class CreateOrdersDetailsTable extends Migration
             $table->increments('id')->comment('商品订单详情ID');
             $table->unsignedInteger('order_id')->index()->comment('订单id');
             $table->unsignedInteger('goods_id')->index()->comment('商品id');
+            $table->string('goods_name')->nullable()->default('')->comment('商品名称');
             $table->string('goods_sn')->index()->comment('商品货号');
             $table->smallInteger('goods_num')->unsigned()->comment('购买数量');
             $table->decimal('goods_price',10,2)->defaule(0.00)->comment('商品价格');

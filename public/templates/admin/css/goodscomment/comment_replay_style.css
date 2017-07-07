@@ -19,9 +19,9 @@ li{list-style:none;}
 .content-reply-box li{width:100%;overflow:hidden;margin-bottom:2em;}
 .content-reply-box li.odd .user{float:left;margin-right:10px;}
 .content-reply-box li.even .user{float:right;margin-left:10px;}
-.content-reply-box li.odd .reply-content-box{margin-left:60px;}
+.content-reply-box li.odd .reply-content-box{float: left;}
 .content-reply-box li.even .reply-content-box{margin-right:60px;}
-.user-name{color:#999;margin-top:5px;display:block;text-align:center;width:50px;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;overflow: hidden;}
+.user-name{color:#999;margin-top:5px;display:block;text-align:center;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;overflow: hidden;}
 .reply-time{color:#e1912d;font-size:.85em;display:inline-block;width:100%;}
 .content-reply-box li.odd .reply-time{text-align:left;}
 .content-reply-box li.even .reply-time{text-align:right;}

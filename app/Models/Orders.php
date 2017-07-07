@@ -20,6 +20,10 @@ class Orders extends Model
     {
         return $this->belongsTo('App\Models\UserRegister','user_id');
     }
+    public function usersname()
+    {
+        return $this->belongsTo('App\Models\UserLogin','user_id');
+    }
 
     public function ordergood()
     {

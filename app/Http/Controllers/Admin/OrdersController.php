@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\DelveryMethod;
 use App\Models\OrdersDetails;
 use App\Models\Orders;
+use App\Models\PayMethod;
 use App\Models\Region;
+use App\Models\UserLogin;
+use App\Models\UserRegister;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -22,16 +26,53 @@ class OrdersController extends Controller
     /**
      * @return  view    订单管理列表页
      */
-    public function index()
+    public function index(Request $request)
     {
         //判断是否有权限访问列表
 		$this->perms->adminPerms('admin, orders', 'orders_list');
+
+//        if ($request->input('keytype') == 0){
+//            $user = UserLogin::where('login_name',$request->input('keywords'))->get();
+//            $user = $user[0]->user_id;
+//            dd($user);
+//        }
 
         $ordersList = Orders::with(['users'=>function($query){
 
             $query->select('id','email','tel');
 
-        }])->get();
+        }])->where(function ($query) use ($request){
+            $query->where('pay_status',$request->input('pay_status'))
+                ->where('pay_code',$request->input('pay_code'))
+                ->where('shipping_status',$request->input('shipping_status'))
+                ->where('order_status',$request->input('order_status'));
+        })->where(function ($query) use ($request){
+            if ($request->input('keytype') == '0'){
+                $user = UserLogin::where('login_name',$request->input('keywords'))->get();
+                if (!empty($user[0]->user_id)){
+                    $query->where('user_id',$user[0]->user_id);
+                }else{
+                    $query->where('user_id',0);
+                }
+            }
+        })->where(function ($query) use ($request){
+            if ($request->input('keytype') == '1'){
+                $query->where('sn',$request->input('keywords'));
+            }
+        })->where(function ($query) use($request){
+            if ($request->input('add_time_begin') && $request->input('add_time_end')){
+                $query->whereBetween('created_at',[$request->input('add_time_begin'),$request->input('add_time_end')]);
+                return;
+            }
+
+            if ($request->input('add_time_begin')){
+                $query->whereBetween('created_at',[$request->input('add_time_begin'),date('Y-m-d H:i:s')]);
+            }
+        })->get();
+
+
+        //查出来的总数据条数
+        $sum = count($ordersList);
 
         $pay_status = array(0=>'未支付',1=>'已支付');
 
@@ -39,7 +80,11 @@ class OrdersController extends Controller
 
         $shipping_status = array(0=>'未发货',1=>'已发货',2=>'部分发货');
 
-        return view('admin.main.orders.index',compact('ordersList','pay_status','order_status','shipping_status'));
+        //支付方式
+        $payMethod = PayMethod::all();
+
+        return view('admin.main.orders.index',compact(
+            'ordersList', 'pay_status','order_status','shipping_status','payMethod','sum','request'));
     }
 
     /**

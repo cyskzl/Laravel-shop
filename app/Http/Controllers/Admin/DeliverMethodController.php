@@ -112,9 +112,37 @@ class DeliverMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         //
+        $model = $request->input('model');
+
+        if ($model){
+
+            $data = DelveryMethod::findOrfail($id);
+
+            $show = $data->enabled;
+
+            switch ($show){
+                case 0:
+                    $show = 1;
+                    break;
+                case 1:
+                    $show = 0;
+                    break;
+                default:
+                    return '{"error":"1"}';
+                    break;
+            }
+
+            $result = DelveryMethod::where('id','=',$id)->update(['enabled'=>$show]);
+
+            if($result == 0){
+                return '{"error":"2"}';
+            }
+
+            return '{"error":"0"}';
+        }
         $delver = DelveryMethod::find($id)->get();
 
         $delvery = $delver[0];
