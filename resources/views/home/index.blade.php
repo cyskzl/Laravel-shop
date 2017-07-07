@@ -110,11 +110,21 @@
 			<!--全部展示的商品-->
 			<div class="category-around width">
 				<!--第一列  衬衫 遍历-->
-				<div class="category-show width cen ">
+				{{--<div class="category-show width cen ">--}}
 
-
-				</div>
+				{{--</div>--}}
+				{{--@foreach($goodsTabOneCate as $tabonecate)--}}
+					<div class="cateshow">
+						<a href="javascript;" >
+							<img src=""   class="img">
+							<span class="brand color">NUMBERING</span>
+							<span class="name color">{{$goodsTabOneCate->goods_name}}</span>
+							<span class="price">¥&nbsp;{{$goodsTabOneCate->shop_price }}</span>
+						</a>
+					</div>
+				{{--@endforeach--}}
 				<!--第二列 T恤-->
+
 
 			</div>
 		</div>
@@ -427,77 +437,84 @@
 
 		var cate_id ={{$cateId}}
 		three_cate_id = $('.clear li').attr('cate_id');
-
+		var arr = three_cate_id.split('_');
 //		 alert($("div").siblings(".category-around").eq(0).find('.category-show'));
 		//判断是否是第一个
 		var str = '';
-		$('.clear li').each(function(){
-			var that = $(this)
-				var thatli = $(this).index();
-//			alert(thatli)
-				if(thatli == '0'){
-					$('.category-show').children().remove();
-					$.ajax({
-						type: "POST",
-						url: "/home/getAjaxTab",
-						data: {'_token': '{{csrf_token()}}', 'three_cate_id': three_cate_id, 'cate_id': cate_id},
-						success: function (data) {
-//							alert(1)
-							for(var i=0;i<data.goods.length;i++){
-								var original_img = data.goods[i]['original_img'] ;
-								original_img=original_img.substring(0,original_img.length-1);
-								str += '<div class="cateshow ">';
-								str += '<a href="javascript;">';
-								str += '<img src='+original_img+'  class="img">';
-								str += '<span class="brand color">'+data.brand[i]+'</span>';
-								str += '<span class="name color">'+data.goods[i]['goods_name']+'</span>';
-								str += '<span class="price">¥&nbsp;'+data.goods[i]['shop_price']+'</span> </a>  </div>';
-							}
-							$('.category-show').append(str);
-//							that.parent().attr('exists', '1');
-						}
+		{{--$('.clear li').each(function(){--}}
+			{{--var that = $(this);--}}
+				{{--var thatli = $(this).index();--}}
+{{--//			alert(thatli)--}}
+				{{--if(thatli == '0'){--}}
+{{--//					$(this).parent().parent().next().find('.category-show').children().remove();--}}
+					{{--$.ajax({--}}
+						{{--type: "get",--}}
+						{{--url: "/home/getAjaxTab",--}}
+						{{--data: {'_token': '{{csrf_token()}}', 'three_cate_id': arr[2], 'cate_id': cate_id},--}}
+						{{--success: function (data) {--}}
+{{--//							alert(1)--}}
+							{{--str += '<div class="category-show width cen ">';--}}
+							{{--for(var i=0;i<data.goods.length;i++){--}}
+								{{--var original_img = data.goods[i]['original_img'] ;--}}
+								{{--original_img=original_img.substring(0,original_img.length-1);--}}
 
+								{{--str += '<div class="cateshow ">';--}}
+								{{--str += '<a href="javascript;">';--}}
+								{{--str += '<img src='+original_img+'  class="img">';--}}
+								{{--str += '<span class="brand color">'+data.brand[i]+'</span>';--}}
+								{{--str += '<span class="name color">'+data.goods[i]['goods_name']+'</span>';--}}
+								{{--str += '<span class="price">¥&nbsp;'+data.goods[i]['shop_price']+'</span> </a> </div>';--}}
+							{{--}--}}
+							{{--str += '</div>';--}}
+							{{--$('.category-around').append(str);--}}
+{{--//							that.parent().attr('exists', '1');--}}
+						{{--}--}}
 
-					});
-				}
-		});
+					{{--});--}}
+				{{--}--}}
+		{{--});--}}
 
 		$('.clear li').mouseenter(function(){
 
-			if($(this).hasClass('borl')){
+//			if($(this).hasClass('borl')){
 
+//				$(this).parent().parent().next().find('.category-show').children().remove();
+//				console.log($(this).parent('.clear').parent('.category-list').siblings().find('.category-around'));
 			var that = $(this);
 			var three_cate_id = that.attr('cate_id');
-				alert(three_cate_id);
-				var arr = three_cate_id.split('_');
-//				alert(arr);
+			var arr = three_cate_id.split('_');
 			var cate_id ={{$cateId}}
-            bool = that.parent().attr('exists') ;
+            bool = that.attr('exists') ;
 
 			if(!bool){
-					$('.category-show').children().remove();
+//				$('.category-show').children().remove();
+
 					$.ajax({
-					type: "POST",
+					type: "get",
 					url: "/home/getAjaxTab",
-					data: {'_token': '{{csrf_token()}}', 'three_cate_id': three_cate_id, 'cate_id': cate_id},
+					data: {'_token': '{{csrf_token()}}', 'three_cate_id': arr[2], 'cate_id': cate_id},
 					success: function (data) {
+
 						var strs = '';
+						strs += '<div class="category-show width cen ">';
 						for(var i=0;i<data.goods.length;i++){
 							var original_img = data.goods[i]['original_img'] ;
 							original_img=original_img.substring(0,original_img.length-1);
-							strs += '<div class="cateshow ">';
+							strs = '<div class="cateshow ">';
 							strs += '<a href="javascript;">';
 							strs += '<img src='+original_img+' class="img">';
 							strs += '<span class="brand color">'+data.brand[i]+'</span>';
 							strs += '<span class="name color">'+data.goods[i]['goods_name']+'</span>';
 							strs += '<span class="price">¥&nbsp;'+data.goods[i]['shop_price']+'</span> </a> </div>';
 						}
-						$('.category-show').append(strs);
-						$('.category-show').parent().attr('exists', '1');
+						strs += '</div>';
+						$('.category-around').append(strs);
+//						$('.category-show').parent().attr('exists', '1');
+						that.attr('exists', '1');
 					}
 				})
 			}
-			}
+//			}
 		});
 
 
