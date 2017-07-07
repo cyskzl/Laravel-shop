@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Carousel;
+use App\Models\Category;
 use App\Models\Config;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,7 @@ class CarouselController extends Controller
         //判断是否有权限访问列表
 		$this->perms->adminPerms('admin, goods', 'carouse_list');
 
-        $carousel = Carousel::orderBy('orderby')
+        $carousel = Carousel::orderBy('orderby','desc')
             ->where(function($query) use ($request){
                 // 搜索关键词
                 $keyword = $request->input('keyword');
@@ -39,9 +40,8 @@ class CarouselController extends Controller
                     $query->where('desc','like','%'.$keyword.'%');
                 }
             })->paginate(5);
-        $type = ['0'=>'女士','1'=>'男士','2'=>'创意生活'];
-        $status = ['0'=>'显示','1'=>'不显示'];
-        return view('admin.main.carousel.index',compact('carousel','request','type','status'));
+
+        return view('admin.main.carousel.index',compact('carousel','request'));
     }
 
     /**
@@ -52,7 +52,9 @@ class CarouselController extends Controller
         //判断是否有权限添加
 		$this->perms->adminPerms('admin, goods', 'create_carouse');
 
-        return view('admin.main.carousel.add');
+        //获取所有cate_id为0的
+        $cates = Category::where('pid', '=', '0')->get();
+        return view('admin.main.carousel.add', ['cates' => $cates]);
     }
 
     /**
@@ -64,7 +66,7 @@ class CarouselController extends Controller
         //轮播图添加
         $carousel = new Carousel();
         $carousel->img = $request->input('img');
-        $carousel->type_id = $request->input('type_id');
+        $carousel->cate_id = $request->input('cate_id');
         $carousel->link = $request->input('link');
         $carousel->desc = $request->input('desc');
         $carousel->orderby = $request->input('orderby');
@@ -83,9 +85,10 @@ class CarouselController extends Controller
     {
         //判断是否有权限修改
 		$this->perms->adminPerms('admin, goods', 'edit_carouse');
-
+        //获取所有cate_id为0的
+        $cates = Category::where('pid', '=', '0')->get();
         $carousel =Carousel::find($id);
-        return view('admin.main.carousel.edit',compact('carousel'));
+        return view('admin.main.carousel.edit',compact('carousel','cates'));
     }
 
     /**
@@ -100,7 +103,7 @@ class CarouselController extends Controller
         $img = './'.trim($request->input('old_img'),',');
         unlink($img);
         $car['img'] = $request->input('img');
-        $car['type_id'] = $request->input('type_id');
+        $car['cate_id'] = $request->input('cate_id');
         $car['link'] = $request->input('link');
         $car['desc'] = $request->input('desc');
         $car['orderby'] = $request->input('orderby');
@@ -135,32 +138,6 @@ class CarouselController extends Controller
         if($del_car){
             return 1;
         }else {
-            return 2;
-        }
-    }
-
-    // 修改轮播图排序
-    public function orderBy(Request $request)
-    {
-        $orderby = $request->input('orderby');
-        $id = $request->input('id');
-        $bool = Carousel::where('id','=',$id)->update(['orderby'=>$orderby]);
-        if($bool){
-            return 1;
-        }else{
-            return 2;
-        }
-    }
-
-    // 修改轮播图状态
-    public function status(Request $request)
-    {
-        $status = $request->input('status');
-        $id = $request->input('id');
-        $bool = Carousel::where('id','=',$id)->update(['status'=>$status]);
-        if($bool){
-            return 1;
-        }else{
             return 2;
         }
     }

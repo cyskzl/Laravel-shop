@@ -43,7 +43,7 @@
         }
     }
 
-
+	//返回品牌名称
 	function getBrand($id)
 	{
 		// echo '123';die;

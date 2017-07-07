@@ -74,11 +74,10 @@
                     类别
                 </label>
                 <div class="layui-input-block">
-                    <select lay-verify="required" name="type_id">
-                        <option>
-                        <option value="0" {{$carousel->type_id==0?'selected':''}}>女士</option>
-                        <option value="1" {{$carousel->type_id==1?'selected':''}}>男士</option>
-                        <option value="2" {{$carousel->type_id==2?'selected':''}}>创意生活</option>
+                    <select lay-verify="required" name="cate_id">
+                        @foreach($cates as $cate)
+                            <option @if($carousel->cate_id == $cate->id) selected @endif value="{{$cate->id}}">{{$cate->name}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>

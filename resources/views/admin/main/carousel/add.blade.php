@@ -78,11 +78,10 @@
                     类别
                 </label>
                 <div class="layui-input-block">
-                    <select lay-verify="required" name="type_id">
-                        <option>
-                        <option value="0">女士</option>
-                        <option value="1">男士</option>
-                        <option value="2">创意生活</option>
+                    <select lay-verify="required" name="cate_id">
+                        @foreach($cates as $cate)
+                                <option value="{{$cate->id}}">{{$cate->name}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -113,7 +112,7 @@
                 <span class="x-red">*</span>排序
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="orderby" name="orderby" required="" lay-verify="required" autocomplete="off" class="layui-input" value="0">
+                <input type="text" value="50" id="orderby" name="orderby"  autocomplete="off" class="layui-input" >
             </div>
             <div class="layui-form-mid layui-word-aux">
                 <span class="x-red">*</span>
@@ -145,9 +144,6 @@
                 layer = layui.layer;
 
 
-
-
-
             //监听提交
             form.on('submit(add)', function(data){
                 //发异步，把数据提交给php
@@ -157,7 +153,7 @@
                     dataType: 'json',
                     data:data.field,
                     success: function (data){
-                        console.log(data);
+
                         if(data == 1){
                             layer.alert("增加成功", {icon: 6},function () {
                                 // 获得frame索引

@@ -15,7 +15,7 @@
 		<div class="page_channel">
 			<ul class="display_a">
 				<li>
-					<a href="javascript:">女士频道</a>
+					<a href="javascript:">@if($cateId == 1)女士@else男士@endif频道</a>
 					<span>></span>
 				</li>
 				<li>
@@ -31,14 +31,16 @@
 				<dl>
 					<dt>全部产品</dt>
 						{{--男女士标签加规格--}}
-						@foreach($tags as $tag)
+						@foreach($tags as $k=>$tag)
 						<dd id="page_all_a" class="page_all_a">
 							<span><img src="{{asset('\templates\home\uploads\icon_tree_menu.png')}}" alt=""></span>
 							<a href="javascript:">{{$tag->tag_name}}</a>
 						</dd>
 						<dd id="page_all_aone" data-value=" {{$tag->goodcatename}}" class="page_all_none goodcatename" style="display: block;">
 							{{--<a href="javascript:">全部上衣</a>--}}
-							<a href="javascript:">{{$tag->goodcatename}}</a>
+							@foreach($goodsCatName[$k] as $key=>$v)
+									<a href="{{url('/home/goodsList/'.$goodsCatId[$k][$key])}}">{{ $v }}</a>
+							@endforeach
 						</dd>
 						@endforeach
 					</dl>
@@ -93,14 +95,14 @@
 @section('js')
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script>
-		var goodcatename = $('.goodcatename').attr('data-value');
-		var catename = goodcatename.split(',');
-		var str = '';
-		for(var j=0; j< catename.length;j++){
-			str += '<a>'+catename[j]+'</a>';
-
-		}
-		$('.goodcatename').append(str);
+//		var goodcatename = $('.goodcatename').attr('data-value');
+//		var catename = goodcatename.split(',');
+//		var str = '';
+//		for(var j=0; j< catename.length;j++){
+//			str += '<a>'+catename[j]+'</a>';
+//
+//		}
+//		$('.goodcatename').append(str);
 	</script>
 @endsection
 

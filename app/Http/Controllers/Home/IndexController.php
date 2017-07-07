@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Models\GoodsTabCate;
+use Illuminate\Support\Facades\DB;
+use App\Models\Carousel;
 use App\Models\Goods;
 use App\Http\Requests;
 use App\Models\Category;
@@ -25,23 +28,116 @@ class IndexController extends Controller
 
         $cateId = Input::get('categoryId');
 
+        //获取后缀的id 1, 女士默认，2男士,
        if($cateId == '1'){
+
            $request->session()->set('Index', '1');
+           //轮播图
+           $carousel =  self::carousel($cateId);
+           //最新产品
+           $newest = self::newest($cateId);
+
+           //分类
+//           $hotgoods = Goods::select()->where('is_hot', '=', '1', 'and','like','cat_id',$cateId.'_%_%')->get();
+
+//           $goodscate =  DB::select('select * from goods_category where id=1 and pid != 0 OR pid IN( SELECT id from goods_category where pid in(SELECT id from goods_category where id=1)) limit 8');
+           //选项卡
+           $goodstabcate = self::goodsTabCate($cateId);
+//           dd($goodstabcate);
+           //销量商品
+           $sales_sum = self::sum($cateId);
+
        } else {
+
            $request->session()->set('Index', '2');
+           //轮播图
+           $carousel =self::carousel($cateId);
+           //最新产品
+           $newest = self::newest($cateId);
+
+           $goodstabcate = self::goodsTabCate($cateId);
+//           dd($goodstabcate);
+           //销量商品
+           $sales_sum = self::sum($cateId);
+
        }
-        //获取后缀的id 1, 女士默认，2男士,3 生活
-        // $cateId = $category_id;
-        return view('home.index', ['request' => $request ,'cateId' => $cateId ]);
+
+        return view('home.index', ['sales_sum' => $sales_sum,'goodstabcate' => $goodstabcate,'request' => $request ,'cateId' => $cateId ,'carousel' => $carousel,'newest' => $newest]);
 
     }
-
-    public function cate_Id(Request $request, $category_id = 1)
+    public function goodsTabCate($cateId)
     {
-        $cateId = $category_id;
-        return $cateId;
+        //选项卡
+        $goodstabcate = GoodsTabCate::where('is_display', '=', '1')->where('cat_id','like', $cateId.'%')->get();
+        return $goodstabcate;
+    }
+    /**
+     * 销量商品
+     * @param $cateId
+     * @return mixed
+     */
+    public function sum($cateId)
+    {
+        $sales_sum = Goods::where('is_hot','=', '1', 'and', 'cat_id','like',$cateId.'%')->orderBy('sales_sum', 'desc')->take(20)->get();
+        return $sales_sum;
+    }
+    /**
+     * 选项卡
+     * @param Request $request
+     * @return array
+     */
+    public function getAjaxTab(Request $request)
+    {
+        //3级分类
+        $three_cate_id = $request->input('three_cate_id');
+        //男女
+        $cate_id = $request->input('cate_id');
+
+        if($cate_id == 1 || $cate_id == ''){
+            //女
+            $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
+            $brand = [];
+            //获取品牌
+            foreach ($goods as $good){
+                $brand[] = getBrand($good->brand_id);
+            }
+        } else {
+            //女
+            $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
+            $brand = [];
+            //获取品牌
+            foreach ($goods as $good){
+                $brand[] = getBrand($good->brand_id);
+            }
+        }
+        return  $data =   [
+            'goods' =>$goods,
+            'brand' => $brand
+        ];
     }
 
+    /**
+     * 最新的商品
+     * @param $cateId
+     * @return mixed
+     */
+    public function newest($cateId)
+    {
+        //查女士最新的产品id排序
+        $newest = Goods::where('is_new', '=', '1', 'and', 'cat_id', 'like', $cateId.'%')->orderBy('goods_id','desc')->take(8)->get();
+        return $newest;
+    }
+    /**
+     * 首页轮播图
+     * @param $cateId
+     * @return mixed
+     */
+    public function carousel($cateId)
+    {
+        //轮播图
+        $carousel = Carousel::where('status', '=', '1')->where('cate_id','=', $cateId)->take(3)->get();
+        return $carousel;
+    }
     /**
      * 获取首页分类的方法
      * @param $maxId 1级ID
@@ -71,6 +167,7 @@ class IndexController extends Controller
         ];
         return $data;
     }
+
     /**
      * 获取1级分类
      * @param $pid

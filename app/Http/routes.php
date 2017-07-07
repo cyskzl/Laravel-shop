@@ -35,6 +35,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::any('/catalog/category_id/{id?}','IndexController@cataLog')->where('id', '[0-9]+');
     //导航
     Route::any('/getAjaxCate','IndexController@getAjaxCate');
+    //选项卡商品首页
+    Route::any('/getAjaxTab','IndexController@getAjaxTab');
     // 注册页面(默认邮箱注册email)
     Route::get('/register', 'RegisterController@register');
     // 登录界面
@@ -65,6 +67,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     //    Route::get('/goodsList/product', 'GoodController@goodsProduct');
     // 商品详情页
     Route::get('/goodsDetail/{goods_id}', 'GoodController@goodsDetail');
+
     // 商品规格ajax验证
     Route::post('/goodsDetail/ajaxdetail','GoodController@ajaxDetail');
     //    // 加入到购物车（ajax提交缓存处理）
@@ -144,10 +147,16 @@ Route::group(['prefix' => 'admin'], function (){
         //商品分类  goods =>商品   category => 分类
         Route::resource('/goodscategory', 'Admin\GoodscategoryController');
 
+        //商品分类选项卡
+        Route::resource('/goodstabcate', 'Admin\GoodsTabCateController');
+
+
         //图片上传
         Route::any('/upload/{uploadname}', 'Admin\CommonController@upload');
         //返回3级分类
         Route::any('/ajaxCate', 'Admin\CommonController@ajaxCate');
+        //返回2级分类
+        Route::any('/ajaxTwoCate', 'Admin\CommonController@ajaxTwoCate');
         //规格
         Route::any('/ajaxModel', 'Admin\CommonController@ajaxModel');
         //加载商品属性

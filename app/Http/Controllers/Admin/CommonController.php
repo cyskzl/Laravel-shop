@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Carousel;
+use App\Models\Category;
+use App\Models\GoodsTabCate;
 use DB;
 use App\Models\Brand;
 use App\Models\Goods;
@@ -94,6 +97,12 @@ class CommonController extends Controller
             case 'goods':
                 $specdata = Goods::findOrFail($data['id']);
                 break;
+            case 'carousels':
+                $specdata = Carousel::findOrFail($data['id']);
+                break;
+            case 'goods_tab_cate':
+                $specdata = GoodsTabCate::findOrFail($data['id']);
+                break;
         }
 
         $fieldname = $data['fieldname'];
@@ -129,17 +138,13 @@ class CommonController extends Controller
         return $data;
     }
 
-    /**
-     * 商品添加修改获取分类
-     * @param Request $request
-     * @return array 失败信息
-     */
-    public function ajaxCate(Request $request)
+    public function ajaxTwoCate(Request $request)
     {
         $fatcate = $request->input('fatcate');
         if($fatcate){
-            $second  =  DB::table('goods_category')->where('level', 'like', '0,%'.$fatcate)->select()->get();
-            return $second;
+
+            $data  =  Category::where('level', '=', '0,'.$fatcate)->get();
+
         } else {
             $data = [
                 'status' => 0,
@@ -147,9 +152,20 @@ class CommonController extends Controller
             ];
 
         }
-       if($request->input('three')){
-           $three  =  DB::table('goods_category')->where('level', 'like', '0,%'.$fatcate.',%')->select()->get();
-           return $three;
+        return $data;
+    }
+    /**
+     * 商品添加修改获取分类
+     * @param Request $request
+     * @return array 失败信息
+     */
+    public function ajaxCate(Request $request)
+    {
+       $three = $request->input('three');
+       if($three){
+
+           $data  =  Category::where('level', 'like', '0,%,'.$three)->get();
+//            dd($data);
        } else {
            $data = [
                'status' => 0,

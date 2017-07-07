@@ -90,6 +90,13 @@
                             </a>
                         </dd>
                         </dd>
+                        <dd class="">
+                        <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/goodstabcate') }}">
+                                <cite>商品分类选项卡</cite>
+                            </a>
+                        </dd>
+                        </dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">

@@ -1,7 +1,8 @@
 @extends('admin.layouts.layout')
-
-@section('title','轮播图管理')
-
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{asset('org/ajax/ajax.css')}}">
+    <script src="{{asset('org/ajax/ajax.js')}}" type="text/javascript"></script>
+@endsection
 @section('x-nav')
     <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
@@ -11,7 +12,20 @@
 @endsection
 
 @section('x-body')
-    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="banner_add('添加轮播图','{{ url('admin/carousel/create') }}','600','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
+    <form class="layui-form " action="{{url('admin/carousel')}}" style="width:800px">
+        <div class="layui-form-pane" style="margin-top: 15px;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">搜索</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="keyword" value="{{$request->input('keyword')}}" placeholder="标题" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline" style="width:80px">
+                    <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="banner_add('添加轮播图','{{ url('admin/carousel/create') }}','600','500')"><i class="layui-icon">&#xe608;</i>添加</button><span class="x-right" style="line-height:40px">共有数据：{{$carousel->total()}} 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -47,14 +61,18 @@
                 {{$car->desc}}
             </td>
             <td>
-                {{$type[$car->type_id]}}
+                {{getCateNameByCateId($car->cate_id)}}
             </td>
             <td>
-                <input type="text" name="orderby" onchange="changeOrder(this,'{{$car->id}}')" value={{$car->orderby}} size="1">
+                <form class="layui-form" action="" id="orderid">
+                    <input onkeyup="this.value=this.value.replace(/[^\d]/g,'')" type="text"  name="orderby" onchange="changeTableVal('orderby','carousels','{{$car->id}}','{{url('/admin/ajax')}}',this)" value="{{$car->orderby}}"  size="1">
+                </form>
             </td>
             <td class="td-status">
-                <div id="car_status" class="layui-unselect layui-form-checkbox {{$car->status==0?'layui-form-checked':''}}" onclick="changeStatus('{{$car->id}}','{{$car->status}}')" lay-skin="">
-                    <span>显示</span><i class="layui-icon"></i>
+                <div style="text-align: center; width: 50px;">
+                     <span class="@if($car->status == '0') no @else yes @endif" id="status"  onclick="changeTableVal('status' , 'carousels', '{{$car->id}}' ,'{{url('/admin/ajax')}}',this)">
+                     @if($car->status == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
+                     </span>
                 </div>
             </td>
             <td class="td-manage">
@@ -84,50 +102,7 @@
 @endsection
 
 @section('js')
-    <script>
-        function changeOrder(obj,id){
-            var orderby = $(obj).val();
-            $.ajax({
-                type:'POST',
-                url:'{{url('admin/carousel/orderby')}}',
-                dataType: 'json',
-                data:{'_token':'{{csrf_token()}}','orderby':orderby,'id':id},
-                success: function (data){
-                    if(data==1){
-                        location.href = location.href;
-                        layer.msg('排序成功', {icon: 6,time:1000});
-                    }else{
-                        layer.msg('排序失败', {icon: 5,time:1000});
-                    }
-                }
-            });
-        }
 
-        function changeStatus(id,status){
-            if(status==0){
-                status=1;
-            }else{
-                status=0;
-            }
-            layer.confirm('请确认是否需要显示？',function(index){
-                //捉到所有被选中的，发异步进行修改
-                $.ajax({
-                    type:'POST',
-                    url:'{{url('admin/carousel/status')}}',
-                    dataType: 'json',
-                    data:{'_token':'{{csrf_token()}}','id':id,'status':status},
-                    success: function (data){
-                        if(data==1){
-                            layer.msg('修改成功', {icon: 6,time:3000});
-                            location.href = location.href;
-                        }else{
-                            layer.msg('修改失败', {icon: 5,time:3000});
-                        }
-                    }
-                });
-            });
-        }
-    </script>
     <script>
         layui.use(['laydate','element','laypage','layer'], function(){
             $ = layui.jquery;//jquery
@@ -158,27 +133,7 @@
         function banner_add(title,url,w,h){
             x_admin_show(title,url,w,h);
         }
-        /*停用*/
-        function banner_stop(obj,id){
-            layer.confirm('确认不显示吗？',function(index){
-                //发异步把用户状态进行更改
-                $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="banner_start(this,id)" href="javascript:;" title="显示"><i class="layui-icon">&#xe62f;</i></a>');
-                $(obj).parents("tr").find(".td-status").html('<span class="layui-btn layui-btn-disabled layui-btn-mini">不显示</span>');
-                $(obj).remove();
-                layer.msg('不显示!',{icon: 5,time:1000});
-            });
-        }
 
-        /*启用*/
-        function banner_start(obj,id){
-            layer.confirm('确认要显示吗？',function(index){
-                //发异步把用户状态进行更改
-                $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="banner_stop(this,id)" href="javascript:;" title="不显示"><i class="layui-icon">&#xe601;</i></a>');
-                $(obj).parents("tr").find(".td-status").html('<span class="layui-btn layui-btn-normal layui-btn-mini">已显示</span>');
-                $(obj).remove();
-                layer.msg('已显示!',{icon: 6,time:1000});
-            });
-        }
         // 编辑
         function banner_edit (title,url,id,w,h) {
             x_admin_show(title,url,w,h);
