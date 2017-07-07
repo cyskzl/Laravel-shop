@@ -96,13 +96,15 @@ $(function () {
         var check      = $('input[name="subBox"]:checked');
 
         var total      = $('.allMoney');
-        var goods_id   = check.parent().prev();
-        var goods_name = check.parent().next().children('.cart_img').next();
-        var img        = check.parent().next().find('.cart_img');
-        var spectwo    = check.parent().next().find('.spectwo');
-        var specone    = check.parent().next().find('.specone');
-        var price      = check.parent().next().next().find('.uniPrice');
-        var num        = check.parent().next().next().next().find('.num');
+        var goods_id_arr   = check.parent().prev();
+        var goods_name_arr = check.parent().next().children('.cart_img').next();
+        var img_arr        = check.parent().next().find('.cart_img');
+        var spectwo_arr    = check.parent().next().find('.spectwo');
+        var key1_arr    = check.parent().next().find('input[name=key1]');
+        var key2_arr    = check.parent().next().find('input[name=key2]');
+        var specone_arr    = check.parent().next().find('.specone');
+        var price_arr      = check.parent().next().next().find('.uniPrice');
+        var num_arr        = check.parent().next().next().next().find('.num');
 
 
         if (check.length == 0) {
@@ -110,36 +112,60 @@ $(function () {
             return false;
         }
 
-
-        var checkArr = new Array();
-        var arr = new Array();
+        // {"red":{"id":1,"name":"mary"},"blue":{"id":2,"name":"u71d5u5b50"}}
+        // {"session_id":"13_41_35","goods_id":"13","specone":"尺寸：X","spectwo":"颜色：青色","num":"1","price":"￥185.00","goods_name":"舒适弹力紧身长泳裤_藏青色","key1":"41","key2":"35","img":"http://admin.com/Uploads/goods/201707020042237396.jpg"}
+        var str = '{';
         for (var i = 0; i < check.length; i++) {
 
-            checkArr[i] = new Array();
-            checkArr[i]['session_id'] = $(check[i]).val();
-            // console.log($(check[i]).val());
-            checkArr[i]['img'] = $(img[i]).attr('src');
-            checkArr[i]['goods_name'] = $(goods_name[i]).text();
-            checkArr[i]['spectwo'] = $(spectwo[i]).text();
-            checkArr[i]['specone'] = $(specone[i]).text();
-            checkArr[i]['price'] = $(price[i]).text().substr(1);
-            checkArr[i]['num'] = $(num[i]).val();
-            // arr.push(checkArr);
-            // console.log(arr);
+            var id         = "session_id";
+            var num        = "num";
+            var img        = "img";
+            var key1       = "key1";
+            var key2       = "key2";
+            var price      = "price";
+            var spectwo    = "spectwo";
+            var specone    = "specone";
+
+            var goods_id   = "goods_id";
+            var goods_name = "goods_name";
+
+
+            str += "\"" + $(check[i]).val() + "\"" + ':' + '{'
+                +  "\"" + id + "\"" + ':' + "\""  + $(check[i]).val() + "\","
+                +  "\"" + num + "\"" + ':' + "\"" + $(num_arr[i]).val() + "\","
+                +  "\"" + img + "\"" + ':' + "\""  + $(img_arr[i]).attr('src') + "\","
+                +  "\"" + key1 + "\"" + ':' + "\""  + $(key1_arr[i]).val() + "\","
+                +  "\"" + key2 + "\"" + ':' + "\""  + $(key2_arr[i]).val() + "\","
+                +  "\"" + price + "\"" + ':' + "\""  + $(price_arr[i]).text() + "\","
+                +  "\"" + specone + "\"" + ':' + "\""  + $(specone_arr[i]).text() + "\","
+                +  "\"" + goods_id  + "\"" + ':'  + "\"" + $(goods_id_arr[i]).val()   + "\","
+                +  "\"" + goods_name + "\"" + ':' + "\""  + $(goods_name_arr[i]).text() + "\","
+
+                +  '},';
+
+
         }
+        str = str.substring(0,str.length -1);
+        str += '}';
 
+        //去除多余的逗号
+        var reg = /\,\}/g;
+        str = str.replace(reg,'}');
 
-        var jsonstr="[{";
-        for (var i=0; i<checkArr.length; i++) {
-            jsonstr += "\"" + checkArr[i]['session_id'] + "\""+ ":" + "\"" + checkArr[i] + "\",";
+        shopAjax('cartToOrder', 'post', str);
 
-
-        }
-        jsonstr = jsonstr.substring(0,jsonstr.lastIndexOf(','));
-        jsonstr += "}]";
-        post = JSON.parse(jsonstr);
-
-        console.log(post);
+        // var jsonstr="[{";
+        // for (var i=0; i<checkArr.length; i++) {
+        //     jsonstr += "\"" + checkArr[i]['session_id'] + "\""+ ":" + "\"" + checkArr[i] + "\",";
+        //
+        //
+        // }
+        // jsonstr = jsonstr.substring(0,jsonstr.lastIndexOf(','));
+        // jsonstr += "}]";
+        // post = JSON.parse(jsonstr);
+        //
+        // console.log(post);
+        // console.log(jsonstr);
 
     });
 

@@ -78,6 +78,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // Route::group(['middleware'=>'auth'],function(){
         // 订单页
         Route::resource('/orders', 'OrderController');
+        Route::post('/cartToOrder', 'OrderController@cartAjax');
         // 个人中心(默认为设置-个人信息 home.personal.set.personnalInfo)
         Route::get('/personal', 'PersonalController@index');
         //修改密码

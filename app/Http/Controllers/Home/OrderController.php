@@ -138,4 +138,9 @@ class OrderController extends Controller
         $cateId = $request->session()->get('Index');
         return view('home.personal.order.refundOrder',compact('cateId'));
     }
+
+    public function cartAjax(Request $request)
+    {
+        dd(json_decode($request->data, true));
+    }
 }

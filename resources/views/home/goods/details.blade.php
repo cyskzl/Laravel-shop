@@ -522,6 +522,7 @@
 					 'img' : goods_img
 				 });
 
+
                 $.ajax({
                     type:'POST',
                     url:'{{url('home/shoppingcart/shoppingcache')}}',
