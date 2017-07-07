@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\CateMiddleGoods;
 use App\Models\Goods;
+use App\Models\GoodsAttr;
 use App\Models\GoodsTag;
 use App\Models\Spec;
 use App\Models\SpecGoodsPrice;
@@ -167,6 +168,10 @@ class GoodController extends Controller
             $two_key[] = explode('_',$key2)[1];
         }
 
+        //SELECT goods_attribute.attr_name,goods_attr.attr_value FROM goods_attr LEFT JOIN goods_attribute on goods_attr.attr_id = goods_attribute.attr_id WHERE goods_attr.goods_id =10
+
+        $goodattr = GoodsAttr::where('goods_id',$goods_id)->leftjoin('goods_attribute','goods_attr.attr_id','=','goods_attribute.attr_id')->select('goods_attribute.attr_name','goods_attr.attr_value')->get();
+
         // 通过商品的类型ID得到该商品的类型对应的所有规格项
         $specdetali = Spec::select(DB::raw('spec.*, spec_item.spec_id, group_concat(spec_item.item) AS specitem , group_concat(spec_item.id) AS specid'))
         ->join('spec_item', 'spec.id', '=', 'spec_item.spec_id')
@@ -208,7 +213,7 @@ class GoodController extends Controller
 //        dump($spec_name);
 //        dd($specitem);
 //        dd($specinfo);
-        return view('home.goods.details',compact('specdetali','goodinfo','brand','spec_name','spec_item','spec_id','two_key','cateId'));
+        return view('home.goods.details',compact('specdetali','goodinfo','brand','spec_name','spec_item','spec_id','two_key','goodattr','cateId'));
     }
 
     /**

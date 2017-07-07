@@ -33,7 +33,7 @@
                 {{--<a href="{{ url('home/') }}/{{$onelife->id}}" data-currentcategoryid="2">{{$onelife->name}}</a>--}}
             </div>
             <div class="header_logo left">
-                <img src="{{asset('/templates/home/uploads/logo (1).png')}}" alt="">
+                <a href="{{ url('home') }}"><img src="{{asset('/templates/home/uploads/logo (1).png')}}" alt=""></a>
             </div>
             <div class="header_search right">
                 <div>

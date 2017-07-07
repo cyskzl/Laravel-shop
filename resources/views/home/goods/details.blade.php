@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="{{asset('/templates/home/css/section.css')}}" type="text/css">
 	<link rel="stylesheet" href="{{asset('/templates/home/css/dress.css')}}" type="text/css">
 	<script src="{{asset('/templates/home/js/details-main.js')}}"></script>
-
+	<script src="{{asset('/templates/home/js/page.js')}}"></script>
 @endsection
 
 @section('main')
@@ -216,7 +216,42 @@
 
 	            <!-- 商品详情-->
 	            <div class="cp-details clearfix">
+					<div class="D1">
+						<h3>产品详情</h3>
+						<span>{{$goodinfo->goods_remark}}</span>
+					</div>
+					<!-- 产品参数-->
+					<div class="D2">
+						<h3>产品参数</h3>
+						<ul>
+							@for($i=0;$i<count($goodattr);$i++)
+								<li>{{$goodattr[$i]->attr_name}}:{{$goodattr[$i]->attr_value}}</li>
+							@endfor
+						</ul>
+					</div>
+					<!-- 产品规格-->
+					<div class="D3 rela">
+						<h3>尺码信息</h3>
+						<p class="abso">参考尺寸(cm)</p>
+						<table>
+							<tbody>
+							<tr>
+								<td class="tit"></td>
+								<td>OS</td>
+							</tr>
+							<tr>
+								<td class="tit">长</td>
+								<td>17</td>
+							</tr>
+							<tr>
+								<td class="tit">短</td>
+								<td>7</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
 					{!! $goodinfo->goods_content !!}
+				</div>
 	            <!-- 购物须知-->
 	            <div class=" question none">
 	                <img src="{{asset('/templates/home/public/png/buy.png')}}" alt=""/>
@@ -336,7 +371,7 @@
 
 @section('shop')
 	<div class="cart">
-		<a href="">
+		<a href="{{url('home/shoppingcart')}}">
 			<i></i>
 			<p>购物车</p>
 			<b>0</b>
@@ -493,6 +528,7 @@
                     dataType:'json',
                     data:{'_token':'{{csrf_token()}}','goods_shop':goods_shop},
                     success: function(res) {
+                        console.log(res);
                         if (res.success == 1) {
 							layer.open({
 								content: res.info
