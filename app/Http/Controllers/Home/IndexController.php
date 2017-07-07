@@ -43,7 +43,9 @@ class IndexController extends Controller
 //           $goodscate =  DB::select('select * from goods_category where id=1 and pid != 0 OR pid IN( SELECT id from goods_category where pid in(SELECT id from goods_category where id=1)) limit 8');
            //选项卡
            $goodstabcate = self::goodsTabCate($cateId);
-//           dd($goodstabcate);
+
+           $goodsTabOneCate = $goodstabcate[0];
+           dd($goodsTabOneCate);
            //销量商品
            $sales_sum = self::sum($cateId);
 
@@ -62,7 +64,7 @@ class IndexController extends Controller
 
        }
 
-        return view('home.index', ['sales_sum' => $sales_sum,'goodstabcate' => $goodstabcate,'request' => $request ,'cateId' => $cateId ,'carousel' => $carousel,'newest' => $newest]);
+        return view('home.index', ['goodsTabOneCate' => $goodsTabOneCate,'sales_sum' => $sales_sum,'goodstabcate' => $goodstabcate,'request' => $request ,'cateId' => $cateId ,'carousel' => $carousel,'newest' => $newest]);
 
     }
     public function goodsTabCate($cateId)
@@ -70,6 +72,42 @@ class IndexController extends Controller
         //选项卡
         $goodstabcate = GoodsTabCate::where('is_display', '=', '1')->where('cat_id','like', $cateId.'%')->get();
         return $goodstabcate;
+    }
+
+    public function goodsTabOneCate($cateId)
+    {
+        //3级分类
+//        $three_cate_id = $request->input('three_cate_id');
+//        dd($three_cate_id);
+        //男女
+        $goodstabcate = self::goodsTabCate($cateId);
+        $goodsTabOneCate = $goodstabcate[0];
+
+
+
+//        if($cateId == 1 || $cateId == ''){
+//            //女
+//            $goods = Goods::where('cat_id', 'like', $cateId.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
+//            $brand = [];
+//            //获取品牌
+//            foreach ($goods as $key=>$good){
+//
+//                $brand[] = getBrand($good->brand_id);
+//            }
+////            dd($goods);
+//        } else {
+//            //女
+//            $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
+//            $brand = [];
+//            //获取品牌
+//            foreach ($goods as $good){
+//                $brand[] = getBrand($good->brand_id);
+//            }
+//        }
+//        return  $data =   [
+//            'goods' =>$goods,
+//            'brand' => $brand
+//        ];
     }
     /**
      * 销量商品
@@ -90,6 +128,7 @@ class IndexController extends Controller
     {
         //3级分类
         $three_cate_id = $request->input('three_cate_id');
+//        dd($three_cate_id);
         //男女
         $cate_id = $request->input('cate_id');
 
@@ -98,9 +137,11 @@ class IndexController extends Controller
             $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
             $brand = [];
             //获取品牌
-            foreach ($goods as $good){
+            foreach ($goods as $key=>$good){
+
                 $brand[] = getBrand($good->brand_id);
             }
+//            dd($goods);
         } else {
             //女
             $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();

@@ -28,7 +28,7 @@ class GoodController extends Controller
         $cateId = $request->session()->get('Index');
         //2级分类
         $twocate = $request->route('category_id');
-
+        dump($twocate);
         //标签
         if($cateId == 1){
             //女士
@@ -56,7 +56,36 @@ class GoodController extends Controller
 
         return view('home.goods.list', ['cateId' => $cateId , 'tags' =>$tags, 'goods' => $goods,'goodsCatId' => $goodsCatId ,'goodsCatName' => $goodsCatName]);
     }
-
+    /**
+     * 返回导航下的商品
+     * @param $cateId  判断是男是女
+     * @param $twocate 2级的id
+     * @return mixed   查询出的商品
+     */
+    public function goodsTree($cateId, $twocate)
+    {
+        //查询导航下的商品
+        $goods = TagMiddleGoods::join('goods', 'tags_middle_goods.goods_id', '=', 'goods.goods_id')
+            ->where('goods.cat_id', 'like', $cateId.'_'.'%'.$twocate)
+            ->join('goods_tag', 'goods_tag.tag_id', '=', 'tags_middle_goods.tags_id')->get();
+        return $goods;
+    }
+    /**
+     *  所有标签和标签下的分类
+     * @param $cateId 判断是男是女
+     * @return mixed 返回所有标签和标签下的分类
+     */
+    public function tagsTree($cateId)
+    {
+        //归类3级标签
+        $tags = CateMiddleGoods::select(DB::raw('goods_tag.tag_name,group_concat(cate_middle_goods.cate_id) AS goodsCatId,cate_middle_goods.tags_id,goods_category.id,goods_category.pid,goods_category.level,group_concat(goods_category.name) AS goodsCatName'))
+            ->where('level', 'like', '0,'.$cateId.'%')
+            ->groupby('goods_tag.tag_name')
+            ->join('goods_category', 'cate_middle_goods.cate_id', '=', 'goods_category.id')
+            ->join('goods_tag', 'goods_tag.tag_id', '=', 'cate_middle_goods.tags_id')
+            ->get();
+        return $tags;
+    }
     /**
      * 所有的标签分类
      * @param $tags
@@ -89,37 +118,8 @@ class GoodController extends Controller
         return $array;
     }
 
-    /**
-     * 返回导航下的商品
-     * @param $cateId  判断是男是女
-     * @param $twocate 2级的id
-     * @return mixed   查询出的商品
-     */
-    public function goodsTree($cateId, $twocate)
-    {
-        //查询导航下的商品
-        $goods = TagMiddleGoods::join('goods', 'tags_middle_goods.goods_id', '=', 'goods.goods_id')
-            ->where('goods.cat_id', 'like', $cateId.'_'.$twocate.'%')
-            ->join('goods_tag', 'goods_tag.tag_id', '=', 'tags_middle_goods.tags_id')->get();
-        return $goods;
-    }
 
-    /**
-     *  所有标签和标签下的分类
-     * @param $cateId 判断是男是女
-     * @return mixed 返回所有标签和标签下的分类
-     */
-    public function tagsTree($cateId)
-    {
-        //归类3级标签
-        $tags = CateMiddleGoods::select(DB::raw('goods_tag.tag_name,group_concat(cate_middle_goods.cate_id) AS goodsCatId,cate_middle_goods.tags_id,goods_category.id,goods_category.pid,goods_category.level,group_concat(goods_category.name) AS goodsCatName'))
-            ->where('level', 'like', '0,'.$cateId.'%')
-            ->groupby('goods_tag.tag_name')
-            ->join('goods_category', 'cate_middle_goods.cate_id', '=', 'goods_category.id')
-            ->join('goods_tag', 'goods_tag.tag_id', '=', 'cate_middle_goods.tags_id')
-            ->get();
-        return $tags;
-    }
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 最新商品列表页
