@@ -46,7 +46,7 @@
 
 @section('main')
 	<!-- 内容 -->
-	@if ($_SESSION['goods_shop'])
+	@if (!empty($_SESSION['goods_shop']))
 	    <form action="shopOrders" method="post">
 	        <table id="car">
 
@@ -67,7 +67,7 @@
 		                <tr>
 							<input type="hidden" name="goods_id" value="{{ $goods['goods_id'] }}">
 		                    <td align="center" width="60">
-		                        <input name="subBox" type="checkbox" value="{{ $goods['goods_id'] }}" />
+		                        <input name="subBox" type="checkbox" value="{{ $goods['session_id'] }}" />
 		                    </td>
 		                    <td align="center">
 		                        <img class="cart_img" src="{{ asset(''.$goods['img'].'') }}" alt="商品一"/>
@@ -96,13 +96,12 @@
 	            </tbody>
 	            <tfoot>
 	                <tr>
-	                    <th colspan="4" class="allMoney-th">商品总金额：<span class="allMoney myf">￥<span id="allMoney" class="allMoney">00.00</span></span></th>
+	                    <th colspan="4" class="allMoney-th">总计：<span class="allMoney myf">￥<span id="allMoney" class="allMoney">00.00</span></span></th>
 	                    <th colspan="2"><span class="settlement">去结算</span></th>
 	                </tr>
 	            </tfoot>
 
 	        </table>
-			<input type="submit" value="11">
 	    </form>
 	    <div class="cart-notice">
 	        <img src="{{ asset('templates/home/uploads/icon_notice.png') }}" alt=""/>

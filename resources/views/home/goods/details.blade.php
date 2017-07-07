@@ -475,7 +475,8 @@
 
 
                  var goods_shop = JSON.stringify({
-					 "goods_id": goods_id,
+                     "session_id": goods_id + '_' + key1 + '_'+ key2,
+                     "goods_id": goods_id,
 					 "specone" : spec_one + onevalue,
 					 'spectwo' : spec_two + twovalue,
 					 'num'  : num,
