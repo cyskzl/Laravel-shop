@@ -12,15 +12,22 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
-
+use hightman\xunsearch\lib;
 
 class IndexController extends Controller
 {
-    public function search()
+    public function search(Request $request)
     {
-        $xs = new \XS('goods');
+        $key = $request->input('keyword');
+//        var_dump($key);
+        $xs = new \XS("goods");
+//        dump($xs);
         $search = $xs->search;
+//        $res = $search->setQuery('1');
+//        $res = $search->search();
+        $res = $search->search('1');
 
+        var_dump($res);
     }
 
     /**

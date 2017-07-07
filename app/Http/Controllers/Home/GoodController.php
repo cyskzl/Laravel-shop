@@ -159,7 +159,7 @@ class GoodController extends Controller
 
         // 拆分规格项值，用于详情页的第一列的规格展示，并且判断商品此规格项对应下的商品规格项有几个规格
         $one_key = explode('_',$spec_key[0]->key)[0];
-
+        dump($one_key);
         // 通过上述的第一个商品规格项，通过模糊查询得到第一个规格对应的下一规格项
         $key1_info = SpecGoodsPrice::where('goods_id',$goods_id)->where('key','like',$one_key.'_%')->pluck('key');
 
@@ -167,8 +167,6 @@ class GoodController extends Controller
         foreach($key1_info as $key2){
             $two_key[] = explode('_',$key2)[1];
         }
-
-        //SELECT goods_attribute.attr_name,goods_attr.attr_value FROM goods_attr LEFT JOIN goods_attribute on goods_attr.attr_id = goods_attribute.attr_id WHERE goods_attr.goods_id =10
 
         $goodattr = GoodsAttr::where('goods_id',$goods_id)->leftjoin('goods_attribute','goods_attr.attr_id','=','goods_attribute.attr_id')->select('goods_attribute.attr_name','goods_attr.attr_value')->get();
 
@@ -186,6 +184,11 @@ class GoodController extends Controller
             $spec_id[$k] = explode(',',$detail->specid);
         }
 
+        if(count($spec_item[0]) > count($spec_item[1])){
+            rsort($spec_name);
+            sort($spec_item);
+            sort($spec_id);
+        }
 //        dump($spec_name);
 //        dump($spec_item);
 //        dd($spec_id);
@@ -235,10 +238,18 @@ class GoodController extends Controller
         if(!empty($key1)){
             $keyinfo = SpecGoodsPrice::where('goods_id',$goods_id)->where('key','like',$key1.'_%')->pluck('key');
             // 遍历拆解key值
-            foreach ($keyinfo as $k=>$v){
-                $key[$k] = explode('_',$v)[1];
+//            dd($keyinfo);
+            if(count($keyinfo)==0){
+               $msg = [
+                   'status' => 1,
+               ];
+                return $msg;
+            }else {
+                foreach ($keyinfo as $k => $v) {
+                    $key[$k] = explode('_', $v)[1];
+                }
+                return $key;
             }
-            return $key;
 
         }
         // key2（32_23）存在,则需要获取商品的价格

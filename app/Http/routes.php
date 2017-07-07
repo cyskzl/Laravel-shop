@@ -33,6 +33,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::any('/newgoods', 'IndexController@newgoods');
     //分类
     Route::any('/catalog/category_id/{id?}','IndexController@cataLog')->where('id', '[0-9]+');
+    // 搜索
+    Route::get('/search', 'IndexController@search');
     //导航
     Route::any('/getAjaxCate','IndexController@getAjaxCate');
     //选项卡商品首页

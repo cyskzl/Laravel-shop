@@ -414,16 +414,19 @@
             data:{'_token':'{{csrf_token()}}','goods_id':goods_id,'key1':onekey},
             success: function(data){
                 if(data){
-//                    console.log(data);
-                    for(var i=0;i<key.length;i++){
+					if(data.status == 1) {
+					    console.log(data);
+//                        key2.style.display = 'none';
+                    } else {
+                        for (var i = 0; i < key.length; i++) {
 //                            console.log(key[i]);
-                        if(data.indexOf(key[i]) > -1){
-//                            key2[i].style.background = 'rgb(109, 109, 109)';
-//                            key2[i].style.color = 'white';
-                            key2[i].style.display = 'inline';
+                            if (data.indexOf(key[i]) > -1) {
+//
+                                key2[i].style.display = 'inline';
 
-                        }else {
-                            key2[i].style.display = 'none';
+                            } else {
+                                key2[i].style.display = 'none';
+                            }
                         }
                     }
                 }
@@ -447,14 +450,19 @@
                 data:{'_token':'{{csrf_token()}}','goods_id':goods_id,'key1':key1},
                 success: function(data){
     //				console.log(data);return false;
-                    if(data){
-                        for(var i=0;i<key.length;i++){
+                    if(data.status == 1) {
+//                        console.log(data);
+                        for (var i = 0; i < key.length; i++) {
+                                key2[i].style.display = 'none';
+                        }
+                    } else {
+                        for (var i = 0; i < key.length; i++) {
 //                            console.log(key[i]);
-                            if(data.indexOf(key[i]) > -1){
-//                                    key2[i].style.background = 'rgb(109, 109, 109)';
-    //                                key2[i].style.color = 'white';
+                            if (data.indexOf(key[i]) > -1) {
+//
                                 key2[i].style.display = 'inline';
-                            }else {
+
+                            } else {
                                 key2[i].style.display = 'none';
                             }
                         }

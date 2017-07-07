@@ -37,10 +37,12 @@
             </div>
             <div class="header_search right">
                 <div>
-                    <input type="text" class="header_searchForm left" placeholder="请输入搜索内容" style="outline:none">
-                    <a href="javascript:" id="header_searchin">
-                        <img src="{{asset('/templates/home/uploads/icon_searchin.png')}}" alt="">
-                    </a>
+                    <form action="{{ url('home/search') }}" method="get">
+                        <input type="text" name="keyword" class="header_searchForm left" placeholder="请输入搜索内容" style="outline:none">
+                        <button id="header_searchin">
+                            <img src="{{asset('/templates/home/uploads/icon_searchin.png')}}" alt="">
+                        </button>
+                    </form>
                 </div>
                 <ul class="left">
                     <li><a href="javascript:">SALONDEJU</a></li>
@@ -252,7 +254,6 @@
     });
 
     //新品
-
 
     $(function(){
         if (!$.session.get("currentCategoryId")){
