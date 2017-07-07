@@ -24,8 +24,6 @@ class IndexController extends Controller
      */
     public function homeIndex( Request $request)
     {
-//        $cateId = $category_id;
-
         $cateId = Input::get('categoryId');
 
         //获取后缀的id 1, 女士默认，2男士,
@@ -43,9 +41,13 @@ class IndexController extends Controller
 //           $goodscate =  DB::select('select * from goods_category where id=1 and pid != 0 OR pid IN( SELECT id from goods_category where pid in(SELECT id from goods_category where id=1)) limit 8');
            //选项卡
            $goodstabcate = self::goodsTabCate($cateId);
+            //ajax为加载前
+           $goodsTabOneCate = self::goodsTabOneCate($cateId);
 
-           $goodsTabOneCate = $goodstabcate[0];
-           dd($goodsTabOneCate);
+           //热销品牌
+           $brands = self::goodsBrand($cateId);
+//           dd($brands);
+
            //销量商品
            $sales_sum = self::sum($cateId);
 
@@ -57,57 +59,74 @@ class IndexController extends Controller
            //最新产品
            $newest = self::newest($cateId);
 
+           //选项卡
            $goodstabcate = self::goodsTabCate($cateId);
-//           dd($goodstabcate);
+           //ajax为加载前
+           $goodsTabOneCate = self::goodsTabOneCate($cateId);
+
+           //热销品牌
+           $brands = self::goodsBrand($cateId);
+
            //销量商品
            $sales_sum = self::sum($cateId);
 
        }
 
-        return view('home.index', ['goodsTabOneCate' => $goodsTabOneCate,'sales_sum' => $sales_sum,'goodstabcate' => $goodstabcate,'request' => $request ,'cateId' => $cateId ,'carousel' => $carousel,'newest' => $newest]);
+        return view('home.index', [
+
+                'goodsTabOneCate' => $goodsTabOneCate
+                ,'sales_sum'      => $sales_sum
+                ,'goodstabcate'   => $goodstabcate
+                ,'request'        => $request
+                ,'cateId'         => $cateId
+                ,'carousel'       => $carousel
+                ,'newest'         => $newest
+                ,'brands'         => $brands
+        ]);
 
     }
+
+    public function goodsBrand($cateId)
+    {
+        //select brand.id,brand.name,sales_sum from goods LEFT JOIN brand on goods.brand_id = brand.id ORDER BY  sales_sum desc
+        $brand = Goods::where('cat_id', 'like', $cateId. '%' )->join('brand', 'goods.brand_id', '=', 'brand.id')->orderBy('sales_sum', 'desc')->take(7)->get();
+        return $brand;
+    }
+    /**
+     * 获取选项卡的所有分类
+     * @param $cateId
+     * @return mixed
+     */
     public function goodsTabCate($cateId)
     {
         //选项卡
-        $goodstabcate = GoodsTabCate::where('is_display', '=', '1')->where('cat_id','like', $cateId.'%')->get();
+        $goodstabcate = GoodsTabCate::where('is_display', '=', '1')->where('cat_id','like', $cateId.'%')->take(7)->get();
         return $goodstabcate;
     }
 
+    /**
+     * 最新热门推荐 获取未加载ajax前的单商品
+     * @param $cateId
+     * @return mixed
+     */
     public function goodsTabOneCate($cateId)
     {
-        //3级分类
-//        $three_cate_id = $request->input('three_cate_id');
-//        dd($three_cate_id);
-        //男女
+
+        //获取全部选项卡
         $goodstabcate = self::goodsTabCate($cateId);
-        $goodsTabOneCate = $goodstabcate[0];
 
+        $tabOnecate = explode('_', $goodstabcate[0]['cat_id']);
 
+        if($cateId == 1 || $cateId == ''){
+            //女
+            $goods = Goods::where('cat_id', 'like', $cateId.'_%'.$tabOnecate[2], 'and', 'is_hot', '=', '1')->take(4)->get();
 
-//        if($cateId == 1 || $cateId == ''){
-//            //女
-//            $goods = Goods::where('cat_id', 'like', $cateId.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
-//            $brand = [];
-//            //获取品牌
-//            foreach ($goods as $key=>$good){
-//
-//                $brand[] = getBrand($good->brand_id);
-//            }
-////            dd($goods);
-//        } else {
-//            //女
-//            $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
-//            $brand = [];
-//            //获取品牌
-//            foreach ($goods as $good){
-//                $brand[] = getBrand($good->brand_id);
-//            }
-//        }
-//        return  $data =   [
-//            'goods' =>$goods,
-//            'brand' => $brand
-//        ];
+        } else {
+            //女
+            $goods = Goods::where('cat_id', 'like', $cateId.'_%'.$tabOnecate[2], 'and', 'is_hot', '=', '1')->take(4)->get();
+
+        }
+        return  $goods;
     }
     /**
      * 销量商品
@@ -128,28 +147,21 @@ class IndexController extends Controller
     {
         //3级分类
         $three_cate_id = $request->input('three_cate_id');
-//        dd($three_cate_id);
+
         //男女
         $cate_id = $request->input('cate_id');
 
         if($cate_id == 1 || $cate_id == ''){
-            //女
-            $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
-            $brand = [];
-            //获取品牌
-            foreach ($goods as $key=>$good){
 
-                $brand[] = getBrand($good->brand_id);
-            }
-//            dd($goods);
-        } else {
-            //女
             $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
-            $brand = [];
-            //获取品牌
-            foreach ($goods as $good){
-                $brand[] = getBrand($good->brand_id);
-            }
+            //获取goods对应的品牌名称
+            $brand = self::brand($goods);
+
+        } else {
+            $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
+
+            //获取goods对应的品牌名称
+            $brand = self::brand($goods);
         }
         return  $data =   [
             'goods' =>$goods,
@@ -191,12 +203,9 @@ class IndexController extends Controller
         //查询这个分类下的商品，4个
         $goods = Goods::where('cat_id', 'like', $maxId.'_'.$pid.'%')->orderBy('goods_id','desc')->take(4)->get();
 
-        $brand = [];
+        //获取goods对应的品牌名称
+        $brand = self::brand($goods);
 
-        foreach ($goods as $good){
-
-            $brand[] = getBrand($good->brand_id);
-        }
         $data =   [
             //分类信息
             'cate'    => self::threeTree($pid),
@@ -288,20 +297,16 @@ class IndexController extends Controller
         $cateId = $request->input('cate_id');
 
         if($cateId == 1){
-
+            //获取新品数据
             $newgoods = self::getAjaxNewTree($cateId);
 
         } else {
-
+            //获取新品数据
             $newgoods = self::getAjaxNewTree($cateId);
 
         }
-
-        $brand = [];
-
-        foreach ($newgoods as $newgood){
-            $brand[] = getBrand($newgood->brand_id);
-        }
+        //获取goods对应的品牌名称
+        $brand = self::brand($newgoods);
 
         return $data = [
                 'brand'    => $brand,
@@ -328,5 +333,18 @@ class IndexController extends Controller
         $cateId =  $request->route('id');
 
     }
+    /**
+     * 遍历数据转商品对应下的品牌
+     */
+    public function brand($goods)
+    {
+        $brand = [];
+        //获取品牌
+        foreach ($goods as $key => $value){
 
+            $brand[] = getBrand($value->brand_id);
+        }
+
+        return $brand;
+    }
 }
