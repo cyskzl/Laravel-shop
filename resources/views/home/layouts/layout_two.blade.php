@@ -16,7 +16,7 @@
         <div class="header_top left">
             <ul class="header_top_left left">
                 @if(Auth::check())
-                    <li><a href="">{{Auth::user()->login_name}}</a></li>
+                    <li><a href="{{ url('home/personal') }}">{{Auth::user()->login_name}}</a></li>
                     <li><a href="{{ url('home/logOut') }}">退出登录</a></li>
                 @else
                     <li><a href="{{ url('home/register') }}">注册</a></li>

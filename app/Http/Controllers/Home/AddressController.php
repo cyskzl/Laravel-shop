@@ -14,12 +14,6 @@ use Illuminate\Support\Facades\DB;
 class AddressController extends Controller
 {
 
-    public function __construct()
-    {
-        $user = Userinfo::where('user_id', '=', \Auth::user()->user_id)->first();
-        view()->share('user', $user);
-    }
-
     /**
      * Display a listing of the resource.
      *

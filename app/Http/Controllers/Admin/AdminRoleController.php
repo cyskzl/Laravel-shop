@@ -190,18 +190,17 @@ class AdminRoleController extends Controller
                $error['info']    = '删除成功';
                return json_encode($error);
 
-           } else {
-               $error['success'] = 0;
-               $error['info']    = '删除失败';
-               return json_encode($error);
            }
 
-       } else {
-
            $error['success'] = 0;
-           $error['info']    = '该角色不存在';
+           $error['info']    = '删除失败';
            return json_encode($error);
+
        }
+
+        $error['success'] = 0;
+        $error['info']    = '该角色不存在';
+        return json_encode($error);
 
     }
 

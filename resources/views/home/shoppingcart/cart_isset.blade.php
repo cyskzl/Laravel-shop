@@ -79,10 +79,8 @@
 										@endforeach
 										<input type="hidden" name="key1" value="{{ $goods['key1'] }}">
 										<input type="hidden" name="key2" value="{{ $goods['key2'] }}">
-
 		                            </div>
 		                        </div>
-
 		                    </td>
 		                    <td align="center">
 		                        <span class="qx">￥<span class="uniPrice">{{ $goods['price'] }}</span>

@@ -103,12 +103,11 @@ class AdminListController extends Controller
 		   $error['success'] = 1;
 		   $error['info']    = '添加成功';
 		   return json_encode($error);
-	   } else {
-
-		   $error['success'] = 0;
-		   $error['info']    = '添加失败';
-		   return json_encode($error);
 	   }
+
+        $error['success'] = 0;
+        $error['info']    = '添加失败';
+        return json_encode($error);
 
 	}
 
@@ -187,12 +186,11 @@ class AdminListController extends Controller
                     $error['success'] = 1;
                     $error['info']    = '已禁用';
                     return json_encode($error);
-                } else {
-
-                    $error['success'] = 0;
-                    $error['info']    = '禁用失败';
-                    return json_encode($error);
                 }
+
+                $error['success'] = 0;
+                $error['info']    = '禁用失败';
+                return json_encode($error);
             }
 
         }
@@ -231,12 +229,11 @@ class AdminListController extends Controller
                $error['success'] = 1;
                $error['info']    = '删除成功';
                return json_encode($error);
-           } else {
-
-               $error['success'] = 0;
-               $error['info']    = '该管理员的所属角色ID删除失败,或不存在';
-               return json_encode($error);
            }
+
+            $error['success'] = 0;
+            $error['info']    = '该管理员的所属角色ID删除失败,或不存在';
+            return json_encode($error);
 
         }
     }
