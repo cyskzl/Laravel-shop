@@ -38,7 +38,7 @@
             <div class="header_search right">
                 <div>
                     <form action="{{ url('home/search') }}" method="get">
-                        <input type="text" name="keyword" class="header_searchForm left" placeholder="请输入搜索内容" style="outline:none">
+                        <input type="text" name="goods_name" class="header_searchForm left" placeholder="请输入搜索内容" style="outline:none">
                         <button id="header_searchin">
                             <img src="{{asset('/templates/home/uploads/icon_searchin.png')}}" alt="">
                         </button>

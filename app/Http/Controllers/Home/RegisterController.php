@@ -25,9 +25,10 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 返回登录视图
      */
-    public function register()
+    public function register(Request $request)
     {
-        return view('home.register');
+        $cateId = $request->session()->get('Index');
+        return view('home.register',compact('cateId'));
     }
 
     /**
@@ -50,7 +51,7 @@ class RegisterController extends Controller
      */
     public function toEmailRegister(Request $request)
     {
-
+        $cateId = $request->session()->get('Index');
         // 邮箱注册填写信息验证
 
 //        dd($request->all());
@@ -119,7 +120,7 @@ class RegisterController extends Controller
                 ->subject($m3_email->subject);
         });
 
-        return view('home.validatefail',['info'=>'注册成功，请您到邮箱激活']);
+        return view('home.validatefail',['info'=>'注册成功，请您到邮箱激活','cateId'=>$cateId]);
 
     }
 
@@ -159,6 +160,7 @@ class RegisterController extends Controller
      */
     public function validateEmailCode(Request $request)
     {
+        $cateId = $request->session()->get('Index');
         $uuid = $request->input('code');
         $temp = TempEmail::where('uuid','=',$uuid)->get()->toArray();
 //        $name = ['one'=>'qwewqe'];
@@ -172,7 +174,7 @@ class RegisterController extends Controller
                 // 修改注册表信息
                 $register = UserRegister::where('id', '=', $uid)->update(['status' => 1]);
                 if (!$register) {
-                    return view('home.validatefail',['info'=>'邮箱激活失败，请重回邮箱点击链接重试激活']);
+                    return view('home.validatefail',['info'=>'邮箱激活失败，请重回邮箱点击链接重试激活','cateId'=>$cateId);
                 }
                 // 对应增加users_info表的信息
                 $uinfo = UserRegister::find($uid);
@@ -183,7 +185,7 @@ class RegisterController extends Controller
 //                $userinfo->avatar = '';
                 $infoId = $userinfo->save();
                 if (!$infoId) {
-                    return view('home.validatefail',['info'=>'回到首页']);
+                    return view('home.validatefail',['info'=>'回到首页','cateId'=>$cateId]);
                 }
 
                 // 增加用户登录表信息
@@ -194,18 +196,18 @@ class RegisterController extends Controller
                 $userlogin->last_login_ip = $request->ip();
                 $userlogin->last_login_at = $nowtime;
                 if(!$userlogin->save()){
-                    return view('home.validatefail',['info'=>'回到首页']);
+                    return view('home.validatefail',['info'=>'回到首页','cateId'=>$cateId]);
                 }
 
                 // 删除邮箱注册的临时信息
                 $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
                 if (!$delTemp) {
-                    return view('home.validatefail',['info'=>'回到首页']);
+                    return view('home.validatefail',['info'=>'回到首页','cateId'=>$cateId]);
                 }
-                return view('home.validatefail', ['info' => '用户名已激活，3秒后跳转到网站首页或者点击立即跳转']);
+                return view('home.validatefail', ['info' => '用户名已激活，3秒后跳转到网站首页或者点击立即跳转','cateId'=>$cateId]);
 
             } else {
-                return view('home.validatefail',['info' => '用户名已激活，3秒后跳转到网站首页或者点击立即跳转']);
+                return view('home.validatefail',['info' => '用户名已激活，3秒后跳转到网站首页或者点击立即跳转','cateId'=>$cateId]);
 
             }
         } else {
@@ -218,9 +220,9 @@ class RegisterController extends Controller
 //            $delTemp = TempEmail::where('user_id', '=', $uid)->delete();
 
             if (!$delTemp || !$deluser) {
-                return view('home.validatefail',['info'=>'该链接已失效，请重新注册']);
+                return view('home.validatefail',['info'=>'该链接已失效，请重新注册','cateId'=>$cateId]);
             }
-            return view('home.validatefail',['info'=>'该链接已失效，请重新注册']);
+            return view('home.validatefail',['info'=>'该链接已失效，请重新注册','cateId'=>$cateId]);
         }
     }
 

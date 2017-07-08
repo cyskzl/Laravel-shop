@@ -13,7 +13,7 @@
         "laravelcollective/html": "~5.0",
         "barryvdh/laravel-debugbar": "^2.4",
         "predis/predis": "~1.0",
-        "hightman/xunsearch": "*@beta"
+        "hightman/xunsearch": "^1.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

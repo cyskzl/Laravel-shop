@@ -12,22 +12,33 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
-use hightman\xunsearch\lib;
+//use hightman\xunsearch\lib;
 
 class IndexController extends Controller
 {
     public function search(Request $request)
     {
-        $key = $request->input('keyword');
+        $cateId = $request->session()->get('Index');
+        $key = $request->input('goods_name');
 //        var_dump($key);
-        $xs = new \XS("goods");
-//        dump($xs);
-        $search = $xs->search;
-//        $res = $search->setQuery('1');
-//        $res = $search->search();
-        $res = $search->search('1');
+        $xs = new \XS(config_path('goods.ini'));
+//        $xs = new \XS('goods');
+        $search = $xs->search->setFuzzy(true); // 获取 搜索对象
+        $query = $key;
+        $search->setQuery($query)
+            ->setDocOrder() //是否为正序排列, 即从先到后, 默认为反序,取最新
+            ->setLimit(20,0); // 设置搜索语句, 分页, 偏移量
+//        ;
+        $docs = $search->search(); // 执行搜索，将搜索结果文档保存在 $docs 数组中
+        if(!$docs){
+            // 无查询结果，则在列表页遍历最新的20件商品;
+            $goods = Goods::orderBy('goods_id',desc)->paginate(20);
+        }
 
-        var_dump($res);
+        foreach ($docs as $k=>$value){
+            $goods[] = Goods::where('goods_id',$value['goods_id'])->first();
+        }
+        return view('home.goods.list',compact('goods','cateId'));
     }
 
     /**
