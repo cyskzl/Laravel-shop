@@ -181,7 +181,7 @@
                         <div class="layui-form-item" >
                             <label class="layui-form-label">图片</label>
                             <div class="layui-input-inline" style="margin-left:30px;">
-                                <input type="text" name="img" id="imgone" autocomplete="off" class="layui-input">
+                                <input type="text" name="img" id="imgone" autocomplete="off" class="layui-input" disabled>
                             </div>
                             <input id="file_oneupload"  type="file" multiple="true">
 
@@ -230,7 +230,7 @@
                         <div class="layui-form-item" >
                             <label class="layui-form-label" style="width: 100px">图片</label>
                             <div class="layui-input-inline" style="margin-left:10px;">
-                                <input type="text" name="image_url" id="img" autocomplete="off" class="layui-input">
+                                <input type="text" name="image_url" id="img" autocomplete="off" class="layui-input" disabled>
                             </div>
                             <input id="file_upload"  type="file" multiple="true">
 

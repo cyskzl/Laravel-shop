@@ -524,14 +524,14 @@
                      "session_id": goods_id + '_' + key1 + '_'+ key2,
                      "goods_id": goods_id,
 					 "specone" : spec_one + onevalue,
-					 'spectwo' : spec_two + twovalue,
-					 'num'  : num,
-					 'price': price,
-					 'goods_name': goods_name,
-					 'key': key1 + '_' + key2,
-					 'key1': key1,
-					  'key2':key2,
-					 'img' : goods_img
+                     'spectwo' : spec_two + twovalue,
+                     'num'  : num,
+                     'price': price,
+                     'goods_name': goods_name,
+                     'key': key1 + '_' + key2,
+                     'key1':key1,
+                     'key2':key2,
+                     'img' : goods_img
 				 });
 
 

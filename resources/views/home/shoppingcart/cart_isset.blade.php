@@ -65,25 +65,27 @@
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					@foreach($cart_data as $goods)
 		                <tr>
-							<input type="hidden" name="goods_id" value="{{ $goods['goods_id'] }}">
+							<input type="hidden" name="goods_id" value="{{ $goods['goods_id']}}">
 		                    <td align="center" width="60">
 		                        <input name="subBox" type="checkbox" value="{{ $goods['session_id'] }}" />
 		                    </td>
 		                    <td align="center">
-		                        <img class="cart_img" src="{{ asset(''.$goods['img'].'') }}" alt="商品一"/>
+		                        <img class="cart_img" src="{{ asset(''.$goods['img'].'') }}" alt="{{ $goods['goods_name']  }}"/>
 		                        <a href="{{ url('home/goodsDetail/').'/'.$goods['goods_id'] }}" target="_blank">{{ $goods['goods_name'] }}</a>
 		                        <div class="operationInfo">
 		                            <div class="operationInfoWrap flex">
-										<p class="spectwo">{{ $goods['spectwo'] }}</p>
+										@foreach( $goods['spec'] as $spec)
+										<p class="spec">{{ $spec }}</p>
+										@endforeach
 										<input type="hidden" name="key1" value="{{ $goods['key1'] }}">
 										<input type="hidden" name="key2" value="{{ $goods['key2'] }}">
-		                                <p class="specone">{{ $goods['specone'] }}</p>
+
 		                            </div>
 		                        </div>
 
 		                    </td>
 		                    <td align="center">
-		                        <span class="qx"><span class="uniPrice">{{ $goods['price'] }}</span>
+		                        <span class="qx">￥<span class="uniPrice">{{ $goods['price'] }}</span>
 								</span>
 		                    </td>
 		                    <td align="center" class="quentIpt">
