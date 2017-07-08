@@ -525,8 +525,7 @@
 					 'num'  : num,
 					 'price': price,
 					 'goods_name': goods_name,
-					 'key1': key1,
-					 'key2': key2,
+					 'key': key1 + '_' + key2,
 					 'img' : goods_img
 				 });
 

@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
+use App\Models\Goods;
 use Auth;
 
 class ShoppingCartController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -23,15 +25,33 @@ class ShoppingCartController extends Controller
         // 购物车有商品时
 //        session_start();
         $cart_data = [];
-
+//dd($_SESSION['goods_shop']);
         //判断用户是否登录
         if (Auth::check()) {
+
+            //用户如果登录将session中的商品信息存到redis
+            if ( !empty( $_SESSION['goods_shop'] ) ) {
+
+                foreach ( $_SESSION['goods_shop'] as $session_goods ) {
+                    $redis_goods = Redis::hget('user_id:'.Auth::user()->user_id, $session_goods['session_id']);
+                    //不存在，添加为新数据
+                    if ( !$redis_goods ) {
+
+                        Redis::hset('user_id:'.Auth::user()->user_id, $session_goods['session_id'], json_encode($session_goods));
+
+                    }
+
+                }
+                unset($_SESSION['goods_shop']);
+            }
+
             //用户已经登录从redis中取出该用户购物车数据
             $redis = Redis::hGetAll('user_id:'.Auth::user()->user_id);
 
             foreach ($redis as $row) {
                 $cart_data[] = json_decode($row, true);
             }
+
 
         } else {
             //未登录从session获取
@@ -100,10 +120,24 @@ class ShoppingCartController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //修改商品数量
         if ( $request->data ) {
 
-            $_SESSION['goods_shop'][$id]['num'] = $request->data;
+            if (Auth::check()) {
+
+                $redis_goods = Redis::hget('user_id:'.Auth::user()->user_id, $id);
+                if ($redis_goods) {
+
+                    $res = json_decode($redis_goods);
+                    $res->num = $request->data;
+                    Redis::hset('user_id:'.Auth::user()->user_id, $id, json_encode($res));
+
+                }
+
+            } else {
+                $_SESSION['goods_shop'][$id]['num'] = $request->data;
+            }
+
         }
     }
 
@@ -117,15 +151,43 @@ class ShoppingCartController extends Controller
     {
 
         if ( $request->data ) {
-            unset($_SESSION['goods_shop'][$id]);
-            $error['success'] = 1;
-            $error['info']    = '已删除';
+
+            if (Auth::check()) {
+                $redis_goods = Redis::hget('user_id:'.Auth::user()->user_id, $id);
+                if ($redis_goods) {
+                    $res = Redis::hdel('user_id:'.Auth::user()->user_id, $id);
+
+                    if ($res) {
+                        $error['success'] = 1;
+                        $error['info']    = '已删除！';
+                        return json_encode($error);
+                    }
+
+                    $error['success'] = 0;
+                    $error['info']    = '删除失败！';
+                    return json_encode($error);
+                }
+
+            }
+
+            if ( $_SESSION['goods_shop'][$id] ) {
+                unset($_SESSION['goods_shop'][$id]);
+
+                $error['success'] = 1;
+                $error['info']    = '已删除！';
+                return json_encode($error);
+            }
+
+            $error['success'] = 0;
+            $error['info']    = '删除失败！';
+            return json_encode($error);
+
+        } else {
+
+            $error['success'] = 0;
+            $error['info']    = '没有找到该商品信息！';
             return json_encode($error);
         }
-
-        $error['success'] = 0;
-        $error['info']    = '删除失败';
-        return json_encode($error);
 
     }
 
@@ -139,16 +201,25 @@ class ShoppingCartController extends Controller
     {
 
         //判断是否有数据
-        if (!$request->goods_shop) {
+        if ( !$request->goods_shop ) {
             $error['success'] = 0;
             $error['info']    = '亲，没有选择规格哟！';
             return json_encode($error);
         }
 
         //获取商品数据
-        $goods = json_decode($request->goods_shop, true);
+        $goods = json_decode( $request->goods_shop );
+        $goods_info = Goods::find( $goods->goods_id );
+        $goods_type= $goods_info->goods_type;
 
-        //判断用户是否登录，未登录只存session，登录存redis
+        if (!$goods_info) {
+            $error['success'] = 0;
+            $error['info']    = '没有找到该商品信息！';
+            return json_encode($error);
+        }
+        dd($goods);
+
+        //判断用户是否登录，未登录只存session，已登录存redis
         if (!Auth::check()) {
 
             if ( empty( $_SESSION['goods_shop'][$goods['session_id']] ) ) {
@@ -197,14 +268,6 @@ class ShoppingCartController extends Controller
                 }
             }
 
-        } else {
-
-            if ( !empty($_SESSION['goods_shop'])) {
-                foreach ( $_SESSION['goods_shop'] as $session_goods) {
-                    var_dump($session_goods);
-                }
-            }
-
         }
 
 
@@ -215,7 +278,7 @@ class ShoppingCartController extends Controller
         $redis_goods = Redis::hget( 'user_id:'.$user_id, $goods['session_id'] );
 
         if ( !$redis_goods ) {
-
+            //如果不存在存进redis
             $res = Redis::hset('user_id:'.$user_id, $goods['session_id'], json_encode($goods));
 
             if ($res) {
@@ -230,7 +293,7 @@ class ShoppingCartController extends Controller
                 return json_encode($error);
             }
         } else {
-
+            //如果已存在新提交的商品数量与redis中的商品数量相加
             $is_redis = json_decode($redis_goods);
             $is_redis->num = $is_redis->num + $goods['num'];
 
@@ -248,10 +311,5 @@ class ShoppingCartController extends Controller
             }
 
         }
-
-        $res = Redis::hgetall('user_id:'.Auth::user()->user_id);
-//        dd($res);
-
-
     }
 }
