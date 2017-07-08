@@ -111,10 +111,15 @@ class IndexController extends Controller
 
     }
 
+    /**
+     * 品牌显示
+     * @param $cateId
+     * @return mixed
+     */
     public function goodsBrand($cateId)
     {
         //select brand.id,brand.name,sales_sum from goods LEFT JOIN brand on goods.brand_id = brand.id ORDER BY  sales_sum desc
-        $brand = Goods::where('cat_id', 'like', $cateId. '%' )->join('brand', 'goods.brand_id', '=', 'brand.id')->orderBy('sales_sum', 'desc')->take(7)->get();
+        $brand = Goods::where('cat_id', 'like', $cateId. '%' )->where('brand.is_hot','=', '1')->join('brand', 'goods.brand_id', '=', 'brand.id')->orderBy('sales_sum', 'desc')->take(5)->get();
         return $brand;
     }
     /**
@@ -160,9 +165,24 @@ class IndexController extends Controller
      */
     public function sum($cateId)
     {
-        $sales_sum = Goods::where('is_hot','=', '1', 'and', 'cat_id','like',$cateId.'%')->orderBy('sales_sum', 'desc')->take(20)->get();
+        $sales_sum = Goods::where('is_hot','=', '1', 'and', 'cat_id','like',$cateId.'%')->orderBy('sales_sum', 'desc')->take(10)->get();
         return $sales_sum;
     }
+
+    /**
+     * 流加载首页
+     * @param Request $request
+     * @return mixed
+     */
+    public function flow(Request $request)
+    {
+        $cateId = $request->session()->get('Index');
+
+        $flow = Goods::where('is_hot','=', '1', 'and', 'cat_id','like',$cateId.'%')->orderBy('sales_sum')->paginate(5);
+
+        return $flow;
+}
+
     /**
      * 选项卡
      * @param Request $request
@@ -226,8 +246,19 @@ class IndexController extends Controller
     public function getAjaxCatetree($maxId, $pid, $cateId)
     {
         //查询这个分类下的商品，4个
-        $goods = Goods::where('cat_id', 'like', $maxId.'_'.$pid.'%')->orderBy('goods_id','desc')->take(4)->get();
 
+        $goodscate = Category::where( 'id', '=', $pid )->first();
+        if($goodscate->pid == $cateId ){
+            $goods = Goods::where('cat_id', 'like', $maxId.'_'.$pid.'%')
+                ->orderBy('goods_id','desc')
+                ->take(4)
+                ->get();
+        } else {
+            $goods = Goods::where('cat_id', 'like', $maxId.'_%'.$pid)
+                ->orderBy('goods_id','desc')
+                ->take(4)
+                ->get();
+        }
         //获取goods对应的品牌名称
         $brand = self::brand($goods);
 

@@ -76,6 +76,9 @@
 			</div>
 		</div>
 	</div>
+	<center>
+	<div id="pages" style=""></div>
+		</center>
 @endsection
 
 @section('shop')
@@ -95,14 +98,18 @@
 @section('js')
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script>
-//		var goodcatename = $('.goodcatename').attr('data-value');
-//		var catename = goodcatename.split(',');
-//		var str = '';
-//		for(var j=0; j< catename.length;j++){
-//			str += '<a>'+catename[j]+'</a>';
-//
-//		}
-//		$('.goodcatename').append(str);
+		layui.use(['laypage', 'layer'], function(){
+			var laypage = layui.laypage
+					,layer = layui.layer;
+
+			laypage({
+				cont: 'pages'
+				,skin: '#626161'
+				,pages: 12
+				,skip: true
+			});
+
+		});
 	</script>
 @endsection
 
