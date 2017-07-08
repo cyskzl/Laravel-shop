@@ -176,9 +176,11 @@ class IndexController extends Controller
      */
     public function flow(Request $request)
     {
+        $request->input('currentIndex');
+
         $cateId = $request->session()->get('Index');
 
-        $flow = Goods::where('is_hot','=', '1', 'and', 'cat_id','like',$cateId.'%')->orderBy('sales_sum')->paginate(5);
+        $flow = Goods::where('is_hot','=', '1', 'and', 'cat_id','like',$cateId.'%')->orderBy('sales_sum')->take(25)->paginate(5);
 
         return $flow;
 }

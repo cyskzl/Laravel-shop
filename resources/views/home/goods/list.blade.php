@@ -7,6 +7,36 @@
 	<link rel="stylesheet" href="{{asset('/templates/home/css/dress.css')}}" type="text/css">
 	<link rel="stylesheet" href="{{asset('/templates/home/css/main.css')}}">
 	<script src="{{asset('/templates/home/js/page.js')}}"></script>
+	<style>
+		/*分页样式*/
+		#pages{
+			width: 948px;
+			text-align: center;
+			height: 20px;
+			line-height: 20px;
+			padding: 20px 0;
+			border-top: 1px solid #d9d9d9;
+		}
+		#pages li {
+			height: 20px;
+			padding: 0 8px;
+			margin: 0 10px;
+			color: #626161;
+			display: inline-block;
+			cursor: pointer;
+
+		}
+		#pages li span{
+			padding: 0 2px;
+			border-radius: 2px;
+
+		}
+		#pages .active{
+			background-color: #626161;
+			color: #fff;
+			padding: 3px 9px;
+		}
+	</style>
 @endsection
 
 @section('main')
@@ -76,9 +106,12 @@
 			</div>
 		</div>
 	</div>
+
 	<center>
-	<div id="pages" style=""></div>
-		</center>
+	<div id="pages" style="margin-top:5px; text-align:center;   margin-left: 170px;">
+		{!!$goods->appends($request->only(['cate']))->render()!!}
+	</div>
+	</center>
 @endsection
 
 @section('shop')
@@ -98,18 +131,48 @@
 @section('js')
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script>
-		layui.use(['laypage', 'layer'], function(){
-			var laypage = layui.laypage
-					,layer = layui.layer;
+		//获取url上的参数 直接传参数名称
+		function GetQueryString(name)
+		{
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r!=null)return  unescape(r[2]); return null;
+		}
+//		alert('cate')
+		{{--layui.use(['laypage', 'layer'], function(){--}}
+			{{--var laypage = layui.laypage--}}
+					{{--,layer = layui.layer;--}}
 
-			laypage({
-				cont: 'pages'
-				,skin: '#626161'
-				,pages: 12
-				,skip: true
-			});
+			{{--function page()--}}
+			{{--{--}}
+				{{--//2级参数--}}
+{{--//				if(GetQueryString("cate") !== null){--}}
+{{--//					var url =  '/home/goodsTwo';--}}
+{{--//				} else {--}}
+{{--//					//3级参数--}}
+{{--//					var url =  '/home/goodsTree';--}}
+{{--//				}--}}
+				{{--var curr ={{$goods->links()}}--}}
+{{--//				laypage({--}}
+{{--//					cont: 'pages',--}}
+{{--//					skin: '#333', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00--}}
+{{--//					pages: 8, //可以叫服务端把总页数放在某一个隐藏域，再获取。假设我们获取到的是18--}}
+{{--//					curr: function(){ //通过url获取当前页，也可以同上（pages）方式获取--}}
+{{--//						var page = location.search.match(/page=(\d+)/);--}}
+{{--//						return page ? page[1] : 1;--}}
+{{--//					}(),--}}
+{{--//					jump: function(e, first){ //触发分页后的回调--}}
+{{--//						if(!first){ //一定要加此判断，否则初始时会无限刷新--}}
+{{--//							location.href = '?page='+e.curr;--}}
+{{--//--}}
+{{--//						}--}}
+{{--//					}--}}
+{{--//				});--}}
+{{--//			}--}}
+{{--//			page()--}}
+		{{--});--}}
 
-		});
+
 	</script>
 @endsection
 

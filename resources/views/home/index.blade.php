@@ -4,6 +4,11 @@
 
 @section('style')
 	<link rel="stylesheet" href="{{asset('/templates/home/css/main.css')}}">
+	<style>
+		span {
+			display: block;
+		}
+	</style>
 @endsection
 
 @section('main')
@@ -393,9 +398,9 @@
 			</div>
 
 
-			<div class="more">
-				<a href="javascript:">查看更多</a>
-			</div>
+			{{--<div class="more">--}}
+				{{--<a href="javascript:">查看更多</a>--}}
+			{{--</div>--}}
 		</div>
 @endsection
 
@@ -421,42 +426,55 @@
 		layui.use('flow', function(){
 			var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
 			var flow = layui.flow;
+//			var layer = layui.layer;
 //			flow.lazyimg();
+			var tmp = '';
 			flow.load({
 				elem: '#flow',
 				//指定列表容器
 				isAuto:false
+				,scrollElem: '#flow'
 				,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
 					var lis = [];
 					var pages;
+//					var index = layer.load(1);
 					var str = '';
+
+//					$('#flow').remove();
 					//以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-					$.get('/home/flow', function(res){
-						if(res.length <= 0){
-								lis.push('无数据');
+					$.ajax({
+						type: 'post',
+						url : '/home/flow?page='+page,
+						data:{ 'currentIndex': page ,'_token':'{{csrf_token()}}'}
+						,success: function (res){
+						if(res.data.length <= 0){
+							tmp += '<div class="more">';
+							tmp += '<a href="javascript:">查看更多</a>';
+							tmp += '</div>';
+							lis.push(tmp);
 						} else {
-							console.log(res.data);
-							for(var i=0; i<res.data.length;i++){
-								var original_img = res.data[i]['original_img'] ;
-								original_img = original_img.substring(0,original_img.length-1);
-								str += '<div class="hotProduct-show">';
-								str += '<a href="home/goodsDetail/'+res.data[i]['goods_id']+'">';
-								str += '<img src="'+original_img+'"   class="img">';
-								str += '<span class="brand color">saadasd</span>';
-								str += '<span class="name color nowrap">'+res.data[i]['goods_name']+'</span>';
-								str += '<span class="price">¥&nbsp;'+res.data[i]['shop_price']+'</span>';
-								str += '</a> </div>';
-//								str += res[i]['goods_id']+'a';
+//								console.log(res.data);
+								for(var i=0; i<res.data.length;i++){
+									var original_img = res.data[i]['original_img'] ;
+									original_img = original_img.substring(0,original_img.length-1);
+									str += '<div class="hotProduct-show">';
+									str += '<a href="home/goodsDetail/'+res.data[i]['goods_id']+'">';
+									str += '<img src="'+original_img+'"   class="img">';
+									str += '<span class="brand color">saadasd</span>';
+									str += '<span class="name color nowrap">'+res.data[i]['goods_name']+'</span>';
+									str += '<span class="price">¥&nbsp;'+res.data[i]['shop_price']+'</span>';
+									str += '</a> </div>';
+								}
 								lis.push(str);
 							}
+							//执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+							//pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+							pages = res.last_page;
+							next(lis.join(''), page < 4);
 						}
-						//执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
-						//pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
-						pages = res.last_page;
-						next(lis.join(''), page < pages);
 					});
+				},
 
-				}
 			});
 		});
 

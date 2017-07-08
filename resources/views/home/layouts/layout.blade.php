@@ -15,11 +15,7 @@
     <script src="{{asset('/templates/home/js/jquery-session.js')}}"></script>
     <script src="{{asset('/templates/home/js/jquery.leanModal.min.js')}}"></script>
     <script src="{{asset('/templates/admin/lib/layui/layui.js')}}"></script>
-    <style>
-        span {
-            display: block;
-        }
-    </style>
+
     @yield('style')
 </head>
 <body>
@@ -70,7 +66,7 @@
                 @if($cateId == 1 || $cateId == '')
                     @foreach($twomaan as $tmaan)
                         <div id="header_nav_left_new" class="CateNav">
-                            <a id="butt" href="{{url('home/goodsList/')}}/{{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
+                            <a id="butt" href="{{url('home/goodsList/')}}/{{$tmaan->id}}?cate={{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
                             <div class="header_nav_left_new">
                                 <div class="elastic_no">
                                     <div class="header_nav_left_new_one_text">

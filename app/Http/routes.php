@@ -28,8 +28,13 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
     Route::any('/{category_id?}', 'IndexController@homeIndex')->where('category_id', '[0-9]+');
     //流加载
-    Route::any('/flow/', 'IndexController@flow');
-    Route::any('/page', 'IndexController@page');
+    Route::any('/flow/{page?}', 'IndexController@flow');
+    //分页
+    Route::any('/page', 'GoodController@page');
+
+    Route::any('/goodsTree', 'GoodController@goodsTree');
+
+    Route::any('/goodsTree', 'GoodController@goodsTwo');
 
     //ajax新品
     Route::any('/newgoods', 'IndexController@newgoods');
