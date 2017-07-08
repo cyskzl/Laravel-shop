@@ -117,8 +117,8 @@ $(function () {
             var id         = "session_id";
             var num        = "num";
             var img        = "img";
-            var key1       = "key1";
-            var key2       = "key2";
+            var key       = "key1_key2";
+            // var key2       = "key2";
             var price      = "price";
             var spectwo    = "spectwo";
             var specone    = "specone";
@@ -129,10 +129,11 @@ $(function () {
                 +  "\"" + id + "\"" + ':' + "\""  + $(check[i]).val() + "\","
                 +  "\"" + num + "\"" + ':' + "\"" + $(num_arr[i]).val() + "\","
                 +  "\"" + img + "\"" + ':' + "\"" + $(img_arr[i]).attr('src') + "\","
-                +  "\"" + key1 + "\"" + ':' + "\"" + $(key1_arr[i]).val() + "\","
-                +  "\"" + key2 + "\"" + ':' + "\"" + $(key2_arr[i]).val() + "\","
+                +  "\"" + key + "\"" + ':' + "\"" + $(key1_arr[i]).val()+'_'+ $(key2_arr[i]).val() + "\","
+                // +  "\"" + key2 + "\"" + ':' + "\"" + $(key2_arr[i]).val() + "\","
                 +  "\"" + price + "\"" + ':' + "\""  + $(price_arr[i]).text() + "\","
                 +  "\"" + specone + "\"" + ':' + "\"" + $(specone_arr[i]).text() + "\","
+                +  "\"" + spectwo + "\"" + ':' + "\"" + $(spectwo_arr[i]).text() + "\","
                 +  "\"" + goods_id  + "\"" + ':'  + "\"" + $(goods_id_arr[i]).val() + "\","
                 +  "\"" + goods_name + "\"" + ':' + "\"" + $(goods_name_arr[i]).text() + "\","
                 +  '},';

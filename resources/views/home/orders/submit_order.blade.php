@@ -27,32 +27,36 @@
 	            <h4>商品信息</h4>
 	            <table class="cart-cont comWidth">
 	                <tbody>
+					@foreach($goodsdata as $v)
 	                    <tr>
 	                        <td>
-	                            <img src="./images/wimg_450690305_2889998.jpg" alt="商品一"/>
-	                            <a href="#">［朴寒星原款］狐狸毛绒包吊坠_柠檬黄</a>
+	                            <img src="{{$v['img']}}" alt="商品一"/>
+	                            <a href="#">{{$v['goods_name']}}</a>
 	                            <div class="operationInfo">
 	                                <div class="operationInfoWrap flex">
-	                                    <p>颜色: <b>天海蓝</b></p>
-	                                    <p>尺码: <b>M</b></p>
-	                                    <p class="total_price">￥481</p>
+	                                    {{--<p>颜色: <b>天海蓝</b></p>--}}
+	                                    <p>{{$v['specone']}}</p>
+	                                    <p>{{$v['spectwo']}}</p>
+										<p>数量: <b>{{$v['num']}}</b></p>
+	                                    <p class="total_price">{{$v['price']}}</p>
 	                                </div>
 	                            </div>
 	                        </td>
 	                    </tr>
-	                    <tr>
-	                        <td>
-	                            <img src="./images/wimg_450690305_2889998.jpg" alt="商品一"/>
-	                            <a href="#">［朴寒星原款］狐狸毛绒包吊坠_柠檬黄</a>
-	                            <div class="operationInfo">
-	                                <div class="operationInfoWrap flex">
-	                                    <p>颜色: <b>天海蓝</b></p>
-	                                    <p>尺码: <b>M</b></p>
-	                                    <p class="total_price">￥481</p>
-	                                </div>
-	                            </div>
-	                        </td>
-	                    </tr>
+						@endforeach
+	                    {{--<tr>--}}
+	                        {{--<td>--}}
+	                            {{--<img src="./images/wimg_450690305_2889998.jpg" alt="商品一"/>--}}
+	                            {{--<a href="#">［朴寒星原款］狐狸毛绒包吊坠_柠檬黄</a>--}}
+	                            {{--<div class="operationInfo">--}}
+	                                {{--<div class="operationInfoWrap flex">--}}
+	                                    {{--<p>颜色: <b>天海蓝</b></p>--}}
+	                                    {{--<p>尺码: <b>M</b></p>--}}
+	                                    {{--<p class="total_price">￥481</p>--}}
+	                                {{--</div>--}}
+	                            {{--</div>--}}
+	                        {{--</td>--}}
+	                    {{--</tr>--}}
 	                </tbody>
 	            </table>
 	        </div>
@@ -101,7 +105,7 @@
 
 	        <div class="submit_order clearfix">
 	        	<p class="left">总计: 
-	        		<span>¥ 194.71</span>
+	        		<span>¥ {{round($sum,2)}}</span>
 	        	</p>
 	            <span class="submit_btn right">提交订单</span>
 	        </div>
