@@ -81,9 +81,13 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 需登录界面
     // Route::group(['middleware'=>'auth'],function(){
         // 订单页
-        Route::get('/orders', 'OrderController@index');
-        Route::post('/orders', 'OrderController@index');
-//        Route::post('/cartToOrder', 'OrderController@cartAjax');
+        Route::resource('/orders', 'OrderController');
+//        Route::post('/orders', 'OrderController@index');
+        Route::post('/cartToOrder', 'OrderController@cartAjax');
+
+        //ajax获取收货方式
+        Route::get('/todelivery/{id}', 'OrderController@toDelivery');
+
         // 个人中心(默认为设置-个人信息 home.personal.set.personnalInfo)
         Route::get('/personal', 'PersonalController@index');
         //修改密码

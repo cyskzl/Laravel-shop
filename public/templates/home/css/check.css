@@ -30,7 +30,7 @@ body{
     font-size: 16px;
     margin: 15px 0;
 }
-.noAddress a{
+.noAddress .address{
     display: block;
     width: 180px;
     height: 38px;
@@ -41,7 +41,7 @@ body{
     margin-bottom: 20px;
 }
 
-/*ÉÌÆ·ÐÅÏ¢*/
+/*ï¿½ï¿½Æ·ï¿½ï¿½Ï¢*/
 .goodsInfo,
 .integralInfo,
 .payWay,
@@ -103,7 +103,7 @@ body{
     font-size: 20px;
     margin-left: 100px;
 }
-/*ÓÅ»Ý*/
+/*ï¿½Å»ï¿½*/
 .copt{
     width: 424x;
     height: 107px;
@@ -130,7 +130,7 @@ body{
     font-weight: 600;
 
 }
-/*»ý·Ö*/
+/*ï¿½ï¿½ï¿½ï¿½*/
 .integralInfo p{
     line-height: 22px;
     margin-bottom: 30px;
@@ -141,7 +141,7 @@ body{
     margin-right: 20px;
 }
 
-/*Ö§¸¶·½Ê½*/
+/*Ö§ï¿½ï¿½ï¿½ï¿½Ê½*/
 .payWay ul li a {
     display: inline-block;
     height: 32px;
@@ -173,7 +173,7 @@ body{
     background-size: 15px;
 }
 
-/*¿ª¾ß·¢Æ±*/
+/*ï¿½ï¿½ï¿½ß·ï¿½Æ±*/
 .invoiceInfo > p{
     height: 22px;
     line-height: 22px;
@@ -182,7 +182,7 @@ body{
     padding-left: 13px;
 }
 
-/*½»Ò×ÐÅÏ¢*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢*/
 .checkoutInfo{
     border: none;
 }
@@ -195,7 +195,7 @@ body{
     margin-bottom: 5px;
 }
 
-/*Ìá½»¶©µ¥*/
+/*ï¿½á½»ï¿½ï¿½ï¿½ï¿½*/
 
 .submit_order{
     margin: 20px 0;

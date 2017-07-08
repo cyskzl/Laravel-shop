@@ -208,16 +208,16 @@ class ShoppingCartController extends Controller
         }
 
         //获取商品数据
-        $goods = json_decode( $request->goods_shop );
-        $goods_info = Goods::find( $goods->goods_id );
-        $goods_type= $goods_info->goods_type;
-
-        if (!$goods_info) {
-            $error['success'] = 0;
-            $error['info']    = '没有找到该商品信息！';
-            return json_encode($error);
-        }
-        dd($goods);
+        $goods = json_decode( $request->goods_shop,true );
+//        $goods_info = Goods::find( $goods->goods_id );
+//        $goods_type= $goods_info->goods_type;
+//
+//        if (!$goods_info) {
+//            $error['success'] = 0;
+//            $error['info']    = '没有找到该商品信息！';
+//            return json_encode($error);
+//        }
+//        dd($goods);
 
         //判断用户是否登录，未登录只存session，已登录存redis
         if (!Auth::check()) {

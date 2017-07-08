@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Models\DelveryMethod;
 use App\Models\Goods;
+use App\Models\ReceivingAddress;
+use App\Models\Region;
 use App\Models\SpecGoodsPrice;
 use App\Models\SpecItem;
 use App\Models\UserInfo;
@@ -14,6 +17,7 @@ use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
+
     public function __construct()
     {
         $user = UserInfo::where('user_id', '=', \Auth::user()->user_id)->first();
@@ -30,7 +34,15 @@ class OrderController extends Controller
 
         if ($request->session()->has('orders')){
 
+
+
             $goodsdata = $request->session()->get('orders');
+
+
+            if (array_key_exists('address',$goodsdata)){
+                unset($goodsdata['address']);
+            }
+
 
             $sum = 0;
             $goodsid = array();
@@ -39,25 +51,29 @@ class OrderController extends Controller
 
             foreach ($goodsdata as $v){
 
-                array_push($goodsid,$v['goods_id']);
-                array_push($specGoods,$v['key1_key2']);
-                array_push($goodsnum,$v['num']);
+                if ($v){
+
+                    array_push($goodsid,$v['goods_id']);
+                    array_push($specGoods,$v['key1_key2']);
+                    array_push($goodsnum,$v['num']);
+                }
+
 
             }
 
             $goodsSale = $this->checkGoodsSale($goodsid);
 
-            if ($goodsSale){
+            if (count($goodsSale)<1){
+                dd($goodsSale);
                 dd('商品下架');
             }
 
-            $goodsnum = $this->goodsNum($goodsid,$specGoods,$goodsnum);
+            $goodissnum = $this->goodsNum($goodsid,$specGoods,$goodsnum);
 
-            if ($goodsnum){
+            if ($goodissnum){
                 dd($goodsnum);
                 dd('库存不足');
             }
-
 
             $goodsNewData = array();
 
@@ -68,7 +84,7 @@ class OrderController extends Controller
                 $goods = Goods::where('goods.goods_id',$value)
                     ->leftjoin('spec_goods_price','spec_goods_price.goods_id','=','goods.goods_id')
                     ->where('spec_goods_price.key',"$specGoods[$k]")
-                    ->select('goods.goods_id','goods.goods_name','spec_goods_price.price','spec_goods_price.key')
+                    ->select('goods.goods_id','goods.goods_name','spec_goods_price.price','spec_goods_price.key','goods.original_img')
                     ->get()->toArray();
 
 
@@ -77,23 +93,57 @@ class OrderController extends Controller
                     ->select('spec.name','spec_item.item')
                     ->get()->toArray();
 
-//
-                array_push($goods,$NewData);
+                $goods = $goods[0];
+                //压入商品数量
+                $goods['num'] = $goodsnum[$k];
 
+                //统计订单总额
+                $sum += $goodsnum[$k] * $goods['price'];
+
+                //商品和规格压入
+                $goods['item'] = $NewData;
+
+                //分多个商品压入
                 array_push($goodsNewData,$goods);
 
             }
 
             dd($goodsNewData);
 
+            //写入订单总额
+            $request->session()->set('addorders.sum',$sum);
 
+            $request->session()->set('addorders',$goodsNewData);
+
+            $address = ReceivingAddress::where('user_id',\Auth::user()->user_id)->orderBy('is_default')->first();
+
+            if($address){
+                $province = Region::where('level',1)->pluck('name','id');
+
+                $city = Region::where('level',2)->pluck('name','id');
+
+                $district = Region::where('level',3)->pluck('name','id');
+
+                $twon = Region::where('level',4)->pluck('name','id');
+
+                $request->session()->set('addorders.address',$address);
+
+
+            }
+
+            $delvary = DelveryMethod::where('enabled',1)->get();
+
+            if (count($delvary)>0){
+
+                $request->session()->set('addorders.delivery',$delvary[0]->toArray());
+            }
 
 
         }else{
             dd('没有在购物车提交');
         }
 
-        return view('home.orders.submit_order', compact('cateId','goodsdata','sum'));
+        return view('home.orders.submit_order', compact('cateId','goodsNewData','sum','address','request','province','city','district','twon','delvary'));
     }
 
     /**
@@ -104,6 +154,7 @@ class OrderController extends Controller
     public function create()
     {
         //
+
         return view('home.orders.payment');
     }
 
@@ -115,8 +166,21 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $cateId = $request->session()->get('Index');
+
+        if ($request->session()->has('addorders.address')) {
+
+
+            $goodsdata = $request->session()->get('addorders');
+
+        }
+
+        dd($goodsdata);
+
     }
+
+
+
     public  function shopOrders(Request $request)
     {
         dd($request->all());
@@ -256,19 +320,30 @@ class OrderController extends Controller
 
     }
 
+    /**
+     * @param array $id
+     * @param array $arr
+     * @param array $num
+     * @return array|bool
+     */
     public function goodsNum($id = array(),$arr = array(),$num = array())
     {
-        if ($arr){
-            $goodsid = array();
-            foreach ($arr as $k=>$value){
-                dump($id[$k]);
-                dump($value);
-                dump($num[$k]);
-               $goodsnum =  SpecGoodsPrice::where('goods_id',$id[$k])->where('key',$value)->where('store_count','>',$num[$k])->get();
 
-               if (count($goodsnum)<1){
-                   array_push($goodsid,$id[$k]);
-               }
+        if ($arr){
+
+            $goodsid = array();
+
+            foreach ($arr as $k=>$value){
+
+                if ($value){
+
+                    $goodsnum =  SpecGoodsPrice::where('goods_id',$id[$k])->where('key',$value)->where('store_count','>',$num[$k])->get();
+
+                    if (count($goodsnum)<1){
+                        array_push($goodsid,$id[$k]);
+                    }
+                }
+
             }
 
             if ($goodsid){
@@ -277,6 +352,26 @@ class OrderController extends Controller
         }
 
         return false;
+    }
+
+
+    //ajax获取发货方式
+    public function toDelivery(Request $request,$id)
+    {
+        $data = DelveryMethod::where('id',$id)->where('enabled',1)->first();
+
+
+        if (count($data)>0){
+
+            $request->session()->set('addorders.delivery',$data->toArray());
+
+            return $data->price;
+
+        }
+
+        return false;
+
+
     }
 
 }
