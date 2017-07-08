@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class GoodController extends Controller
 {
@@ -28,14 +29,25 @@ class GoodController extends Controller
     public function goodsList(Request $request)
     {
         $cateId = $request->session()->get('Index');
+
+        $cate = $request->route('category_id');
         //2级分类
-        $twocate = $request->route('category_id');
-        dump($twocate);
+        $twocate = $request->get('cate');
+//        dd($twocate);
         //标签
         if($cateId == 1){
-            //女士
-            //实例化导航栏下的商品
-            $goods = self::goodsTree($cateId, $twocate );
+//            //女士
+            //判断是否是2级或者3级
+            if(!empty($twocate)){
+                //2级走这个
+                $goods = self::goodsTwo($cateId, $cate);
+
+            } else {
+                //3级走这里
+                $goods = self::goodsTree($cateId, $cate );
+
+            }
+
             //实例化标签
             $tags = self::tagsTree($cateId);
             //拿到标签下所有的3级分类
@@ -46,7 +58,16 @@ class GoodController extends Controller
 
         } else {
             //实例化导航栏下的商品
-            $goods = self::goodsTree($cateId, $twocate );
+            //判断是否是2级或者3级
+            if(!empty($twocate)){
+                //2级走这个
+                $goods = self::goodsTwo($cateId, $cate);
+
+            } else {
+                //3级走这里
+                $goods = self::goodsTree($cateId, $cate );
+
+            }
             //实例化标签
             $tags = self::tagsTree($cateId);
             //拿到标签下所有的3级分类
@@ -56,10 +77,29 @@ class GoodController extends Controller
 
         }
 
-        return view('home.goods.list', ['cateId' => $cateId , 'tags' =>$tags, 'goods' => $goods,'goodsCatId' => $goodsCatId ,'goodsCatName' => $goodsCatName]);
+        return view('home.goods.list', ['request' => $request ,'cateId' => $cateId , 'tags' =>$tags, 'goods' => $goods,'goodsCatId' => $goodsCatId ,'goodsCatName' => $goodsCatName]);
+    }
+
+    /**
+     * 分页
+     */
+    public function page()
+    {
+
+    }
+    public function goodsTwo($cateId, $cate)
+    {
+
+        //查询导航下的商品
+        $goods = TagMiddleGoods::join('goods', 'tags_middle_goods.goods_id', '=', 'goods.goods_id')
+            ->where('goods.cat_id', 'like', $cateId.'_'.$cate.'_%')
+            ->join('goods_tag', 'goods_tag.tag_id', '=', 'tags_middle_goods.tags_id')
+            ->paginate(20);
+
+        return $goods;
     }
     /**
-     * 返回导航下的商品
+     * 返回标签3级下的商品或导航的3级商品
      * @param $cateId  判断是男是女
      * @param $twocate 2级的id
      * @return mixed   查询出的商品
@@ -69,7 +109,8 @@ class GoodController extends Controller
         //查询导航下的商品
         $goods = TagMiddleGoods::join('goods', 'tags_middle_goods.goods_id', '=', 'goods.goods_id')
             ->where('goods.cat_id', 'like', $cateId.'_'.'%'.$twocate)
-            ->join('goods_tag', 'goods_tag.tag_id', '=', 'tags_middle_goods.tags_id')->get();
+            ->join('goods_tag', 'goods_tag.tag_id', '=', 'tags_middle_goods.tags_id')
+            ->paginate(20);
         return $goods;
     }
     /**

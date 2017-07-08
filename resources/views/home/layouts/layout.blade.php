@@ -65,7 +65,7 @@
                 @if($cateId == 1 || $cateId == '')
                     @foreach($twomaan as $tmaan)
                         <div id="header_nav_left_new" class="CateNav">
-                            <a id="butt" href="{{url('home/goodsList/')}}/{{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
+                            <a id="butt" href="{{url('home/goodsList/')}}/{{$tmaan->id}}?cate={{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
                             <div class="header_nav_left_new">
                                 <div class="elastic_no">
                                     <div class="header_nav_left_new_one_text">
@@ -309,14 +309,10 @@
         if(currentId == 0){
             //    navBg = "#f54b73";
             img = 'women';
-            {{--{{Config::set('calculations.Index', '1')}}--}}
-            {{--            {{$request->session()->set('Index', '1')}}--}}
 
         }else if(currentId == 1){
             //    navBg = "#505c82";
             img = 'men';
-            {{--            {{$request->session()->set('Index', '2')}}--}}
-            {{--            {{Config::set('calculations.Index', '2')}}--}}
         }else if(currentId == 2){
             //    navBg = "#a4d7d8";
             img = 'design';
