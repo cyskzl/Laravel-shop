@@ -177,17 +177,24 @@
 <script type="text/javascript">
     //导航栏
     $('.CateNav').mouseenter (function (){
+
         var that = $(this);
+
         //判断是男士还是女士,生活
         var cate_id ={{$cateId}}
             bool = that.find('a').first().attr('exists') ;
         //获取pid
         var pid = that.find('a').first().attr('data-id');
         //判断是否是第一个
-        var index =  $('.CateNav').index(this);
+        var index =  $('.CateNav').index(that);
+
         //第一个是新品
         if (!bool) {
+
+            that.find('a').first().attr('exists', '1');
             if(index == '0'){
+
+//                alert(index)
                 var goodsnew = '';
                 //请求ajax 前先清除里面的内
                 $("div").siblings(".CateNav").eq(0).find('.elastic_no').children().remove();
@@ -196,6 +203,9 @@
                     url: "/home/newgoods",
                     data: {'_token': '{{csrf_token()}}', 'pid': pid, 'cate_id': cate_id},
                     success: function (data) {
+                        if(!data){
+                            that.find('a').first().removeattr('exists');
+                        }
                         //取得新品数据
                         for(var z=0;z<data.newgoods.length;z++){
                             var original_img = data.newgoods[z]['original_img'] ;
@@ -209,13 +219,14 @@
                         }
                         //添加新品图片
                         $("div").siblings(".CateNav").eq(0).find('.elastic_no').remove('.header_nav_left_new_one_text').append(goodsnew);
-                        //往最大的div添加属性
-                        that.attr('exists', '1');
+
+
                     }
                 });
             } else {
                 var str = '';
                 var goodsstr = '';
+
                 //第一次前清除里面的内容
                 that.find('header_nav_left_new_one_text').children().remove();
                 that.find('.header_nav_left_new_one').remove();
@@ -224,10 +235,13 @@
                     url: "/home/getAjaxCate",
                     data: {'_token': '{{csrf_token()}}', 'pid': pid, 'cate_id': cate_id},
                     success: function (data) {
+                        if(!data){
+                            that.find('a').first().removeattr('exists');
+                        }
                         //遍历分类
                         var cate = data.cate;
                         for(var i=0; i<cate.length; i++) {
-                            str += ' <a href="/home/catalog/category_id/'+cate[i]['id']+'">'+cate[i]['name']+'</a>';
+                            str += ' <a href="/home/goodsList/'+cate[i]['id']+'">'+cate[i]['name']+'</a>';
                         }
                         //遍历商品图片
                         for(var j=0; j<data.goods.length;j++){

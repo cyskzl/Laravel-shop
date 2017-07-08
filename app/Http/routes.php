@@ -27,6 +27,10 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
 
     Route::any('/{category_id?}', 'IndexController@homeIndex')->where('category_id', '[0-9]+');
+    //流加载
+    Route::any('/flow/', 'IndexController@flow');
+    Route::any('/page', 'IndexController@page');
+
     //ajax新品
     Route::any('/newgoods', 'IndexController@newgoods');
     //分类

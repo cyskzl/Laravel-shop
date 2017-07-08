@@ -65,7 +65,7 @@
 					<!--第一张-->
 					@foreach($newest as $newgoods)
 					<div class="putshow ">
-						<a href="{{asset('/home/goodsDetail/'.$newgoods->goods_id)}}">
+						<a href="{{url('/home/goodsDetail/'.$newgoods->goods_id)}}">
 							<img src="{{rtrim($newgoods->original_img, ',')}}"  />
 							<span class="brand color">{{getBrand($newgoods->brand_id)}}</span>
 							<span class="name color">{{$newgoods->goods_name}}</span>
@@ -117,9 +117,9 @@
 				<div class="category-show width cen ">
 				@foreach($goodsTabOneCate as $tabonecate)
 					<div class="cateshow">
-						<a href="javascript;" >
+						<a href="{{url('/home/goodsDetail/'.$tabonecate->goods_id)}}">
 							<img src="{{rtrim($tabonecate->original_img,',')}}"   class="img">
-							<span class="brand color">NUMBERING</span>
+							<span class="brand color">{{getBrand($tabonecate->brand_id)}}</span>
 							<span class="name color">{{$tabonecate->goods_name}}</span>
 							<span class="price">¥&nbsp;{{$tabonecate->shop_price }}</span>
 						</a>
@@ -378,13 +378,13 @@
 				<a href="javascript:">MORE</a>
 			</div>
 			<!--全部商品-->
-			<div class="hotProduct-list clear">
+			<div class="hotProduct-list clear" id="flow">
 				<!--第一件商品,完成-->
 				@foreach($sales_sum as $sum)
 				<div class="hotProduct-show">
 					<a href="{{url('home/goodsDetail/')}}/{{$sum->goods_id}}">
 						<img src="{{rtrim($sum->original_img,',')}}"  alt=""  class="img">
-						<span class="brand color">NUMBERING</span>
+						<span class="brand color">{{getBrand($sum->brand_id)}}</span>
 						<span class="name color nowrap">{{$sum->goods_name}}</span>
 						<span class="price">¥&nbsp;{{$sum->shop_price}}</span>
 					</a>
@@ -417,6 +417,53 @@
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script src="{{asset('/templates/home/js/carousel.js')}}"></script>
 	<script>
+
+		layui.use('flow', function(){
+			var $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+			var flow = layui.flow;
+//			flow.lazyimg();
+			flow.load({
+				elem: '#flow',
+				//指定列表容器
+				isAuto:false
+				,done: function(page, next){ //到达临界点（默认滚动触发），触发下一页
+					var lis = [];
+					var pages;
+					var str = '';
+					//以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
+					$.get('/home/flow', function(res){
+						if(res.length <= 0){
+								lis.push('无数据');
+						} else {
+							console.log(res.data);
+							for(var i=0; i<res.data.length;i++){
+								var original_img = res.data[i]['original_img'] ;
+								original_img = original_img.substring(0,original_img.length-1);
+								str += '<div class="hotProduct-show">';
+								str += '<a href="home/goodsDetail/'+res.data[i]['goods_id']+'">';
+								str += '<img src="'+original_img+'"   class="img">';
+								str += '<span class="brand color">saadasd</span>';
+								str += '<span class="name color nowrap">'+res.data[i]['goods_name']+'</span>';
+								str += '<span class="price">¥&nbsp;'+res.data[i]['shop_price']+'</span>';
+								str += '</a> </div>';
+//								str += res[i]['goods_id']+'a';
+								lis.push(str);
+							}
+						}
+						//执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
+						//pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
+						pages = res.last_page;
+						next(lis.join(''), page < pages);
+					});
+
+				}
+			});
+		});
+
+
+
+
+
 		//加载选项卡代码
 		$('.clear li').mouseenter(function(){
 			//判断是否有class  borl
@@ -429,19 +476,24 @@
 				bool = that.attr('exists') ;
 				//获取时候等于undefined就请求，有自定义的属性值不请求
 				if(!bool){
+					//加载成功后在对应的li下加入自定义属性
+					that.attr('exists', '1');
 					var strs = '';
-						$.ajax({
+					$.ajax({
 						type: "get",
 						url: "/home/getAjaxTab",
 						data: {'_token': '{{csrf_token()}}', 'three_cate_id': arr[2], 'cate_id': cate_id},
 						success: function (data) {
+							if(!data){
+								that.removeattr('exists');
+							}
 							//遍历在视图
 							for(var i=0;i<data.goods.length;i++){
 								//清除最后一个字符
 								var original_img = data.goods[i]['original_img'] ;
 								original_img=original_img.substring(0,original_img.length-1);
 								strs += '<div class="cateshow ">';
-								strs += '<a href="javascript;">';
+								strs += '<a href="/home/goodsDetail/'+data.goods[i]['goods_id']+'">';
 								strs += '<img src='+original_img+' class="img">';
 								strs += '<span class="brand color">'+data.brand[i]+'</span>';
 								strs += '<span class="name color">'+data.goods[i]['goods_name']+'</span>';
@@ -450,20 +502,12 @@
 							}
 							//和li对应索引
 							$('#category-around .category-show').eq( that.index() ).html(strs);
-							//加载成功后在对应的li下加入自定义属性
-							that.attr('exists', '1');
+
 						}
 					})
 				}
 			}
 		});
-
-
-
-
-
-
-
 
 
 
