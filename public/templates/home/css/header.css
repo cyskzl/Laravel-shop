@@ -156,6 +156,9 @@ article, section, aside, header, footer,  figure, menu, nav, summary {
 	cursor: pointer;
 	font-size: 12px;
 }
+.header_top ul span{
+	display:inline;
+}
 .header_top_left li a:hover{
 	color: #2d2d2d;
 }
