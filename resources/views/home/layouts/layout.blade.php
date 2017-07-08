@@ -15,11 +15,6 @@
     <script src="{{asset('/templates/home/js/jquery-session.js')}}"></script>
     <script src="{{asset('/templates/home/js/jquery.leanModal.min.js')}}"></script>
     <script src="{{asset('/templates/admin/lib/layui/layui.js')}}"></script>
-    <style>
-        span {
-            display: block;
-        }
-    </style>
     @yield('style')
 </head>
 <body>
