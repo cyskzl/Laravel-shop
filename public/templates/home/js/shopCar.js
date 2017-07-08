@@ -16,8 +16,7 @@ $('.plus').click(function () {
     //获取增加后的数量
     var newNum = $(this).parent().find('input[class*=num]');
     //获取单价
-
-    var price = $(this).parent().prev().find('.uniPrice').text().substr(1);
+    var price = $(this).parent().prev().find('.uniPrice').text();
     //数量与单价相乘
     var sum = newNum.val() * price;
     //更新小计
@@ -52,9 +51,8 @@ $('.reduce').click(function () {
     //获取减去后的数量
     var newNum = $(this).parent().find('input[class*=num]');
     //获取单价
-    var price = $(this).parent().prev().find('.uniPrice').text().substr(1);
+    var price = $(this).parent().prev().find('.uniPrice').text();
     //数量与单价相乘
-
     var sum = newNum.val() * price;
     //更新小计
     $(this).parent().next().find('#subtotal').text(sum.toFixed(2));
@@ -81,9 +79,7 @@ function total () {
 
     var sum = 0;
     for (var i=0; i < subtotal.length; i++) {
-
         sum += parseFloat(subtotal[i].innerHTML);
-
     }
 
     if ( isNaN(sum) ) {
@@ -105,8 +101,5 @@ function shopAjax(url, type, data) {
             '_token': token,
         },
         traditional: true,
-        success: function (res) {
-
-        }
     });
 }

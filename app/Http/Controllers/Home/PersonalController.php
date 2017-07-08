@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\UserLogin;
-use App\Models\Userinfo;
+use App\Models\UserInfo;
 use Hash;
 
 class PersonalController extends Controller
