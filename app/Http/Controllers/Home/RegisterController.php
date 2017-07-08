@@ -38,7 +38,8 @@ class RegisterController extends Controller
     public function createCode(Request $request)
     {
         $validateCode = new ValidateCode();
-        $request->session()->put('validate_code', $validateCode->getCode());
+        $request->session()->set('validate_code', $validateCode->getCode());
+//        dd($request->session()->get('validate_code'));
         return $validateCode->doimg();
     }
 
@@ -53,8 +54,6 @@ class RegisterController extends Controller
     {
         $cateId = $request->session()->get('Index');
         // 邮箱注册填写信息验证
-
-//        dd($request->all());
         $this->validate($request,[
             'email'=>'required | email',
             'password'=>'required | between:6,16',
@@ -81,7 +80,7 @@ class RegisterController extends Controller
         $pass_again = $request->input('repassword');
         $validate_code = $request->input('validate_code');
         $code = $request->session()->get('validate_code');
-
+//        dd($code.':'.$validate_code);
         //验证验证码是否输入正确
         if($validate_code != $code) {
             return redirect('home/register')->withInput()->with(['fail'=>'验证码错误','id'=>'email']);
@@ -174,7 +173,7 @@ class RegisterController extends Controller
                 // 修改注册表信息
                 $register = UserRegister::where('id', '=', $uid)->update(['status' => 1]);
                 if (!$register) {
-                    return view('home.validatefail',['info'=>'邮箱激活失败，请重回邮箱点击链接重试激活','cateId'=>$cateId);
+                    return view('home.validatefail',['info'=>'邮箱激活失败，请重回邮箱点击链接重试激活','cateId'=>$cateId]);
                 }
                 // 对应增加users_info表的信息
                 $uinfo = UserRegister::find($uid);

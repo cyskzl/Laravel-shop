@@ -16,7 +16,7 @@ class CreateGoodsTabCateTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('cat_id', 11);
-            $table->tinyInteger('is_display',3)->default('0');
+            $table->tinyInteger('is_display')->default('0');
             $table->timestamps();
         });
     }

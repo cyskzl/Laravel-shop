@@ -8,6 +8,7 @@ use App\Models\CateMiddleGoods;
 use App\Models\Goods;
 use App\Models\GoodsAttr;
 use App\Models\GoodsTag;
+use App\Models\GoodsType;
 use App\Models\Spec;
 use App\Models\SpecGoodsPrice;
 use App\Models\SpecItem;
@@ -138,10 +139,14 @@ class GoodController extends Controller
     {
         // 页面分类id，区分所属顶级分类
         $cateId = $request->session()->get('Index');
-
         // 获取商品详细信息，便于详情页以及查找规格价格，属性
         $goodinfo = Goods::find($goods_id);
-
+        // 商品所属分类（面包屑导航）
+        $goodcat = explode('_',$goodinfo->cat_id);
+        foreach ($goodcat as $k=>$cat){
+            $cat_name[$k] = Category::where('id',$cat)->pluck('name')->first();
+        }
+//        dump($cat_name);
         // 获取商品的类型id，用于获取商品规格项（颜色、尺寸。。）
         $type_id = $goodinfo->goods_type;
 
@@ -156,10 +161,14 @@ class GoodController extends Controller
 
         // 通过商品ID获取商品的所有规格项
         $spec_key = SpecGoodsPrice::where('goods_id',$goods_id)->get();
-
         // 拆分规格项值，用于详情页的第一列的规格展示，并且判断商品此规格项对应下的商品规格项有几个规格
+
+        foreach ($spec_key as $k=>$v){
+            $key_team[$k] = explode('_',$v->key);
+        }
+//        dump($key_team);
         $one_key = explode('_',$spec_key[0]->key)[0];
-        dump($one_key);
+//        dump($one_key);
         // 通过上述的第一个商品规格项，通过模糊查询得到第一个规格对应的下一规格项
         $key1_info = SpecGoodsPrice::where('goods_id',$goods_id)->where('key','like',$one_key.'_%')->pluck('key');
 
@@ -167,7 +176,7 @@ class GoodController extends Controller
         foreach($key1_info as $key2){
             $two_key[] = explode('_',$key2)[1];
         }
-
+        // 商品属性
         $goodattr = GoodsAttr::where('goods_id',$goods_id)->leftjoin('goods_attribute','goods_attr.attr_id','=','goods_attribute.attr_id')->select('goods_attribute.attr_name','goods_attr.attr_value')->get();
 
         // 通过商品的类型ID得到该商品的类型对应的所有规格项
@@ -184,11 +193,19 @@ class GoodController extends Controller
             $spec_id[$k] = explode(',',$detail->specid);
         }
 
-        if(count($spec_item[0]) > count($spec_item[1])){
+        if( !in_array($one_key,$spec_id[0])){
             rsort($spec_name);
-            sort($spec_item);
-            sort($spec_id);
+            rsort($spec_item);
+            rsort($spec_id);
         }
+
+        foreach($key_team as $k=>$key1){
+            if(in_array($key1[0],$spec_id[0])){
+                $key_one[$k] = $key1[0];
+            }
+        }
+        $key_one = array_unique($key_one);
+//        dump($key_one);
 //        dump($spec_name);
 //        dump($spec_item);
 //        dd($spec_id);
@@ -216,7 +233,7 @@ class GoodController extends Controller
 //        dump($spec_name);
 //        dd($specitem);
 //        dd($specinfo);
-        return view('home.goods.details',compact('specdetali','goodinfo','brand','spec_name','spec_item','spec_id','two_key','goodattr','cateId'));
+        return view('home.goods.details',compact('specdetali','goodinfo','brand','spec_name','spec_item','spec_id','two_key','goodattr','key_one','cat_name','cateId'));
     }
 
     /**

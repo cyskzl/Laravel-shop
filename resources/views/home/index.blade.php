@@ -4,6 +4,11 @@
 
 @section('style')
 	<link rel="stylesheet" href="{{asset('/templates/home/css/main.css')}}">
+	<style>
+		span {
+			display: block;
+		}
+	</style>
 @endsection
 
 @section('main')

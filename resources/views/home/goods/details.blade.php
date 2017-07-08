@@ -17,14 +17,14 @@
 	    <!-- 商品小字分类介绍-->
 	    <div class="title">
 	        <ul class="fl">
-	            <li>创意生活</li>
+	            <li>{{$cat_name[0]}}</li>
 	            <li></li>
 	            <li> > </li>
-	            <li>上衣</li>
+	            <li>{{$cat_name[1]}}</li>
 	            <li> > </li>
-	            <li>T恤</li>
+	            <li>{{$cat_name[2]}}</li>
 	            <li> > </li>
-	            <li>圆领短袖字母T恤_橙色</li>
+	            <li>{{$goodinfo->goods_name}}</li>
 	        </ul>
 	    </div>
 
@@ -68,7 +68,10 @@
 	                        <span class="fl" id="spec_one">{{$spec_name[0]}}：</span>
 	                        <div class="color flex fl">
 	                            @foreach($spec_item[0] as $k=>$one_item)
+									@if(in_array($spec_id[0][$k],$key_one))
 										<input class="key1" type="text" name="key1" value="{{$one_item}}" size="1" goods_id="{{$goodinfo->goods_id}}" key1= '{{$spec_id[0][$k]}}' readonly>
+									@endif
+
 								@endforeach
 	                        </div>
 	                    </li>

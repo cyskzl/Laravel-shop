@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\ReceivingAddress;
+use App\Models\Region;
 use App\Models\UserInfo;
 use App\Models\UserRegister;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Permission;
+use Illuminate\Support\Facades\Input;
 
 class MemberController extends Controller
 {
@@ -77,6 +79,18 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'email'=>'required |email',
+            'password'=>'required',
+            'repassword'=>'required',
+        ],[
+            'required'=> ':attribute必须填写',
+            'email'=>':attribute格式不对',
+        ],[
+            'email'=>'邮箱',
+            'password'=>'密码',
+            'repassword'=>'确认密码'
+        ]);
         // 获取ajax请求数据
         $res = $request->all();
 //        dd($res);
@@ -118,9 +132,29 @@ class MemberController extends Controller
      *
      * @return  未定义
      */
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
-        //
+        $res = $request->all();
+//        dd($res);
+        $userinfo['nickname'] = $res['nickname'];
+        $userinfo['sex'] = $res['sex'];
+        $userinfo['realname'] = $res['realname'];
+        $userinfo['id_number'] = $res['id_number'];
+        $userinfo['avatar'] = $res['avatar'];
+        $userinfo['birthday'] = $res['birthday'];
+
+        if(UserInfo::where('id',$id)->update($userinfo)){
+            return $msg = [
+                'status'=>0,
+                'msg'=>'修改成功'
+            ];
+        }else {
+            return $msg = [
+                'status'=>1,
+                'msg'=>'修改失败'
+            ];
+        }
+
     }
 
     /**
@@ -152,9 +186,19 @@ class MemberController extends Controller
 
     public function getAddress(Request $request)
     {
-        $id = $request->input('id');
-        $userAddress = ReceivingAddress::where('user_id','=',$id)->get();
-        return view('admin.main.member.receivingaddress',compact('userAddress'));
+        $user_id = Input::get('id');
+        $address = ReceivingAddress::where('user_id',$user_id)->orderBy('is_default')->paginate(2);
+        if(count($address)){
+            $province = Region::where('level',1)->pluck('name','id');
+
+            $city = Region::where('level',2)->pluck('name','id');
+
+            $district = Region::where('level',3)->pluck('name','id');
+
+            $twon = Region::where('level',4)->pluck('name','id');
+
+            return view('admin.main.member.receivingaddress',compact('address','request','province','city','district','twon'));
+        }
     }
     /**
      * @return  view    会员密码修改页

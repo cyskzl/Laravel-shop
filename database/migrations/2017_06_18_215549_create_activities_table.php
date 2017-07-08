@@ -18,7 +18,7 @@ class CreateActivitiesTable extends Migration
             $table->increments('id')->comment('主键');
             $table->string('name')->comment('活动名称');
             $table->string('desc')->comment('活动描述');
-            $table->tinyInteger('type')->comment('活动类型 1秒杀 2特惠 3团购 4超值');
+            $table->tinyInteger('type')->comment('活动类型 1:促销 2:折扣 3:团购 4:超值');
             $table->string('img')->comment('活动分类导图');
             $table->timestamp('start_time')->comment('活动开始时间');
             $table->timestamp('end_time')->comment('活动结束时间');

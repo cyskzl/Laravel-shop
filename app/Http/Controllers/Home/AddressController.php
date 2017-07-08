@@ -29,7 +29,7 @@ class AddressController extends Controller
     {
         $cateId = $request->session()->get('Index');
         $address = ReceivingAddress::where('user_id',\Auth::user()->user_id)->orderBy('is_default')->paginate(2);
-        if($address){
+        if(count($address)){
             $province = Region::where('level',1)->pluck('name','id');
 
             $city = Region::where('level',2)->pluck('name','id');
@@ -78,6 +78,7 @@ class AddressController extends Controller
         ],[
             'required'=>':attribute不能为空',
             'email'=>':attribute格式不正确',
+            'regex'=>':attribute格式不正确',
         ],[
             'consignee'=>'收货人',
             'mobile'=>'手机号码',

@@ -1,36 +1,55 @@
 @extends('admin.layouts.layout')
-@section('x-nav')
-    <div>
-        <span class="layui-btn layui-btn-small">收货地址</span>
-        <span class="x-right" style="line-height:40px">共有数据：{{count($userAddress)}} 条</span>
-    </div>
-@endsection
-@section('x-body')
 
-    <table class="layui-table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>收货人</th>
-            <th>联系电话</th>
-            <th>详细地址</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($userAddress as $v)
+@section('x-body')
+    @foreach($address as $v)
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>{{$v->consignee}}{{$v->is_default==0?'(默认地址)':''}}</legend>
+    </fieldset>
+
+    <div class="layui-form">
+        <table class="layui-table">
+            <colgroup>
+                <col width="10%">
+                <col width="80%">
+            </colgroup>
+            <thead>
             <tr>
-                <td>{{$v->id}}</td>
+                <th>收货人：</th>
                 <td>{{$v->consignee}}</td>
-                <td>{{$v->tel}}</td>
-                <td>{{$v->province.$v->city.$v->country.$v->detailed_address}}</td>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
+            <tr>
+                <th>所在地区：</th>
+                <td>{{$province[$v->province].$city[$v->city].$district[$v->district].$twon[$v->twon]}}</td>
+            </tr>
+            <tr>
+                <th>详细地址：</th>
+                <td>{{$v->detailed_address}}</td>
+            </tr>
+            <tr>
+                <th>手机：</th>
+                <td>{{$v->mobile}}</td>
+            </tr>
+            <tr>
+                <th>电子邮箱：</th>
+                <td>{{$v->email}}</td>
+            </tr>
+            <tr>
+                <td id="edit" colspan="2">
+                    @if($v->is_default == 1)
+                        <a href="javascript:;" id="is_default" value="{{$v->id}}" onclick="ajax(this,'PUT',1)">设为默认</a>
+                    @endif
+                    <a href='{{url('home/address').'/'.$v->id.'/edit'}}' id="update" value="{{$v->id}}" >编辑</a>
+                    <a href="javascript:;" id="del" value="{{$v->id}}" onclick="ajax(this,'DELETE',1)">删除</a>
+                </td>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    @endforeach
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-4">
-
+                {!! $address->appends($request->only(['keyword']))->render() !!}
             </div>
         </div>
     </div>

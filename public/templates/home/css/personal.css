@@ -21,8 +21,10 @@ main a{
     max-width: 900px;
     color: #9e9e9e;
 }
+
 .breadcrumbs ul li span{
     padding: 0 12px;
+    /*display: none;*/
 }
 .breadcrumbs ul li a{
     font-size: 12px;

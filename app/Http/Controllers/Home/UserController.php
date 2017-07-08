@@ -65,7 +65,7 @@ class UserController extends Controller
 
 //        dd(\Auth::attempt($user));
             if(\Auth::attempt($user,$is_check)){
-                return redirect('/home');
+                return redirect('/');
 
             }else {
                 return back()->withInput()->with(['fail'=>'用户名或密码错误']);

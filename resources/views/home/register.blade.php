@@ -63,8 +63,7 @@
 									<input type="checkbox" id="check" name="check" >
 									<span class="clause-font" >接受Wconcept隐私条款</span>
 									<a href="" class="clause-font">去登陆</a>
-								</div>
-								<span style="color:#C73F49;"></span>
+								</div><span style="color:#C73F49;"></span>
 								<span style="color:mediumvioletred;">
 									{{ $errors->first('check') }}
 								</span>

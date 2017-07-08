@@ -15,11 +15,6 @@
     <script src="{{asset('/templates/home/js/jquery-session.js')}}"></script>
     <script src="{{asset('/templates/home/js/jquery.leanModal.min.js')}}"></script>
     <script src="{{asset('/templates/admin/lib/layui/layui.js')}}"></script>
-    <style>
-        span {
-            display: block;
-        }
-    </style>
     @yield('style')
 </head>
 <body>
@@ -37,13 +32,13 @@
                 {{--<a href="{{ url('home/') }}/{{$onelife->id}}" data-currentcategoryid="2">{{$onelife->name}}</a>--}}
             </div>
             <div class="header_logo left">
-                <a href="{{ url('home') }}"><img src="{{asset('/templates/home/uploads/logo (1).png')}}" alt=""></a>
+                <a href="{{ url('/') }}"><img src="{{asset('/templates/home/uploads/logo (1).png')}}" alt=""></a>
             </div>
             <div class="header_search right">
                 <div>
                     <form action="{{ url('home/search') }}" method="get">
                         <input type="text" name="goods_name" class="header_searchForm left" placeholder="请输入搜索内容" style="outline:none">
-                        <button id="header_searchin">
+                        <button style="margin:0; padding:0; list-style-type:none;border: aliceblue;" id="header_searchin">
                             <img src="{{asset('/templates/home/uploads/icon_searchin.png')}}" alt="">
                         </button>
                     </form>

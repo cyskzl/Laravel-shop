@@ -86,7 +86,7 @@
                 @endif
             </td>
             <td class="td-manage">
-                <a title="添加" href="javascript:;" onclick="question_add('添加','{{ url('admin/goodsactivity/create') }}','','510')"
+                <a title="添加" href="javascript:;" onclick="question_add('添加','{{ url('admin/goodsactivity/create/?activity_id='.$activity->id) }}','','510')"
                    class="ml-5" style="text-decoration:none">
                     <i class="layui-icon">&#xe608;</i>
                 </a>

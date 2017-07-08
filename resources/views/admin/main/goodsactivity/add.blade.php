@@ -19,7 +19,9 @@
                     <th width="70%">商品名称</th>
                     <th>价格</th>
                     <th>库存</th>
+                    @if($activity_id == 2)
                     <th>折扣（例：0.95）</th>
+                    @endif
                     <th>活动价</th>
                     <th>活动数量</th>
                 </tr>
@@ -32,9 +34,11 @@
                         <td>{{$good->goods_name}}</td>
                         <td>{{$good->shop_price}}</td>
                         <td>{{$good->store_count}}</td>
+                        @if($activity_id == 2)
                         <td>
                             <input type="text" name="rebate" size="1" value="1">
                         </td>
+                        @endif
                         <td>
                             <input type="text" name="promotion_price" size="1" value="">
                         </td>

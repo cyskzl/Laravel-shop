@@ -13,7 +13,7 @@ class CreateTagsMiddleGoodsTable extends Migration
     public function up()
     {
         Schema::create('tags_middle_goods', function (Blueprint $table) {
-            $table->increments('tags_id');
+            $table->string('tags_id');
             $table->integer('goods_id');
             $table->timestamps();
         });
