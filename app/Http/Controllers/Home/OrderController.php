@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Models\Goods;
+use App\Models\SpecGoodsPrice;
+use App\Models\SpecItem;
 use App\Models\UserInfo;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
@@ -25,7 +28,72 @@ class OrderController extends Controller
     {
         $cateId = $request->session()->get('Index');
 
-        return view('home.orders.submit_order', compact('cateId'));
+        if ($request->session()->has('orders')){
+
+            $goodsdata = $request->session()->get('orders');
+
+            $sum = 0;
+            $goodsid = array();
+            $specGoods = array();
+            $goodsnum = array();
+
+            foreach ($goodsdata as $v){
+
+                array_push($goodsid,$v['goods_id']);
+                array_push($specGoods,$v['key1_key2']);
+                array_push($goodsnum,$v['num']);
+
+            }
+
+            $goodsSale = $this->checkGoodsSale($goodsid);
+
+            if ($goodsSale){
+                dd('商品下架');
+            }
+
+            $goodsnum = $this->goodsNum($goodsid,$specGoods,$goodsnum);
+
+            if ($goodsnum){
+                dd($goodsnum);
+                dd('库存不足');
+            }
+
+
+            $goodsNewData = array();
+
+//            SELECT goods.goods_id,goods_name,spec_goods_price.price,spec_goods_price.`key` FROM goods LEFT JOIN spec_goods_price ON goods.goods_id = spec_goods_price.goods_id where goods.goods_id = 86 and spec_goods_price.`key` = '22_24'
+
+            foreach ($goodsid as $k=>$value){
+
+                $goods = Goods::where('goods.goods_id',$value)
+                    ->leftjoin('spec_goods_price','spec_goods_price.goods_id','=','goods.goods_id')
+                    ->where('spec_goods_price.key',"$specGoods[$k]")
+                    ->select('goods.goods_id','goods.goods_name','spec_goods_price.price','spec_goods_price.key')
+                    ->get()->toArray();
+
+
+                $NewData = SpecItem::whereIn('spec_item.id',explode("_",$specGoods[$k]))
+                    ->join('spec','spec.id','=','spec_item.spec_id')
+                    ->select('spec.name','spec_item.item')
+                    ->get()->toArray();
+
+//
+                array_push($goods,$NewData);
+
+                array_push($goodsNewData,$goods);
+
+            }
+
+            dd($goodsNewData);
+
+
+
+
+        }else{
+            dd('没有在购物车提交');
+        }
+
+        return view('home.orders.submit_order', compact('cateId','goodsdata','sum'));
     }
 
     /**
@@ -141,10 +209,13 @@ class OrderController extends Controller
 
     public function cartAjax(Request $request)
     {
+
+//        dd($request->data);
         if ( $request->data ) {
 
-            $goodsarr = json_decode($request->data, true);
+            $goodsdata = json_decode($request->data, true);
 
+            $request->session()->put('orders',$goodsdata);
 
             $error['success'] = 1;
             $error['url']     = url('home/orders');
@@ -155,6 +226,57 @@ class OrderController extends Controller
         $error['info']    = '未知错误！';
         return json_encode($error);
 
+    }
+
+
+    /**
+     * @param array $arr    商品编号
+     * @return array|bool   如果商品下架返回商品id,否则返回false
+     */
+    public function checkGoodsSale($arr = array())
+    {
+        if ($arr){
+            $arr = array_unique($arr);
+            $goodsid = array();
+            foreach ($arr as $k=>$value){
+
+               $id = Goods::where('goods_id',$value)->where('is_on_sale',1)->get();
+
+               if (count($id)<1){
+                   array_push($goodsid,$value);
+               }
+            }
+
+            if ($goodsid){
+                return $goodsid;
+            }
+        }
+
+        return false;
+
+    }
+
+    public function goodsNum($id = array(),$arr = array(),$num = array())
+    {
+        if ($arr){
+            $goodsid = array();
+            foreach ($arr as $k=>$value){
+                dump($id[$k]);
+                dump($value);
+                dump($num[$k]);
+               $goodsnum =  SpecGoodsPrice::where('goods_id',$id[$k])->where('key',$value)->where('store_count','>',$num[$k])->get();
+
+               if (count($goodsnum)<1){
+                   array_push($goodsid,$id[$k]);
+               }
+            }
+
+            if ($goodsid){
+                return $goodsid;
+            }
+        }
+
+        return false;
     }
 
 }

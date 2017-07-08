@@ -250,7 +250,7 @@ class ShoppingCartController extends Controller
         }
 
         $res = Redis::hgetall('user_id:'.Auth::user()->user_id);
-        dd($res);
+//        dd($res);
 
 
     }

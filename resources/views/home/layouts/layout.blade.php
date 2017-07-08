@@ -3,10 +3,10 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>@yield('title')</title>
+    <link rel="stylesheet" href="{{asset('/templates/admin/lib/layui/css/layui.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/public.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/header.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/footer.css')}}"/>
-    <link rel="stylesheet" href="{{asset('/templates/admin/lib/layui/css/layui.css')}}"/>
     {{--<link rel="stylesheet" href="{{asset('/templates/home/bootstrap/css/bootstrap.min.css')}}"/>--}}
     {{--<link rel="stylesheet" href="{{asset('/templates/home/bootstrap/css/bootstrap.min.css')}}"/>--}}
     {{--<script src="{{asset('/templates/home/js/registe.js')}}"></script>--}}
@@ -15,7 +15,11 @@
     <script src="{{asset('/templates/home/js/jquery-session.js')}}"></script>
     <script src="{{asset('/templates/home/js/jquery.leanModal.min.js')}}"></script>
     <script src="{{asset('/templates/admin/lib/layui/layui.js')}}"></script>
-
+    <style>
+        span {
+            display: block;
+        }
+    </style>
     @yield('style')
 </head>
 <body>
@@ -29,7 +33,7 @@
         <div class="header_top_bottom left">
             <div class="header_top_bottom_people left">
                 <a href="{{ url('home/') }}/?categoryId={{$onemaam->id}}" data-currentcategoryid="0">{{$onemaam->name}}</a>
-                <a href="{{ url('home/') }}/?categoryId={{$onemam->id}}"data-currentcategoryid="1">{{$onemam->name}}</a>
+                <a href="{{ url('home/') }}/?categoryId={{$onemam->id}}" data-currentcategoryid="1">{{$onemam->name}}</a>
                 {{--<a href="{{ url('home/') }}/{{$onelife->id}}" data-currentcategoryid="2">{{$onelife->name}}</a>--}}
             </div>
             <div class="header_logo left">
