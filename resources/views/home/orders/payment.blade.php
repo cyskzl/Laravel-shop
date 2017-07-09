@@ -28,40 +28,53 @@
     <!--订单详情 end -->
 
     <!-- 支付方式 start-->
+    <form action="./paymethodsubmit" method="post">
+        <input type="hidden" name="_token" value="{{csrf_token()}}">
     <div class="payWay">
         <h4>选择支付方式</h4>
         <div>
             <ul class="payList flex">
-                <li>
-                    <div class="payment_area clearfix">
-                        <input class="fl vam" type="radio" name="pay_name"/>
-                        <label class="fl" for=""><img src="./uploads/zfb.jpg" alt=""/></label>
-                    </div>
-                </li>
-                <li>
-                    <div class="payment_area clearfix">
-                        <input class="fl vam" type="radio" name="pay_name"/>
-                        <label class="fl" for=""><img src="./uploads/hdfk.jpg" alt=""/></label>
-                    </div>
-                </li>
-                <li>
-                    <div class="payment_area clearfix">
-                        <input class="fl vam" type="radio" name="pay_name"/>
-                        <label class="fl" for=""><img src="./uploads/wx.jpg" alt=""/></label>
-                    </div>
-                </li>
-                <li>
-                    <div class="payment_area clearfix">
-                        <input class="fl vam" type="radio" name="pay_name"/>
-                        <label class="fl" for=""><img src="./uploads/zxzf.jpg" alt=""/></label>
-                    </div>
-                </li>
-                <li>
-                    <div class="payment_area clearfix">
-                        <input class="fl vam" type="radio" name="pay_name"/>
-                        <label class="fl" for=""><img src="./uploads/cft.jpg" alt=""/></label>
-                    </div>
-                </li>
+                @foreach($paymethod as $value)
+
+                    @if($value->id ==1)
+                        <li>
+                            <div class="payment_area clearfix">
+                                <input class="fl vam" type="radio" name="pay_name" value="{{$value->id}}"/>
+                                <label class="fl" for=""><img src="{{asset('/templates/home/uploads/zfb.jpg')}}" alt=""/></label>
+                            </div>
+                        </li>
+                    @elseif($value->id ==2)
+                        <li>
+                            <div class="payment_area clearfix">
+                                <input class="fl vam" type="radio" name="pay_name" value="{{$value->id}}"/>
+                                <label class="fl" for=""><img src="{{asset('/templates/home/uploads/hdfk.jpg')}}" alt=""/></label>
+                            </div>
+                        </li>
+                    @elseif($value->id ==3)
+                        <li>
+                            <div class="payment_area clearfix">
+                                <input class="fl vam" type="radio" name="pay_name" value="{{$value->id}}"/>
+                                <label class="fl" for=""><img src="{{asset('/templates/home/uploads/wx.jpg')}}" alt=""/></label>
+                            </div>
+                        </li>
+                    @elseif($value->id ==4)
+                        <li>
+                            <div class="payment_area clearfix">
+                                <input class="fl vam" type="radio" name="pay_name" value="{{$value->id}}"/>
+                                <label class="fl" for=""><img src="{{asset('/templates/home/uploads/zxzf.jpg')}}" alt=""/></label>
+                            </div>
+                        </li>
+                    @elseif($value->id ==5)
+                        <li>
+                            <div class="payment_area clearfix">
+                                <input class="fl vam" type="radio" name="pay_name" value="{{$value->id}}"/>
+                                <label class="fl" for=""><img src="{{asset('/templates/home/uploads/cft.jpg')}}" alt=""/></label>
+                            </div>
+                        </li>
+                    @endif
+
+                @endforeach
+
             </ul>
         </div>
     </div>
@@ -69,7 +82,8 @@
 
     <!-- 确认支付方式 start-->
     <div class="confirm_pay">
-        <a href="javascript:;">确认支付方式</a>
+        <button type="submit">确认支付方式</button>
     </div>
     <!-- 确认支付方式 end-->
+    </form>
 @endsection

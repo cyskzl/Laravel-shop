@@ -29,7 +29,7 @@
 	                    <h4 class="fl">收货人信息</h4>
 	                    <a class="fr" href="javascript:;">新增收货地址</a>
 	                </div>
-					@if($address)
+					@if(count($address)>0)
 						<div class="noAddress">
 							<li class="setAddress">
 								<input type="radio" checked="checked" name="address">
@@ -54,13 +54,14 @@
 						@else
 						<div class="noAddress">
 							<p>暂时无收货人信息</p>
-							<a href="javascript:;" class="address">添加收货地址</a>
+							<a href="./address/create" class="address">添加收货地址</a>
 						</div>
 						@endif
 					<div class="noAddress" style="border-bottom: 1px dashed #9e9e9e;">
 						<li class="setAddress">
 							<span>请选择配送方式</span>
 							<select name="shipping_code" id="" style="height: 20px;">
+
 							@foreach($delvary as $value)
 									<option value="{{$value->id}}">{{$value->name}}</option>
 								@endforeach

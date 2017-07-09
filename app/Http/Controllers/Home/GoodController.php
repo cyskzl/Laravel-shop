@@ -33,69 +33,101 @@ class GoodController extends Controller
         $cate = $request->route('category_id');
         //2级分类
         $twocate = $request->get('cate');
+        //最新desc排序
+        //http://www.project.com/home/goodsList/5?cate=5&page=1&order=sales_sum&dir=desc
+        //http://www.project.com/home/goodsList/5?cate=5&page=1&order=is_new&dir=desc
+        $desc = $request->get('dir');
+        //order排序的字段
+        $order = $request->get('order');
 
         //广告
         $advertisement = self::advertisement();
-//        dd($twocate);
         //女士
         if($cateId == 1){
 
             //判断是否是2级或者3级
             //新品
-            if($twocate == '3' || $twocate == '4'){
+            if($order == 'is_new'){
+                //最新排序
+                $goods = self::newGoodsSore($cateId,$order,$desc);
 
-                $goods = self::newGoods($cateId);
+            }else if($order == 'sales_sum'){
+                //销量排序
+                $goods = self::salesSum($cateId,$order,$desc);
+            }else if($order == 'shop_price'){
+                //价格排序
+                $goods = self::shopPrice($cateId,$order,$desc);
 
-            }else if(!empty($twocate)){
-                //2级走这个
-                $goods = self::goodsTwo($cateId, $cate);
+            }else {
 
-            }  else {
-                //3级走这里
-                $goods = self::goodsTree($cateId, $cate );
+                if($twocate == '3' || $twocate == '4'){
 
+                    $goods = self::newGoods($cateId);
+
+                }else if(!empty($twocate)){
+                    //2级走这个
+                    $goods = self::goodsTwo($cateId, $cate);
+
+                }  else {
+                    //3级走这里
+                    $goods = self::goodsTree($cateId, $cate );
+
+                }
             }
-
             //实例化标签
             $tags = self::tagsTree($cateId);
             //拿到标签下所有的3级分类
             $goodsCatName = self::goodsCatName($tags);
             //拿到标签下所有的3级分类id
             $goodsCatId = self::goodsCatId($tags);
-
-//            dd($advertisement);
-
+            //=======男============
         } else {
             //实例化导航栏下的商品
             //判断是否是2级或者3级
             //新品
-            if($twocate == '3' || $twocate == '4'){
+//            dd(123);
+            if($order == 'is_new'){
+                //最新排序
+                $goods = self::newGoodsSore($cateId,$order,$desc);
 
-                $goods = self::newGoods($cateId);
+            }else if($order == 'sales_sum'){
+                //销量排序
+                $goods = self::salesSum($cateId,$order,$desc);
+            }else if($order == 'shop_price'){
+                //价格排序
+                $goods = self::shopPrice($cateId,$order,$desc);
 
-            }else if(!empty($twocate)){
-                //2级走这个
-                $goods = self::goodsTwo($cateId, $cate);
+            }else {
 
-            }  else {
-                //3级走这里
-                $goods = self::goodsTree($cateId, $cate );
+                if($twocate == '3' || $twocate == '4'){
 
+                    $goods = self::newGoods($cateId);
+
+                }else if(!empty($twocate)){
+                    //2级走这个
+                    $goods = self::goodsTwo($cateId, $cate);
+
+                }  else {
+                    //3级走这里
+                    $goods = self::goodsTree($cateId, $cate );
+
+                }
             }
+
+
             //实例化标签
             $tags = self::tagsTree($cateId);
             //拿到标签下所有的3级分类
             $goodsCatName = self::goodsCatName($tags);
             //拿到标签下所有的3级分类id
             $goodsCatId = self::goodsCatId($tags);
-
-//            dd($advertisement);
+            //男士最新
 
         }
 
         return view('home.goods.list', [
-
-                    'request'           => $request
+//                    'newgoods'          => $newgoods
+                    'request'          => $request
                     ,'cateId'           => $cateId
                     ,'tags'             =>$tags
                     ,'goods'            => $goods
@@ -103,6 +135,45 @@ class GoodController extends Controller
                     ,'goodsCatName'     => $goodsCatName
                     ,'advertisement'    => $advertisement
         ]);
+    }
+
+    public function shopPrice($cateId,$order,$desc)
+    {
+        if($desc == 'desc'){
+
+            $newgoods = Goods::where('cat_id', 'like', $cateId.'%')->orderBy($order,$desc)->paginate(2);
+
+        }else {
+
+            $newgoods = Goods::where('cat_id', 'like', $cateId.'%')->orderBy($order,$desc)->paginate(2);
+        }
+        return $newgoods;
+    }
+    /**
+     * 销量排序
+     * @param $cateId
+     * @param $order
+     * @param $desc
+     * @return mixed
+     */
+    public function salesSum($cateId,$order,$desc)
+    {
+
+        $newgoods = Goods::where(  'cat_id','like',$cateId.'%' )->orderBy($order, $desc)->paginate(2);
+
+        return $newgoods;
+    }
+    /**
+     * 最新排序
+     * @param $cateId
+     * @param $order
+     * @param $desc
+     * @return mixed
+     */
+    public function newGoodsSore($cateId,$order,$desc)
+    {
+        $newgoods = Goods::where($order, '=', '1')->where('cat_id', 'like', $cateId.'%' )->orderBy('goods_id', $desc)->paginate(2);
+        return $newgoods;
     }
     /**
      * 广告
@@ -121,7 +192,7 @@ class GoodController extends Controller
      */
     public function newGoods($cateId)
     {
-        $goods = Goods::where('is_new', '=', '1')->where('cat_id', 'like', $cateId.'%' )->orderBy('sales_sum', 'desc')->paginate(20);
+        $goods = Goods::where('is_new', '=', '1')->where('cat_id', 'like', $cateId.'%' )->orderBy('sales_sum', 'desc')->paginate(2);
         return $goods;
     }
 
@@ -138,7 +209,7 @@ class GoodController extends Controller
         $goods = TagMiddleGoods::join('goods', 'tags_middle_goods.goods_id', '=', 'goods.goods_id')
             ->where('goods.cat_id', 'like', $cateId.'_'.$cate.'_%')
             ->join('goods_tag', 'goods_tag.tag_id', '=', 'tags_middle_goods.tags_id')
-            ->paginate(20);
+            ->paginate(2);
 
         return $goods;
     }

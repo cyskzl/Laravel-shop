@@ -5,6 +5,8 @@
 @section('style')
 	<link rel="stylesheet" href="{{asset('/templates/home/css/personal.css')}}"/>
 	<link rel="stylesheet" href="{{asset('/templates/home/css/order.css')}}"/>
+	<link rel="stylesheet" href="{{asset('/templates/home/css/orders/order.css')}}"/>
+
 @endsection
 
 
@@ -36,10 +38,57 @@
 	            <!-- 已付款订单 -->
 	            <div class="personal_tab">
 	                <div class="tab_paid">
-	                    <div class="empty-box">
-	                        <span class="icn-empty-order"></span>
-	                        <span>没有符合条件的订单，请尝试其他搜索条件。</span>
-	                    </div>
+						@if(count($orderData)>0)
+							@foreach($orderData as $vaule)
+								<div class="order">
+									<div class="order_top">
+										<p>{{$vaule->created_at}}</p>
+										<p>订单号:
+											<span>{{$vaule->sn}}</span>
+										</p>
+									</div>
+
+									<div class="order_bottom">
+										<div class="order_bottom_style">
+											@foreach($vaule->orderDetails as $v)
+                                                <?php $goodsinfo = json_decode($v->goods_info,true) ?>
+												<div class="yl">
+													<div class="order_bottom_style_img">
+														<img src="{{$goodsinfo['original_img']}}" alt="">
+													</div>
+													<div>
+														<p><a href="http://al.com/home/goodsDetail/{{$v->goods_id}}">{{$goodsinfo['goods_name']}}</a></p>
+													</div>
+													<span>×{{$v->goods_num}}</span>
+												</div>
+											@endforeach
+										</div>
+										<div class="order_bottom_style_details">
+											<div class="order_none">
+												<p>{{$vaule->consignee}}</p>
+											</div>
+											<div>
+												<div class="order_money">
+													<p>总额¥{{$vaule->total_amount}}</p>
+												</div>
+											</div>
+											<div>
+												<div class="order_money_off">
+													<p>{{$orderStatus[$vaule->order_status]}}</p>
+													<a href="javascript:" class="colorsb">订单详情</a>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							@endforeach
+						@else
+							<div class="empty-box">
+								<span class="icn-empty-order"></span>
+								<span>没有符合条件的订单，请尝试其他搜索条件。</span>
+							</div>
+						@endif
 	                </div>
 	            </div>
 	            <!-- 已付款订单 -->

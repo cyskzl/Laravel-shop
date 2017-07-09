@@ -19,7 +19,7 @@ class CreateDeliveryMethod extends Migration
             $table->string('name')->comment('快递名称');
             $table->decimal('price',10,2)->defaule(0.00)->comment('邮费');
             $table->string('desc')->defalut("")->comment('描述');
-            $table->tinyInteger('enabled')->default(0)->comment('开关');
+            $table->tinyInteger('enabled')->default(1)->comment('开关');
             $table->timestamps();
             $table->softDeletes()->comment('删除时间');
         });

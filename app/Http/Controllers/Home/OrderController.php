@@ -6,6 +6,7 @@ use App\Models\DelveryMethod;
 use App\Models\Goods;
 use App\Models\Orders;
 use App\Models\OrdersDetails;
+use App\Models\PayMethod;
 use App\Models\ReceivingAddress;
 use App\Models\Region;
 use App\Models\SpecGoodsPrice;
@@ -141,6 +142,8 @@ class OrderController extends Controller
                 $request->session()->set('addorders.address',$address);
 
 
+            }else{
+
             }
 
             //查询发货方式
@@ -226,7 +229,11 @@ class OrderController extends Controller
 
         $status['data'] = date('Y-m-d H:i:s',strtotime("+1 day"));
 
-        return view('home.orders.payment',compact('status'));
+        $paymethod = PayMethod::all();
+
+        $request->session()->set('orders.sn',$status['sn']);
+
+        return view('home.orders.payment',compact('status','paymethod'));
     }
 
 
@@ -281,6 +288,23 @@ class OrderController extends Controller
         //
     }
 
+    public function userOrderData($userid,$field,$arr)
+    {
+        $orderData = Orders::where('user_id',$userid)->where(function ($query)use ($field,$arr){
+            if (!is_array($arr)){
+                $query->where($field,$arr);
+            }
+
+            if (is_array($arr)){
+                $query->whereIn($field,$arr);
+            }
+        })->with(['orderDetails'=>function($query){
+            $query->select('order_id','goods_info','goods_num','goods_id');
+        }])->select('id','order_status','sn','consignee','total_amount','created_at')->orderBy('id','desc')->get();
+
+        return $orderData;
+    }
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-订单详情（待付款订单）
@@ -288,7 +312,18 @@ class OrderController extends Controller
     public function waitOrder(Request $request)
     {
         $cateId = $request->session()->get('Index');
-        return view('home.personal.order.waitOrder',compact('cateId'));
+
+        $userid =  \Auth::user()->user_id;
+
+        $field = 'pay_status';
+
+        $str = 0;
+
+        $orderData = $this->userOrderData($userid,$field,$str);
+//       dd($orderData);
+        $orderStatus = array(0=>'未确认',1=>'已确认');
+
+        return view('home.personal.order.waitOrder',compact('cateId','orderData','orderStatus'));
     }
 
     /**
@@ -298,7 +333,18 @@ class OrderController extends Controller
     public function alreadyOrder(Request $request)
     {
         $cateId = $request->session()->get('Index');
-        return view('home.personal.order.alreadyOrder',compact('cateId'));
+
+        $userid =  \Auth::user()->user_id;
+
+        $field = 'pay_status';
+
+        $str = 1;
+
+        $orderData = $this->userOrderData($userid,$field,$str);
+
+        $orderStatus = array(0=>'未确认',1=>'已确认');
+
+        return view('home.personal.order.alreadyOrder',compact('cateId','orderData','orderStatus'));
     }
 
     /**
@@ -308,7 +354,18 @@ class OrderController extends Controller
     public function cancelOrder(Request $request)
     {
         $cateId = $request->session()->get('Index');
-        return view('home.personal.order.cancelOrder',compact('cateId'));
+
+        $userid =  \Auth::user()->user_id;
+
+        $field = 'order_status';
+
+        $arr = [-1,-2,-3];
+
+        $orderData = $this->userOrderData($userid,$field,$arr);
+
+        $orderStatus = array(-1=>'已取消',-2=>'无效订单',-3=>'作废订单');
+
+        return view('home.personal.order.cancelOrder',compact('cateId','orderData','orderStatus'));
     }
 
     /**
@@ -481,7 +538,11 @@ class OrderController extends Controller
 
                     $detailsModel->goods_id = $value['goods_id'];
 
-                    $detailsModel->goods_name = $value['goods_name'];
+                    $goodsinfo['goods_name'] = $value['goods_name'];
+
+                    $goodsinfo['original_img'] = trim($value['original_img'],',');
+
+                    $detailsModel->goods_info = json_encode($goodsinfo);
 
                     $detailsModel->goods_sn = $value['goods_sn'];
                     
@@ -545,6 +606,36 @@ class OrderController extends Controller
         }
 
         return false;
+
+    }
+
+    //提交订单付款方式
+    public function payMethodSubmit(Request $request)
+    {
+        $payid = $request->input('pay_name');
+
+        $payData = PayMethod::find($payid)->where('enabled',1)->first();
+
+        if ($request->session()->has('orders.sn')) {
+
+            $orderSn = $request->session()->get('orders.sn');
+        }
+
+
+        $order = Orders::where('sn',$orderSn)->first();
+
+
+        $order->order_status = 1;
+        $order->pay_status = 1;
+
+        $order->pay_code = $payData->id;
+        $order->pay_name = $payData->name;
+
+        if ($order->save()){
+
+            //重定向到订单详情页
+            return Redirect::to('home/alreadyorder');
+        }
 
     }
 
