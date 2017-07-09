@@ -43,7 +43,7 @@ body{
 .details_btn:hover{
     text-decoration: underline;
 }
-/*支付方式*/
+/*支锟斤拷锟斤拷式*/
 .payWay h4{
     font-weight: normal;
     line-height: 40px;
@@ -76,13 +76,13 @@ body{
     top: 11px;
 }
 
-/*确认支付方式*/
+/*确锟斤拷支锟斤拷锟斤拷式*/
 .confirm_pay{
     padding-top: 30px;
     text-align: right;
     margin-bottom: 30px;
 }
-.confirm_pay a{
+.confirm_pay button{
     color: #FFF;
     background-color: #626161;
     border: 1px solid #626161;
