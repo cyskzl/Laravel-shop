@@ -84,14 +84,14 @@ class IndexController extends Controller
 
            //潮流名称
            $trendpromotion = self::trendPromotion($cateId);
-           $arr = [];
+           $trends = [];
            foreach($trendpromotion as $value){
                $trendcom = rtrim($value->img, ',');
 
-               $trends  = explode( ',', $trendcom);
+               $trends[]  = explode( ',', $trendcom);
 
            }
-
+//           dump($trendpromotion);
           $goodstren =  self::trendGoods($cateId);
 //           dd($goodstren);
 
@@ -125,10 +125,11 @@ class IndexController extends Controller
                $trendcom = rtrim($value->img, ',');
 
                $trends  = explode( ',', $trendcom);
-
+//dump($trends);
            }
 
-
+           $goodstren =  self::trendGoods($cateId);
+//        dd($goodstren);
        }
 
         return view('home.index', [
@@ -158,6 +159,7 @@ class IndexController extends Controller
             ->where('goods.cat_id', 'like', $cateId.'%')
             ->join('trendpromotion', 'trendpromotion.id', '=', 'goods_middle_trendpromotion.trendpro_id')
             ->get();
+//        dd($goods);
         return $goods;
 //        $trendpromotion = self::trendPromotion($cateId);
     }
@@ -255,7 +257,6 @@ class IndexController extends Controller
         //获取goods对应的品牌名称
         $brand = self::brand($flow);
 
-//        return $flow;
         return  $data =   [
             'flow' =>$flow,
             'brand' => $brand

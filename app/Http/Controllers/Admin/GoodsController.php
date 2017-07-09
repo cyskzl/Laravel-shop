@@ -235,8 +235,6 @@ class GoodsController extends Controller
 
     }
 
-
-
 //    }
 
     /**

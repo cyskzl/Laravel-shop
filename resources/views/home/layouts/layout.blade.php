@@ -258,7 +258,7 @@
                             var original_img = data.goods[j]['original_img'] ;
                             original_img=original_img.substring(0,original_img.length-1);
                             goodsstr += '<div class="header_nav_left_new_one">';
-                            goodsstr += '<a href="/home//goodsDetail/'+data.goods[j]['goods_id']+'"><img src='+original_img+' >';
+                            goodsstr += '<a href="/home/goodsDetail/'+data.goods[j]['goods_id']+'"><img src='+original_img+' >';
                             goodsstr += '<span class="font_sm">'+data.brand[j]+'</span>';
                             goodsstr += '<span class="font">'+data.goods[j]['goods_name']+'</span>';
                             goodsstr += '<span class="money">¥ '+data.goods[j]['shop_price']+'</span>';
