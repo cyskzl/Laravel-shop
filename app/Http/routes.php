@@ -89,6 +89,9 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
      Route::group(['middleware'=>'auth'],function(){
         // 订单页
         Route::resource('/orders', 'OrderController');
+
+        //订单付款方式提交
+        Route::post('/paymethodsubmit', 'OrderController@payMethodSubmit');
 //        Route::post('/orders', 'OrderController@index');
         Route::post('/cartToOrder', 'OrderController@cartAjax');
 

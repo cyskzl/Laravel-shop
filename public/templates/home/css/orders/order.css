@@ -9,8 +9,6 @@
 	border-bottom:none;
 }
 .order{
-	/*width: 100%;*/
-	height: 209px;
 	margin: 20px auto;
 	border: 1px solid #d9d9d9;
 	display: flex;
@@ -31,10 +29,12 @@
 .order_top>p>span{
 	color: #000;
 }
+
 .order_bottom{
 	flex: 1;
 	display: flex;
 	flex-direction: row;
+	/*height:auto;*/
 }
 .order_bottom_style{
 	width: 588px;
@@ -45,20 +45,19 @@
 }
 .order_bottom_style>div{
 	flex: 1;
-	height: 50%;
+	height: 90px;
 	display: flex;
 	flex-flow:row nowrap;
 	align-items: center;
 	border-bottom: 1px solid #d9d9d9;
 }
-.order_bottom_style>div:nth-child(2){
-	border-bottom: none;
-}
+
+
 .order_bottom_style_img{
 	width: 80px;
 	height: 65px;
 	border: 1px solid #d9d9d9;
-	margin-left:20px; 
+	margin-left:20px;
 }
 .order_bottom_style_img>img{
 	width: 80px;
@@ -79,19 +78,19 @@
 }
 .order_bottom_style_details{
 	width: 512px;
-	height: 100%;
+	height: auto;
 	display: flex;
-	flex-direction:row; 
+	flex-direction:row;
 }
 .order_bottom_style_details>div{
 	flex: 1;
 	display: flex;
 	border-right: 1px solid #d9d9d9;
+	align-items: center;
 }
 .order_bottom_style_details>div:last-child{
 	border-right:none
 }
-
 .order_none>p{
 	display: flex;
 	line-height: 30px;
@@ -110,7 +109,7 @@
 	font-size: 13px;
 	text-align: center;
 	margin:5px auto;
-	border-bottom: 1px solid #d9d9d9;
+	/*border-bottom: 1px solid #d9d9d9;*/
 }
 .order_money>p:nth-child(2){
 	border-bottom:none;

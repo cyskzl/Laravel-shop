@@ -165,7 +165,7 @@ return [
         /**
          * 调试工具
          */
-//        Barryvdh\Debugbar\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -214,7 +214,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'UUID' => Webpatser\Uuid\Uuid::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-//        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];
