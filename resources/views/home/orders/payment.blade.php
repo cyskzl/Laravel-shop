@@ -15,8 +15,8 @@
         <span class="iconfont icon-dagou dagou fl"></span>
         <div class="fl erhuh">
             <h3>订单提交成功，请您尽快付款！</h3>
-            <p>订单号：  201706291457462774    |     付款金额（元）：  <b>5304.88</b> 元</p>
-            <p>请您在  <b>2017-06-30</b> 完成支付，否则订单将自动取消</p>
+            <p>订单号：  {{$status['sn']}}    |     付款金额（元）：  <b>{{number_format($status['order_amount'],2,".",'')}}</b> 元</p>
+            <p>请您在  <b>{{$status['data']}}</b> 完成支付，否则订单将自动取消</p>
         </div>
     </div>
     <!--订单提交成功 end -->
@@ -34,31 +34,31 @@
             <ul class="payList flex">
                 <li>
                     <div class="payment_area clearfix">
-                        <input class="fl vam" type="radio"/>
+                        <input class="fl vam" type="radio" name="pay_name"/>
                         <label class="fl" for=""><img src="./uploads/zfb.jpg" alt=""/></label>
                     </div>
                 </li>
                 <li>
                     <div class="payment_area clearfix">
-                        <input class="fl vam" type="radio"/>
+                        <input class="fl vam" type="radio" name="pay_name"/>
                         <label class="fl" for=""><img src="./uploads/hdfk.jpg" alt=""/></label>
                     </div>
                 </li>
                 <li>
                     <div class="payment_area clearfix">
-                        <input class="fl vam" type="radio"/>
+                        <input class="fl vam" type="radio" name="pay_name"/>
                         <label class="fl" for=""><img src="./uploads/wx.jpg" alt=""/></label>
                     </div>
                 </li>
                 <li>
                     <div class="payment_area clearfix">
-                        <input class="fl vam" type="radio"/>
+                        <input class="fl vam" type="radio" name="pay_name"/>
                         <label class="fl" for=""><img src="./uploads/zxzf.jpg" alt=""/></label>
                     </div>
                 </li>
                 <li>
                     <div class="payment_area clearfix">
-                        <input class="fl vam" type="radio"/>
+                        <input class="fl vam" type="radio" name="pay_name"/>
                         <label class="fl" for=""><img src="./uploads/cft.jpg" alt=""/></label>
                     </div>
                 </li>
