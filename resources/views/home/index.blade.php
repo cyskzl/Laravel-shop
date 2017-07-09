@@ -260,9 +260,8 @@
 			<a href="javascript:">MORE</a>
 		</div>
 		<div class="design-banner space-between">
-			{{--{{$trends[$key][$key]}}--}}
-			@foreach($trends[$key] as $k=>$value)
 
+			@foreach($trends[$key] as $k=>$value)
 			<img src="{{$value}}"  alt="" />
 {{--			<img src="{{$trends[1]}}"  alt="" />--}}
 				@endforeach
