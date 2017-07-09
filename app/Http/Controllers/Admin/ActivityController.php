@@ -166,7 +166,7 @@ class ActivityController extends Controller
             ];
         }else {
             return $msg = [
-                'status'=>1,
+                'status'=>2,
                 'msg'=>'修改失败'
             ];
         }
@@ -187,7 +187,6 @@ class ActivityController extends Controller
         // 删除上传活动图片
         $img = './'.trim($activity->img,',');
         unlink($img);
-        $delGoods = GoodsActivity::where('activity_id','=',$act_id)->delete();
         $delAct = Activity::where('id','=',$act_id)->delete();
         return 2;
     }

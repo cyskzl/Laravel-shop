@@ -195,7 +195,7 @@ Route::group(['prefix' => 'admin'], function (){
         //(折扣与促销)
         Route::resource('/activity', 'Admin\ActivityController');
         // 活动商品管理
-        Route::resource('/goodsactivity', 'Admin\GoodsActivityController');
+        Route::get('/goodsactivity/activity', 'Admin\GoodsActivityController@activity');
         //（团购）
         Route::resource('/groupbuying', 'Admin\GroupBuyingController');
         //超值（满减）

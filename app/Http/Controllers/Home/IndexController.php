@@ -94,7 +94,7 @@ class IndexController extends Controller
 
           $goodstren =  self::trendGoods($cateId);
 //           dd($goodstren);
-
+//
 //            dd($advertisement);
        } else {
 

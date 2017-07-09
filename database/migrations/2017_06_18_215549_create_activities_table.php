@@ -21,7 +21,7 @@ class CreateActivitiesTable extends Migration
             $table->tinyInteger('type')->comment('活动类型 1:促销 2:折扣 3:团购 4:超值');
             $table->string('img')->comment('活动分类导图');
             $table->integer('act_range')->comment('1立减金额 2折扣率');
-            $table->integer('goods_id')->comment('商品id');
+            $table->string('goods_id')->comment('商品id');
             $table->string('goods_name')->comment('商品名称');
             $table->timestamp('start_time')->comment('活动开始时间');
             $table->timestamp('end_time')->comment('活动结束时间');

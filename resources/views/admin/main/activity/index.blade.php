@@ -79,7 +79,7 @@
             </td>
             <td ><a href="javascript:;" onclick="question_show('活动商品展示','{{'./activity/'.$activity->id }}','800','800')" class="layui-btn layui-btn-mini">查看商品</a></td>
             <td>
-                <a title="添加" href="javascript:;" onclick="question_add('添加','{{ url('admin/goodsactivity/create/?activity_id='.$activity->id) }}','','510')"
+                <a title="添加" href="javascript:;" onclick="question_add('添加','{{ url('admin/goodsactivity/activity/?activity_id='.$activity->id) }}','','510')"
                    class="layui-btn layui-btn-mini" style="text-decoration:none">添加商品
                 </a>
             </td>

@@ -20,7 +20,7 @@ class CreateSuperValueTable extends Migration
             $table->decimal('condition')->comment('满足条件');
             $table->decimal('preferential')->comment('优惠金额');
             $table->string('img')->comment('活动分类导图');
-            $table->integer('goods_id')->comment('商品id');
+            $table->string('goods_id')->comment('商品id');
             $table->string('goods_name')->comment('商品名称');
             $table->timestamp('start_time')->comment('活动开始时间');
             $table->timestamp('end_time')->comment('活动结束时间');

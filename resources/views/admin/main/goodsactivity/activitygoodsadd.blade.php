@@ -20,12 +20,15 @@
                     <th>价格</th>
                     <th>库存</th>
                 </tr>
+
                 @foreach($goodsAll as $good)
                     <tr>
                         <td>
                             <input type="checkbox" name="goods_id" value="{{$good->goods_id}}">
                         </td>
-                        <td>{{$good->goods_name}}</td>
+                        <td>
+                            {{$good->goods_name}}
+                        </td>
                         <td>{{$good->shop_price}}</td>
                         <td>{{$good->store_count}}</td>
                     </tr>
@@ -38,10 +41,13 @@
                         {!! $goodsAll->appends($request->only(['keyword']))->render() !!}
                     </div>
                     <div class="col-xs-3" style="margin-top:14px">
-                        <button id="submit" class="layui-btn">确认提交</button>
+                        <button  class="layui-btn" id="submit">
+                            立即添加
+                        </button>
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     </div>
 
@@ -49,30 +55,19 @@
 
 @section('js')
     <script>
-
-        $('input[name=rebate]').change(function (){
-            var rebate = $(this).val();
-            conosole.log();
-            {{--$('input[name=promotion_price]').val() = rebate*{{$good->shop_price}};--}}
-        });
-
-        $('#submit').click(function (){
-            var chk_value = '';
+        $('#submit').click(function(){
+            var goods_id = new Array();
             $('input[name="goods_id"]:checked').each(function(){
-                chk_value += $(this).val()+',';
+                goods_id.push($(this).val());//向数组中添加元素
             });
-//            console.log(chk_value);
+            var goods_str=goods_id.join(',');
             $.ajax({
-                type:'POST',
-                url:"./",
+                type:"post",
+                url: '{{url('admin/activity/'.$activity->id)}}',
+                data: data.field,
                 dataType:'json',
-                data:{'chk_value':chk_value,'_token':"{{csrf_token()}}"},
-                success: function(data){
-                    if(data){
-                        console.log(data);return false;
-                        location.href = location.href;
-                        layer.msg('商品添加成功!',{icon:6,time:1000});
-                    }
+                success: function(data) {
+
                 }
             });
         });

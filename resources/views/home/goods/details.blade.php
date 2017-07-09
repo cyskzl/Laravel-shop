@@ -35,24 +35,12 @@
 		<div class="bigimgShow fl rela">
 			<img src="{{asset(trim($goodinfo->original_img,','))}}"id="goods_img">
 		</div>
-		{{--<div class="imgShow psa" style="position:absolute;vertical-align:middle;width:448px;heigth:110px;display:inline-block;background-color:rgba(0, 0, 0, 0.25);box-sizing:border-box;">--}}
-		{{--<div class="imgView">--}}
-		{{--<div id="productImgBanner" class="owl-carousel2">--}}
-		{{--<a class="item product_card" href="javascript:;">--}}
-		{{--<img src="http://img01.wconceptimg.cn/media/catalog/product/w/i/wimg_450699648_2951840.jpg" alt="">--}}
-		{{--</a>--}}
-		{{--<a class="item product_card" href="javascript:;">--}}
-		{{--<img src="http://img01.wconceptimg.cn/media/catalog/product/w/i/wimg_450699648_2936451.jpg" alt="">--}}
-		{{--</a>--}}
-		{{--</div>--}}
-		{{--</div>--}}
-		{{--</div>--}}
 		<!-- 商品条件筛选-->
 		<div class="productOption fr">
 
 			<!-- 商品标签-->
 			<div class="ware-title">
-				<span class="Black">{{$brand[0]}}</span><br>
+				<span class="Black">{{$brand[0] or ''}}</span><br>
 				<span class="B4d" id="goods_name">{{$goodinfo->goods_name}}</span><br>
 				<span class="S3c">{{$goodinfo->goods_sn}}</span>
 			</div>
