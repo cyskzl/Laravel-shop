@@ -271,15 +271,13 @@ class RegisterController extends Controller
 
         $code = 'SMS_71285782';
 
-        $phone = 0;
 
-//        $result = $sms->send("$phone","$name","$content","$code");
+        $result = $sms->send("$phone","$name","$content","$code");
 
 
-        return '{"error":0}';
 
         $resultarr = get_object_vars($result);
-        return '{"error":0}';
+
 
         if (is_array($resultarr['result']['err_code'])){
 
@@ -415,7 +413,8 @@ class RegisterController extends Controller
     //事物创建帐号
     public function createUser($data)
     {
-        DB::transaction(function() use($data){
+
+        $db = DB::transaction(function() use($data){
             $user = new UserRegister;
 
             $user->tel = $data->input('tel');
@@ -436,16 +435,15 @@ class RegisterController extends Controller
                 $userlogin->last_login_ip = $data->ip();
                 $userlogin->last_login_at = $user->created_at;
 
-                if(!$userlogin->save()){
-                    return false;
+                if ($userlogin->save()){
+
+                    return true;
                 }
 
-            }else{
-                return false;
             }
         });
 
-        return true;
+        return $db;
 
     }
 }

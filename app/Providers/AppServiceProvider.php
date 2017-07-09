@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Models\Category;
 use Illuminate\Support\ServiceProvider;
-use App\Models\Userinfo;
+use App\Models\UserInfo;
 use Illuminate\Support\Facades\Redis;
 use Auth;
 class AppServiceProvider extends ServiceProvider
