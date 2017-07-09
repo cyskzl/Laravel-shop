@@ -189,11 +189,14 @@ Route::group(['prefix' => 'admin'], function (){
         //商品品牌
         Route::resource('/brand', 'Admin\BrandController');
         Route::resource('/goodstag', 'Admin\GoodsTagController');
-        //活动管理
+        //(折扣与促销)
         Route::resource('/activity', 'Admin\ActivityController');
         // 活动商品管理
         Route::resource('/goodsactivity', 'Admin\GoodsActivityController');
-
+        //（团购）
+        Route::resource('/groupbuying', 'Admin\GroupBuyingController');
+        //超值（满减）
+        Route::resource('/supervalue', 'Admin\SuperValueController');
         //轮播图管理
         Route::resource('/carousel', 'Admin\CarouselController');
         //轮播图排序

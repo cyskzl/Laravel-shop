@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateActivitiesTable extends Migration
+class CreateSuperValueTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,14 @@ class CreateActivitiesTable extends Migration
      */
     public function up()
     {
-        // 商品活动表
-        Schema::create('activities', function (Blueprint $table) {
+        Schema::create('super_value', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id')->comment('主键');
-            $table->string('name')->comment('活动名称');
+            $table->string('name')->comment('满减活动名称');
             $table->string('desc')->comment('活动描述');
-            $table->tinyInteger('type')->comment('活动类型 1:促销 2:折扣 3:团购 4:超值');
+            $table->decimal('condition')->comment('满足条件');
+            $table->decimal('preferential')->comment('优惠金额');
             $table->string('img')->comment('活动分类导图');
-            $table->integer('act_range')->comment('1立减金额 2折扣率');
             $table->integer('goods_id')->comment('商品id');
             $table->string('goods_name')->comment('商品名称');
             $table->timestamp('start_time')->comment('活动开始时间');
@@ -37,6 +36,6 @@ class CreateActivitiesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('activities');
+        Schema::drop('super_value');
     }
 }

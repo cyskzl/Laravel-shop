@@ -77,17 +77,39 @@
                         类别
                     </label>
                     <div class="layui-input-block">
-                        <select lay-verify="required" name="type">
-                            <option>
+                        <select lay-verify="required" name="type" lay-filter="type">
                             <option value="1">促销</option>
                             <option value="2">折扣</option>
-                            <option value="3">团购</option>
-                            <option value="4">超值</option>
                         </select>
                         <span style="color:mediumvioletred;">
                             {{ $errors->first('type') }}
                         </span>
                     </div>
+                </div>
+            </div>
+            <div class="layui-form-item" id="del_price">
+                <label for="L_act_range" class="layui-form-label">
+                    立减金额
+                </label>
+                <div class="layui-input-block">
+                    <input type="text" id="L_del_price" name="act_range" required lay-verify="act_range"
+                           autocomplete="off" class="layui-input" value="{{old('act_range')}}">
+                    <span style="color:mediumvioletred;">
+                        {{ $errors->first('act_range') }}
+                    </span>
+                </div>
+            </div>
+            <div class="layui-form-item" id="rebate" style="display: none;">
+                <label for="L_name" class="layui-form-label">
+                    折扣
+                </label>
+                <div class="layui-input-block">
+                    <input type="text" id="L_rebate" name="act_range" required lay-verify="act_range" disabled="disabled"
+                           autocomplete="off" class="layui-input" value="{{old('act_range')}}" placeholder="
+% 折扣值(1-100 如果打9折，请输入90)">
+                    <span style="color:mediumvioletred;">
+                        {{ $errors->first('act_range') }}
+                    </span>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -115,13 +137,12 @@
             <div class="layui-form-item" >
                 <div id="queue"></div>
                 <div class="layui-form-item" >
-                    <label class="layui-form-label" style="width:100px">图片</label>
+                    <label class="layui-form-label">图片</label>
                     <div class="layui-input-inline" style="margin-left:30px;">
-                        <input type="text" name="img" id="img" autocomplete="off" class="layui-input" lay-verify="required">
+                        <input type="text" name="img" id="img" autocomplete="off" class="layui-input">
                     </div>
                     <input id="file_upload"  type="file" multiple="true">
 
-                </div>
                 </div>
                 <div class="layui-form-item" id = 'thumbnail'>
                     <label class="layui-form-label">缩略图
@@ -129,7 +150,7 @@
                     <div id='layer-photos-demo' class='layer-photos-demo' style='width: 660px;'>
                     </div>
                 </div>
-
+            </div>
             <div class="layui-form-item layui-form-text">
                 <div class="layui-input-block">
                     <!-- 加载编辑器的容器 -->
@@ -182,6 +203,25 @@
                     }
                 });
 
+            form.on('select(type)',function(data) {
+//                    console.log(data.value);
+                var type = data.value;
+                if(type == 1 ){
+                    $('#del_price').css('display','block');
+                    $('#rebate').css('display','none');
+                    $("#L_del_price").removeAttr("disabled");
+                    $("#L_rebate").attr("disabled","disabled");
+                }
+                if(type == 2){
+                    $('#del_price').css('display','none');
+                    $('#rebate').css('display','block');
+                    $("#L_del_price").attr("disabled","disabled");
+                    $("#L_rebate").removeAttr("disabled");
+                }
+            });
+
+
+
             // 判断活动开始时间
             var nowtime = laydate.now('Y-m-d H:i:s');
             $('#L_start').on('change',function (){
@@ -211,6 +251,9 @@
 
 
         });
+        function question_add(title,url,w,h){
+            x_admin_show(title,url,w,h);
+        };
     </script>
     <script>
         var token ='{{csrf_token()}}';

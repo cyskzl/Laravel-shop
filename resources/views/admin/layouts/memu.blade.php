@@ -107,18 +107,24 @@
                         <dd class="">
                         <dd class="">
                             <a href="javascript:;" _href="{{ url('admin/activity') }}">
-                                <cite>活动管理</cite>
+                                <cite>促销优惠</cite>
                             </a>
                         </dd>
                         </dd>
                         <dd class="">
                         <dd class="">
-                            <a href="javascript:;" _href="{{url('admin/activity/create')}}">
-                                <cite>添加活动</cite>
+                            <a href="javascript:;" _href="{{url('admin/groupbuying')}}">
+                                <cite>团购管理</cite>
                             </a>
                         </dd>
                         </dd>
-
+                        <dd class="">
+                        <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/supervalue') }}">
+                                <cite>超值优惠</cite>
+                            </a>
+                        </dd>
+                        </dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">

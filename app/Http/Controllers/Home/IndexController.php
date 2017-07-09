@@ -32,7 +32,7 @@ class IndexController extends Controller
         $docs = $search->search(); // 执行搜索，将搜索结果文档保存在 $docs 数组中
         if(!$docs){
             // 无查询结果，则在列表页遍历最新的20件商品;
-            $goods = Goods::orderBy('goods_id',desc)->paginate(20);
+            $goods = Goods::orderBy('goods_id','desc')->paginate(20);
         }
 
         foreach ($docs as $k=>$value){

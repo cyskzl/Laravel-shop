@@ -1,5 +1,5 @@
 @extends('admin.layouts.layout')
-@section('title','活动修改')
+@section('title','添加活动')
 @section('style')
     <script src="{{asset('templates/admin/js/jquery.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('org/uploadify/jquery.uploadify.min.js')}}" type="text/javascript"></script>
@@ -52,9 +52,8 @@
 @endsection
 @section('x-body')
     <div class="x-body">
-        <form class="layui-form layui-form-pane">
+        <form class="layui-form layui-form-pane" action="{{url('admin/activity')}}" method="post">
             {{csrf_field()}}
-            <input type="hidden" name="_method" value="PUT">
             @if(session('fail'))
                 <div class="alert alert-fail" style="color:red;">
                     {{session('fail')}}
@@ -66,7 +65,7 @@
                 </label>
                 <div class="layui-input-block">
                     <input type="text" id="L_name" name="name" required lay-verify="name"
-                           autocomplete="off" class="layui-input" value="{{$activity->name}}">
+                           autocomplete="off" class="layui-input" value="{{old('name')}}">
                     <span style="color:mediumvioletred;">
                         {{ $errors->first('name') }}
                     </span>
@@ -78,9 +77,10 @@
                         类别
                     </label>
                     <div class="layui-input-block">
-                        <select lay-verify="required" name="type" lay-filter="type">
-                            <option value="1" {{$activity->type==1?'selected':''}}>促销</option>
-                            <option value="2" {{$activity->type==2?'selected':''}}>折扣</option>
+                        <select lay-verify="required" name="type">
+                            <option>
+                            <option value="1">促销</option>
+                            <option value="2">折扣</option>
                         </select>
                         <span style="color:mediumvioletred;">
                             {{ $errors->first('type') }}
@@ -88,29 +88,17 @@
                     </div>
                 </div>
             </div>
-            <div class="layui-form-item" id="del_price" style="display: {{$activity->type==1?'block':'none'}};">
-                <label for="L_act_range" class="layui-form-label">
-                    立减金额
-                </label>
-                <div class="layui-input-block">
-                    <input type="text" id="L_del_price" name="act_range" required lay-verify="act_range"
-                           autocomplete="off" class="layui-input" value="{{$activity->act_range}}" {{$activity->type==1?'':'disabled'}}>
-                    <span style="color:mediumvioletred;">
-                        {{ $errors->first('act_range') }}
-                    </span>
-                </div>
-            </div>
-            <div class="layui-form-item" id="rebate" style="display:{{$activity->type==2?'block':'none'}};">
-                <label for="L_name" class="layui-form-label">
-                    折扣
-                </label>
-                <div class="layui-input-block">
-                    <input type="text" id="L_rebate" name="act_range" required lay-verify="act_range" {{$activity->type==2?'':'disabled'}}
-                           autocomplete="off" class="layui-input" value="{{$activity->act_range}}" placeholder="
-% 折扣值(1-100 如果打9折，请输入90)">
-                    <span style="color:mediumvioletred;">
-                        {{ $errors->first('act_range') }}
-                    </span>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">
+
+                    </label>
+                    <div class="layui-input-block">
+                        
+                        <span style="color:mediumvioletred;">
+                            {{ $errors->first('type') }}
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -118,7 +106,7 @@
                     开始时间
                 </label>
                 <div class="layui-input-block" id="end_time">
-                    <input type="date" id="L_start" name="start_time" required lay-verify="start_time"  autocomplete="off" class="layui-input" style="width:20%;"  value="{{$activity->start_time}}"><span></span>
+                    <input type="date" id="L_start" name="start_time" required lay-verify="start_time"  autocomplete="off" class="layui-input" style="width:20%;"  value="{{old('start_time')}}"><span></span>
                     <span style="color:mediumvioletred;">
                         {{ $errors->first('start_time') }}
                     </span>
@@ -129,7 +117,7 @@
                     结束时间
                 </label>
                 <div class="layui-input-block">
-                    <input type="date" id="L_end" name="end_time" required lay-verify="end_time" autocomplete="off" class="layui-input" style="width:20%;"  value="{{$activity->end_time}}"><span></span>
+                    <input type="date" id="L_end" name="end_time" required lay-verify="end_time" autocomplete="off" class="layui-input" style="width:20%;"  value="{{old('end_time')}}"><span></span>
                     <span style="color:mediumvioletred;">
                         {{ $errors->first('end_time') }}
                     </span>
@@ -138,12 +126,13 @@
             <div class="layui-form-item" >
                 <div id="queue"></div>
                 <div class="layui-form-item" >
-                    <label class="layui-form-label">图片</label>
+                    <label class="layui-form-label" style="width:100px">图片</label>
                     <div class="layui-input-inline" style="margin-left:30px;">
-                        <input type="text" name="img" id="img" autocomplete="off" class="layui-input" value="{{$activity->img}}">
+                        <input type="text" name="img" id="img" autocomplete="off" class="layui-input" lay-verify="required">
                     </div>
                     <input id="file_upload"  type="file" multiple="true">
 
+                </div>
                 </div>
                 <div class="layui-form-item" id = 'thumbnail'>
                     <label class="layui-form-label">缩略图
@@ -151,11 +140,11 @@
                     <div id='layer-photos-demo' class='layer-photos-demo' style='width: 660px;'>
                     </div>
                 </div>
-            </div>
+
             <div class="layui-form-item layui-form-text">
                 <div class="layui-input-block">
                     <!-- 加载编辑器的容器 -->
-                    <script id="container" name="desc" lay-verify="required"  value="{{$activity->desc}}" type="text/plain"></script>
+                    <script id="container" name="desc" lay-verify="required"  value="{{old('desc')}}" type="text/plain"></script>
                     <!-- 配置文件 -->
                     <script type="text/javascript" src="{{asset('templates/admin/ueditor/ueditor.config.js')}}"></script>
                     <!-- 编辑器源码文件 -->
@@ -174,8 +163,8 @@
             </div>
 
             <div class="layui-form-item">
-                <button  class="layui-btn" lay-filter="add" lay-submit="">
-                    立即修改
+                <button class="layui-btn" lay-filter="add" lay-submit>
+                    立即发布
                 </button>
             </div>
         </form>
@@ -190,68 +179,20 @@
                 , layer = layui.layer
                 , layedit = layui.layedit;
 
-            //自定义验证规则
-            form.verify({
-                name: function(value){
-                    if(value.length < 3){
-                        return '活动至少得3个字符啊';
-                    }
-                },
-                type: function(value){
-                    if(value.length == 0){
-                        return '请选择活动类型';
-                    }
-                }
-            });
-
-            form.on('select(type)',function(data) {
-//                    console.log(data.value);
-                var type = data.value;
-                if(type == 1 ){
-                    $('#del_price').css('display','block');
-                    $('#rebate').css('display','none');
-                    $("#L_del_price").removeAttr("disabled");
-                    $("#L_rebate").attr("disabled","disabled");
-                }
-                if(type == 2){
-                    $('#del_price').css('display','none');
-                    $('#rebate').css('display','block');
-                    $("#L_del_price").attr("disabled","disabled");
-                    $("#L_rebate").removeAttr("disabled");
-                }
-            });
-
-
-            //监听提交
-            form.on('submit(add)', function(data){
-//                console.log(data.field);
-//                return false;
-                //发异步，把数据提交给php
-                $.ajax({
-                    type:"post",
-                    url: '{{url('admin/activity/'.$activity->id)}}',
-                    data: data.field,
-                    dataType:'json',
-                    success: function(res){
-                        if (res.status == 1) {
-                            layer.alert("修改成功", {icon: 6},function () {
-                                // 获得frame索引
-                                var index = parent.layer.getFrameIndex(window.name);
-                                //关闭当前frame
-                                parent.layer.close(index);
-                            });
-                        } else {
-                            layer.alert("修改失败", {icon: 5},function () {
-                                // 获得frame索引
-                                var index = parent.layer.getFrameIndex(window.name);
-                                //关闭当前frame
-                                parent.layer.close(index);
-                            });
+                //自定义验证规则
+                form.verify({
+                    name: function(value){
+                        if(value.length < 3){
+                            return '活动至少得3个字符啊';
+                        }
+                    },
+                    type: function(value){
+                        if(value.length == 0){
+                            return '请选择活动类型';
                         }
                     }
                 });
-                return false;
-            });
+
             // 判断活动开始时间
             var nowtime = laydate.now('Y-m-d H:i:s');
             $('#L_start').on('change',function (){
