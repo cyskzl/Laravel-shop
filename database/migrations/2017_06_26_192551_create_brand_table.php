@@ -17,6 +17,7 @@ class CreateBrandTable extends Migration
             $table->increments('id');
 			$table->string('name', 60)->nullable()->comment('品牌名称');
 			$table->string('logo', 80)->nullable()->comment('品牌logo');
+           $table->tinyInteger('top_cate_id')->comment('顶级分类id');
 			$table->text('desc')->comment('品牌描述');
 			$table->string('url')->comment('品牌地址');
 			$table->tinyInteger('sort')->default(50)->unsigned()->comment(50);

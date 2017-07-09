@@ -119,7 +119,7 @@
                             <select name="brand_id" lay-filter="aihao">
                                 <option value="">请选择商品品牌</option>
                                 @foreach($brands as $brand)
-                                    <option value="{{$brand->id}}">{{$brand->name}}</option>
+                                    <option value="{{$brand->id}}">{{getCateNameByCateId($brand->top_cate_id).'--'.$brand->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -135,13 +135,19 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label" style="width: 100px">供应商</label>
+                        <label class="layui-form-label" style="width: 100px">潮流促销</label>
                         <div class="layui-input-inline" style="margin-left: 10px">
-                            <select name="">
-                                <option value="">不指定供应商属于本店商品</option>
-                                <option value="">不指定供应商属于本店商品</option>
+                            <select name="trendpro_id">
+                                <option value="">请选择</option>
+                                <option value="">请选择</option>
+                                @foreach($trend as $trendpro)
+                                <option value="{{$trendpro->id}}">{{getCateNameByCateId($trendpro->top_cate_id)."--".$trendpro->name}}</option>
+                                @endforeach
                             </select>
                         </div>
+                        <span style="color:red">
+                            是否属于潮流促销，可以不选
+                        </span>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label" style="width: 100px">本店售价
@@ -176,12 +182,13 @@
                             <input type="text" name="cost_price" lay-verify="required" placeholder="请输入成本价" autocomplete="off" class="layui-input">
                         </div>
                     </div>
+
                     <div class="layui-form-item" >
                         <div id="queue"></div>
                         <div class="layui-form-item" >
                             <label class="layui-form-label">图片</label>
                             <div class="layui-input-inline" style="margin-left:30px;">
-                                <input type="text" name="img" id="imgone" autocomplete="off" class="layui-input" disabled>
+                                <input type="text" name="img" id="imgone" autocomplete="off" class="layui-input">
                             </div>
                             <input id="file_oneupload"  type="file" multiple="true">
 

@@ -42,6 +42,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::any('/catalog/category_id/{id?}','IndexController@cataLog')->where('id', '[0-9]+');
     // 搜索
     Route::get('/search', 'IndexController@search');
+
     //导航
     Route::any('/getAjaxCate','IndexController@getAjaxCate');
     //选项卡商品首页
@@ -165,7 +166,8 @@ Route::group(['prefix' => 'admin'], function (){
         //商品分类选项卡
         Route::resource('/goodstabcate', 'Admin\GoodsTabCateController');
 
-
+        //广告
+        Route::resource('/advertisement', 'Admin\AdvertisementController');
         //图片上传
         Route::any('/upload/{uploadname}', 'Admin\CommonController@upload');
         //返回3级分类
@@ -273,6 +275,8 @@ Route::group(['prefix' => 'admin'], function (){
         //系统日志
         Route::get('systemlog', 'Admin\AdminController@SystemLog');
 
+        //潮流促销
+        Route::resource('/trendPromotion', 'Admin\TrendPromotionController');
 
     });
     //城市多级联动获取数据

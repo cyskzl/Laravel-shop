@@ -27,17 +27,17 @@
 @endsection
 @section('x-body')
     <form class="layui-form layui-form-pane">
-        <input type="hidden" value="{{$brand->id}}" name="id">
+        <input type="hidden" value="{{$advertisement->id}}" name="id">
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: 100px">品牌名称</label>
+            <label class="layui-form-label" style="width: 100px">广告名称</label>
             <div class="layui-input-block">
-                <input type="text" value='{{$brand->name}} 'name="name" required="" lay-verify="required" placeholder="请输入品牌名称" autocomplete="off" class="layui-input">
+                <input type="text" value="{{$advertisement->name}}" name="name" required="" lay-verify="required" placeholder="请输入广告名称" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: 100px">品牌url</label>
+            <label class="layui-form-label" style="width: 100px">广告url</label>
             <div class="layui-input-block">
-                <input type="url" name="url" value='{{$brand->url}}'required="" lay-verify="required" placeholder="请输入品牌url" autocomplete="off" class="layui-input">
+                <input type="url" name="url" value='{{$advertisement->url}}' required="" lay-verify="required" placeholder="请输入广告url" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -49,7 +49,7 @@
                     <select lay-verify="required" name="top_cate_id">
                         <option value="">-请选择-</option>
                         @foreach($cates as $v)
-                            <option @if($brand->top_cate_id == $v->id) selected @endif value="{{$v->id}}">{{$v->name}}</option>
+                            <option @if($advertisement->top_cate_id == $v->id) selected @endif value="{{$v->id}}">{{$v->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -61,9 +61,9 @@
             <div class="layui-form-item" >
                 <label class="layui-form-label" style="width: 100px">图片</label>
                 <div class="layui-input-inline" style="margin-left:10px;">
-                    <input type="text" name="logo" id="img" autocomplete="off" class="layui-input" placeholder="不修改，默认为空">
+                    <input type="text" disabled name="logo" id="img" autocomplete="off" class="layui-input">
                 </div>
-                <input id="file_upload"  type="file" multiple="true">
+                <input id="file_upload"   type="file" multiple="true">
 
             </div>
             <div class="layui-form-item" id = 'thumbnail'>
@@ -76,13 +76,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">排序</label>
             <div class="layui-input-block">
-                <input type="text" name="sort" value="{{$brand->sort}}" required="" lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                <input type="text" name="sort" value="{{$advertisement->sort}}" required="" lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">品牌描述</label>
+            <label class="layui-form-label">广告描述</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入品牌描述" class="layui-textarea" name="desc">{{$brand->desc}}</textarea>
+                <textarea placeholder="请输入广告描述" class="layui-textarea" name="desc">{{$advertisement->desc}}</textarea>
             </div>
         </div>
         <div class="layui-form-item">
@@ -96,49 +96,46 @@
     <script>
         //logo 图实例
         var token ='{{csrf_token()}}';
-        var uploadPath = "{{url('admin/upload/Brand')}}"
+        var uploadPath = "{{url('admin/upload/advertisement')}}"
         //实例化上传函数
         upload(uploadPath,token)
         //实例化删除函数
         delimg(uploadPath)
 
 
-
         layui.use(['form','layer','layedit'], function(){
             $ = layui.jquery;
             var form = layui.form()
-                ,layer = layui.layer
-                ,layedit = layui.layedit;
+                    ,layer = layui.layer
+                    ,layedit = layui.layedit;
 
             //监听提交
             form.on('submit(add)', function(data){
-
-                console.log(data);
+                console.log(data.field.id)
                 //发异步，把数据提交给php
                 $.ajax({
                     type: 'post',
-                    url:  '/admin/brand/'+data.field.id,
+                    url:  '/admin/advertisement/'+data.field.id,
                     dataType: 'json',
-                    data: { '_token':'{{csrf_token()}}','_method' : 'PUT', 'json': JSON.stringify(data.field) },
+                    data: { '_token':'{{csrf_token()}}','_method' : 'PUT',  'json': JSON.stringify(data.field) },
                     success:function (data){
                         //失败
                         if(data.status == 1){
                             layer.msg(data.msg, {icon: 5,time:1000});
+                        } else {
+                            //成功
+                            layer.alert(data.msg, {icon: 6},function () {
+                                //获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            });
                         }
-                        //成功
-                        layer.alert(data.msg, {icon: 6},function () {
-                            //获得frame索引
-                            var index = parent.layer.getFrameIndex(window.name);
-                            //关闭当前frame
-                            parent.layer.close(index);
-                        });
 
                     }
                 });
-
                 return false;
             });
-
 
         });
     </script>

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Models\Advertisement;
+use App\Models\Brand;
+use App\Models\GoodsMiddleTrendpromotion;
 use App\Models\GoodsTabCate;
+use App\Models\TrendPromotion;
 use Illuminate\Support\Facades\DB;
 use App\Models\Carousel;
 use App\Models\Goods;
@@ -71,11 +75,27 @@ class IndexController extends Controller
 
            //热销品牌
            $brands = self::goodsBrand($cateId);
-//           dd($brands);
 
            //销量商品
            $sales_sum = self::sum($cateId);
 
+           //广告
+           $advertisement = self::advertisement($cateId);
+
+           //潮流名称
+           $trendpromotion = self::trendPromotion($cateId);
+           $arr = [];
+           foreach($trendpromotion as $value){
+               $trendcom = rtrim($value->img, ',');
+
+               $trends  = explode( ',', $trendcom);
+
+           }
+
+          $goodstren =  self::trendGoods($cateId);
+//           dd($goodstren);
+
+//            dd($advertisement);
        } else {
 
            $request->session()->set('Index', '2');
@@ -95,11 +115,26 @@ class IndexController extends Controller
            //销量商品
            $sales_sum = self::sum($cateId);
 
+           //广告
+           $advertisement = self::advertisement($cateId);
+
+           //潮流名称
+           $trendpromotion = self::trendPromotion($cateId);
+           $arr = [];
+           foreach($trendpromotion as $value){
+               $trendcom = rtrim($value->img, ',');
+
+               $trends  = explode( ',', $trendcom);
+
+           }
+
+
        }
 
         return view('home.index', [
-
-                'goodsTabOneCate' => $goodsTabOneCate
+                'goodstren'        => $goodstren
+                ,'trendpromotion'   => $trendpromotion
+                ,'goodsTabOneCate' => $goodsTabOneCate
                 ,'sales_sum'      => $sales_sum
                 ,'goodstabcate'   => $goodstabcate
                 ,'request'        => $request
@@ -107,10 +142,45 @@ class IndexController extends Controller
                 ,'carousel'       => $carousel
                 ,'newest'         => $newest
                 ,'brands'         => $brands
+                ,'advertisement' => $advertisement
+                ,'trends' => $trends
         ]);
 
     }
 
+    public function trendGoods($cateId)
+    {
+//        $goods = GoodsMiddleTrendpromotion::where('')
+//            ->join('trendpromotion', 'goods_middle_trendpromotion.')
+//
+//            ;
+        $goods = GoodsMiddleTrendpromotion::join('goods', 'goods_middle_trendpromotion.goods_id', '=', 'goods.goods_id')
+            ->where('goods.cat_id', 'like', $cateId.'%')
+            ->join('trendpromotion', 'trendpromotion.id', '=', 'goods_middle_trendpromotion.trendpro_id')
+            ->get();
+        return $goods;
+//        $trendpromotion = self::trendPromotion($cateId);
+    }
+    /**
+     * 返回所有的潮流信息
+     * @param $cateId
+     * @return mixed
+     */
+    public function trendPromotion($cateId)
+    {
+        $trendpromotion = TrendPromotion::where('is_display', '=', '1')->where('top_cate_id', '=', $cateId)->get();
+        return $trendpromotion;
+    }
+    /**
+     * 首页广告
+     * @param $cateId
+     * @return mixed
+     */
+    public function advertisement($cateId)
+    {
+        $advertisement = Advertisement::where('top_cate_id', 'like', $cateId.'%')->where('is_display', '=', '1')->get();
+        return $advertisement;
+    }
     /**
      * 品牌显示
      * @param $cateId
@@ -119,7 +189,7 @@ class IndexController extends Controller
     public function goodsBrand($cateId)
     {
         //select brand.id,brand.name,sales_sum from goods LEFT JOIN brand on goods.brand_id = brand.id ORDER BY  sales_sum desc
-        $brand = Goods::where('cat_id', 'like', $cateId. '%' )->where('brand.is_hot','=', '1')->join('brand', 'goods.brand_id', '=', 'brand.id')->orderBy('sales_sum', 'desc')->take(5)->get();
+        $brand = Brand::where('brand.is_hot','=', '1')->where('top_cate_id', '=', $cateId)->orderBy('id', 'desc')->take(5)->get();
         return $brand;
     }
     /**
@@ -180,9 +250,16 @@ class IndexController extends Controller
 
         $cateId = $request->session()->get('Index');
 
-        $flow = Goods::where('is_hot','=', '1', 'and', 'cat_id','like',$cateId.'%')->orderBy('sales_sum')->take(25)->paginate(5);
+        $flow = Goods::where('is_hot','=', '1', 'and', 'cat_id','like',$cateId.'%')->orderBy('sales_sum')->take(40)->paginate(10);
 
-        return $flow;
+        //获取goods对应的品牌名称
+        $brand = self::brand($flow);
+
+//        return $flow;
+        return  $data =   [
+            'flow' =>$flow,
+            'brand' => $brand
+        ];
 }
 
     /**
@@ -224,7 +301,7 @@ class IndexController extends Controller
     public function newest($cateId)
     {
         //查女士最新的产品id排序
-        $newest = Goods::where('is_new', '=', '1', 'and', 'cat_id', 'like', $cateId.'%')->orderBy('goods_id','desc')->take(8)->get();
+        $newest = Goods::where('is_new', '=', '1' )->where('cat_id', 'like', $cateId.'%')->orderBy('goods_id','desc')->take(8)->get();
         return $newest;
     }
     /**
@@ -235,7 +312,7 @@ class IndexController extends Controller
     public function carousel($cateId)
     {
         //轮播图
-        $carousel = Carousel::where('status', '=', '1')->where('cate_id','=', $cateId)->take(3)->get();
+        $carousel = Carousel::where('status', '=', '0')->where('cate_id','=', $cateId)->take(3)->get();
         return $carousel;
     }
     /**

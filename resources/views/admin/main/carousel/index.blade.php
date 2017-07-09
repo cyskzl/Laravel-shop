@@ -70,8 +70,8 @@
             </td>
             <td class="td-status">
                 <div style="text-align: center; width: 50px;">
-                     <span class="@if($car->status == '0') no @else yes @endif" id="status"  onclick="changeTableVal('status' , 'carousels', '{{$car->id}}' ,'{{url('/admin/ajax')}}',this)">
-                     @if($car->status == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
+                     <span class="@if($car->status == '1') no @else yes @endif" id="status"  onclick="changeTableVal('status' , 'carousels', '{{$car->id}}' ,'{{url('/admin/ajax')}}',this)">
+                     @if($car->status == '1')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
                      </span>
                 </div>
             </td>

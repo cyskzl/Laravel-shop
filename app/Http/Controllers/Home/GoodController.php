@@ -14,7 +14,7 @@ use App\Models\SpecGoodsPrice;
 use App\Models\SpecItem;
 use App\Models\TagMiddleGoods;
 use Illuminate\Http\Request;
-
+use App\Models\Advertisement;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -33,16 +33,24 @@ class GoodController extends Controller
         $cate = $request->route('category_id');
         //2级分类
         $twocate = $request->get('cate');
+
+        //广告
+        $advertisement = self::advertisement();
 //        dd($twocate);
-        //标签
+        //女士
         if($cateId == 1){
-//            //女士
+
             //判断是否是2级或者3级
-            if(!empty($twocate)){
+            //新品
+            if($twocate == '3' || $twocate == '4'){
+
+                $goods = self::newGoods($cateId);
+
+            }else if(!empty($twocate)){
                 //2级走这个
                 $goods = self::goodsTwo($cateId, $cate);
 
-            } else {
+            }  else {
                 //3级走这里
                 $goods = self::goodsTree($cateId, $cate );
 
@@ -55,15 +63,21 @@ class GoodController extends Controller
             //拿到标签下所有的3级分类id
             $goodsCatId = self::goodsCatId($tags);
 
+//            dd($advertisement);
 
         } else {
             //实例化导航栏下的商品
             //判断是否是2级或者3级
-            if(!empty($twocate)){
+            //新品
+            if($twocate == '3' || $twocate == '4'){
+
+                $goods = self::newGoods($cateId);
+
+            }else if(!empty($twocate)){
                 //2级走这个
                 $goods = self::goodsTwo($cateId, $cate);
 
-            } else {
+            }  else {
                 //3级走这里
                 $goods = self::goodsTree($cateId, $cate );
 
@@ -75,18 +89,48 @@ class GoodController extends Controller
             //拿到标签下所有的3级分类id
             $goodsCatId = self::goodsCatId($tags);
 
+//            dd($advertisement);
+
         }
 
-        return view('home.goods.list', ['request' => $request ,'cateId' => $cateId , 'tags' =>$tags, 'goods' => $goods,'goodsCatId' => $goodsCatId ,'goodsCatName' => $goodsCatName]);
+        return view('home.goods.list', [
+
+                    'request'           => $request
+                    ,'cateId'           => $cateId
+                    ,'tags'             =>$tags
+                    ,'goods'            => $goods
+                    ,'goodsCatId'       => $goodsCatId
+                    ,'goodsCatName'     => $goodsCatName
+                    ,'advertisement'    => $advertisement
+        ]);
+    }
+    /**
+     * 广告
+     * @param $cateId
+     * @return mixed
+     */
+    public function advertisement()
+    {
+        $advertisement = Advertisement::where('is_display', '=', '1')->get();
+        return $advertisement;
+    }
+    /**
+     * 新品所有商品
+     * @param $cateId
+     * @return mixed
+     */
+    public function newGoods($cateId)
+    {
+        $goods = Goods::where('is_new', '=', '1')->where('cat_id', 'like', $cateId.'%' )->orderBy('sales_sum', 'desc')->paginate(20);
+        return $goods;
     }
 
     /**
-     * 分页
+     * 2级分类下的商品
+     * @param $cateId 男士女士
+     * @param $cate 2级的id
+     * @return mixed 返回查询的商品数据
      */
-    public function page()
-    {
-
-    }
     public function goodsTwo($cateId, $cate)
     {
 
@@ -98,6 +142,7 @@ class GoodController extends Controller
 
         return $goods;
     }
+
     /**
      * 返回标签3级下的商品或导航的3级商品
      * @param $cateId  判断是男是女
@@ -113,6 +158,7 @@ class GoodController extends Controller
             ->paginate(20);
         return $goods;
     }
+
     /**
      *  所有标签和标签下的分类
      * @param $cateId 判断是男是女
@@ -129,6 +175,7 @@ class GoodController extends Controller
             ->get();
         return $tags;
     }
+
     /**
      * 所有的标签分类
      * @param $tags
@@ -161,8 +208,6 @@ class GoodController extends Controller
         return $array;
     }
 
-
-
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 最新商品列表页
@@ -187,7 +232,7 @@ class GoodController extends Controller
         foreach ($goodcat as $k=>$cat){
             $cat_name[$k] = Category::where('id',$cat)->pluck('name')->first();
         }
-//        dump($cat_name);
+
         // 获取商品的类型id，用于获取商品规格项（颜色、尺寸。。）
         $type_id = $goodinfo->goods_type;
 
@@ -207,9 +252,9 @@ class GoodController extends Controller
         foreach ($spec_key as $k=>$v){
             $key_team[$k] = explode('_',$v->key);
         }
-//        dump($key_team);
+
         $one_key = explode('_',$spec_key[0]->key)[0];
-//        dump($one_key);
+
         // 通过上述的第一个商品规格项，通过模糊查询得到第一个规格对应的下一规格项
         $key1_info = SpecGoodsPrice::where('goods_id',$goods_id)->where('key','like',$one_key.'_%')->pluck('key');
 
@@ -246,37 +291,29 @@ class GoodController extends Controller
             }
         }
         $key_one = array_unique($key_one);
-//        dump($key_one);
-//        dump($spec_name);
-//        dump($spec_item);
-//        dd($spec_id);
-//        $specinfo = $goodinfo->specGoodsPrice;
-//        foreach($specinfo as $spec_key){
-//            $speckey[] = explode('_',$spec_key->key);
-//            foreach($speckey as $key){
-////                dump($key[0]);
-////                $spec_info= ;
-//                foreach($key as $k){
-//                    $spec_item = SpecItem::find($k);
-////                    dd($spec_item);
-//
-//                    $specAll = $spec_item->spec;
-////                    dump($specAll);
-////                    $specname[$] .= $specAll->name.':'.$spec_item->item;
-//                }
-//
-//            }
-//            $goodSpec[$goods_id][] = $spec_info."价格:".$spec_key->price;
-//        }
-//        dd(array_unique($goodSpec));
-//        dump($spec_item);
-//        dump($specinfo);
-//        dump($spec_name);
-//        dd($specitem);
-//        dd($specinfo);
-        return view('home.goods.details',compact('specdetali','goodinfo','brand','spec_name','spec_item','spec_id','two_key','goodattr','key_one','cat_name','cateId'));
+
+        //商品推荐
+        //女士
+        if($cateId == 1){
+            $recommend = self::recommend($cateId);
+
+        } else {
+            //男士
+            $recommend = self::recommend($cateId);
+        }
+        return view('home.goods.details',compact('recommend','goods_id', 'specdetali','goodinfo','brand','spec_name','spec_item','spec_id','two_key','goodattr','key_one','cat_name','cateId'));
     }
 
+    /**
+     * 详情页的商品推荐
+     * @param $cateId 男士女士id
+     * @return mixed 查数据的数据
+     */
+    public function recommend($cateId)
+    {
+        $recommend = Goods::where('is_recommend', '=', '1')->where('cat_id', 'like', $cateId.'%')->take(6)->get();
+        return $recommend;
+    }
     /**
      * @param Request $request
      * @return mixed
@@ -319,15 +356,4 @@ class GoodController extends Controller
         }
     }
 
-
-//    public function shoppingCache(Request $request)
-//    {
-//        $goods_id = $request->input('goods_id');
-//        $goods_name = $request->input('goods_name');
-//        $specone = $request->input('specone');
-//        $spectwo = $request->input('spectwo');
-//        $num = $request->input('num');
-//        $price = $request->input('price');
-//        return $goods_name;
-//    }
 }
