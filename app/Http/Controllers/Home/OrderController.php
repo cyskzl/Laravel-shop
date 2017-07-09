@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Home;
 
 use App\Models\DelveryMethod;
 use App\Models\Goods;
+use App\Models\Orders;
+use App\Models\OrdersDetails;
 use App\Models\ReceivingAddress;
 use App\Models\Region;
 use App\Models\SpecGoodsPrice;
 use App\Models\SpecItem;
 use App\Models\UserInfo;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
 
@@ -40,6 +44,8 @@ class OrderController extends Controller
 
 
             if (array_key_exists('address',$goodsdata)){
+
+                //销毁发货地址
                 unset($goodsdata['address']);
             }
 
@@ -61,6 +67,7 @@ class OrderController extends Controller
 
             }
 
+            //查询商品下架信息
             $goodsSale = $this->checkGoodsSale($goodsid);
 
             if (count($goodsSale)<1){
@@ -68,6 +75,7 @@ class OrderController extends Controller
                 dd('商品下架');
             }
 
+            //查询商品库存
             $goodissnum = $this->goodsNum($goodsid,$specGoods,$goodsnum);
 
             if ($goodissnum){
@@ -84,7 +92,7 @@ class OrderController extends Controller
                 $goods = Goods::where('goods.goods_id',$value)
                     ->leftjoin('spec_goods_price','spec_goods_price.goods_id','=','goods.goods_id')
                     ->where('spec_goods_price.key',"$specGoods[$k]")
-                    ->select('goods.goods_id','goods.goods_name','spec_goods_price.price','spec_goods_price.key','goods.original_img')
+                    ->select('goods.goods_id','goods.goods_name','spec_goods_price.price','spec_goods_price.key','goods.original_img','goods.cost_price','goods.goods_sn','goods.cost_price')
                     ->get()->toArray();
 
 
@@ -94,8 +102,13 @@ class OrderController extends Controller
                     ->get()->toArray();
 
                 $goods = $goods[0];
+
+
                 //压入商品数量
                 $goods['num'] = $goodsnum[$k];
+
+                //压入商品id_key1_key2  规格
+                $goods['goodskey'] = $goods['goods_id'].'_'.$goods['key'];
 
                 //统计订单总额
                 $sum += $goodsnum[$k] * $goods['price'];
@@ -108,15 +121,18 @@ class OrderController extends Controller
 
             }
 
-            dd($goodsNewData);
+
+//            dd($goodsNewData);
+            //写入所有商品信息
+            $request->session()->set('addorders.order',$goodsNewData);
 
             //写入订单总额
             $request->session()->set('addorders.sum',$sum);
 
-            $request->session()->set('addorders',$goodsNewData);
-
+            //查询地址库
             $address = ReceivingAddress::where('user_id',\Auth::user()->user_id)->orderBy('is_default')->first();
 
+            //获取各级地址信息
             if($address){
                 $province = Region::where('level',1)->pluck('name','id');
 
@@ -131,13 +147,13 @@ class OrderController extends Controller
 
             }
 
+            //查询发货方式
             $delvary = DelveryMethod::where('enabled',1)->get();
 
+            //判断是否有发货方式。并把默认的发货方式写入session
             if (count($delvary)>0){
-
                 $request->session()->set('addorders.delivery',$delvary[0]->toArray());
             }
-
 
         }else{
             dd('没有在购物车提交');
@@ -166,17 +182,55 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+
         $cateId = $request->session()->get('Index');
+
+        if (!$request->session()->has('addorders')) {
+
+            dd('非法提交');
+        }
 
         if ($request->session()->has('addorders.address')) {
 
-
             $goodsdata = $request->session()->get('addorders');
 
+        }else{
+
+            dd('没有收货地址');
         }
 
-        dd($goodsdata);
+        if ($request->input('shipping_code')){
 
+            $delverinfo = DelveryMethod::find($request->input('shipping_code'))->where('enabled',1)->first();
+
+        }else{
+            dd('没有发货方式');
+        }
+
+
+        $goodsdata['delivery'] = $delverinfo->toArray();
+
+        $status = $this->createOrdre($goodsdata,$request);
+
+
+        if (!$status){
+
+            dd('生成订单失败');
+        }
+
+//        Redis::hdel(user_id:Auth::user()->user_id);
+//        $aa = Redis::hgetAll('user_id:'.\Auth::user()->user_id);
+        foreach ($goodsdata['order'] as $vaule){
+
+            Redis::hdel('user_id:'.\Auth::user()->user_id,$vaule['goodskey']);
+        }
+
+        $request->session()->forget('addorders');
+        $request->session()->forget('orders');
+
+        $status['data'] = date('Y-m-d H:i:s',strtotime("+1 day"));
+
+        return view('home.orders.payment',compact('status'));
     }
 
 
@@ -363,6 +417,7 @@ class OrderController extends Controller
 
         if (count($data)>0){
 
+            //存入session
             $request->session()->set('addorders.delivery',$data->toArray());
 
             return $data->price;
@@ -371,6 +426,129 @@ class OrderController extends Controller
 
         return false;
 
+    }
+
+    //创建订单
+    public function createOrdre($goodsdata,$request)
+    {
+        $status = DB::transaction(function() use ($goodsdata,$request)
+        {
+            $sn = $this->createSn();
+
+            $ordremodel = new Orders();
+
+            $ordremodel->sn = $sn;
+
+            $ordremodel->user_id = $goodsdata['address']->user_id;
+
+            $ordremodel->consignee = $goodsdata['address']->consignee;
+
+            $ordremodel->email = $goodsdata['address']->email;
+
+            $ordremodel->province = $goodsdata['address']->province;
+
+            $ordremodel->city = $goodsdata['address']->city;
+            $ordremodel->district = $goodsdata['address']->district;
+            $ordremodel->twon = $goodsdata['address']->twon;
+            $ordremodel->address = $goodsdata['address']->detailed_address;
+
+            $ordremodel->zipcode = $goodsdata['address']->zipcode;
+            $ordremodel->mobile = $goodsdata['address']->mobile;
+
+            $ordremodel->goods_price = $goodsdata['sum'];
+
+            $ordremodel->shipping_price = $goodsdata['delivery']['price'];
+            $ordremodel->shipping_code = $goodsdata['delivery']['id'];
+            $ordremodel->shipping_name = $goodsdata['delivery']['name'];
+            $ordremodel->shipping_name = $goodsdata['delivery']['name'];
+
+            //应付金额
+            $order_amount = $goodsdata['sum'] + $goodsdata['delivery']['price'];
+            $ordremodel->order_amount = $order_amount;
+
+            //订单总额
+            $ordremodel->total_amount = $goodsdata['sum'] + $goodsdata['delivery']['price'];
+
+            $ordremodel->user_note = $request->input('user_note');
+
+            if ($ordremodel->save()){
+
+                $orderid = $ordremodel->id;
+
+                foreach ($goodsdata['order'] as $value){
+
+                    $detailsModel = new OrdersDetails();
+
+                    $detailsModel->order_id = $orderid;
+
+                    $detailsModel->order_sn = $sn;
+
+                    $detailsModel->goods_id = $value['goods_id'];
+
+                    $detailsModel->goods_name = $value['goods_name'];
+
+                    $detailsModel->goods_sn = $value['goods_sn'];
+                    
+                    $detailsModel->goods_num = $value['num'];
+
+                    $detailsModel->goods_price = $value['price'];
+
+                    $detailsModel->cost_price = $value['price'];
+
+                    $detailsModel->cost_price = $value['cost_price'];
+
+                    $detailsModel->spec_key = $value['key'];
+                    
+                    $detailsModel->spec_key = $value['key'];
+
+                    $spec_key_name = '';
+
+                    foreach ($value['item'] as $v){
+
+                        $spec_key_name .= $v['name'].'@'.$v['item']."_";
+
+                    }
+
+                    $detailsModel->spec_key_name = $spec_key_name;
+
+                    $detailsModel->save();
+
+                }
+
+                $info['sn'] = $sn;
+                $info['order_amount'] = $order_amount;
+
+                return $info;
+            }
+
+        });
+
+        return $status;
+
+    }
+
+
+    //生产订单号
+    public function createSn()
+    {
+        $snone = date('YmdHis');
+
+        $sntow = Redis::incr('ordresn');
+
+        if ($sntow == 99999){
+            Redis::del('ordresn');
+        }
+
+        
+
+        $sntow = sprintf("%05d", $sntow);
+
+        if ($sntow){
+
+            return $snone.$sntow;
+        }
+
+        return false;
 
     }
 

@@ -60,7 +60,7 @@
 					<div class="noAddress" style="border-bottom: 1px dashed #9e9e9e;">
 						<li class="setAddress">
 							<span>请选择配送方式</span>
-							<select name="shipping_name" id="" style="height: 20px;">
+							<select name="shipping_code" id="" style="height: 20px;">
 							@foreach($delvary as $value)
 									<option value="{{$value->id}}">{{$value->name}}</option>
 								@endforeach
