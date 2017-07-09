@@ -6,12 +6,12 @@
 @section('x-nav')
     <span class="layui-breadcrumb">
               <a><cite>首页</cite></a>
-              <a><cite>商品品牌管理</cite></a>
+              <a><cite>广告</cite></a>
             </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
 @endsection
 @section('x-body')
-    <form class="layui-form " action="{{url('admin/brand')}}" style="width:800px">
+    <form class="layui-form " action="{{url('admin/advertisement')}}" style="width:800px">
         <div class="layui-form-pane" style="margin-top: 15px;">
             <div class="layui-form-item">
                 <label class="layui-form-label">搜索</label>
@@ -25,11 +25,10 @@
         </div>
     </form>
     <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button>
-        <button class="layui-btn" onclick="question_add('添加属性','{{ url('admin/brand/create') }}','800','500')"><i
+        <button class="layui-btn" onclick="question_add('添加属性','{{ url('admin/advertisement/create') }}','800','500')"><i
                     class="layui-icon">&#xe608;</i>添加
         </button>
-        {{--<a href="{{url('admin/spec/create')}}"><button class="layui-btn" ><i class="layui-icon">&#xe608;</i>增加</button></a>--}}
-        <span class="x-right" style="line-height:40px">共有数据：{{$brands->total()}} 条</span></xblock>
+        <span class="x-right" style="line-height:40px">共有数据：{{$advertisements->total()}} 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -37,19 +36,19 @@
                 <input type="checkbox" name="" value="">
             </th>
             <th>
-                品牌名称
+                广告名称
             </th>
             <th>
                 Logo
             </th>
             <th>
-                品牌URl
+                广告URl
             </th>
             <th>
-                所属分类
+                是否显示
             </th>
             <th>
-                是否推荐
+                属于分类
             </th>
             <th>
                 排序
@@ -61,43 +60,42 @@
         </tr>
         </thead>
         <tbody id="x-link">
-        @foreach($brands as $brand)
+        @foreach($advertisements as $advertisement)
             <tr>
                 <td>
                     <input type="checkbox" value="1" name="">
                 </td>
                 <td>
-                    {{$brand->name}}
+                    {{$advertisement->name}}
                 </td>
                 <td>
-                    <center><img src=" {{rtrim($brand->logo,',')?:''}} " width="100"></center>
+                    <center><img src=" {{rtrim($advertisement->logo,',')?:''}} " width="100"></center>
                 </td>
                 <td>
-                    {{$brand->url}}
-                </td>
-                <td>
-                    {{getCateNameByCateId($brand->top_cate_id)}}
+                    {{$advertisement->url}}
                 </td>
                 <td>
                     <div style="text-align: center; width: 50px;">
-                     <span class="@if($brand->is_hot == '0') no @else yes @endif"   onclick="changeTableVal('is_hot' , 'brand', '{{$brand->id}}' ,'{{url('/admin/ajax')}}',this)">
-                     @if($brand->is_hot == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
+                     <span class="@if($advertisement->is_display == '0') no @else yes @endif"   onclick="changeTableVal('is_display' , 'advertisement', '{{$advertisement->id}}' ,'{{url('/admin/ajax')}}',this)">
+                     @if($advertisement->is_display == '0')<i class=" Wrong">✘</i>否 @else  <i class="fanyes">✔</i>是 @endif
                      </span>
                     </div>
                 </td>
-
+                <td>
+                    {{getCateNameByCateId($advertisement->top_cate_id)}}
+                </td>
                 <td>
                     <form class="layui-form" action="" id="orderid">
-                        <input onkeyup="this.value=this.value.replace(/[^\d]/g,'')" type="text"  name="sort" onchange="changeTableVal('sort','brand','{{$brand->id}}','{{url('/admin/ajax')}}',this)" value="{{$brand->sort}}"  size="1">
+                        <input onkeyup="this.value=this.value.replace(/[^\d]/g,'')" type="text"  name="sort" onchange="changeTableVal('sort','advertisement','{{$advertisement->id}}','{{url('/admin/ajax')}}',this)" value="{{$advertisement->sort}}"  size="1">
                     </form>
-                </td>
 
+                </td>
                 <td class="td-manage">
-                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/brand/{{$brand->id}}/edit','{{$brand->id}}','','510')"
+                    <a title="编辑" href="javascript:;" onclick="cate_edit('编辑','/admin/advertisement/{{$advertisement->id}}/edit','{{$advertisement->id}}','','510')"
                        class="ml-5" style="text-decoration:none">
                         <i class="layui-icon">&#xe642;</i>
                     </a>
-                    <a title="删除" href="javascript:;" onclick="cate_del(this,'{{$brand->id}}')"
+                    <a title="删除" href="javascript:;" onclick="cate_del(this,'{{$advertisement->id}}')"
                        style="text-decoration:none">
                         <i class="layui-icon">&#xe640;</i>
                     </a>
@@ -110,7 +108,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-4">
                 {{--{{$specs->links()}}--}}
-                {!! $brands->appends($request->only(['keyword', 'typename']))->render() !!}
+                {!! $advertisements->appends($request->only(['keyword', 'typename']))->render() !!}
             </div>
         </div>
     </div>
@@ -152,7 +150,7 @@
                 //发异步删除数据
                 $.ajax({
                     type: 'post',
-                    url:  '{{url('/admin/brand/')}}'+'/'+id,
+                    url:  '{{url('/admin/advertisement/')}}'+'/'+id,
                     dataType: 'json',
                     data: { '_token':'{{csrf_token()}}', '_method': 'DELETE', 'id': id },
                     success:function (data){

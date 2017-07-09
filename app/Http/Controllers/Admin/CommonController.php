@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Advertisement;
 use App\Models\Carousel;
 use App\Models\Category;
 use App\Models\GoodsTabCate;
+use App\Models\TrendPromotion;
 use DB;
 use App\Models\Brand;
 use App\Models\Goods;
@@ -102,6 +104,12 @@ class CommonController extends Controller
                 break;
             case 'goods_tab_cate':
                 $specdata = GoodsTabCate::findOrFail($data['id']);
+                break;
+            case 'advertisement':
+                $specdata = Advertisement::findOrFail($data['id']);
+                break;
+            case 'trendpromotion':
+                $specdata = TrendPromotion::findOrFail($data['id']);
                 break;
         }
 

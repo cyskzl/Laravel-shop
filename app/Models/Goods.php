@@ -44,4 +44,13 @@ class Goods extends Model
         //第一个参数是要遍历出来的模型，第二个是中间表，第三个是本类的id，第三个是关联的id
         return $this->belongsToMany('App\Models\GoodsTag', 'tags_middle_goods', 'goods_id','tags_id');
     }
+    /**
+     *
+     *  多对多 tags 与goods建立
+     */
+    public function goodsTren()
+    {
+        //第一个参数是要遍历出来的模型，第二个是中间表，第三个是本类的id，第三个是关联的id
+        return $this->belongsToMany('App\Models\TrendPromotion', 'goods_middle_trendpromotion', 'goods_id','trendpro_id');
+    }
 }

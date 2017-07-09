@@ -39,6 +39,21 @@
                 <input type="url" name="url" required="" lay-verify="required" placeholder="请输入品牌url" autocomplete="off" class="layui-input">
             </div>
         </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label" style="width: 100px">
+                    所在类别
+                </label>
+                <div class="layui-input-block">
+                    <select lay-verify="required" name="top_cate_id">
+                        <option value="">-请选择-</option>
+                        @foreach($cates as $v)
+                            <option value="{{$v->id}}">{{$v->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
         {{--logo--}}
         <div class="layui-form-item" >
             <div id="queue"></div>

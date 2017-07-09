@@ -50,7 +50,7 @@
                         <dd class="">
                         <dd class="">
                             <a href="javascript:;" _href="{{ url('admin/type') }}">
-                                <cite>商品类别</cite>
+                                <cite>商品模型</cite>
                             </a>
                         </dd>
                         </dd>
@@ -96,6 +96,25 @@
                                 <cite>商品分类选项卡</cite>
                             </a>
                         </dd>
+                        </dd>
+                        <dd class="">
+                        <dd class="">
+                            <a href="javascript:;" _href="{{ url('admin/trendPromotion') }}">
+                                <cite>潮流促销</cite>
+                            </a>
+                        </dd>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="javascript:;" href="javascript:;">
+                        <i class="layui-icon" style="top: 3px;">&#xe630;</i><cite>分类管理</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{{url('admin/goodscategory')}}">
+                                <cite>分类列表</cite>
+                            </a>
                         </dd>
                     </dl>
                 </li>
@@ -163,25 +182,7 @@
                         </dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
-                    <a class="javascript:;" href="javascript:;">
-                        <i class="layui-icon" style="top: 3px;">&#xe630;</i><cite>分类管理</cite>
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd class="">
-                            <a href="javascript:;" _href="{{url('admin/goodscategory')}}">
-                                <cite>分类列表</cite>
-                            </a>
-                        </dd>
-                    </dl>
-                    <dl class="layui-nav-child">
-                        <dd class="">
-                            <a href="javascript:;" _href="{{url('admin/goodscategory/create')}}">
-                                <cite>添加分类</cite>
-                            </a>
-                        </dd>
-                    </dl>
-                </li>
+
                 <li class="layui-nav-item">
                     <a class="javascript:;" href="javascript:;">
                         <i class="layui-icon" style="top: 3px;">&#xe606;</i><cite>评论管理</cite>
@@ -267,52 +268,12 @@
                 </li>
                 <li class="layui-nav-item">
                     <a class="javascript:;" href="javascript:;">
-                        <i class="layui-icon" style="top: 3px;">&#xe629;</i><cite>系统统计</cite>
+                        <i class="layui-icon" style="top: 3px;">&#xe629;</i><cite>广告信息</cite>
                     </a>
                     <dl class="layui-nav-child">
                         <dd class="">
-                            <a href="javascript:;" _href="./echarts1.html">
-                                <cite>拆线图</cite>
-                            </a>
-                        </dd>
-                        <dd class="">
-                            <a href="javascript:;" _href="./echarts2.html">
-                                <cite>柱状图</cite>
-                            </a>
-                        </dd>
-                        <dd class="">
-                            <a href="javascript:;" _href="./echarts3.html">
-                                <cite>地图</cite>
-                            </a>
-                        </dd>
-                        <dd class="">
-                            <a href="javascript:;" _href="./echarts4.html">
-                                <cite>饼图</cite>
-                            </a>
-                        </dd>
-                        <dd class="">
-                            <a href="javascript:;" _href="./echarts5.html">
-                                <cite>雷达图</cite>
-                            </a>
-                        </dd>
-                        <dd class="">
-                            <a href="javascript:;" _href="./echarts6.html">
-                                <cite>k线图</cite>
-                            </a>
-                        </dd>
-                        <dd class="">
-                            <a href="javascript:;" _href="./echarts7.html">
-                                <cite>热力图</cite>
-                            </a>
-                        </dd>
-                        <dd class="">
-                            <a href="javascript:;" _href="./echarts8.html">
-                                <cite>仪表图</cite>
-                            </a>
-                        </dd>
-                        <dd class="">
-                            <a href="http://echarts.baidu.com/examples.html" target="_blank" _href="./welcome.html">
-                                <cite>更多案例</cite>
+                            <a href="javascript:;" _href="{{ url('admin/advertisement') }}">
+                                <cite>广告管理</cite>
                             </a>
                         </dd>
                     </dl>
