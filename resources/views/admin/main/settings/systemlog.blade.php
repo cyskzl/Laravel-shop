@@ -23,15 +23,9 @@
             <form class="layui-form x-center" action="" style="width:80%">
                 <div class="layui-form-pane" style="margin-top: 15px;">
                   <div class="layui-form-item">
-                    <label class="layui-form-label">日期范围</label>
+
                     <div class="layui-input-inline">
-                      <input class="layui-input" placeholder="开始日" id="LAY_demorange_s">
-                    </div>
-                    <div class="layui-input-inline">
-                      <input class="layui-input" placeholder="截止日" id="LAY_demorange_e">
-                    </div>
-                    <div class="layui-input-inline">
-                      <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                      <input type="text" name="keyword"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-input-inline" style="width:80px">
                         <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
@@ -39,7 +33,7 @@
                   </div>
                 </div> 
             </form>
-            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><span class="x-right" style="line-height:40px">共有数据：88 条</span></xblock>
+            <span class="x-right layui-btn layui-btn-danger" style="line-height:40px">共有数据：{{ count($admin_log) }} 条</span>
             <table class="layui-table">
                 <thead>
                     <tr>
@@ -64,44 +58,28 @@
                         <th>
                             时间
                         </th>
-                        <th>
-                            操作
-                        </th>
+
                     </tr>
                 </thead>
                 <tbody>
+                @foreach($admin_log as $log)
                     <tr>
                         <td>
-                            <input type="checkbox" value="1" name="">
+                            <input type="checkbox" value="{{ $log->id }}" name="id">
                         </td>
-                        <td>
-                            567
-                        </td>
-                        <td>
-                            1
-                        </td>
-                        <td>
-                            登录成功!
-                        </td>
-                        <td>
-                            admin
-                        </td>
-                        <td >
-                            61.233.7.80
-                        </td>
-                        <td >
-                             2017-01-01 11:11:42
-                        </td>
-                        <td class="td-manage">
-                            <a title="删除" href="javascript:;" onclick="log_del(this,'1')" 
-                            style="text-decoration:none">
-                                <i class="layui-icon">&#xe640;</i>
-                            </a>
-                        </td>
+                        <td>{{ $log->id }}</td>
+                        <td>{{ $log->status }}</td>
+                        <td>{{ $log->content }}</td>
+                        <td>{{ $log->nickname }}</td>
+                        <td >{{ $log->login_ip }}</td>
+                        <td >{{ $log->login_time }}</td>
+
                     </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
+        {!! $admin_log->appends($request->only(['keyword']))->render() !!}
         <script src="{{ asset('templates/admin/lib/layui/layui.js') }}" charset="utf-8"></script>
         <script src="{{ asset('templates/admin/js/x-layui.js') }}" charset="utf-8"></script>
         <script>

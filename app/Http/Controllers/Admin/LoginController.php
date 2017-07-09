@@ -8,9 +8,11 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Tool\Validate\ValidateCode;
 use App\Models\AdminUser;
 use Auth;
 use session;
+use DB;
 
 class LoginController extends Controller
 {
@@ -25,6 +27,14 @@ class LoginController extends Controller
         $this->middleware('admin', ['except' => 'loginout']);
 
 
+    }
+
+    public function createCode(Request $request)
+    {
+        $validateCode = new ValidateCode();
+        $request->session()->set('validate_code', $validateCode->getCode());
+//        dd($request->session()->get('validate_code'));
+        return $validateCode->doimg();
     }
 
     /**
@@ -49,14 +59,24 @@ class LoginController extends Controller
     {
 //        dd($request->all());
         $this->validate($request, [
-            'username' => 'required',
-            'password' => 'required'
+            'username'      => 'required',
+            'password'      => 'required',
+            'validate_code' => 'required',
         ], [
-            'required' => ':attribute必须填写',
+            'required'      => ':attribute必须填写',
         ], [
-            'username' => '管理员名称',
-            'password' => '密码'
+            'username'      => '管理员名称',
+            'password'      => '密码',
+            'validate_code' => '验证码'
         ]);
+
+        //校验验证码
+        $validate_code = $request->session()->get('validate_code');
+
+        if ( $request->validate_code != $validate_code ) {
+
+            return back()->withInput()->with(['fail'=>'验证码错误！']);
+        }
 
         $res = AdminUser::where('nickname', '=', $request->username)->first();
         if ($res) {
@@ -77,20 +97,31 @@ class LoginController extends Controller
                         'login_num'       => $num,
                     ]);
 
+                    $log = DB::table('admin_log')->insert([
+                        'nickname'   => $res->nickname,
+                        'status'     => $res->status,
+                        'content'    => '登录成功',
+                        'login_ip'   => $request->getClientIp(),
+                        'login_time' => date('Y-m-d H:i:s')
+                    ]);
                     return redirect('/admin');
-
                 }
 
                 return back()->withInput()->with(['fail'=>'密码错误！']);
-
             }
 
-            return back()->withInput()->with(['fail'=>'该管理员已被禁止登录！']);
+            $log = DB::table('admin_log')->insert([
+                'nickname'   => $res->nickname,
+                'status'     => $res->status,
+                'content'    => '登录成功',
+                'login_ip'   => $request->getClientIp(),
+                'login_time' => date('Y-m-d H:i:s')
+            ]);
 
+            return back()->withInput()->with(['fail'=>'该管理员已被禁止登录！']);
         }
 
         return back()->withInput()->with(['fail'=>'该管理员不存在！']);
-
 
     }
 
