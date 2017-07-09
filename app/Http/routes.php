@@ -151,6 +151,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 后台首页
 Route::group(['prefix' => 'admin'], function (){
     Route::get('/login', 'Admin\LoginController@index');
+    Route::get('/login/code', 'Admin\LoginController@createCode');
     Route::post('/login', 'Admin\LoginController@login');
     Route::get('/loginout', 'Admin\LoginController@loginout');
 

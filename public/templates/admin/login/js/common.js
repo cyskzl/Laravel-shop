@@ -18,6 +18,9 @@ $(document).ready(function(){
 				minlength:3, 
 				maxlength:32,
 			},
+			validate_code:{
+				required:true,
+			},
 		},
 		//错误信息提示
 		messages:{
@@ -31,6 +34,10 @@ $(document).ready(function(){
 				required:"必须填写密码",
 				minlength:"密码至少为3个字符",
 				maxlength:"密码至多为32个字符",
+			},
+			validate_code:{
+				required:"必须填写验证码！",
+				
 			},
 		},
 
