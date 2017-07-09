@@ -85,7 +85,15 @@ class AdminListController extends Controller
 	   $user->nickname = $json->nickname;
 	   $user->password = bcrypt($json->password);
 	   $user->email    = $json->email;
-	   $user->pic    = $json->img;
+
+	   if (empty($json->img)) {
+
+            unset($json->img);
+       } else {
+
+           $user->pic    = $json->img;
+       }
+
 	   $user->status   = $json->status;
 
 	   //保存新建管理员的信息

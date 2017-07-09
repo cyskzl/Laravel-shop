@@ -23,6 +23,12 @@ $('.personal_left dl dd a').click(function(){
     return false;
 });
 
+$('.left_memu').on('click', function() {
+    $.session.set('personal_leftId', '7');
+
+    // return false;
+});
+
 //选项卡
 $('.personal_tab_header li a').click(function(){
 

@@ -38,8 +38,8 @@
                         <td>总数</td>
                         <td>92</td>
                         <td>9</td>
-                        <td>0</td>
-                        <td>{{ $user }}</td>
+                        <td>{{ $goods_count }}</td>
+                        <td>{{ $user_count }}</td>
                         <td>{{ $admin_user }}</td>
                     </tr>
                     <tr>
@@ -49,6 +49,7 @@
                         <td>0</td>
                         <td>0</td>
                         <td></td>
+
                     </tr>
                     <tr>
                         <td>昨日</td>

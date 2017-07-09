@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\AdminUser;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Role;
-use App\Permission;
-use Illuminate\Support\Facades\Auth;
+use App\Models\AdminUser;
+use App\Models\Goods;
 use DB;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -31,50 +27,18 @@ class AdminController extends Controller
     public function welcome(Request $request)
     {
         //查询管理员总数量
-        $admin_user   = AdminUser::count();
+        $admin_user = AdminUser::count();
         //查询会员总数量
-        $user         = DB::table('users_register')->count();
-
-        //查询今天新管理员总数sql语句
-        $today_sql    = 'select count(*) from admin_users where to_days(created_at) = to_days(now())';
-        $today_admin  = DB::select($today_sql);
-
-        //查询昨天新管理员总数
-        $admin_yeste_sql    = 'select count(*) from admin_users where to_days( now( ) ) - to_days(created_at) <= 1';
-        $yeste_admin  = DB::select($admin_yeste_sql);
-
-
-        //查询今天新注册会员总数sql语句
-        $user_today_sql    = 'select count(*) from users_register where to_days(created_at) = to_days(now())';
-        $today_user  = DB::select($user_today_sql);
-
-        //查询昨天新注册会员总数
-        $user_yeste_sql    = 'select count(*) from users_register where to_days( now( ) ) - to_days(created_at) <= 1';
-        $yeste_user  = DB::select($user_yeste_sql);
-
-        // foreach ($today_admin as  $value) {
-        //     var_dump($value);
-        // }
-        // dd($today_admin[0],$yeste_admin);
-        return view('admin.main.welcome', compact('request','admin_user', 'today_admin', 'yeste_admin','user', 'today_user', 'yeste_user'
-        ));
+        $user_count = DB::table('users_register')->count();
+        $goods_count = Goods::count();
+        return view('admin.main.welcome', compact('request','admin_user', 'user_count', 'goods_count'));
     }
 
     /**
      * @return  view    系统日志
      */
-    public function SystemLog(Request $request)
+    public function SystemLog()
     {
-        //搜索
-        $admin_log = DB::table('admin_log')->orderBy('id', 'desc')
-            ->where(function($query) use ($request){
-                //关键字
-                $keyword = $request->input('keyword');
-                //检测参数
-                if(!empty($keyword)){
-                    $query->where('nickname','like','%'.$keyword.'%');
-                }
-            })->paginate(10);
-        return view('admin.main.settings.systemlog', compact('admin_log', 'request'));
+        return view('admin.main.settings.systemlog');
     }
 }
