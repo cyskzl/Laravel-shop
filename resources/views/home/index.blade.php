@@ -260,14 +260,20 @@
 			<a href="javascript:">MORE</a>
 		</div>
 		<div class="design-banner space-between">
-			<img src="{{$trends[0]}}"  alt="" />
-			<img src="{{$trends[1]}}"  alt="" />
+			{{--{{$trends[$key][$key]}}--}}
+			@foreach($trends[$key] as $k=>$value)
+
+			<img src="{{$value}}"  alt="" />
+{{--			<img src="{{$trends[1]}}"  alt="" />--}}
+				@endforeach
 		</div>
 		<!--全部商品-->
 		<div class="design-list space-between">
 			<!--每列商品-->
 			<!--第一列商品-->
+
 			@foreach($goodstren as $goodstrens)
+				@if($goodstrens->trendpro_id == $trend->id)
 			<div class="design-show ">
 				<a href="{{url('home/goodsDetail/')}}/{{$goodstrens->goods_id}}">
 					<img src="{{rtrim($goodstrens->original_img,',')}}" alt=""  class="img">
@@ -276,73 +282,14 @@
 					<span class="price">¥&nbsp;{{$goodstrens->shop_price}}</span>
 				</a>
 			</div>
+				@endif
 		@endforeach
+
 		</div>
 	</div>
 	@endforeach
 	<!--促销-->
-	<div class="promotion width">
-		<!--标题-->
-		<div class="title ">
-			<h2>促销</h2>
-			<a href="javascript:">MORE</a>
-		</div>
-		<!--小广告-->
-		<div class="promotion-banner space-between">
-			<img src=""  alt="" />
-			<img src=""  alt="" />
-		</div>
-		<!--全部商品-->
-		<div class="promotion-list space-between">
-			<!--每列商品-->
-			<!--第一列商品-->
-			<div class="promotion-show">
-				<a href="javascript:">
-					<img src="{{asset('/templates/home/images/123.jpg')}}" alt=""  class="img">
-					<span class="brand color">NUMBERING</span>
-					<span class="name color nowrap">不对称水晶钻圆环耳钉_金色</span>
-					<span class="price">¥&nbsp;627</span>
-				</a>
-			</div>
-			<!--第二列商品-->
-			<div class="promotion-show">
-				<a href="javascript:">
-					<img src="{{asset('/templates/home/images/123.jpg')}}" alt=""  class="img">
-					<span class="brand color">NUMBERING</span>
-					<span class="name color nowrap">不对称水晶钻圆环耳钉_金色</span>
-					<span class="price">¥&nbsp;627</span>
-				</a>
-			</div>
-		</div>
 
-		<!--最新-->
-		<div class="newest">
-			<!--最新韩流-->
-			<div class="newly">
-				<h3>最新潮流</h3>
-				<img src=""  alt="" />
-				<h4>Hot&nbsp;Crop夏日套装</h4>
-				<p class="color">酷夏又是Crop Top盛行的季节</p>
-				<a href="javascript:">MORE</a>
-			</div>
-			<!--热门话题-->
-			<div class="newly">
-				<h3>热门话题</h3>
-				<img src=""  alt="" />
-				<h4>Hot&nbsp;Crop夏日套装</h4>
-				<p class="color">酷夏又是Crop Top盛行的季节</p>
-				<a href="javascript:">MORE</a>
-			</div>
-			<!--最新活动-->
-			<div class="newly">
-				<h3>最新活动</h3>
-				<img src=""  alt="" />
-				<h4>Hot&nbsp;Crop夏日套装</h4>
-				<p class="color">酷夏又是Crop Top盛行的季节</p>
-				<a href="javascript:">MORE</a>
-			</div>
-		</div>
-	</div>
 
 	<!--热销商品-->
 	<div class="hotProduct width ">
