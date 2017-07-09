@@ -83,8 +83,9 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     Route::post('/shoppingcart/shoppingcache', 'ShoppingCartController@shoppingCache');
     // 购物车
     Route::resource('/shoppingcart', 'ShoppingCartController');
+
     // 需登录界面
-    // Route::group(['middleware'=>'auth'],function(){
+     Route::group(['middleware'=>'auth'],function(){
         // 订单页
         Route::resource('/orders', 'OrderController');
 //        Route::post('/orders', 'OrderController@index');
@@ -140,7 +141,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
         Route::resource('/address', 'AddressController');
 
 
-//    });
+    });
 
 
 });

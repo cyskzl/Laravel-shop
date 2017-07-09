@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{asset('/templates/home/css/headert.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('/templates/home/css/footer.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('/templates/home/css/public.css')}}"/>
+
     @yield('style')
 </head>
 <body>
@@ -16,7 +17,7 @@
         <div class="header_top left">
             <ul class="header_top_left left">
                 @if(Auth::check())
-                    <li><a href="">{{Auth::user()->login_name}}</a></li>
+                    <li><a href="{{ url('home/personal') }}">{{Auth::user()->login_name}}</a></li>
                     <li><a href="{{ url('home/logOut') }}">退出登录</a></li>
                 @else
                     <li><a href="{{ url('home/register') }}">注册</a></li>
@@ -63,6 +64,7 @@
     <main class="comWidth">
         @yield('main')
     </main>
+
     <div class="footer left">
         <div class="footer_top">
             <a href="javascript:">
@@ -81,6 +83,7 @@
     </div>
 
 </div>
+
 @yield('js')
 </body>
 </html>

@@ -142,6 +142,7 @@ class ShoppingCartController extends Controller
                 }
 
             } else {
+
                 if ( $_SESSION['goods_shop'][$id] ) {
                     $_SESSION['goods_shop'][$id]['num'] = $request->data;
                 }
@@ -190,12 +191,11 @@ class ShoppingCartController extends Controller
             $error['info']    = '删除失败！';
             return json_encode($error);
 
-        } else {
-
-            $error['success'] = 0;
-            $error['info']    = '没有找到该商品信息！';
-            return json_encode($error);
         }
+
+        $error['success'] = 0;
+        $error['info']    = '没有找到该商品信息！';
+        return json_encode($error);
 
     }
 
@@ -272,7 +272,7 @@ class ShoppingCartController extends Controller
 
         //判断用户是否登录，未登录只存session，已登录存redis
         if (!Auth::check()) {
-
+            //判断该商品是否已存在，不存在加入购物车
             if ( empty( $_SESSION['goods_shop'][$session_id] ) ) {
 
                 //为空加入session
@@ -282,13 +282,11 @@ class ShoppingCartController extends Controller
                     $error['success'] = 1;
                     $error['info']    = '加入购物车成功！';
                     return json_encode( $error );
-                } else {
-
-                    $error['success'] = 0;
-                    $error['info']    = '加入购物车失败！';
-                    return json_encode( $error );
-
                 }
+
+                $error['success'] = 0;
+                $error['info']    = '加入购物车失败！';
+                return json_encode( $error );
 
             } else {
 
@@ -309,13 +307,11 @@ class ShoppingCartController extends Controller
                         $error['success'] = 1;
                         $error['info']    = '加入购物车成功！';
                         return json_encode( $error );
-                    } else {
-
-                        $error['success'] = 0;
-                        $error['info']    = '加入购物车失败！';
-                        return json_encode( $error );
-
                     }
+
+                    $error['success'] = 0;
+                    $error['info']    = '加入购物车失败！';
+                    return json_encode( $error );
 
                 }
             }
@@ -338,30 +334,29 @@ class ShoppingCartController extends Controller
                 $error['success'] = 1;
                 $error['info']    = '加入购物车成功！';
                 return json_encode( $error );
-            } else {
-
-                $error['success'] = 0;
-                $error['info']    = '加入购物车失败！';
-                return json_encode( $error );
             }
+
+            $error['success'] = 0;
+            $error['info']    = '加入购物车失败！';
+            return json_encode( $error );
+
         } else {
-            //如果已存在新提交的商品数量与redis中的商品数量相加
+            //如果已存在，新提交的商品数量与redis中的商品数量相加
             $is_redis = json_decode( $redis_goods );
             $is_redis->num = $is_redis->num + $goods->num;
-            Redis::hdel('user_id:'.$user_id, $is_redis->session_id);
+            //存入新的购物车商品信息
             $res = Redis::hset( 'user_id:'.$user_id, $is_redis->session_id, json_encode( $is_redis ) );
             // dd($is_redis);
-            if ( $res ) {
+            if ( $res == 0 ) {
 
                 $error['success'] = 1;
                 $error['info']    = '加入购物车成功！';
                 return json_encode( $error );
-            } else {
-
-                $error['success'] = 0;
-                $error['info']    = '加入购物车失败！';
-                return json_encode( $error );
             }
+
+            $error['success'] = 0;
+            $error['info']    = '加入购物车失败！';
+            return json_encode( $error );
 
         }
     }

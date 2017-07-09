@@ -168,6 +168,17 @@
     @yield('footer')
     <div class="shoppingcar">
         @yield('shop')
+        <div class="cart">
+    		<a href="{{url('home/shoppingcart')}}">
+    			<i></i>
+    			<p>购物车</p>
+    			<b>{{ $cartCount }}</b>
+    		</a>
+    	</div>
+    	<!--回到顶部-->
+    	<div id="scrolltop">
+    		<img src="{{asset('/templates/home/uploads/go_to_top.png')}}" alt=""  >
+    	</div>
     </div>
 </div>
 

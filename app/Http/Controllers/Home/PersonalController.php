@@ -12,11 +12,7 @@ use Hash;
 
 class PersonalController extends Controller
 {
-    public function __construct()
-    {
-        $user = Userinfo::where('user_id', '=', \Auth::user()->user_id)->first();
-        view()->share('user', $user);
-    }
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * 个人中心-设置-个人信息
@@ -189,11 +185,12 @@ class PersonalController extends Controller
                 return json_encode($error);
             }
 
-        } else {
-            $error['success'] = 0;
-            $error['info']    = '错误！未找到该用户信息！';
-            return json_encode($error);
         }
+
+        $error['success'] = 0;
+        $error['info']    = '错误！未找到该用户信息！';
+        return json_encode($error);
+
     }
 
 
@@ -217,27 +214,28 @@ class PersonalController extends Controller
         }
 
         //查询是否存在
-        $user = Userinfo::where('user_id', '=', $id)->first();
+        $user = Userinfo::where( 'user_id', '=', $id )->first();
 
         //判断是否存在
-        if ($user) {
+        if ( $user ) {
 
             //判断是否更新成功
-            if ($user->where('user_id', '=', $id)->update(['nickname'=>$request->nickname])){
+            if ( $user->where('user_id', '=', $id )->update([ 'nickname'=>$request->nickname ]) ){
                 $error['success'] = 1;
                 $error['info']    = '昵称修改成功！';
-                return json_encode($error);
-            } else {
-                $error['success'] = 0;
-                $error['info']    = '昵称修改失败！';
-                return json_encode($error);
+                return json_encode( $error );
             }
 
-        } else {
             $error['success'] = 0;
-            $error['info']    = '错误！未找到该用户信息！';
-            return json_encode($error);
+            $error['info']    = '昵称修改失败！';
+            return json_encode( $error );
+
         }
+
+        $error['success'] = 0;
+        $error['info']    = '错误！未找到该用户信息！';
+        return json_encode( $error );
+
     }
 
     /**
@@ -269,17 +267,18 @@ class PersonalController extends Controller
                 $error['success'] = 1;
                 $error['info']    = '真实姓名修改成功！';
                 return json_encode($error);
-            } else {
-                $error['success'] = 0;
-                $error['info']    = '真实姓名修改失败！';
-                return json_encode($error);
             }
 
-        } else {
             $error['success'] = 0;
-            $error['info']    = '错误！未找到该用户信息！';
+            $error['info']    = '真实姓名修改失败！';
             return json_encode($error);
+
         }
+
+        $error['success'] = 0;
+        $error['info']    = '错误！未找到该用户信息！';
+        return json_encode($error);
+
     }
 
     /**
@@ -315,18 +314,18 @@ class PersonalController extends Controller
                 $error['url']     = "".url($path)."";
                 $error['info']    = '上传成功';
                 return json_encode($error);
-            } else {
-                \Storage::delete(url($path));
-                $error['success'] = 0;
-                $error['info']    = '上传失败';
-                return json_encode($error);
             }
 
-        } else {
+            \Storage::delete(url($path));
             $error['success'] = 0;
-            $error['info']    = '没有文件上传';
+            $error['info']    = '上传失败';
             return json_encode($error);
+
         }
+
+        $error['success'] = 0;
+        $error['info']    = '没有文件上传';
+        return json_encode($error);
 
     }
 

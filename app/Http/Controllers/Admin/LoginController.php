@@ -21,7 +21,9 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+
         $this->middleware('admin', ['except' => 'loginout']);
+
 
     }
 
@@ -30,6 +32,10 @@ class LoginController extends Controller
      */
     public function index()
     {
+        if ( Auth::guard('admin')->check() ) {
+            return redirect('/admin');
+        }
+
         return view('admin.login.index');
     }
 
@@ -50,7 +56,7 @@ class LoginController extends Controller
         ], [
             'username' => '管理员名称',
             'password' => '密码'
-    ]);
+        ]);
 
         $res = AdminUser::where('nickname', '=', $request->username)->first();
         if ($res) {
@@ -73,17 +79,18 @@ class LoginController extends Controller
 
                     return redirect('/admin');
 
-                } else {
-                    return back()->withInput()->with(['fail'=>'密码错误！']);
                 }
 
-            } else {
-                return back()->withInput()->with(['fail'=>'该管理员已被禁止登录！']);
+                return back()->withInput()->with(['fail'=>'密码错误！']);
+
             }
 
-        } else {
-            return back()->withInput()->with(['fail'=>'该管理员不存在！']);
+            return back()->withInput()->with(['fail'=>'该管理员已被禁止登录！']);
+
         }
+
+        return back()->withInput()->with(['fail'=>'该管理员不存在！']);
+
 
     }
 
@@ -92,8 +99,13 @@ class LoginController extends Controller
      */
     public function loginout(Request $request)
     {
-        Auth::guard('admin')->logout();
-        return redirect('/admin/login');
+        if ( Auth::guard('admin')->check() ) {
+
+            Auth::guard('admin')->logout();
+            return redirect('/admin/login');
+        }
+
+        return back()->withInput()->with(['fail'=>'您没有登录！']);
 
     }
 }

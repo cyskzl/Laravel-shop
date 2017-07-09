@@ -62,19 +62,17 @@ class PermissionController extends Controller
                    $error['success'] = 1;
                    $error['info'] = '保存成功！';
                    return json_encode($error);
-               } else {
-
-                   $error['success'] = 0;
-                   $error['info'] = '保存失败！';
-                   return json_encode($error);
-
                }
-           } else {
 
-                   $error['success'] = 0;
-                   $error['info'] = '该权限信息不存在';
-                   return json_encode($error);
-               }
+               $error['success'] = 0;
+               $error['info'] = '保存失败！';
+               return json_encode($error);
+
+           }
+
+            $error['success'] = 0;
+            $error['info'] = '该权限信息不存在';
+            return json_encode($error);
 
     }
 
@@ -125,19 +123,18 @@ class PermissionController extends Controller
                    $error['success'] = 1;
                    $error['info'] = '删除成功！';
                    return json_encode($error);
-               } else {
-
-                   $error['success'] = 0;
-                   $error['info'] = '删除失败！';
-                   return json_encode($error);
-
                }
-       } else {
 
            $error['success'] = 0;
-           $error['info'] = '该权限信息不存在';
+           $error['info'] = '删除失败！';
            return json_encode($error);
+
        }
+
+        $error['success'] = 0;
+        $error['info'] = '该权限信息不存在';
+        return json_encode($error);
+
     }
 
 

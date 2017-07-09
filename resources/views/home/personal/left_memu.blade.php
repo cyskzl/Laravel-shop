@@ -3,11 +3,11 @@
 
         <dt class="personal_info">
             <a href="javascript:;">
-                <img src="{{ asset(''.$user->avatar.'') }}" alt="" width="50" height="40"/>
+                <img  id="userAvatar" src="{{ asset(''.$user->avatar.'') }}" alt="" width="50" height="40"/>
             </a>
         </dt>
 
-        <dd class="phone">{{ $user->nickname }}</dd>
+        <dd class="phone"></dd>
 
         <dt class="level1">交易管理</dt>
         <dd><a href="{{ url('home/browseLog') }}" data-memu="0">浏览记录</a></dd>

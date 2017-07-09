@@ -240,17 +240,7 @@
 @endsection
 
 @section('shop')
-	<div class="cart">
-		<a href="">
-			<i></i>
-			<p>购物车</p>
-			<b>0</b>
-		</a>
-	</div>
-	<!--回到顶部-->
-	<div id="scrolltop">
-		<img src="{{asset('/templates/home/uploads/go_to_top.png')}}" alt=""  >
-	</div>
+
 @endsection
 @section('js')
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
@@ -495,7 +485,7 @@
 
 			  layui.upload({
 				url: "{{ url('home/personal/editAvatar/'.Auth::user()->user_id) }}",
-				ext: 'jpg|png|gif',
+				ext: 'jpg|png|gif|jpeg',
 				elem: '#avatar', //指定原始元素，默认直接查找class="layui-upload-file"
 				method: 'post', //上传接口的http类型
 				before: function(input){
@@ -507,6 +497,7 @@
 
 					if (res.success == 1) {
 						LAY_demo_upload.src = res.url;
+						$('#userAvatar').attr('src', res.url);
 						layer.msg(res.info);
 
 					} else {

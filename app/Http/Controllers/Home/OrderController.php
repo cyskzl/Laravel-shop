@@ -22,11 +22,7 @@ use App\Http\Controllers\Controller;
 class OrderController extends Controller
 {
 
-    public function __construct()
-    {
-        $user = UserInfo::where('user_id', '=', \Auth::user()->user_id)->first();
-        view()->share('user', $user);
-    }
+
     /**
      * Display a listing of the resource.
      *
