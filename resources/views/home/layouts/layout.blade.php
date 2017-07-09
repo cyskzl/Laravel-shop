@@ -65,7 +65,7 @@
                 @if($cateId == 1 || $cateId == '')
                     @foreach($twomaan as $tmaan)
                         <div id="header_nav_left_new" class="CateNav">
-                            <a id="butt" href="{{url('home/goodsList/')}}{{$tmaan->id}}?cate={{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
+                            <a id="butt" href="{{url('home/goodsList/')}}/{{$tmaan->id}}?cate={{$tmaan->id}}" route="{{$cateId}}" data-id="{{$tmaan->id}}" >{{$tmaan->name}}</a>
                             <div class="header_nav_left_new">
                                 <div class="elastic_no">
                                     <div class="header_nav_left_new_one_text">
@@ -79,7 +79,7 @@
                 @elseif($cateId == 2)
                     @foreach($twomam as $tman)
                         <div id="header_nav_left_new" class="CateNav">
-                            <a href="{{url('home/goodsList/')}}{{$tman->id}}" route="{{$cateId}}" data-id="{{$tman->id}}" >{{$tman->name}}</a>
+                            <a href="{{url('home/goodsList/')}}/{{$tman->id}}" route="{{$cateId}}" data-id="{{$tman->id}}" >{{$tman->name}}</a>
                             <div class="header_nav_left_new">
                                 <div class="elastic_no">
                                     <div class="header_nav_left_new_one_text">
