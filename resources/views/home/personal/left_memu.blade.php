@@ -3,7 +3,7 @@
 
         <dt class="personal_info">
             <a href="javascript:;">
-                <img  id="userAvatar" src="@if(Auth::check()) {{ asset(''.$user->avatar.'') }} @endif" alt="" width="50" height="40"/>
+                <img  id="userAvatar" src="{{ asset(''.$user->avatar.'') }}" alt="" width="50" height="40"/>
             </a>
         </dt>
 

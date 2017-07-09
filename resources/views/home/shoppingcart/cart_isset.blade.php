@@ -113,7 +113,7 @@
 		<div class="emptyShoppingcar w1100 m0a">
 			<img src="{{ asset('templates/home/images/emptyShoppingcar.png') }}">
 			<p>您的购物车里还没有任何商品，快去逛逛吧…</p>
-			<a class="m0a mb20" href="{{ url('home') }}">去逛逛</a>
+			<a class="m0a mb20" href="{{ url('/') }}">去逛逛</a>
 		</div>
 		@endif
 <script src="{{asset('/templates/home/js/shopCar.js')}}"></script>
