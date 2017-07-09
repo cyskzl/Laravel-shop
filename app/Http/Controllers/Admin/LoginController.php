@@ -29,6 +29,11 @@ class LoginController extends Controller
 
     }
 
+    /**
+     * 验证码
+     *
+     * @param Request $request
+     */
     public function createCode(Request $request)
     {
         $validateCode = new ValidateCode();
@@ -80,9 +85,12 @@ class LoginController extends Controller
 
         $res = AdminUser::where('nickname', '=', $request->username)->first();
         if ($res) {
+
             if ($res->status == 1) {
+
                 // 验证登录
                 if (Auth::guard('admin')->attempt(['nickname' => $request->username, 'password' => $request->password])) {
+
                     // 认证通过...
                     $num = $res->login_num + 1;
                     //把上次登录时间存入session
@@ -92,17 +100,21 @@ class LoginController extends Controller
 
                     //更新上次登录时间
                     $res->update([
+
                         'last_login_time' => date('Y-m-d H:i:s'),
                         'last_login_ip'   => $request->getClientIp(),
                         'login_num'       => $num,
                     ]);
 
+                    //写入登录日志
                     $log = DB::table('admin_log')->insert([
+
                         'nickname'   => $res->nickname,
+                        'user_id'    => $res->id,
                         'status'     => $res->status,
                         'content'    => '登录成功',
                         'login_ip'   => $request->getClientIp(),
-                        'login_time' => date('Y-m-d H:i:s')
+                        'login_time' => date('Y-m-d H:i:s'),
                     ]);
                     return redirect('/admin');
                 }
@@ -110,12 +122,15 @@ class LoginController extends Controller
                 return back()->withInput()->with(['fail'=>'密码错误！']);
             }
 
+            //写入登录日志
             $log = DB::table('admin_log')->insert([
+
                 'nickname'   => $res->nickname,
+                'user_id'    => $res->id,
                 'status'     => $res->status,
-                'content'    => '登录成功',
+                'content'    => '登录失败',
                 'login_ip'   => $request->getClientIp(),
-                'login_time' => date('Y-m-d H:i:s')
+                'login_time' => date('Y-m-d H:i:s'),
             ]);
 
             return back()->withInput()->with(['fail'=>'该管理员已被禁止登录！']);

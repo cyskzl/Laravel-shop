@@ -44,7 +44,6 @@
                         <th>头像</th>
                         <th>登录名</th>
                         <th>邮箱</th>
-                        <th>角色</th>
                         <th>加入时间</th>
                         <th>状态</th>
                         <th>操作</th>
@@ -69,8 +68,6 @@
                                 <td>{{ $row->nickname }}</td>
 
                                 <td >{{ $row->email }}</td>
-
-                                <td >{{ $row->nickname }}</td>
 
                                 <td>{{ $row->created_at }}</td>
                                 <td class="td-status">
@@ -103,8 +100,6 @@
                             <td>{{ $row->nickname }}</td>
 
                             <td >{{ $row->email }}</td>
-
-                            <td >{{ $row->nickname }}</td>
 
                             <td>{{ $row->created_at }}</td>
 

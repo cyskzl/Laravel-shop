@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>@yield('title')</title>
+    <title>{{ config('config.inc.shop_title') }}</title>
     <link rel="stylesheet" href="{{asset('/templates/admin/lib/layui/css/layui.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/public.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/header.css')}}"/>
@@ -161,7 +162,7 @@
             <a href="javascript:"><img src="{{asset('/templates/home/uploads/normalProblem.png')}}" alt=""><span>常见问题</span></a>
         </div>
         <div class="footer_bottom">
-            <p>上海森画电子商务有限公司 版权所有<a href="javascript:">沪ICP备 15045419号－1</a></p>
+            <p>{{ config('config.inc.shop_copyright') }}-<a href="javascript:">{{ config('config.inc.shop_number') }}</a></p>
 
         </div>
     </div>
@@ -185,6 +186,9 @@
 @yield('js')
 <script src="{{asset('/templates/home/js/index.js')}}"></script>
 <script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
+<script >
+    $('');
+</script>
 <script type="text/javascript">
     //导航栏
     $('.CateNav').mouseenter (function (){
