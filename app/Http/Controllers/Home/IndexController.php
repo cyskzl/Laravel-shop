@@ -86,16 +86,15 @@ class IndexController extends Controller
            $trendpromotion = self::trendPromotion($cateId);
            $trends = [];
            foreach($trendpromotion as $value){
+               //遍历图片
                $trendcom = rtrim($value->img, ',');
 
                $trends[]  = explode( ',', $trendcom);
 
            }
-//           dump($trendpromotion);
+           //潮流图
           $goodstren =  self::trendGoods($cateId);
-//           dd($goodstren);
-//
-//            dd($advertisement);
+
        } else {
 
            $request->session()->set('Index', '2');
@@ -120,16 +119,17 @@ class IndexController extends Controller
 
            //潮流名称
            $trendpromotion = self::trendPromotion($cateId);
-           $arr = [];
+           $trends = [];
            foreach($trendpromotion as $value){
+               //遍历图片
                $trendcom = rtrim($value->img, ',');
 
-               $trends  = explode( ',', $trendcom);
-//dump($trends);
-           }
+               $trends[]  = explode( ',', $trendcom);
 
+           }
+           //潮流图
            $goodstren =  self::trendGoods($cateId);
-//        dd($goodstren);
+
        }
 
         return view('home.index', [
@@ -237,7 +237,7 @@ class IndexController extends Controller
      */
     public function sum($cateId)
     {
-        $sales_sum = Goods::where('is_hot','=', '1', 'and', 'cat_id','like',$cateId.'%')->orderBy('sales_sum', 'desc')->take(10)->get();
+        $sales_sum = Goods::where( 'is_hot','=', '1' )->where(  'cat_id', 'like', $cateId.'%' )->orderBy('sales_sum', 'desc')->take(10)->get();
         return $sales_sum;
     }
 

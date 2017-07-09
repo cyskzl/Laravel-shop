@@ -89,25 +89,26 @@
 			<!-- 商品图片列表 -->
 			<div class="page_product_img">
 				<div class="page_product_top">
-					<a href="javascript:">最新</a>
-					<a href="javascript:">销量</a>
-					<a href="javascript:">价格
+					<a href="javascript:" id="NEW" >最新</a>
+					<a href="javascript:" id="BEST">销量</a>
+					<a href="javascript:" id="PRICE">价格
 						<img src="{{asset('/templates/home/uploads/icon-pc-sort-price-up.png')}}" alt="">
 						<img src="{{asset('/templates/home/uploads/icon-pc-sort-price-down.png')}}" alt="">
 					</a>
 				</div>
 				<div class="page_product_bottom">
+					@if($goods)
 					@foreach($goods as $good)
 						<a href="{{url('home/goodsDetail/'.$good->goods_id)}}">
 					<span>
 						<img style='width:220px;height:293px' src="{{rtrim($good->original_img,',')}}" alt="">
 					</span>
-							<p class="text">{{$good->brand_id}}</p>
+							<p class="text">{{getBrand($good->brand_id)}}</p>
 							<p class="text">{{$good->goods_name}}</p>
 							<p class="text">¥ {{$good->shop_price}}</p>
 						</a>
-
 					@endforeach
+						@endif
 				</div>
 			</div>
 		</div>
@@ -115,7 +116,20 @@
 
 	<center>
 		<div id="pages" style="margin-top:5px; text-align:center;   margin-left: 170px;">
-			{!!$goods->appends($request->only(['cate']))->render()!!}
+
+			{{--@if($request->only(['cate']))--}}
+				{!!$goods->appends($request->only(['cate']))->render()!!}
+{{--{{dump($goods->links())}}--}}
+				{{--{{dump($request->only(['order','dir','cate','page']))}}--}}
+			{{--@if($request->get('order'))--}}
+				{{--{!!$goods->appends($request->only(['cate','order ', 'dir', 'page']))->render()!!}--}}
+
+			{{--@else--}}
+				{{--{!!$goods->appends($request->only(['cate']))->render()!!}--}}
+				{{--@endif--}}
+{{--				{!!$goods->appends(['cate','order ', 'dir', 'page'])->render()!!}--}}
+{{--				{!!$goods->appends($request->only(['order','dir','cate','page']))->links()!!}--}}
+			{{--@endif--}}
 		</div>
 	</center>
 @endsection
@@ -128,46 +142,64 @@
 	<script src="{{asset('/templates/home/js/dynamic.js')}}"></script>
 	<script>
 		//获取url上的参数 直接传参数名称
-		function GetQueryString(name)
-		{
-			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-			var r = window.location.search.substr(1).match(reg);
-			if(r!=null)return  unescape(r[2]); return null;
-		}
-		//		alert('cate')
-		{{--layui.use(['laypage', 'layer'], function(){--}}
-		{{--var laypage = layui.laypage--}}
-		{{--,layer = layui.layer;--}}
+		jQuery(document).ready(function(){
+			function updateQueryStringParameter(uri, key, value) {
+				var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+				var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+				if (uri.match(re)) {
+					return uri.replace(re, '$1' + key + "=" + value + '$2');
+				}
+				else {
+					return uri + separator + key + "=" + value;
+				}
+			}
+			//最新
+			jQuery('#NEW').on('click',function(){
+				var url = updateQueryStringParameter(window.location.toString(), 'order', 'is_new');
+				url = updateQueryStringParameter(url, 'dir', 'desc');
+				url = updateQueryStringParameter(url, 'page', '1');
+				window.location.href = url;
 
-		{{--function page()--}}
-		{{--{--}}
-		{{--//2级参数--}}
-		{{--//				if(GetQueryString("cate") !== null){--}}
-		{{--//					var url =  '/home/goodsTwo';--}}
-		{{--//				} else {--}}
-		{{--//					//3级参数--}}
-		{{--//					var url =  '/home/goodsTree';--}}
-		{{--//				}--}}
-		{{--var curr ={{$goods->links()}}--}}
-		{{--//				laypage({--}}
-		{{--//					cont: 'pages',--}}
-		{{--//					skin: '#333', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00--}}
-		{{--//					pages: 8, //可以叫服务端把总页数放在某一个隐藏域，再获取。假设我们获取到的是18--}}
-		{{--//					curr: function(){ //通过url获取当前页，也可以同上（pages）方式获取--}}
-		{{--//						var page = location.search.match(/page=(\d+)/);--}}
-		{{--//						return page ? page[1] : 1;--}}
-		{{--//					}(),--}}
-		{{--//					jump: function(e, first){ //触发分页后的回调--}}
-		{{--//						if(!first){ //一定要加此判断，否则初始时会无限刷新--}}
-		{{--//							location.href = '?page='+e.curr;--}}
-		{{--//--}}
-		{{--//						}--}}
-		{{--//					}--}}
-		{{--//				});--}}
-		{{--//			}--}}
-		{{--//			page()--}}
-		{{--});--}}
+			});
+			//销量
+			jQuery('#BEST').on('click',function(){
+				var url = updateQueryStringParameter(window.location.toString(), 'order', 'sales_sum');
+				url = updateQueryStringParameter(url, 'dir', 'desc');
+				url = updateQueryStringParameter(url, 'page', '1');
+				window.location.href = url;
+				return false;
+			});
+			//价格
+			jQuery("#PRICE").on('click',function(){
+				var price_id = jQuery(this).find('.price_on').prop('id');
+				if(price_id){
+					if( price_id == 'LOW_PRICE'){
+						var url = updateQueryStringParameter(window.location.toString(), 'order', 'shop_price');
+						url = updateQueryStringParameter(url, 'dir', 'desc');
+						url = updateQueryStringParameter(url, 'page', '1');
+						window.location.href = url;
+						console.log(url);
+					}
+					else if( price_id == 'HIGH_PRICE'){
+						var url = updateQueryStringParameter(window.location.toString(), 'order', 'shop_price');
+						url = updateQueryStringParameter(url, 'dir', 'asc');
+						url = updateQueryStringParameter(url, 'page', '1');
+						window.location.href = url;
+						console.log(url);
+					}
+				}else{
+					var url = updateQueryStringParameter(window.location.toString(), 'order', 'shop_price');
+					url = updateQueryStringParameter(url, 'dir', 'asc');
+					url = updateQueryStringParameter(url, 'page', '1');
+					window.location.href = url;
+					console.log(url);
+				}
+			});
 
+
+
+
+		});
 
 	</script>
 @endsection
