@@ -15,7 +15,7 @@
             <form class="layui-form layui-form-pane" action="{{url('home/address').'/'.$address->id}}" method="post">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <input type="hidden" name="_method" value="PUT">
-                <div class="form_title">添加收货地址</div>
+                <div class="form_title">修改收货地址</div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">收货人姓名</label>
                     <div class="layui-input-block">

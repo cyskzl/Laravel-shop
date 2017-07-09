@@ -14,6 +14,11 @@
 
 @section('x-body')
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{session('success')}}
+            </div>
+        @endif
         <ul class="layui-tab-title">
             <li class="layui-this">网站设置</li>
             <li>安全设置</li>

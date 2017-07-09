@@ -239,6 +239,8 @@ class RegisterController extends Controller
     //获取短信验证码
     public function phoneCode(Request $request,Sms $sms)
     {
+        $cateId = $request->session()->get('Index');
+
         $phone = $request->input('phone');
 
         $pattern  =  '/^[1][34578]\d{9}$/' ;
@@ -330,6 +332,8 @@ class RegisterController extends Controller
     //手机注册提交
     public function toPhoneRegister(Request $request)
     {
+        $cateId = $request->session()->get('Index');
+
         $this->validate($request,[
             'tel'=>'required | regex:/^1[34578][0-9]{9}$/',
             'password'=>'required | between:6,16',
@@ -381,16 +385,16 @@ class RegisterController extends Controller
         }
 
         if(date('Y-m-d H:i:s',time($date) + 1200) < date('Y-m-d H:i:s')){
-            return back()->withInput()->with(['fail'=>'验证码过时，请重新获取']);
+            return back()->withInput()->with(['fail'=>'验证码过时，请重新获取','cateId'=>$cateId]);
         }
 
         if ($phoneCode != $code ){
 
-            return back()->withInput()->with(['fail'=>'验证码不正确']);
+            return back()->withInput()->with(['fail'=>'验证码不正确','cateId'=>$cateId]);
         }
 
         if ($pass != $request->input('repassword')){
-            return back()->withInput()->with(['fail'=>'密码与确认密码不相同']);
+            return back()->withInput()->with(['fail'=>'密码与确认密码不相同','cateId'=>$cateId]);
         }
 
 
@@ -401,11 +405,11 @@ class RegisterController extends Controller
 
             TempEmail::where('user_id', '=', $phone)->delete();
 
-            return view('home.validatefail',['info'=>'回到首页']);
+            return view('home.validatefail',['info'=>'回到首页','cateId'=>$cateId]);
 
         }else{
 
-            return back()->withInput()->with(['fail'=>'注册失败,请您重新填写用户信息']);
+            return back()->withInput()->with(['fail'=>'注册失败,请您重新填写用户信息','cateId'=>$cateId]);
         }
 
     }
@@ -435,10 +439,19 @@ class RegisterController extends Controller
                 $userlogin->last_login_ip = $data->ip();
                 $userlogin->last_login_at = $user->created_at;
 
-                if ($userlogin->save()){
+                $userlogin->save();
+
+                // 对应增加users_info表的信息
+                $userinfo = new UserInfo();
+                $userinfo->user_id = $uid;
+
+                $userinfo->tel = $user->tel;
+
+                if ($userinfo->save()){
 
                     return true;
                 }
+
 
             }
         });

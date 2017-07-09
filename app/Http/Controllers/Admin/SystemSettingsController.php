@@ -36,7 +36,36 @@ class SystemSettingsController extends Controller
 //        return $conf_all;
         foreach($conf_all as $name=>$value){
             Config::where('name','=',$name)->update(['value'=>$value]);
+
         }
-        return back()->with(['success'=>'修改网站系统设置成功']);
+
+        //更新网站配置信息文件
+        $res = $this->webConfig();
+        if ($res) {
+            return back()->with(['success' => $res ]);
+        }
+
+        return back()->with(['success'=> $res ]);
+    }
+
+    /**
+     * 写入网站信息配置文件
+     *
+     * @return string
+     */
+    public function webConfig()
+    {
+        //获取网站信息
+        $configs = Config::pluck('value','name')->all();
+        $str = "<?php \r\n return".'  '.var_export($configs,true).";";
+
+        $path = config_path('config.inc.php');
+        if (!file_put_contents($path, $str)) {
+
+            return '保存成功，配置文件写入失败!';
+        }
+
+        return '修改网站系统设置成功';
+
     }
 }
