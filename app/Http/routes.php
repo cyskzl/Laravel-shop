@@ -74,7 +74,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 商品列表页
     Route::get('/goodsList/{category_id}', 'GoodController@goodsList');
     //    // 商品新品列表页（本周与今日最新）
-    //    Route::get('/goodsList/product', 'GoodController@goodsProduct');
+        Route::get('/goodsList/product', 'GoodController@goodsProduct');
     // 商品详情页
     Route::get('/goodsDetail/{goods_id}', 'GoodController@goodsDetail');
 

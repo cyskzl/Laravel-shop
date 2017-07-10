@@ -27,22 +27,25 @@ class IndexController extends Controller
 //        var_dump($key);
         $xs = new \XS(config_path('goods.ini'));
 //        $xs = new \XS('goods');
+
         $search = $xs->search->setFuzzy(true); // 获取 搜索对象
+//        dd($xs->getAllFields());
         $query = $key;
         $search->setQuery($query)
             ->setDocOrder() //是否为正序排列, 即从先到后, 默认为反序,取最新
             ->setLimit(20,0); // 设置搜索语句, 分页, 偏移量
 //        ;
         $docs = $search->search(); // 执行搜索，将搜索结果文档保存在 $docs 数组中
+//        dd($docs);
         if(!$docs){
             // 无查询结果，则在列表页遍历最新的20件商品;
             $goods = Goods::orderBy('goods_id','desc')->paginate(20);
         }
 
         foreach ($docs as $k=>$value){
-            $goods[] = Goods::where('goods_id',$value['goods_id'])->first();
+            $goods[$k] = Goods::where('goods_id',$value['goods_id'])->first();
         }
-        return view('home.goods.list',compact('goods','cateId'));
+        return view('home.goods.product',compact('goods','cateId'));
     }
 
     /**
