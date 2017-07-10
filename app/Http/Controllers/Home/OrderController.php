@@ -272,9 +272,7 @@ class OrderController extends Controller
 
             $address .= $value->name;
         }
-
-
-
+        
 //        dd($orderData);
         //
         return view('home.personal.order.orderdetail',compact('cateId','orderData','address'));
