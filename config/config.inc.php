@@ -1,6 +1,6 @@
 <?php 
  return  array (
-  'shop_title' => '挺好121听 11212阿萨为商城',
+  'shop_title' => '尤为商城',
   'shop_keyword' => '韩国海购,尤为商城',
   'shop_desc' => '尤为商城为韩国海外直购，实时跟踪明星的小物件',
   'shop_mark' => '\\public\\templates',

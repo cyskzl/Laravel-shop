@@ -116,6 +116,12 @@ class LoginController extends Controller
                         'login_ip'   => $request->getClientIp(),
                         'login_time' => date('Y-m-d H:i:s'),
                     ]);
+
+                    if ( !$log ) {
+
+                        Auth::guard('admin')->logout();
+                        return back()->withInput()->with(['fail'=>'致命错误！']);
+                    }
                     return redirect('/admin');
                 }
 
@@ -132,6 +138,11 @@ class LoginController extends Controller
                 'login_ip'   => $request->getClientIp(),
                 'login_time' => date('Y-m-d H:i:s'),
             ]);
+
+            if ( !$log ) {
+                Auth::guard('admin')->logout();
+                return back()->withInput()->with(['fail'=>'致命错误！']);
+            }
 
             return back()->withInput()->with(['fail'=>'该管理员已被禁止登录！']);
         }
