@@ -97,17 +97,17 @@
 //            $('#testSelect option:selected')
             console.log($('#fuck'))
             var val2 = $('#fuck').attr('data-id');
-            console.log(val2);
+//            console.log(val2);
 //            console.log($('#fuck'));
 //            form.on('select(cate_02)', function(data){
 //            console.log(data.value);
 //                var cate_02 = data.value;
-                $form.find('select[name=cat_id_03]').children().remove();
+//                $form.find('select[name=cat_id_03]').children().remove();
                 $.ajax({
                     type     : 'post',
                     url      : '/admin/ajaxCate',
                     dataType : 'json',
-                    data     :  {'_token': '{{csrf_token()}}', 'three': data.value},
+                    data     :  {'_token': '{{csrf_token()}}', 'three': 12},
                     success:function (data){
                         var str = '';
                         var char = '';
@@ -122,10 +122,10 @@
 
                         char += '<option value="">请选择商品分类</option><option value="">请选择商品分类</option>';
 //                    console.log(data);
-                        if(data.status == 0){
-//                                alert(1);
-                            $form.find('select[name=cat_id_03]').children().remove();
-                        }
+//                        if(data.status == 0){
+////                                alert(1);
+//                            $form.find('select[name=cat_id_03]').children().remove();
+//                        }
 //                            console.log(char);
                         $form.find('select[name=cat_id_03]').prepend(char).append(str);
                         form.render();
@@ -138,7 +138,6 @@
 
 
             form.on('submit(add)', function(data){
-                console.log(data);
                 //发异步，把数据提交给php
                 $.ajax({
                     type: 'post',

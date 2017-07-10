@@ -332,6 +332,7 @@
 			//			var layer = layui.layer;
 //				flow.lazyimg();
 
+			
 			flow.load({
 				elem: '#flow'
 				//指定列表容器
