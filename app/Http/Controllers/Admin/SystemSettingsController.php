@@ -30,6 +30,7 @@ class SystemSettingsController extends Controller
         return view('admin.main.settings.index',compact('configs'));
     }
 
+
     public function setChange(Request $request)
     {
         $conf_all = $request->all();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Models\Activity;
 use App\Models\Good;
 use App\Models\Goods;
 use App\Models\Spec;
@@ -39,13 +40,29 @@ class GoodsActivityController extends Controller
 //        dd($activity_id);
         // 商品表的商品信息获取并分页
         $goodsAll = Goods::orderBy('goods_id','desc')->paginate(3);
-
-//
-        return view('admin.main.goodsactivity.activitygoodsadd',compact('goodsAll','request'));
+        $activity_id = $request->input('activity_id');
+//        dd($activity_id);
+        return view('admin.main.goodsactivity.activitygoodsadd',compact('goodsAll','request','activity_id'));
     }
 
-    public function activityGood()
+    public function activityGoods(Request $request)
     {
-
+        $good_id = $request->input('goods_id');
+        $activity_id = $request->input('id');
+        $goods_id = Activity::where('id',$activity_id)->pluck('goods_id')->first();
+        $good_id = explode(',',$goods_id.','.$good_id);
+        $good_id = implode(',',array_unique(array_filter($good_id)));
+        $bool = Activity::where('id',$activity_id)->update(['goods_id'=>$good_id]);
+        if($bool){
+            return $msg = [
+                'status'=>0,
+                'msg'=>'添加商品成功'
+            ];
+        }else{
+            return $msg =[
+                'status'=>1,
+                'msg'=>'添加商品失败'
+            ];
+        }
     }
 }

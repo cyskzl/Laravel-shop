@@ -37,8 +37,21 @@ class AdminController extends Controller
     /**
      * @return  view    系统日志
      */
-    public function SystemLog()
+    public function SystemLog(Request $request)
     {
-        return view('admin.main.settings.systemlog');
+        //搜索
+       $admin_log = DB::table('admin_log')->orderBy('id', 'desc')
+                      ->where(function($query) use ($request){
+       //关键字
+       $keyword = $request->input('keyword');
+           //检测参数
+           if(!empty($keyword)){
+
+                $query->where('nickname','like','%'.$keyword.'%');
+                }
+       })->paginate(10);
+
+     return view('admin.main.settings.systemlog', compact('admin_log', 'request'));
+
     }
 }

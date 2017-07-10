@@ -24,7 +24,7 @@
 			<li> > </li>
 			<li>{{$cat_name[2]}}</li>
 			<li> > </li>
-			<li>{{$goodinfo->goods_name}}</li>
+			<li>{{$goodinfo['goods_name']}}</li>
 		</ul>
 	</div>
 
@@ -33,7 +33,7 @@
 
 		<!-- 商品大图展示-->
 		<div class="bigimgShow fl rela">
-			<img src="{{asset(trim($goodinfo->original_img,','))}}"id="goods_img">
+			<img src="{{asset(trim($goodinfo['original_img'],','))}}"id="goods_img">
 		</div>
 		<!-- 商品条件筛选-->
 		<div class="productOption fr">
@@ -41,15 +41,15 @@
 			<!-- 商品标签-->
 			<div class="ware-title">
 				<span class="Black">{{$brand[0] or ''}}</span><br>
-				<span class="B4d" id="goods_name">{{$goodinfo->goods_name}}</span><br>
-				<span class="S3c">{{$goodinfo->goods_sn}}</span>
+				<span class="B4d" id="goods_name">{{$goodinfo['goods_name']}}</span><br>
+				<span class="S3c">{{$goodinfo['goods_sn']}}</span>
 			</div>
 
 			<!-- 条件筛选-->
 			<div class="term">
 				<ul>
 					<!-- 商品价格-->
-					<li><span>价格：</span><span class="B4d" id="price">￥{{$goodinfo->shop_price}}</span></li>
+					<li><span>价格：</span><span class="B4d" id="price">￥{{$goodinfo['shop_price']}}</span></li>
 					{{--<li><span>含税价：</span><span>￥304.37</span></li>--}}
 					<!-- 商品颜色-->
 					<li>
@@ -57,7 +57,7 @@
 						<div class="color flex fl">
 							@foreach($spec_item[0] as $k=>$one_item)
 								@if(in_array($spec_id[0][$k],$key_one))
-									<input class="key1" type="text" name="key1" value="{{$one_item}}" size="1" goods_id="{{$goodinfo->goods_id}}" key1= '{{$spec_id[0][$k]}}' readonly>
+									<input class="key1" type="text" name="key1" value="{{$one_item}}" size="1" goods_id="{{$goodinfo['goods_id']}}" key1= '{{$spec_id[0][$k]}}' readonly>
 								@endif
 
 							@endforeach
@@ -69,7 +69,7 @@
 						<div class="size fl">
 							<div>
 								@foreach($spec_item[1] as $i=>$two_item)
-									<input class="key2" goods_id="{{$goodinfo->goods_id}}" key2="{{$spec_id[1][$i]}}" name="key2" value="{{$two_item}}" size="1" readonly>
+									<input class="key2" goods_id="{{$goodinfo['goods_id']}}" key2="{{$spec_id[1][$i]}}" name="key2" value="{{$two_item}}" size="1" readonly>
 								@endforeach
 							</div>
 							{{--<div class="none">--}}
@@ -189,14 +189,14 @@
 			<div class="cp-details clearfix">
 				<div class="D1">
 					<h3>产品详情</h3>
-					<span>{{$goodinfo->goods_remark}}</span>
+					<span>{{$goodinfo['goods_remark']}}</span>
 				</div>
 				<!-- 产品参数-->
 				<div class="D2">
 					<h3>产品参数</h3>
 					<ul>
 						@for($i=0;$i<count($goodattr);$i++)
-							<li>{{$goodattr[$i]->attr_name}}:{{$goodattr[$i]->attr_value}}</li>
+							<li>{{$goodattr[$i]['attr_name']}}:{{$goodattr[$i]['attr_value']}}</li>
 						@endfor
 					</ul>
 				</div>
@@ -221,7 +221,7 @@
 						</tbody>
 					</table>
 				</div>
-				{!! $goodinfo->goods_content !!}
+				{!! $goodinfo['goods_content'] !!}
 			</div>
 			<!-- 购物须知-->
 			<div class=" question none">
@@ -305,7 +305,7 @@
 
 	@section('footer')
 			<!--查看条框弹出框-->
-	<div class="popup fix none" id="popup">
+	<div class="popup fix none" id="popup" style="z-index: 99;">
 		<div id="box" class="abso">
 			<h3>退换条款</h3>
 			<ul>
@@ -481,15 +481,11 @@
 				var goods_shop = JSON.stringify({
 					"session_id": goods_id + '_' + key1 + '_'+ key2,
 					"goods_id": goods_id,
-					"specone" : spec_one + onevalue,
-					'spectwo' : spec_two + twovalue,
 					'num'  : num,
 					'price': price,
-					'goods_name': goods_name,
 					'key': key1 + '_' + key2,
 					'key1':key1,
 					'key2':key2,
-					'img' : goods_img
 				});
 
 
@@ -517,7 +513,9 @@
 						}
 
 					}
+
 				});
+
 				return false;
 			}
 		});

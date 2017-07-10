@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>后台管理</title>
+    <title>{{ config('config.inc.shop_title') }}-后台管理中心</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -16,7 +16,7 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header header header-demo">
         <div class="layui-main">
-            <a class="logo" href="{{url('/admin/admin')}}">hello word</a>
+            <a class="logo" href="{{url('/admin/admin')}}">{{ config('config.inc.shop_title') }}</a>
             <ul class="layui-nav" lay-filter="">
                 <li class="layui-nav-item">
 

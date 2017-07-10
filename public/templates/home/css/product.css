@@ -119,7 +119,7 @@
 /*<!-- 商品图片列表 -->*/
 .page_product_bottom{
 	width: 100%;
-	display: flex;
+	/*display: flex;*/
 	flex-flow:row wrap; 
 	justify-content:space-between;
 }

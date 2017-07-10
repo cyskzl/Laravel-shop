@@ -1,4 +1,28 @@
-
+<!--
+/**
+ *
+ * ━━━━━━神兽出来━━━━━━
+ * 　　　┏┓　　　┏┓
+ * 　　┏┛┻━━━┛┻┓
+ * 　　┃　　　　　　　┃
+ * 　　┃　　　━　　　┃
+ * 　　┃　┳┛　┗┳　┃
+ * 　　┃　　　　　　　┃
+ * 　　┃　　　┻　　　┃
+ * 　　┃　　　　　　　┃
+ * 　　┗━┓　　　┏━┛黑阔你好，黑阔再见。
+ * 　　　　┃　　　┃    神兽保佑,代码无bug
+ * 　　　　┃　　　┃
+ * 　　　　┃　　　┗━━━┓
+ * 　　　　┃　　　　　　　┣┓
+ * 　　　　┃　　　　　　　┏┛
+ * 　　　　┗┓┓┏━┳┓┏┛
+ * 　　　　　┃┫┫　┃┫┫
+ * 　　　　　┗┻┛　┗┻┛
+ *
+ * ━━━━━━感觉萌萌哒━━━━━━
+ */
+-->
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -80,7 +104,7 @@
                 @elseif($cateId == 2)
                     @foreach($twomam as $tman)
                         <div id="header_nav_left_new" class="CateNav">
-                            <a href="{{url('home/goodsList/')}}/{{$tman->id}}" route="{{$cateId}}" data-id="{{$tman->id}}" >{{$tman->name}}</a>
+                            <a href="{{url('home/goodsList/')}}/{{$tman->id}}?cate={{$tman->id}}" route="{{$cateId}}" data-id="{{$tman->id}}" >{{$tman->name}}</a>
                             <div class="header_nav_left_new">
                                 <div class="elastic_no">
                                     <div class="header_nav_left_new_one_text">
@@ -209,7 +233,6 @@
             that.find('a').first().attr('exists', '1');
             if(index == '0'){
 
-//                alert(index)
                 var goodsnew = '';
                 //请求ajax 前先清除里面的内
                 $("div").siblings(".CateNav").eq(0).find('.elastic_no').children().remove();
@@ -282,7 +305,7 @@
 
     });
 
-    //新品
+
 
     $(function(){
         if (!$.session.get("currentCategoryId")){
