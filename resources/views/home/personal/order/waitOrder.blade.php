@@ -76,7 +76,8 @@
 								<div>
 									<div class="order_money_off">
 										<p>{{$orderStatus[$vaule->order_status]}}</p>
-										<a href="javascript:" class="colorsb">订单详情</a>
+										<p><a href="{{ url('home/tocancelorder')."/".$vaule->sn }}" class="colorsb">取消订单</a></p>
+										<a href="orders/{{$vaule->sn}}" class="colorsb">订单详情</a>
 									</div>
 
 								</div>
