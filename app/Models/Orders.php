@@ -31,4 +31,10 @@ class Orders extends Model
 
     }
 
+    public function orderSnDetails()
+    {
+        return $this->hasMany('App\Models\OrdersDetails','order_sn','sn');
+
+    }
+
 }

@@ -92,7 +92,10 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
         //订单付款方式提交
         Route::post('/paymethodsubmit', 'OrderController@payMethodSubmit');
+        //取消订单
+        Route::get('/tocancelorder/{id}', 'OrderController@toCancelOrder');
 //        Route::post('/orders', 'OrderController@index');
+         //购物车提交到订单确认
         Route::post('/cartToOrder', 'OrderController@cartAjax');
 
         //ajax获取收货方式
@@ -120,6 +123,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
         Route::get('/waitorder', 'OrderController@waitOrder');
         // 个人中心-订单详情（已付款订单）
         Route::get('/alreadyorder', 'OrderController@alreadyOrder');
+
+        //只是什么用的??????????  by:Yang
         Route::post('/shopOrders', 'OrderController@shopOrders');
         // 个人中心-订单详情（已取消订单）
         Route::get('/cancelorder', 'OrderController@cancelOrder');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Models\DeliveryDoc;
 use App\Models\DelveryMethod;
 use App\Models\Goods;
 use App\Models\Orders;
@@ -12,6 +13,7 @@ use App\Models\Region;
 use App\Models\SpecGoodsPrice;
 use App\Models\SpecItem;
 use App\Models\UserInfo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Webpatser\Uuid\Uuid;
@@ -68,7 +70,7 @@ class OrderController extends Controller
             $goodsSale = $this->checkGoodsSale($goodsid);
 
             if (count($goodsSale)<1){
-                dd($goodsSale);
+//                dd($goodsSale);
                 dd('商品下架');
             }
 
@@ -76,7 +78,7 @@ class OrderController extends Controller
             $goodissnum = $this->goodsNum($goodsid,$specGoods,$goodsnum);
 
             if ($goodissnum){
-                dd($goodsnum);
+//                dd($goodsnum);
                 dd('库存不足');
             }
 
@@ -155,6 +157,7 @@ class OrderController extends Controller
             }
 
         }else{
+
             dd('没有在购物车提交');
         }
 
@@ -186,6 +189,7 @@ class OrderController extends Controller
 
         if (!$request->session()->has('addorders')) {
 
+            return redirect('home/orders');
             dd('非法提交');
         }
 
@@ -194,7 +198,7 @@ class OrderController extends Controller
             $goodsdata = $request->session()->get('addorders');
 
         }else{
-
+            return redirect('home/orders');
             dd('没有收货地址');
         }
 
@@ -203,6 +207,8 @@ class OrderController extends Controller
             $delverinfo = DelveryMethod::find($request->input('shipping_code'))->where('enabled',1)->first();
 
         }else{
+
+            return redirect('home/orders');
             dd('没有发货方式');
         }
 
@@ -214,6 +220,7 @@ class OrderController extends Controller
 
         if (!$status){
 
+            return redirect('home/orders');
             dd('生成订单失败');
         }
 
@@ -233,7 +240,7 @@ class OrderController extends Controller
 
         $request->session()->set('orders.sn',$status['sn']);
 
-        return view('home.orders.payment',compact('status','paymethod'));
+        return view('home.orders.payment',compact('cateId','status','paymethod'));
     }
 
 
@@ -249,9 +256,17 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
+        $cateId = $request->session()->get('Index');
+
+        $userid = \Auth::user()->user_id;
+
+        $orderData = Orders::where('sn',$id)->where('user_id',$userid)->with('orderDetails')->first();
+
+//        dd($orderData);
         //
+        return view('home.personal.order.orderdetail',compact('cateId','orderData'));
     }
 
     /**
@@ -288,15 +303,27 @@ class OrderController extends Controller
         //
     }
 
+    //个人中心订单页数据
     public function userOrderData($userid,$field,$arr)
     {
         $orderData = Orders::where('user_id',$userid)->where(function ($query)use ($field,$arr){
-            if (!is_array($arr)){
+            if (!is_array($arr) && !is_array($field)){
                 $query->where($field,$arr);
             }
 
-            if (is_array($arr)){
+            if (is_array($arr) && !is_array($field)){
                 $query->whereIn($field,$arr);
+            }
+        })->where(function ($query) use ($field,$arr){
+            if (is_array($field) && is_array($arr)){
+                foreach ($field as $k=>$v){
+
+                    if (is_array($arr[$k])){
+                        $query->whereIn($v,$arr[$k]);
+                    }else{
+                        $query->where($v,$arr[$k]);
+                    }
+                }
             }
         })->with(['orderDetails'=>function($query){
             $query->select('order_id','goods_info','goods_num','goods_id');
@@ -315,12 +342,12 @@ class OrderController extends Controller
 
         $userid =  \Auth::user()->user_id;
 
-        $field = 'pay_status';
+        $field = ['pay_status','order_status'];
 
-        $str = 0;
+        $str = [0,0];
 
         $orderData = $this->userOrderData($userid,$field,$str);
-//       dd($orderData);
+
         $orderStatus = array(0=>'未确认',1=>'已确认');
 
         return view('home.personal.order.waitOrder',compact('cateId','orderData','orderStatus'));
@@ -336,9 +363,9 @@ class OrderController extends Controller
 
         $userid =  \Auth::user()->user_id;
 
-        $field = 'pay_status';
+        $field = ['pay_status','order_status'];
 
-        $str = 1;
+        $str = [1,[1,2,3]];
 
         $orderData = $this->userOrderData($userid,$field,$str);
 
@@ -375,6 +402,17 @@ class OrderController extends Controller
     public function refundOrder(Request $request)
     {
         $cateId = $request->session()->get('Index');
+
+//        $userid =  \Auth::user()->user_id;
+//
+//        $field = 'order_status';
+//
+//        $arr = [-1,-2,-3];
+//
+//        $orderData = $this->userOrderData($userid,$field,$arr);
+//
+//        $orderStatus = array(-1=>'已取消',-2=>'无效订单',-3=>'作废订单');
+
         return view('home.personal.order.refundOrder',compact('cateId'));
     }
 
@@ -596,7 +634,6 @@ class OrderController extends Controller
             Redis::del('ordresn');
         }
 
-        
 
         $sntow = sprintf("%05d", $sntow);
 
@@ -614,28 +651,99 @@ class OrderController extends Controller
     {
         $payid = $request->input('pay_name');
 
+        //获取付款方式
         $payData = PayMethod::find($payid)->where('enabled',1)->first();
 
         if ($request->session()->has('orders.sn')) {
 
+            //获取订单编号
             $orderSn = $request->session()->get('orders.sn');
         }
 
+        //获取用户id
+        $userid = \Auth::user()->user_id;
 
-        $order = Orders::where('sn',$orderSn)->first();
+        //调用更改付款状态和创建发货单方法
+        $status = $this->createDeliveryDoc($orderSn,$userid,$payData);
 
-
-        $order->order_status = 1;
-        $order->pay_status = 1;
-
-        $order->pay_code = $payData->id;
-        $order->pay_name = $payData->name;
-
-        if ($order->save()){
-
+        //更改付款状态和创建发货单
+        if ($status){
             //重定向到订单详情页
-            return Redirect::to('home/alreadyorder');
+            return redirect('home/alreadyorder');
         }
+
+
+
+    }
+
+    //个人中心提交过来的取消订单
+    public function toCancelOrder($id)
+    {
+        $userid =  \Auth::user()->user_id;
+
+        $order = Orders::where('user_id',$userid)->where('order_status',0)->where('pay_status',0)->where('sn',$id)->first();
+
+        if (count($order)>0){
+
+            $order->order_status = -1;
+
+            if ($order->save()){
+
+                return '取消成功';
+            }else{
+                return '取消失败';
+            }
+
+        }else{
+
+            return '订单信息错误';
+        }
+
+    }
+
+    //更改付款状态和创建发货单
+    public function createDeliveryDoc($orderSn,$userid,$payData)
+    {
+        $status = DB::transaction(function() use ($orderSn,$userid,$payData)
+        {
+            $order = Orders::where('sn',$orderSn)->where('user_id',$userid)->first();
+
+            $order->order_status = 1;
+            $order->pay_status = 1;
+
+            $order->pay_code = $payData->id;
+            $order->pay_name = $payData->name;
+
+            if ($order->save()){
+                $delivery = new DeliveryDoc();
+
+                $delivery->order_id = $order->id;
+
+                $delivery->order_sn = $order->sn;
+                $delivery->user_id = $userid;
+                $delivery->consignee = $order->consignee;
+                $delivery->zipcode = $order->zipcode;
+                $delivery->mobile = $order->mobile;
+                $delivery->country = $order->country;
+                $delivery->province = $order->province;
+                $delivery->city = $order->city;
+                $delivery->twon = $order->twon;
+                $delivery->address = $order->address;
+                $delivery->shipping_code = $order->shipping_code;
+                $delivery->shipping_name = $order->shipping_name;
+                $delivery->shipping_price = $order->shipping_price;
+                $delivery->shipping_price = $order->shipping_price;
+
+                if ($delivery->save()){
+
+                   return true;
+
+                }
+
+            }
+        });
+
+        return $status;
 
     }
 
