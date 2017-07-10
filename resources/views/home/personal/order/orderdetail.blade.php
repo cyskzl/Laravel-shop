@@ -55,7 +55,7 @@
                                             <div class="item">
                                                 <span class="label"> 地址： </span>
                                                 <div class="info-rcol">
-                                                    ccccc
+                                                    {{$address.$orderData->address}}
                                                 </div>
                                             </div>
                                             <div class="item">
