@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Activity;
+use App\Models\Goods;
 use App\Models\GoodsActivity;
 use App\Models\GoodsType;
 use Illuminate\Http\Request;
@@ -68,11 +69,13 @@ class ActivityController extends Controller
     public function show($id)
     {
         // 关联商品表得到商品的信息
-        $act_goods = GoodsActivity::with(['goods' => function ($query) {
-            $query->select('goods_id', 'goods_name');
-        }])->where('activity_id', '=', $id)->get();
-
-        return view('admin.main.activity.show', compact('act_goods'));
+        $act_goods = Activity::where('id',$id)->pluck('goods_id')->first();
+        $act_goods = explode(',',$act_goods);
+        foreach($act_goods as $k=>$goods_id){
+            $goods_info[$k] = Goods::where('goods_id',$goods_id)->select('goods_name','shop_price','store_count')->first();
+        }
+//        dd($goods_info->paginate(3));
+        return view('admin.main.activity.show', compact('goods_info'));
     }
 
     /**

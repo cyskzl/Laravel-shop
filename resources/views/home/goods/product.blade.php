@@ -17,6 +17,9 @@
 @endsection
 
 @section('main')
+			<div class="page_product_top">
+				<p style="color:#626161;font-size:25px;">{{$tip['tip']}}</p>
+			</div>
 			<!-- 商品图片列表 -->
 			<div class="page_product_img" style="width:1100px; left:50%;margin-left:148px;">
 				<div class="page_product_bottom" style="float:left;">

@@ -39,13 +39,17 @@ class IndexController extends Controller
 //        dd($docs);
         if(!$docs){
             // 无查询结果，则在列表页遍历最新的20件商品;
+            $tip = ['tip'=>'抱歉！没有找到与"'.$key.'"相关的商品,为您推荐'];
             $goods = Goods::orderBy('goods_id','desc')->paginate(20);
+        }else{
+            foreach ($docs as $k=>$value){
+                $goods[$k] = Goods::where('goods_id',$value['goods_id'])->first();
+            }
+            $tip = ['tip'=>'共为您搜索到'.count($docs).'条数据'];
         }
 
-        foreach ($docs as $k=>$value){
-            $goods[$k] = Goods::where('goods_id',$value['goods_id'])->first();
-        }
-        return view('home.goods.product',compact('goods','cateId'));
+
+        return view('home.goods.product',compact('goods','cateId','tip'));
     }
 
     /**

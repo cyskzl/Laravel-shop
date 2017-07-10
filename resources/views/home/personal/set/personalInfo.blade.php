@@ -52,7 +52,7 @@
 								</div>
 	                        </li>
 	                        <li>
-	                            <span>手机号码</span>{{ $user->tel }}
+	                            <span>手机号码</span>{{ $user->tel == ''?'未认证': $user->tel}}
 	                        </li>
 							<li>
 							   <span>真实姓名</span>
@@ -86,7 +86,7 @@
 						   </li>
 	                        <li>
 	                            <span>昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</span>
-	                            <p>{{ $user->nickname or $user->tel }}</p>
+	                            <p>{{ $user->nickname or '未填写' }}</p>
 	                            <a href="#edit_name" class="edit_name">修改昵称</a>
 								<div id="edit_name" style="display:none;">
 									<!-- <div class="change_form_bg"></div> -->
@@ -157,7 +157,7 @@
 
 						   	<li>
 							   	<span>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日</span>
-								<p>{{ $user->birthday }}</p>
+								<p>{{ $user->birthday or '未填写'}}</p>
 							   	<a href="#edit_birthday" id="modaltrigger" class="edit_birthday">修改生日</a>
 							   	<div id="edit_birthday" style="display:none;">
 							   		<!-- <div class="change_form_bg"></div> -->
