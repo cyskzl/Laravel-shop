@@ -163,11 +163,12 @@ class IndexController extends Controller
      */
     public function trendGoods( $cateId )
     {
-        $goods = GoodsMiddleTrendpromotion::join('goods', 'goods_middle_trendpromotion.goods_id', '=', 'goods.goods_id')
-            ->where('goods.cat_id', 'like', $cateId.'%')
+        $goods = GoodsMiddleTrendpromotion::where('goods.cat_id', 'like', $cateId.'%')
+            -> join('goods', 'goods_middle_trendpromotion.goods_id', '=', 'goods.goods_id')
             ->join('trendpromotion', 'trendpromotion.id', '=', 'goods_middle_trendpromotion.trendpro_id')
             ->take(6)
             ->get();
+//        dd($goods);
 
         return $goods;
 
