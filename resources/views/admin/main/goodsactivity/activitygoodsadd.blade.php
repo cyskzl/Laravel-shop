@@ -55,23 +55,35 @@
 
 @section('js')
     <script>
-        $('#submit').click(function(){
-            var goods_id = new Array();
-            $('input[name="goods_id"]:checked').each(function(){
-                goods_id.push($(this).val());//向数组中添加元素
-            });
-            var goods_str=goods_id.join(',');
+        layui.use(['layer'], function () {
+            $ = layui.jquery;
+            var layer = layui.layer
+            $('#submit').click(function () {
+                var goods_id = new Array();
+                $('input[name="goods_id"]:checked').each(function () {
+                    goods_id.push($(this).val());//向数组中添加元素
+                });
+                var goods_str = goods_id.join(',');
 //            console.log(goods_str);return false;
-            $.ajax({
-                type:"post",
-                url: '{{url('admin/goodsactivity/activity')}}',
-                {{--data: {'goods_id':goods_str,'id':{{$activity->id}}},--}}
-                dataType:'json',
-                success: function(data) {
-                    if(data){
-                        console.log(data);
+                $.ajax({
+                    type: "post",
+                    url: '{{url('admin/goodsactivity/activity')}}',
+                    data: {'goods_id': goods_str, 'id':{{$activity_id}}, '_token': '{{csrf_token()}}'},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status==0) {
+                            layer.alert(data.msg, {icon: 6}, function () {
+                                // 获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            });
+                        } else {
+                            layer.alert(data.msg, {icon: 5});
+                            return false;
+                        }
                     }
-                }
+                });
             });
         });
     </script>

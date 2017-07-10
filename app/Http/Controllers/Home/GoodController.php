@@ -19,6 +19,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redis;
 
 class GoodController extends Controller
 {
@@ -292,78 +293,107 @@ class GoodController extends Controller
      */
     public function goodsDetail(Request $request,$goods_id)
     {
+        $goods_bool = Redis::HEXISTS('goodDetails',$goods_id);
         // 页面分类id，区分所属顶级分类
         $cateId = $request->session()->get('Index');
-        // 获取商品详细信息，便于详情页以及查找规格价格，属性
-        $goodinfo = Goods::find($goods_id);
-        // 商品所属分类（面包屑导航）
-        $goodcat = explode('_',$goodinfo->cat_id);
-        foreach ($goodcat as $k=>$cat){
-            $cat_name[$k] = Category::where('id',$cat)->pluck('name')->first();
-        }
+        if(!$goods_bool) {
 
-        // 获取商品的类型id，用于获取商品规格项（颜色、尺寸。。）
-        $type_id = $goodinfo->goods_type;
+            // 获取商品详细信息，便于详情页以及查找规格价格，属性
+            $goodinfo = Goods::find($goods_id)->toArray();
+            // 商品所属分类（面包屑导航）
+            $goodcat = explode('_', $goodinfo['cat_id']);
+            foreach ($goodcat as $k => $cat) {
+                $cat_name[$k] = Category::where('id', $cat)->pluck('name')->first();
+            }
 
-        // 获取品牌id，用于查找商品品牌信息
-        $brand_id = $goodinfo->brand_id;
+            // 获取商品的类型id，用于获取商品规格项（颜色、尺寸。。）
+            $type_id = $goodinfo['goods_type'];
 
-        // 获取商品品牌信息，用于详情页展示
-        $brand = Brand::where('id',$brand_id)->pluck('name')->toArray();
+            // 获取品牌id，用于查找商品品牌信息
+            $brand_id = $goodinfo['brand_id'];
+
+            // 获取商品品牌信息，用于详情页展示
+            $brand = Brand::where('id', $brand_id)->pluck('name')->toArray();
 
 //        // 通过商品的类型id，获取商品的规格名与规格id，用于查找商品价格
 //        $spec = Spec::where('type_id',$type_id)->pluck('name','id');
 
-        // 通过商品ID获取商品的所有规格项
-        $spec_key = SpecGoodsPrice::where('goods_id',$goods_id)->get();
-        // 拆分规格项值，用于详情页的第一列的规格展示，并且判断商品此规格项对应下的商品规格项有几个规格
+            // 通过商品ID获取商品的所有规格项
+            $spec_key = SpecGoodsPrice::where('goods_id', $goods_id)->get();
+            // 拆分规格项值，用于详情页的第一列的规格展示，并且判断商品此规格项对应下的商品规格项有几个规格
 
-        foreach ($spec_key as $k=>$v){
-            $key_team[$k] = explode('_',$v->key);
-        }
-
-        $one_key = explode('_',$spec_key[0]->key)[0];
-
-        // 通过上述的第一个商品规格项，通过模糊查询得到第一个规格对应的下一规格项
-        $key1_info = SpecGoodsPrice::where('goods_id',$goods_id)->where('key','like',$one_key.'_%')->pluck('key');
-
-        // 通过遍历获取得到商品的第一个规格项的下一规格项的所有信息
-        foreach($key1_info as $key2){
-            $two_key[] = explode('_',$key2)[1];
-        }
-        // 商品属性
-        $goodattr = GoodsAttr::where('goods_id',$goods_id)->leftjoin('goods_attribute','goods_attr.attr_id','=','goods_attribute.attr_id')->select('goods_attribute.attr_name','goods_attr.attr_value')->get();
-
-        // 通过商品的类型ID得到该商品的类型对应的所有规格项
-        $specdetali = Spec::select(DB::raw('spec.*, spec_item.spec_id, group_concat(spec_item.item) AS specitem , group_concat(spec_item.id) AS specid'))
-        ->join('spec_item', 'spec.id', '=', 'spec_item.spec_id')
-        ->where('type_id','=',$type_id)
-        ->groupby('spec.name')
-        ->get();
-
-        // 拆分规格项的信息，得到规格名spec_name、规格值spec_item,规格id
-        foreach($specdetali as $k=>$detail){
-            $spec_name[$k] = $detail->name;
-            $spec_item[$k] = explode(',',$detail->specitem);
-            $spec_id[$k] = explode(',',$detail->specid);
-        }
-
-        if( !in_array($one_key,$spec_id[0])){
-            rsort($spec_name);
-            rsort($spec_item);
-            rsort($spec_id);
-        }
-
-        foreach($key_team as $k=>$key1){
-            if(in_array($key1[0],$spec_id[0])){
-                $key_one[$k] = $key1[0];
+            foreach ($spec_key as $k => $v) {
+                $key_team[$k] = explode('_', $v->key);
             }
-        }
-        $key_one = array_unique($key_one);
 
+            $one_key = explode('_', $spec_key[0]->key)[0];
+
+            // 通过上述的第一个商品规格项，通过模糊查询得到第一个规格对应的下一规格项
+            $key1_info = SpecGoodsPrice::where('goods_id', $goods_id)->where('key', 'like', $one_key . '_%')->pluck('key');
+
+            // 通过遍历获取得到商品的第一个规格项的下一规格项的所有信息
+            foreach ($key1_info as $key2) {
+                $two_key[] = explode('_', $key2)[1];
+            }
+            // 商品属性
+            $goodattr = GoodsAttr::where('goods_id', $goods_id)->leftjoin('goods_attribute', 'goods_attr.attr_id', '=', 'goods_attribute.attr_id')->select('goods_attribute.attr_name', 'goods_attr.attr_value')->get()->toArray();
+
+            // 通过商品的类型ID得到该商品的类型对应的所有规格项
+            $specdetali = Spec::select(DB::raw('spec.*, spec_item.spec_id, group_concat(spec_item.item) AS specitem , group_concat(spec_item.id) AS specid'))
+                ->join('spec_item', 'spec.id', '=', 'spec_item.spec_id')
+                ->where('type_id', '=', $type_id)
+                ->groupby('spec.name')
+                ->get();
+
+            // 拆分规格项的信息，得到规格名spec_name、规格值spec_item,规格id
+            foreach ($specdetali as $k => $detail) {
+                $spec_name[$k] = $detail->name;
+                $spec_item[$k] = explode(',', $detail->specitem);
+                $spec_id[$k] = explode(',', $detail->specid);
+            }
+
+            if (!in_array($one_key, $spec_id[0])) {
+                rsort($spec_name);
+                rsort($spec_item);
+                rsort($spec_id);
+            }
+
+            foreach ($key_team as $k => $key1) {
+                if (in_array($key1[0], $spec_id[0])) {
+                    $key_one[$k] = $key1[0];
+                }
+            }
+            $key_one = array_unique($key_one);
+
+            $goods_info = json_encode(array(
+                'specdetali' => $specdetali,
+                'goodinfo' => $goodinfo,
+                'brand' => $brand,
+                'spec_name' => $spec_name,
+                'spec_item' => $spec_item,
+                'spec_id' => $spec_id,
+                'two_key' => $two_key,
+                'goodattr' => $goodattr,
+                'key_one' => $key_one,
+                'cat_name' => $cat_name,
+            ));
+            $res = Redis::hset('goodDetails', $goods_id, $goods_info);
+        }else{
+            $goods_info = json_decode(Redis::hget('goodDetails',$goods_id),true);
+            $specdetali = $goods_info['specdetali'];
+            $goodinfo = $goods_info['goodinfo'];
+            $brand = $goods_info['brand'];
+            $spec_name = $goods_info['spec_name'];
+            $spec_item = $goods_info['spec_item'];
+            $spec_id = $goods_info['spec_id'];
+            $two_key = $goods_info['two_key'];
+            $goodattr = $goods_info['goodattr'];
+            $key_one = $goods_info['key_one'];
+            $cat_name = $goods_info['cat_name'];
+        }
         //商品推荐
         //女士
-        if($cateId == 1){
+        if ($cateId == 1) {
             $recommend = self::recommend($cateId);
 
         } else {

@@ -173,84 +173,6 @@
 		</div>
 	</div>
 
-	<!--博主控-->
-	<div class="master width">
-		<div class="title ">
-			<h2>博主控</h2>
-			<a href="javascript:">MORE</a>
-		</div>
-		<!--商品-->
-		<div class="master-show width cen ">
-			<!--第一列    共四列-->
-			<div class="masthow ">
-				<a href="javascript:">
-					<div class="atcpic">
-						<img src="{{asset('/templates/home/uploads/7.jpg')}}" alt=""  class="img">
-						<!--关注人数-->
-						<div class="attention clear">
-							<div class="attention-left">
-								<img src="{{asset('/templates/home/uploads/2.jpg')}}" alt="" />
-								<span>阿布</span>
-							</div>
-							<div class="attention-right">
-								<span>关注</span>
-								<em>17</em>
-							</div>
-						</div>
-					</div>
-					<span class="brand color">NUMBERING</span>
-					<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-					<span class="price">¥&nbsp;627</span>
-				</a>
-			</div>
-			<!--第二列    共四列-->
-			<div class="masthow ">
-				<a href="javascript:">
-					<div class="atcpic">
-						<img src="{{asset('/templates/home/uploads/1.jpg')}}" alt=""  class="img">
-						<!--关注人数-->
-						<div class="attention clear">
-							<div class="attention-left">
-								<img src="{{asset('/templates/home/uploads/1.jpg')}}" alt="" />
-								<span>阿布</span>
-							</div>
-							<div class="attention-right">
-								<span>关注</span>
-								<em>17</em>
-							</div>
-						</div>
-					</div>
-					<span class="brand color">NUMBERING</span>
-					<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-					<span class="price">¥&nbsp;222</span>
-				</a>
-			</div>
-			<!--第三列    共四列-->
-			<div class="masthow ">
-				<a href="javascript:">
-					<div class="atcpic">
-						<img src="{{asset('/templates/home/uploads/1.jpg')}}" alt=""  class="img">
-						<!--关注人数-->
-						<div class="attention clear">
-							<div class="attention-left">
-								<img src="{{asset('/templates/home/uploads/1.jpg')}}" alt="" />
-								<span>阿布</span>
-							</div>
-							<div class="attention-right">
-								<span>关注</span>
-								<em>17</em>
-							</div>
-						</div>
-					</div>
-					<span class="brand color">NUMBERING</span>
-					<span class="name color">不对称水晶钻圆环耳钉_金色</span>
-					<span class="price">¥&nbsp;222</span>
-				</a>
-			</div>
-
-		</div>
-	</div>
-
 	<!--潮流穿搭-->
 	@foreach($trendpromotion as $key => $trend)
 	<div class="design width">
@@ -332,6 +254,7 @@
 			//			var layer = layui.layer;
 //				flow.lazyimg();
 
+			
 			flow.load({
 				elem: '#flow'
 				//指定列表容器

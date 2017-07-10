@@ -39,13 +39,17 @@ class IndexController extends Controller
 //        dd($docs);
         if(!$docs){
             // 无查询结果，则在列表页遍历最新的20件商品;
+            $tip = ['tip'=>'抱歉！没有找到与"'.$key.'"相关的商品,为您推荐'];
             $goods = Goods::orderBy('goods_id','desc')->paginate(20);
+        }else{
+            foreach ($docs as $k=>$value){
+                $goods[$k] = Goods::where('goods_id',$value['goods_id'])->first();
+            }
+            $tip = ['tip'=>'共为您搜索到'.count($docs).'条数据'];
         }
 
-        foreach ($docs as $k=>$value){
-            $goods[$k] = Goods::where('goods_id',$value['goods_id'])->first();
-        }
-        return view('home.goods.product',compact('goods','cateId'));
+
+        return view('home.goods.product',compact('goods','cateId','tip'));
     }
 
     /**
@@ -159,11 +163,12 @@ class IndexController extends Controller
      */
     public function trendGoods( $cateId )
     {
-        $goods = GoodsMiddleTrendpromotion::join('goods', 'goods_middle_trendpromotion.goods_id', '=', 'goods.goods_id')
-            ->where('goods.cat_id', 'like', $cateId.'%')
+        $goods = GoodsMiddleTrendpromotion::where('goods.cat_id', 'like', $cateId.'%')
+            -> join('goods', 'goods_middle_trendpromotion.goods_id', '=', 'goods.goods_id')
             ->join('trendpromotion', 'trendpromotion.id', '=', 'goods_middle_trendpromotion.trendpro_id')
             ->take(6)
             ->get();
+//        dd($goods);
 
         return $goods;
 
@@ -254,7 +259,7 @@ class IndexController extends Controller
         $sales_sum = Goods::where( 'is_hot','=', '1' )
             ->where(  'cat_id', 'like', $cateId.'%' )
             ->orderBy('sales_sum', 'desc')
-            ->take(10)->get();
+            ->take(4)->get();
         return $sales_sum;
     }
 

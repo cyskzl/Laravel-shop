@@ -74,7 +74,7 @@
 										<div>
 											<div class="order_money_off">
 												<p>{{$orderStatus[$vaule->order_status]}}</p>
-												<a href="javascript:" class="colorsb">订单详情</a>
+												<a href="orders/{{$vaule->sn}}" class="colorsb">订单详情</a>
 											</div>
 
 										</div>

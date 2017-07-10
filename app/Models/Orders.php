@@ -37,4 +37,10 @@ class Orders extends Model
 
     }
 
+    public function orderDeliveryDoc()
+    {
+        return $this->hasMany('App\Models\DeliveryDoc','order_id','id');
+
+    }
+
 }

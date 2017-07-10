@@ -23,8 +23,44 @@ $('.personal_left dl dd a').click(function(){
     return false;
 });
 
-$('.left_memu').on('click', function() {
+$('.left_memu_personal').on('click', function() {
     $.session.set('personal_leftId', '7');
+
+    // return false;
+});
+
+$('.left_memu_orders').on('click', function() {
+    $.session.set('personal_leftId', '4');
+
+    // return false;
+});
+
+$('.left_memu_favorites').on('click', function() {
+    $.session.set('personal_leftId', '1');
+
+    // return false;
+});
+
+$('.left_memu_favorites1').on('click', function() {
+    $.session.set('personal_leftId', '1');
+
+    // return false;
+});
+
+$('.left_memu_integral').on('click', function() {
+    $.session.set('personal_leftId', '9');
+
+    // return false;
+});
+
+$('.left_memu_coupon').on('click', function() {
+    $.session.set('personal_leftId', '11');
+
+    // return false;
+});
+
+$('.left_memu_newest').on('click', function() {
+    $.session.set('personal_leftId', '13');
 
     // return false;
 });

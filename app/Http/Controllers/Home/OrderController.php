@@ -144,8 +144,6 @@ class OrderController extends Controller
                 $request->session()->set('addorders.address',$address);
 
 
-            }else{
-
             }
 
             //查询发货方式
@@ -262,11 +260,23 @@ class OrderController extends Controller
 
         $userid = \Auth::user()->user_id;
 
-        $orderData = Orders::where('sn',$id)->where('user_id',$userid)->with('orderDetails')->first();
+        $orderData = Orders::where('sn',$id)->where('user_id',$userid)->with('orderDetails','orderDeliveryDoc')->first();
 
+        if (count($orderData)>0){
+
+            $regions = Region::whereIn('id',[$orderData->province,$orderData->city,$orderData->district,$orderData->twon])->get();
+            $address = '';
+
+            foreach ($regions as $value){
+
+                $address .= $value->name;
+            }
+        }
+
+        
 //        dd($orderData);
         //
-        return view('home.personal.order.orderdetail',compact('cateId','orderData'));
+        return view('home.personal.order.orderdetail',compact('cateId','orderData','address'));
     }
 
     /**
