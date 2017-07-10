@@ -21,7 +21,7 @@
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">规格项</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入规格项,每项以逗号分隔" class="layui-textarea" name="item"> {{$info->specitem->item}}</textarea>
+                    <textarea placeholder="请输入规格项,每项以逗号分隔" class="layui-textarea" name="item"> {{$specitem[0]['specitem']}}</textarea>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -73,15 +73,22 @@
                             //失败
                             layer.msg(data.msg, {icon: 5});
 
-                        }
-                        //成功
-                        layer.alert(data.msg, {icon: 6},function () {
-                            // 获得frame索引
-                            var index = parent.layer.getFrameIndex(window.name);
-                            //关闭当前frame
-                            parent.layer.close(index);
+                        } else if(data.status == 2){
                             layer.msg(data.msg, {icon: 5});
-                        });
+
+                        } else if(data.status == 3){
+
+                            layer.msg(data.msg, {icon: 5});
+                        } else {
+                            //成功
+                            layer.alert(data.msg, {icon: 6},function () {
+                                // 获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                parent.layer.close(index);
+                                layer.msg(data.msg, {icon: 5});
+                            });
+                        }
 
                     }});
 

@@ -90,8 +90,15 @@
                     {{--{{$spec->type_id}}--}}
                 </td>
                 <td>
-                    {{$goodsattr->attr_input_type}}
-
+                    {{--0 手工录入 1从列表中选择 2多行文本框--}}
+{{--                    {{$goodsattr->attr_input_type}}--}}
+                    @if($goodsattr->attr_input_type == '0')
+                        手工录入
+                    @elseif($goodsattr->attr_input_type == '1')
+                        从列表中选择
+                    @else
+                        多行文本框
+                    @endif
                 </td>
                 <td>
                     {{$goodsattr->attr_values}}

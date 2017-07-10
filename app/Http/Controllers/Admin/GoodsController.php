@@ -41,12 +41,24 @@ class GoodsController extends Controller
                 //分类检索
                 $typename = $request->input('typename');
                 if (!empty($typename)) {
-                    $query->where('type_id', 'like', '%' . $typename . '%');
+                    $query->where('goods_type', '=', $typename );
                 }
                 //品牌检索
-                $brand= $request->input('brandslect');
+                $brand= $request->input('brand_id');
                 if (!empty($brand)) {
-                    $query->where('brand_id', 'like', '%' . $brand . '%');
+                    $query->where('brand_id', '=' ,$brand );
+                }
+                //上下架检索
+                $is_on_sale= $request->input('is_on_sale');
+
+                if ($is_on_sale) {
+                    $query->where('is_on_sale', '=' ,$is_on_sale );
+//                    dd(123);
+                }
+                //新品检索
+                $is_new= $request->input('is_new');
+                if (!empty($is_new)) {
+                    $query->where('is_new', '=' ,$is_new );
                 }
 
             })->paginate(10);

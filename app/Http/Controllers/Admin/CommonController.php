@@ -149,6 +149,7 @@ class CommonController extends Controller
     public function ajaxTwoCate(Request $request)
     {
         $fatcate = $request->input('fatcate');
+       
         if($fatcate){
 
             $data  =  Category::where('level', '=', '0,'.$fatcate)->get();

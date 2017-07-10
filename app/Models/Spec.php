@@ -24,6 +24,6 @@ class Spec extends Model
      */
     public function specitem()
     {
-        return $this->belongsTo('App\Models\SpecItem','id','spec_id');
+        return $this->hasMany('App\Models\SpecItem','spec_id','id');
     }
 }

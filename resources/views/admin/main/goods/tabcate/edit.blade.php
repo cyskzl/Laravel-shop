@@ -12,22 +12,21 @@
         <div class="layui-form-item" style="width: 400px">
             <label class="layui-form-label" style="width: 100px">选项卡名称</label>
             <div class="layui-input-block">
-                <input type="text" value="{{$goodscate->name}}" name="name"  lay-verify="required" placeholder="选项卡名称" autocomplete="off" class="layui-input">
+                <input type="text" value="{{$tabcate->name}}" name="name"  lay-verify="required" placeholder="选项卡名称" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">商品分类</label>
             <div class="layui-input-inline" style="margin-left: 10px">
-                <select name="cat_id" id="cat_id" lay-filter="filter">
+                <select name="cat_id" id="cat_id" lay-filter="filter" data-key='{{$tab[0]}}'>
                     <option value="">请选择商品分类</option>
-                    @foreach($fatcates as $fatcate)
-                        {{--@if($goodscate->cat_id) selected @endif--}}
-                        <option  @if($fatcate->id == $one) selected @endif value="{{$fatcate->id}}">{{$fatcate->name}}</option>
+                    @foreach($topscate as $fatcate)
+                        <option  @if($fatcate->id == $tab[0] ) selected @endif value="{{$fatcate->id}}">{{$fatcate->name}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="layui-input-inline" >
-                <select name="cat_id_02" id="cat_id_02" lay-filter="cate_02">
+                <select name="cat_id_02" id="cat_id_02" lay-filter="cate_02" data-key='{{$tab[1]}}'>
                     <option value="">请选择商品分类</option>
                     {{--<option value="">请选择商品分类</option>--}}
                 </select>
@@ -59,27 +58,28 @@
 //            var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 
 //            $form.find('select[name=cat_id_02]').children().remove();
-                var val = $form.find('select[name=cat_id]').val()
-                one ={{$two}}
+                var val = $('#cat_id').attr('data-key');
+                var two = $('#cat_id_02').attr('data-key');
+                {{--one ={{$two}}--}}
                 if(val !== null){
 
                     $form.find('select[name=cat_id_02]').children().remove();
 
                     $.ajax({
                         type     : 'post',
-                        url      : '/admin/ajaxCate',
+                        url      : '/admin/ajaxTwoCate',
                         dataType : 'json',
-                        data     :  {'_token': '{{csrf_token()}}', 'fatcate': val},
+                        data     :  { '_token': '{{csrf_token()}}', 'fatcate': val },
                         success:function (data){
                             var str = '';
                             for(var i=0; i<data.length; i++){
                                 var id = data[i]['id'];
                                 var name = data[i]['name'];
-                                    if(id == one){
+                                    if(id == two){
                                         str += '<option id="fuck" data-id='+id+' selected="selected"  value="'+id+'">'+name+'</option>';
 //                                        str += '<input type="hidden" data-id='+id+' id="fuck">'
-                                    }else {
-                                        str += '<option value="'+id+'">'+name+'</option>';
+                                    } else {
+                                        str += '<option data-id='+id+' value="'+id+'">'+name+'</option>';
                                     }
 
                             }
@@ -95,11 +95,13 @@
 //            form.render();
             //获取三级分类信息
 //            $('#testSelect option:selected')
-//            var val2 = $('#fuck').attr('data-id');
+            console.log($('#fuck'))
+            var val2 = $('#fuck').attr('data-id');
+            console.log(val2);
 //            console.log($('#fuck'));
-            form.on('select(cate_02)', function(data){
+//            form.on('select(cate_02)', function(data){
 //            console.log(data.value);
-                var cate_02 = data.value;
+//                var cate_02 = data.value;
                 $form.find('select[name=cat_id_03]').children().remove();
                 $.ajax({
                     type     : 'post',
@@ -131,7 +133,7 @@
                 });
 
 //                }
-            });
+//            });
 
 
 
