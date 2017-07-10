@@ -149,10 +149,10 @@
         </div>
         <div class="layui-footer footer footer-demo">
             <div class="layui-main">
-                <p>感谢layui,百度Echarts,jquery</p>
+
                 <p>
                     <a href="/">
-                        Copyright ©2017 x-admin v2.3 All Rights Reserved.
+                        {{ config('config.inc.shop_copyright') }}
                     </a>
                 </p>
                 <p>
