@@ -61,13 +61,16 @@
                 goods_id.push($(this).val());//向数组中添加元素
             });
             var goods_str=goods_id.join(',');
+//            console.log(goods_str);return false;
             $.ajax({
                 type:"post",
-                url: '{{url('admin/activity/'.$activity->id)}}',
-                data: data.field,
+                url: '{{url('admin/goodsactivity/activity')}}',
+                {{--data: {'goods_id':goods_str,'id':{{$activity->id}}},--}}
                 dataType:'json',
                 success: function(data) {
-
+                    if(data){
+                        console.log(data);
+                    }
                 }
             });
         });

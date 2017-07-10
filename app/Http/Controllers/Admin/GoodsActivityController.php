@@ -39,13 +39,13 @@ class GoodsActivityController extends Controller
 //        dd($activity_id);
         // 商品表的商品信息获取并分页
         $goodsAll = Goods::orderBy('goods_id','desc')->paginate(3);
-
-//
+        $activity_id = $request->input('id');
+        dd($activity_id);
         return view('admin.main.goodsactivity.activitygoodsadd',compact('goodsAll','request'));
     }
 
-    public function activityGood()
+    public function activityGoods()
     {
-
+        dd(1);
     }
 }
