@@ -98,7 +98,7 @@ class AppServiceProvider extends ServiceProvider
 
         if ( !empty( $_SESSION['goods_shop'] ) ) {
 
-            $session_count = $_SESSION['goods_shop'];
+            $session_count = count($_SESSION['goods_shop']);
             return $session_count;
         }
 

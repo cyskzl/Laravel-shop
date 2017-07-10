@@ -280,8 +280,8 @@ class RegisterController extends Controller
 
         $resultarr = get_object_vars($result);
 
-
-        if (is_array($resultarr['result']['err_code'])){
+        //判断方法不行。需要修改。否者没有值会报错 不往下面执行. By:yang
+        if ($resultarr['result']['err_code'] == 0){
 
             return '{"error":0}';
 
