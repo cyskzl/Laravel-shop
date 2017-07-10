@@ -32,7 +32,7 @@
                 {{session('success')}}
             </div>
         @endif
-        <span class="x-right" style="line-height:40px">共有数据：{{$activities->total()}} 条</span></xblock>
+        <span class="x-right" style="line-height:40px">共有数据： 条</span></xblock>
     <table class="layui-table">
         <thead>
         <tr>
@@ -50,64 +50,64 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($activities as $activity)
-        <tr>
-            <td>
-                <input type="checkbox" value="1" name="">
-            </td>
-            <td>
-                {{$activity->id}}
-            </td>
-            <td>
-                <u style="cursor:pointer" onclick="question_show('活动商品展示','{{'./activity/'.$activity->id }}','800','800')">
-                    {{$activity->name}}
-                </u>
-            </td>
-            <td >
-                {{$type[$activity->type]}}
-            </td>
+        {{--@foreach($activities as $activity)--}}
+        {{--<tr>--}}
+            {{--<td>--}}
+                {{--<input type="checkbox" value="1" name="">--}}
+            {{--</td>--}}
+            {{--<td>--}}
+                {{--{{$activity->id}}--}}
+            {{--</td>--}}
+            {{--<td>--}}
+                {{--<u style="cursor:pointer" onclick="question_show('活动商品展示','{{'./activity/'.$activity->id }}','800','800')">--}}
+                    {{--{{$activity->name}}--}}
+                {{--</u>--}}
+            {{--</td>--}}
+            {{--<td >--}}
+                {{--{{$type[$activity->type]}}--}}
+            {{--</td>--}}
             {{--<td >--}}
                 {{--{{strip_tags($activity->desc)}}--}}
             {{--</td>--}}
-            <td >
-                {{$activity->start_time}}
-            </td>
-            <td >
-                {{$activity->end_time}}
-            </td>
-            <td ><a href="javascript:;" onclick="question_show('活动商品展示','{{'./activity/'.$activity->id }}','800','800')" class="layui-btn layui-btn-mini">查看商品</a></td>
-            <td>
-                @if ($activity->is_over == 0)
-                    <button id="act_ready" value="{{$activity->id}}" class="layui-btn layui-btn-mini ">点击开始</button>
-                @elseif ($activity->is_over == 1)
-                    <span id="act_start" class="layui-btn layui-btn-mini layui-btn-warm">已开始</span>
-                @else
-                    <span id="act_end" class="layui-btn layui-btn-smal  layui-btn-danger">点击开始</span>
-                @endif
-            </td>
-            <td class="td-manage">
-                <a title="添加" href="javascript:;" onclick="question_add('添加','{{ url('admin/goodsactivity/create/?activity_id='.$activity->id) }}','','510')"
-                   class="ml-5" style="text-decoration:none">
-                    <i class="layui-icon">&#xe608;</i>
-                </a>
-                <a title="编辑" href="javascript:;" onclick="question_edit('编辑','{{ url('admin/activity/'.$activity->id.'/edit') }}','{{$activity->id}}','','510')"
-                   class="ml-5" style="text-decoration:none">
-                    <i class="layui-icon">&#xe642;</i>
-                </a>
-                <a title="删除" href="javascript:;" onclick="question_del(this,'{{$activity->id}}')"
-                   style="text-decoration:none">
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-        @endforeach
+            {{--<td >--}}
+                {{--{{$activity->start_time}}--}}
+            {{--</td>--}}
+            {{--<td >--}}
+                {{--{{$activity->end_time}}--}}
+            {{--</td>--}}
+            {{--<td ><a href="javascript:;" onclick="question_show('活动商品展示','{{'./activity/'.$activity->id }}','800','800')" class="layui-btn layui-btn-mini">查看商品</a></td>--}}
+            {{--<td>--}}
+                {{--@if ($activity->is_over == 0)--}}
+                    {{--<button id="act_ready" value="{{$activity->id}}" class="layui-btn layui-btn-mini ">点击开始</button>--}}
+                {{--@elseif ($activity->is_over == 1)--}}
+                    {{--<span id="act_start" class="layui-btn layui-btn-mini layui-btn-warm">已开始</span>--}}
+                {{--@else--}}
+                    {{--<span id="act_end" class="layui-btn layui-btn-smal  layui-btn-danger">点击开始</span>--}}
+                {{--@endif--}}
+            {{--</td>--}}
+            {{--<td class="td-manage">--}}
+                {{--<a title="添加" href="javascript:;" onclick="question_add('添加','{{ url('admin/goodsactivity/create/?activity_id='.$activity->id) }}','','510')"--}}
+                   {{--class="ml-5" style="text-decoration:none">--}}
+                    {{--<i class="layui-icon">&#xe608;</i>--}}
+                {{--</a>--}}
+                {{--<a title="编辑" href="javascript:;" onclick="question_edit('编辑','{{ url('admin/activity/'.$activity->id.'/edit') }}','{{$activity->id}}','','510')"--}}
+                   {{--class="ml-5" style="text-decoration:none">--}}
+                    {{--<i class="layui-icon">&#xe642;</i>--}}
+                {{--</a>--}}
+                {{--<a title="删除" href="javascript:;" onclick="question_del(this,'{{$activity->id}}')"--}}
+                   {{--style="text-decoration:none">--}}
+                    {{--<i class="layui-icon">&#xe640;</i>--}}
+                {{--</a>--}}
+            {{--</td>--}}
+        {{--</tr>--}}
+        {{--</tbody>--}}
+        {{--@endforeach--}}
     </table>
 
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-4">
-                {!! $activities->appends($request->only(['keyword']))->render() !!}
+                {{--{!! $activities->appends($request->only(['keyword']))->render() !!}--}}
             </div>
         </div>
     </div>
