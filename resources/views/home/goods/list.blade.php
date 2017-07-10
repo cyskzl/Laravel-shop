@@ -117,19 +117,7 @@
 	<center>
 		<div id="pages" style="margin-top:5px; text-align:center;   margin-left: 170px;">
 
-			{{--@if($request->only(['cate']))--}}
-				{!!$goods->appends($request->only(['cate']))->render()!!}
-{{--{{dump($goods->links())}}--}}
-				{{--{{dump($request->only(['order','dir','cate','page']))}}--}}
-			{{--@if($request->get('order'))--}}
-				{{--{!!$goods->appends($request->only(['cate','order ', 'dir', 'page']))->render()!!}--}}
-
-			{{--@else--}}
-				{{--{!!$goods->appends($request->only(['cate']))->render()!!}--}}
-				{{--@endif--}}
-{{--				{!!$goods->appends(['cate','order ', 'dir', 'page'])->render()!!}--}}
-{{--				{!!$goods->appends($request->only(['order','dir','cate','page']))->links()!!}--}}
-			{{--@endif--}}
+				{!!$goods->appends($request->only(['order','dir','cate','page']))->render()!!}
 		</div>
 	</center>
 @endsection

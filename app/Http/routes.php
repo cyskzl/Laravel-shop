@@ -12,8 +12,8 @@
 */
 //
 //DB::listen(function($sql) {
-//dump($sql);
-////    echo $sql->sql;
+////dump($sql);
+//    echo $sql->sql;
 //// dump($sql->bindings);
 //});
 

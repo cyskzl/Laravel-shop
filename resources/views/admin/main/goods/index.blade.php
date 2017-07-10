@@ -19,7 +19,7 @@
                     <input type="text" name="keyword" value="{{$request->input('keyword')}}" placeholder="商品名称关键字" autocomplete="off" class="layui-input">
                 </div>
                     <div class="layui-input-inline">
-                        <select name="modules"  >
+                        <select name="typename"  >
                             <option value="">-请选择分类-</option>
                             <option value="">所有模型</option>
                             @foreach($typeinfos as $typeinfo)
@@ -28,29 +28,29 @@
                         </select>
                     </div>
                 <div class="layui-input-inline" >
-                    <select  name="modules" >
+                    <select  name="brand_id" >
                         <option value="">-请选择品牌-</option>
                         <option value="">所有品牌</option>
                         @foreach($brands as $brand )
-                        <option value="{{$brand->id}}" @if($request->brand == $brand->id) selected @endif>{{$brand->name}}</option>
+                        <option value="{{$brand->id}}" @if($request->brand_id == $brand->id) selected @endif>{{$brand->name}}</option>
                             @endforeach
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width:100px">
-                    <select name="modules" >
+                    <select name="is_on_sale" >
                         <option value="">-请选择上下架-</option>
                         <option value="">全部</option>
-
-                        <option value="1">上架</option>
-                        <option value="1">下架</option>
-
+                        <option value="0"  @if($request->is_on_sale == '0') selected @endif>下架</option>
+                        <option value="1" @if($request->is_on_sale == '1') selected @endif>上架</option>
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width:100px">
-                    <select name="modules"  >
+                    <select name="is_new"  >
                         <option value="">-请选择新品推荐-</option>
-                        <option value="">全部</option>
-                        <option value="1">layer</option>
+                        <option value="" >全部</option>
+                        <option value="0"  @if($request->is_new == '0') selected @endif>非新品</option>
+                        <option value="1"  @if($request->is_new == '1') selected @endif>新品</option>
+
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width:100px">
@@ -190,7 +190,8 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-4">
                 {{--{{$specs->links()}}--}}
-                {!! $goods->appends($request->only(['keyword', 'typename','brandslect']))->render() !!}
+                {{--{{dump($request->only(['keyword', 'typename','brand_id', 'is_on_sale','is_new']))}}--}}
+                {!! $goods->appends($request->only(['keyword', 'typename','brand_id', 'is_on_sale','is_new'])) !!}
             </div>
         </div>
     </div>

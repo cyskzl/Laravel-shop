@@ -149,28 +149,31 @@ class IndexController extends Controller
 
     }
 
-    public function trendGoods($cateId)
+    /**
+     * 潮流促销
+     * @param $cateId
+     * @return mixed
+     */
+    public function trendGoods( $cateId )
     {
-//        $goods = GoodsMiddleTrendpromotion::where('')
-//            ->join('trendpromotion', 'goods_middle_trendpromotion.')
-//
-//            ;
         $goods = GoodsMiddleTrendpromotion::join('goods', 'goods_middle_trendpromotion.goods_id', '=', 'goods.goods_id')
             ->where('goods.cat_id', 'like', $cateId.'%')
             ->join('trendpromotion', 'trendpromotion.id', '=', 'goods_middle_trendpromotion.trendpro_id')
+            ->take(6)
             ->get();
-//        dd($goods);
+
         return $goods;
-//        $trendpromotion = self::trendPromotion($cateId);
+
     }
     /**
      * 返回所有的潮流信息
      * @param $cateId
      * @return mixed
      */
-    public function trendPromotion($cateId)
+    public function trendPromotion( $cateId )
     {
-        $trendpromotion = TrendPromotion::where('is_display', '=', '1')->where('top_cate_id', '=', $cateId)->get();
+        $trendpromotion = TrendPromotion::where('is_display', '=', '1')
+            ->where('top_cate_id', '=', $cateId)->get();
         return $trendpromotion;
     }
     /**
@@ -178,9 +181,10 @@ class IndexController extends Controller
      * @param $cateId
      * @return mixed
      */
-    public function advertisement($cateId)
+    public function advertisement( $cateId )
     {
-        $advertisement = Advertisement::where('top_cate_id', 'like', $cateId.'%')->where('is_display', '=', '1')->get();
+        $advertisement = Advertisement::where('top_cate_id', 'like', $cateId.'%')
+            ->where('is_display', '=', '1')->get();
         return $advertisement;
     }
     /**
@@ -188,10 +192,13 @@ class IndexController extends Controller
      * @param $cateId
      * @return mixed
      */
-    public function goodsBrand($cateId)
+    public function goodsBrand( $cateId )
     {
         //select brand.id,brand.name,sales_sum from goods LEFT JOIN brand on goods.brand_id = brand.id ORDER BY  sales_sum desc
-        $brand = Brand::where('brand.is_hot','=', '1')->where('top_cate_id', '=', $cateId)->orderBy('id', 'desc')->take(5)->get();
+        $brand = Brand::where('brand.is_hot', '=', '1')
+            ->where('top_cate_id', '=', $cateId)
+            ->orderBy('id', 'desc')
+            ->take(5)->get();
         return $brand;
     }
     /**
@@ -199,10 +206,12 @@ class IndexController extends Controller
      * @param $cateId
      * @return mixed
      */
-    public function goodsTabCate($cateId)
+    public function goodsTabCate( $cateId )
     {
         //选项卡
-        $goodstabcate = GoodsTabCate::where('is_display', '=', '1')->where('cat_id','like', $cateId.'%')->take(7)->get();
+        $goodstabcate = GoodsTabCate::where('is_display', '=', '1')
+            ->where('cat_id','like', $cateId.'%')
+            ->take(7)->get();
         return $goodstabcate;
     }
 
@@ -211,7 +220,7 @@ class IndexController extends Controller
      * @param $cateId
      * @return mixed
      */
-    public function goodsTabOneCate($cateId)
+    public function goodsTabOneCate( $cateId )
     {
 
         //获取全部选项卡
@@ -221,11 +230,13 @@ class IndexController extends Controller
 
         if($cateId == 1 || $cateId == ''){
             //女
-            $goods = Goods::where('cat_id', 'like', $cateId.'_%'.$tabOnecate[2], 'and', 'is_hot', '=', '1')->take(4)->get();
+            $goods = Goods::where('cat_id', 'like', $cateId.'_%'.$tabOnecate[2], 'and', 'is_hot', '=', '1')
+                ->take(4)->get();
 
         } else {
             //女
-            $goods = Goods::where('cat_id', 'like', $cateId.'_%'.$tabOnecate[2], 'and', 'is_hot', '=', '1')->take(4)->get();
+            $goods = Goods::where('cat_id', 'like', $cateId.'_%'.$tabOnecate[2], 'and', 'is_hot', '=', '1')
+                ->take(4)->get();
 
         }
         return  $goods;
@@ -235,9 +246,12 @@ class IndexController extends Controller
      * @param $cateId
      * @return mixed
      */
-    public function sum($cateId)
+    public function sum( $cateId )
     {
-        $sales_sum = Goods::where( 'is_hot','=', '1' )->where(  'cat_id', 'like', $cateId.'%' )->orderBy('sales_sum', 'desc')->take(10)->get();
+        $sales_sum = Goods::where( 'is_hot','=', '1' )
+            ->where(  'cat_id', 'like', $cateId.'%' )
+            ->orderBy('sales_sum', 'desc')
+            ->take(10)->get();
         return $sales_sum;
     }
 
@@ -246,13 +260,16 @@ class IndexController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function flow(Request $request)
+    public function flow( Request $request )
     {
         $request->input('currentIndex');
 
         $cateId = $request->session()->get('Index');
 
-        $flow = Goods::where('is_hot','=', '1', 'and', 'cat_id','like',$cateId.'%')->orderBy('sales_sum')->take(40)->paginate(10);
+        $flow = Goods::where('is_hot', '=', '1')
+        ->where( 'cat_id', 'like', $cateId.'%')
+        ->orderBy('sales_sum', 'asc')
+        ->take(40)->paginate(5);
 
         //获取goods对应的品牌名称
         $brand = self::brand($flow);
@@ -268,7 +285,7 @@ class IndexController extends Controller
      * @param Request $request
      * @return array
      */
-    public function getAjaxTab(Request $request)
+    public function getAjaxTab( Request $request )
     {
         //3级分类
         $three_cate_id = $request->input('three_cate_id');
@@ -278,12 +295,16 @@ class IndexController extends Controller
 
         if($cate_id == 1 || $cate_id == ''){
 
-            $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
+            $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id)
+                ->where('is_hot', '=', '1')
+                ->take(4)->get();
             //获取goods对应的品牌名称
             $brand = self::brand($goods);
 
         } else {
-            $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id, 'and', 'is_hot', '=', '1')->take(4)->get();
+            $goods = Goods::where('cat_id', 'like', $cate_id.'_%'.$three_cate_id )
+                ->where('is_hot', '=', '1')
+                ->take(4)->get();
 
             //获取goods对应的品牌名称
             $brand = self::brand($goods);
@@ -299,10 +320,13 @@ class IndexController extends Controller
      * @param $cateId
      * @return mixed
      */
-    public function newest($cateId)
+    public function newest( $cateId )
     {
         //查女士最新的产品id排序
-        $newest = Goods::where('is_new', '=', '1' )->where('cat_id', 'like', $cateId.'%')->orderBy('goods_id','desc')->take(8)->get();
+        $newest = Goods::where('is_new', '=', '1' )
+            ->where('cat_id', 'like', $cateId.'%')
+            ->orderBy('goods_id', 'desc')
+            ->take(8)->get();
         return $newest;
     }
     /**
@@ -310,11 +334,78 @@ class IndexController extends Controller
      * @param $cateId
      * @return mixed
      */
-    public function carousel($cateId)
+    public function carousel( $cateId )
     {
         //轮播图
-        $carousel = Carousel::where('status', '=', '0')->where('cate_id','=', $cateId)->take(3)->get();
+        $carousel = Carousel::where('status', '=', '0')
+            ->where('cate_id','=', $cateId)
+            ->take(3)->get();
         return $carousel;
+    }
+
+    /**
+     * 获取1级分类
+     * @param $pid
+     * @return mixed
+     */
+    public function oneTree ( $id )
+    {
+        //获取女士 id=1
+        $data =  Category::where('id', '=', $id )->first();
+        return $data;
+
+    }
+
+    /**
+     * 获取2级分类
+     * @param $pid
+     * @return mixed
+     */
+    public function twoTree ( $id )
+    {
+
+        //获取女士下的2级分类
+        $twodata =  Category::where('level', '=', '0,'.$id)->get();
+        return $twodata;
+    }
+
+    /**
+     * 获取3级分类
+     * @param $pid
+     * @return mixed
+     */
+    public function threeTree ( $pid )
+    {
+        //获取女士的3级分类
+        $threedata = Category::where('pid' , '=' , $pid)->get();
+        return $threedata;
+    }
+
+    /**
+     * 首页分类获取，ajax请求
+     * @param Request $request
+     * @return array
+     */
+    public function getAjaxCate( Request $request )
+    {
+            //接收的2级id
+            $pid = $request->input('pid');
+
+            //获取后缀的id 1, 女士默认，2男士,3 生活
+            $cateId = $request->input('cate_id');
+
+            //女士
+            if($cateId == '1' ){
+
+                $data = self::getAjaxCatetree( $pid, $cateId );
+
+              //男士
+            } else {
+
+                $data = self::getAjaxCatetree( $pid, $cateId );
+
+            }
+           return $data;
     }
     /**
      * 获取首页分类的方法
@@ -323,21 +414,26 @@ class IndexController extends Controller
      * @param $cateId 区分男女士
      * @return array   ajax响应数据
      */
-    public function getAjaxCatetree($maxId, $pid, $cateId)
+    public function getAjaxCatetree( $pid, $cateId)
     {
         //查询这个分类下的商品，4个
 
         $goodscate = Category::where( 'id', '=', $pid )->first();
+
         if($goodscate->pid == $cateId ){
-            $goods = Goods::where('cat_id', 'like', $maxId.'_'.$pid.'%')
-                ->orderBy('goods_id','desc')
-                ->take(4)
-                ->get();
+
+        $goods = Goods::where('cat_id', 'like', $cateId.'_'.$pid.'%')
+            ->orderBy('goods_id', 'desc')
+            ->take(4)
+            ->get();
+//        dump($cateId);
+//        dd($goods);
         } else {
-            $goods = Goods::where('cat_id', 'like', $maxId.'_%'.$pid)
-                ->orderBy('goods_id','desc')
+            $goods = Goods::where('cat_id', 'like', $cateId.'_%'.$pid)
+                ->orderBy('goods_id', 'desc')
                 ->take(4)
                 ->get();
+//            dd(234  );
         }
         //获取goods对应的品牌名称
         $brand = self::brand($goods);
@@ -355,76 +451,11 @@ class IndexController extends Controller
     }
 
     /**
-     * 获取1级分类
-     * @param $pid
-     * @return mixed
-     */
-    public function oneTree ($id)
-    {
-        //获取女士 id=1
-        $data =  Category::where('id', '=', $id )->first();
-        return $data;
-
-    }
-
-    /**
-     * 获取2级分类
-     * @param $pid
-     * @return mixed
-     */
-    public function twoTree ($id)
-    {
-
-        //获取女士下的2级分类
-        $twodata =  Category::where('level', '=', '0,'.$id)->get();
-        return $twodata;
-    }
-
-    /**
-     * 获取3级分类
-     * @param $pid
-     * @return mixed
-     */
-    public function threeTree ($pid)
-    {
-        //获取女士的3级分类
-        $threedata = Category::where('pid' , '=' , $pid)->get();
-        return $threedata;
-    }
-
-    /**
-     * 首页分类获取，ajax请求
-     * @param Request $request
-     * @return array
-     */
-    public function getAjaxCate(Request $request)
-    {
-            //接收的2级id
-            $pid = $request->input('pid');
-
-            //获取后缀的id 1, 女士默认，2男士,3 生活
-            $cateId = $request->input('cate_id');
-
-            //女士
-            if($cateId == 1 || $cateId = ''){
-
-                $data = self::getAjaxCatetree('1', $pid, $cateId);
-
-              //男士
-            } else {
-
-                $data = self::getAjaxCatetree('2', $pid, $cateId);
-
-            }
-           return $data;
-    }
-
-    /**
      * 响应数据给ajax首页新品
      * @param Request $request
      * @return array
      */
-    public function newgoods(Request $request)
+    public function newgoods( Request $request )
     {
         //接收的2级新品id
         $pid = $request->input('pid');
@@ -456,10 +487,13 @@ class IndexController extends Controller
      * @param $cateId 区分男女士
      * @return mixed  goods数据
      */
-    public function getAjaxNewTree($cateId)
+    public function getAjaxNewTree( $cateId )
     {
         //获取新品商品  1是新品  0不是
-        $newgoods = Goods::where('is_new', '=', '1')->where('cat_id', 'like', $cateId.'%')->orderBy('goods_id','desc')->take(6)->get();
+        $newgoods = Goods::where('is_new', '=', '1')
+            ->where('cat_id', 'like', $cateId.'%')
+            ->orderBy('goods_id', 'desc')
+            ->take(6)->get();
         return $newgoods;
 
     }
@@ -472,7 +506,7 @@ class IndexController extends Controller
     /**
      * 遍历数据转商品对应下的品牌
      */
-    public function brand($goods)
+    public function brand( $goods )
     {
         $brand = [];
         //获取品牌

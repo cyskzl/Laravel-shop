@@ -117,19 +117,16 @@ class GoodsTabCateController extends Controller
         //判断是否有权限修改
         $this->perms->adminPerms('admin,goods', 'edit_goods_tab_cate');
 
-        $goodscate = GoodsTabCate::find($id);
-        //查询所有的顶级id
-        $fatcates   =  Category::where('pid', '=', '0')->select()->get();
-        //获取3级id的信息
-        $threecate = Category::find($goodscate->cat_id);
-        //通过3级id查pid上一级的信息
-        $twocates = Category::where('id','=',$threecate->pid)->first();
+        $tabcate = GoodsTabCate::find($id);
+//        dd($tabcate->name);
+        $tab = explode('_', $tabcate->cat_id);
+//dd($tab);
+        $topscate = Category::where('pid', '0')->get();
+//        dd($tabcate->name);
+        $fatcates = Category::all();
+        //查询父id
 
-        $one = $twocates->pid;
-        $two = $twocates->id;
-        $three = $goodscate->cat_id;
-
-        return view('admin.main.goods.tabcate.edit', compact('one','two','three', 'fatcates','goodscate'));
+        return view('admin.main.goods.tabcate.edit', [ 'tabcate' => $tabcate ,'fatcates' => $fatcates, 'topscate' => $topscate, 'tab' => $tab] );
 
     }
 

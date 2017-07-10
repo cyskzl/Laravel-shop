@@ -55,7 +55,7 @@
                         </td>
                         <td>{{ $tabcate->id }}</td>
                         <td>{{ $tabcate->name }}</td>
-                        <td>{{ $tabcate->cat_id }}</td>
+                        <td>{{ getCateNameByCateId($tabcate->cat_id) }}</td>
                         <td>
 
                             <div style="text-align: center; width: 50px;">

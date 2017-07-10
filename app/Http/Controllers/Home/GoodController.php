@@ -84,8 +84,6 @@ class GoodController extends Controller
         } else {
             //实例化导航栏下的商品
             //判断是否是2级或者3级
-            //新品
-//            dd(123);
             if($order == 'is_new'){
                 //最新排序
                 $goods = self::newGoodsSore($cateId,$order,$desc);
@@ -141,11 +139,11 @@ class GoodController extends Controller
     {
         if($desc == 'desc'){
 
-            $newgoods = Goods::where('cat_id', 'like', $cateId.'%')->orderBy($order,$desc)->paginate(2);
+            $newgoods = Goods::where('cat_id', 'like', $cateId.'%')->orderBy($order,$desc)->paginate(16);
 
         }else {
 
-            $newgoods = Goods::where('cat_id', 'like', $cateId.'%')->orderBy($order,$desc)->paginate(2);
+            $newgoods = Goods::where('cat_id', 'like', $cateId.'%')->orderBy($order,$desc)->paginate(16);
         }
         return $newgoods;
     }
@@ -159,7 +157,7 @@ class GoodController extends Controller
     public function salesSum($cateId,$order,$desc)
     {
 
-        $newgoods = Goods::where(  'cat_id','like',$cateId.'%' )->orderBy($order, $desc)->paginate(2);
+        $newgoods = Goods::where(  'cat_id','like',$cateId.'%' )->orderBy($order, $desc)->paginate(16);
 
         return $newgoods;
     }
@@ -172,7 +170,7 @@ class GoodController extends Controller
      */
     public function newGoodsSore($cateId,$order,$desc)
     {
-        $newgoods = Goods::where($order, '=', '1')->where('cat_id', 'like', $cateId.'%' )->orderBy('goods_id', $desc)->paginate(2);
+        $newgoods = Goods::where($order, '=', '1')->where('cat_id', 'like', $cateId.'%' )->orderBy('goods_id', $desc)->paginate(16);
         return $newgoods;
     }
     /**
@@ -192,7 +190,7 @@ class GoodController extends Controller
      */
     public function newGoods($cateId)
     {
-        $goods = Goods::where('is_new', '=', '1')->where('cat_id', 'like', $cateId.'%' )->orderBy('sales_sum', 'desc')->paginate(2);
+        $goods = Goods::where('is_new', '=', '1')->where('cat_id', 'like', $cateId.'%' )->orderBy('sales_sum', 'desc')->paginate(16);
         return $goods;
     }
 
@@ -209,7 +207,7 @@ class GoodController extends Controller
         $goods = TagMiddleGoods::join('goods', 'tags_middle_goods.goods_id', '=', 'goods.goods_id')
             ->where('goods.cat_id', 'like', $cateId.'_'.$cate.'_%')
             ->join('goods_tag', 'goods_tag.tag_id', '=', 'tags_middle_goods.tags_id')
-            ->paginate(2);
+            ->paginate(16);
 
         return $goods;
     }
