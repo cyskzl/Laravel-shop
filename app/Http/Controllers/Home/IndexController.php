@@ -254,7 +254,7 @@ class IndexController extends Controller
         $sales_sum = Goods::where( 'is_hot','=', '1' )
             ->where(  'cat_id', 'like', $cateId.'%' )
             ->orderBy('sales_sum', 'desc')
-            ->take(10)->get();
+            ->take(4)->get();
         return $sales_sum;
     }
 
