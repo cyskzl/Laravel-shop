@@ -136,7 +136,7 @@
 
             $.ajax({
                 url:"/home/register/phonecode",
-                type:"POST",
+                type:"GET",
                 data:{'phone':phone},
                 success:function (data) {
 

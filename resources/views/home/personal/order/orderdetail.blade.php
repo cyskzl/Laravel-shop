@@ -1,3 +1,8 @@
+@if(count($orderData) <1)
+    <script>window.location.href='http://{{ $_SERVER["HTTP_HOST"].'/home/waitorder' }}'</script>
+    {{dd()}}
+@endif
+
 @extends('home.layouts.layout')
 
 @section('title','待付款订单')
@@ -84,6 +89,14 @@
                                                     <span class="" > &yen;{{$orderData->shipping_price}} </span>
                                                 </div>
                                             </div>
+                                            @if(count($orderData->orderDeliveryDoc)>0)
+                                                <div class="item">
+                                                    <span class="label"> 运单号 </span>
+                                                    <div class="info-rcol">
+                                                        <span class="" > {{$orderData->orderDeliveryDoc[0]->invoice_no}} </span>
+                                                    </div>
+                                                </div>
+                                                @endif
                                             <!--                                        <div class="item">-->
                                             <!--                                            <span class="label"> 送货日期： </span>-->
                                             <!--                                            <div class="info-rcol">-->
@@ -107,7 +120,7 @@
                                             <div class="item">
                                                 <span class="label"> 付款方式： </span>
                                                 <div class="info-rcol">
-                                                    {{$orderData->pay_name}}
+                                                    {{$orderData->pay_name or  "未付款"}}
                                                 </div>
                                             </div>
                                             <div class="item">
@@ -315,6 +328,12 @@
                 </div>
             </div>
         </div>
+        @if($orderData->order_status == 0 && $orderData->order_status == 0)
+        <button>付款</button>
+        <button>取消订单</button>
+            @elseif($orderData->shipping_status >0 && $orderData->order_status >0 && $orderData->order_status > 0)
+        <button>点击退货</button>
+            @endif
     </div>
 
 @endsection

@@ -12,8 +12,8 @@
 */
 //
 //DB::listen(function($sql) {
-////dump($sql);
-//    echo $sql->sql;
+//dump($sql);
+////    echo $sql->sql;
 //// dump($sql->bindings);
 //});
 
@@ -55,7 +55,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 验证码生成
     Route::get('/register/code', 'RegisterController@createCode');
     // 手机验证码发送
-    Route::post('/register/phonecode', 'RegisterController@phoneCode');
+    Route::get('/register/phonecode', 'RegisterController@phoneCode');
     // 邮箱发送注册
     Route::post('/email_register', 'RegisterController@toEmailRegister');
     // 邮箱验证是否注册
@@ -85,6 +85,9 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
     // 购物车
     Route::resource('/shoppingcart', 'ShoppingCartController');
 
+    //购物车提交到订单确认
+    Route::post('/cartToOrder', 'OrderController@cartAjax');
+
     // 需登录界面
      Route::group(['middleware'=>'auth'],function(){
         // 订单页
@@ -95,8 +98,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
         //取消订单
         Route::get('/tocancelorder/{id}', 'OrderController@toCancelOrder');
 //        Route::post('/orders', 'OrderController@index');
-         //购物车提交到订单确认
-        Route::post('/cartToOrder', 'OrderController@cartAjax');
+
 
         //ajax获取收货方式
         Route::get('/todelivery/{id}', 'OrderController@toDelivery');
@@ -205,7 +207,6 @@ Route::group(['prefix' => 'admin'], function (){
         Route::resource('/activity', 'Admin\ActivityController');
         // 活动商品管理
         Route::get('/goodsactivity/activity', 'Admin\GoodsActivityController@activity');
-        Route::post('/goodsactivity/activity', 'Admin\GoodsActivityController@activityGoods');
         //（团购）
         Route::resource('/groupbuying', 'Admin\GroupBuyingController');
         //超值（满减）
