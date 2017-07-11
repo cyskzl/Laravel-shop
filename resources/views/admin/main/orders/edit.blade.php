@@ -136,6 +136,7 @@
                     </colgroup>
                     <thead>
                     <tr>
+                        <th></th>
                         <th>商品名称</th>
                         <th>规格</th>
                         <th>价格</th>
@@ -144,10 +145,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($ordergoods['ordergood'] as $value)
+                    @foreach($ordergoods->orderDetails as $value)
+                        <?php $goodsData = json_decode($value->goods_info,true)?>
                         <tr>
-                            <td>{{$value->goods_name}}</td>
-                            <td>{{$value->goods_sn}}</td>
+                            <td><img src="{{$goodsData['original_img']}}" alt="" width="50"></td>
+                            <td>{{$goodsData['goods_name']}}</td>
+                            <td>
+
+                                @foreach(explode('_',$value->spec_key_name) as $v)
+                                    <span style="margin-right: 10px;">{{str_replace("@",":",$v)}}</span>
+                                    @endforeach
+                            </td>
                             <td>{{$value->goods_price}}</td>
                             <td>{{$value->goods_num}}</td>
                             <td><a href="">删除</a></td>

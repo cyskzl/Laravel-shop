@@ -43,7 +43,7 @@
         <td>配送方式:{{$ordergoods->shipping_name}}</td>
         <td colspan="2">
             配送单号:
-            <input type="text" name="invoice_no" value="{{$ordergoods->invoice_no}}">
+            <input type="text" name="invoice_no" value="{{$ordergoods->invoice_no or ""}}">
         </td>
     </tr>
     </tbody>
@@ -95,13 +95,15 @@
     </tr>
 
     @foreach($ordergoods->belongsToOrdersDetalis as $value)
+        <?php $goodsdata = json_decode($value->goods_name,true)?>
         <tr>
-            <td>{{$value->goods_name}}</td>
+            <td>{{$goodsdata['goods_name']}}</td>
             <td>{{$value->goods_sn}}</td>
             <td>{{$value->goods_price}}</td>
             <td>{{$value->goods_num}}</td>
         </tr>
     @endforeach
+
 </table>
 
 
@@ -118,7 +120,7 @@
     </tr>
     <tr>
         <td>操作备注:</td>
-        <td><textarea style="resize: none;width: 420px;height: 90px;" id="note">{{$ordergoods->note}}</textarea></td>
+        <td><textarea style="resize: none;width: 420px;height: 90px;" id="note">{{$ordergoods->note or  ""}}</textarea></td>
     </tr>
     <tr>
         <td>可执行操作</td>

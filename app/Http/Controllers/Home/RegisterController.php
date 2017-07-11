@@ -103,7 +103,7 @@ class RegisterController extends Controller
         $m3_email->to = $email;
         $m3_email->cc = 'nietzsche_nc@163.com';
         $m3_email->subject = '尤为商城注册';
-        $m3_email->content = '请于24小时点击该链接完成注册. http://zw1.com/home/email_register/validate_email' . '?code=' . $uuid;
+        $m3_email->content = '请于24小时点击该链接完成注册. '.$_SERVER["HTTP_HOST"].'/email_register/validate_email' . '?code=' . $uuid;
 
         $tempEmail = new TempEmail();
         $tempEmail->user_id = $userregister->id;

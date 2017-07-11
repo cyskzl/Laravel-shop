@@ -91,18 +91,20 @@
 
     <table class="table">
         <tr class="info">
-            <td>商品</td>
-            <td>商品编号</td>
+            <td></td>
+            <td>商品名称</td>
             <td>单价</td>
             <td>数量</td>
             <td>单品小计</td>
         </tr>
 
 
-        @foreach($ordergoods['ordergood'] as $value)
+        @foreach($ordergoods->orderDetails as $value)
+            <?php $goodsData = json_decode($value->goods_info,true)?>
+                
         <tr>
-            <td>{{$value->goods_name}}</td>
-            <td>{{$value->goods_sn}}</td>
+            <td><img src="{{$goodsData['original_img']}}" alt="" width="50"></td>
+            <td>{{$goodsData['goods_name']}}</td>
             <td>{{$value->goods_price}}</td>
             <td>{{$value->goods_num}}</td>
             <td>{{($value->goods_price * $value->goods_num)}}</td>

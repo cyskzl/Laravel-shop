@@ -95,6 +95,9 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home'], function () {
 
         //订单付款方式提交
         Route::post('/paymethodsubmit', 'OrderController@payMethodSubmit');
+
+        //个人中心提交付款方式
+        Route::post('/ordertopaymethod/{sn}', 'OrderController@orderToPayMethod');
         //取消订单
         Route::get('/tocancelorder/{id}', 'OrderController@toCancelOrder');
 //        Route::post('/orders', 'OrderController@index');

@@ -69,8 +69,8 @@ class ShoppingCartController extends Controller
         }
     //    dd($cart_data);
 
-        // unset($_SESSION['goods_shop']);
-        // dd(Redis::FLUSHALL());
+//        unset($_SESSION['goods_shop']);
+//        dd(Redis::FLUSHALL());
         return view('home.shoppingcart.cart_isset', compact('cart_data'));
     }
 

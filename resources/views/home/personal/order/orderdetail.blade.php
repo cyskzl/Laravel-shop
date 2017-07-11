@@ -329,7 +329,7 @@
             </div>
         </div>
         @if($orderData->order_status == 0 && $orderData->order_status == 0)
-        <button>付款</button>
+        <a href="/home/paymethodsubmit/{{$orderData->sn}}">点击付款</a>
         <button>取消订单</button>
             @elseif($orderData->shipping_status >0 && $orderData->order_status >0 && $orderData->order_status > 0)
         <button>点击退货</button>
