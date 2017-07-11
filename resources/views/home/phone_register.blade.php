@@ -103,6 +103,16 @@
         //获取手机验证码
         $('#phone_code').on('click',function () {
 
+            var phone = $('#phone').val();
+
+            $('#phone').prev('p').remove();
+
+            if (phone == ''){
+                $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">请填写手机号码</p>');
+                return false;
+            }
+
+
             var than = $(this);
 
             than.attr('data-id','1');
@@ -115,12 +125,6 @@
 
 //            console.log(than);
 
-            var phone = $('#phone').val();
-
-            if (phone == ''){
-                $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">请填写手机号码</p>');
-                return false;
-            }
 
             var regex = /^[1][34578]\d{9}$/;
 

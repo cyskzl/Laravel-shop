@@ -35,6 +35,7 @@
         </td>
     </tr>
     <tr>
+
         <td>订单编号:{{$ordergoods->order_sn}}</td>
         <td>下单时间:{{$ordergoods->belongsToOrders->created_at}}</td>
         <td>配送费用:{{$ordergoods->shipping_price}}</td>
@@ -93,15 +94,16 @@
         <td>购买数量</td>
         <td>商品单价</td>
     </tr>
-
     @foreach($ordergoods->belongsToOrdersDetalis as $value)
+        <?php $goodsdata = json_decode($value->goods_name,true)?>
         <tr>
-            <td>{{$value->goods_name}}</td>
+            <td>{{$goodsdata['goods_name']}}</td>
             <td>{{$value->goods_sn}}</td>
             <td>{{$value->goods_price}}</td>
             <td>{{$value->goods_num}}</td>
         </tr>
     @endforeach
+
 </table>
 
 

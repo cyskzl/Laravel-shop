@@ -37,38 +37,41 @@ class OrdersController extends Controller
 //            dd($user);
 //        }
 
-        $ordersList = Orders::with(['users'=>function($query){
 
-            $query->select('id','email','tel');
+//        $ordersList = Orders::with(['users'=>function($query){
+//
+//            $query->select('id','email','tel');
+//
+//        }])->where(function ($query) use ($request){
+//            $query->where('pay_status',$request->input('pay_status'))
+//                ->where('pay_code',$request->input('pay_code'))
+//                ->where('shipping_status',$request->input('shipping_status'))
+//                ->where('order_status',$request->input('order_status'));
+//        })->where(function ($query) use ($request){
+//            if ($request->input('keytype') == '0'){
+//                $user = UserLogin::where('login_name',$request->input('keywords'))->get();
+//                if (!empty($user[0]->user_id)){
+//                    $query->where('user_id',$user[0]->user_id);
+//                }else{
+//                    $query->where('user_id',0);
+//                }
+//            }
+//        })->where(function ($query) use ($request){
+//            if ($request->input('keytype') == '1'){
+//                $query->where('sn',$request->input('keywords'));
+//            }
+//        })->where(function ($query) use($request){
+//            if ($request->input('add_time_begin') && $request->input('add_time_end')){
+//                $query->whereBetween('created_at',[$request->input('add_time_begin'),$request->input('add_time_end')]);
+//                return;
+//            }
+//
+//            if ($request->input('add_time_begin')){
+//                $query->whereBetween('created_at',[$request->input('add_time_begin'),date('Y-m-d H:i:s')]);
+//            }
+//        })->get();
 
-        }])->where(function ($query) use ($request){
-            $query->where('pay_status',$request->input('pay_status'))
-                ->where('pay_code',$request->input('pay_code'))
-                ->where('shipping_status',$request->input('shipping_status'))
-                ->where('order_status',$request->input('order_status'));
-        })->where(function ($query) use ($request){
-            if ($request->input('keytype') == '0'){
-                $user = UserLogin::where('login_name',$request->input('keywords'))->get();
-                if (!empty($user[0]->user_id)){
-                    $query->where('user_id',$user[0]->user_id);
-                }else{
-                    $query->where('user_id',0);
-                }
-            }
-        })->where(function ($query) use ($request){
-            if ($request->input('keytype') == '1'){
-                $query->where('sn',$request->input('keywords'));
-            }
-        })->where(function ($query) use($request){
-            if ($request->input('add_time_begin') && $request->input('add_time_end')){
-                $query->whereBetween('created_at',[$request->input('add_time_begin'),$request->input('add_time_end')]);
-                return;
-            }
-
-            if ($request->input('add_time_begin')){
-                $query->whereBetween('created_at',[$request->input('add_time_begin'),date('Y-m-d H:i:s')]);
-            }
-        })->get();
+        $ordersList = Orders::all();
 
 
         //查出来的总数据条数

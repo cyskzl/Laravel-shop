@@ -239,6 +239,30 @@ class OrderController extends Controller
         $request->session()->set('orders.sn',$status['sn']);
 
         return view('home.orders.payment',compact('cateId','status','paymethod'));
+
+    }
+
+    public function orderToPayMethodSubmit(Request $request,$order_sn)
+    {
+        if ($order_sn){
+
+            $userid = \Auth::user()->user_id;
+
+            $order = Orders::where('sn',$order_sn)->where('user_id',$userid)->first();
+
+            $status['sn'] = $order->sn;
+            $status['order_amount'] = $order->order_amount;
+
+            $request->session()->set('orders.sn',$order->sn);
+
+            $paymethod = PayMethod::all();
+
+            return view('home.orders.payment',compact('cateId','status','paymethod'));
+
+        }
+
+
+
     }
 
 
@@ -664,14 +688,16 @@ class OrderController extends Controller
         //获取付款方式
         $payData = PayMethod::find($payid)->where('enabled',1)->first();
 
-        if ($request->session()->has('orders.sn')) {
-
-            //获取订单编号
-            $orderSn = $request->session()->get('orders.sn');
-        }
-
         //获取用户id
         $userid = \Auth::user()->user_id;
+
+
+            if ($request->session()->has('orders.sn')) {
+
+                //获取订单编号
+                $orderSn = $request->session()->get('orders.sn');
+            }
+
 
         //调用更改付款状态和创建发货单方法
         $status = $this->createDeliveryDoc($orderSn,$userid,$payData);
@@ -741,7 +767,6 @@ class OrderController extends Controller
                 $delivery->address = $order->address;
                 $delivery->shipping_code = $order->shipping_code;
                 $delivery->shipping_name = $order->shipping_name;
-                $delivery->shipping_price = $order->shipping_price;
                 $delivery->shipping_price = $order->shipping_price;
 
                 if ($delivery->save()){

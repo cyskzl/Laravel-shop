@@ -47,9 +47,8 @@ class OrdersDeliveryController extends Controller
         //判断是否有权限查看
 		$this->perms->adminPerms('admin, orders', 'show_ordersdelivery');
 
-        $ordergoods = DeliveryDoc::find($id)->with('belongsToOrdersDetalis','belongsToOrders')->get();
 
-        $ordergoods = $ordergoods[0];
+        $ordergoods = DeliveryDoc::where('id',$id)->with('belongsToOrdersDetalis','belongsToOrders')->first();
 
         $regions = Region::whereIn('id',[$ordergoods->country,$ordergoods->province,$ordergoods->city,$ordergoods->district,$ordergoods->twon])->get()->toArray();
 
