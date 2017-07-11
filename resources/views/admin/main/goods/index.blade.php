@@ -191,7 +191,7 @@
             <div class="col-md-8 col-md-offset-4">
                 {{--{{$specs->links()}}--}}
                 {{--{{dump($request->only(['keyword', 'typename','brand_id', 'is_on_sale','is_new']))}}--}}
-                {!! $goods->appends($request->only(['keyword', 'typename','brand_id', 'is_on_sale','is_new'])) !!}
+                {!! $goods->appends($request->only(['keyword', 'typename','brand_id', 'is_on_sale','is_new']))->render() !!}
             </div>
         </div>
     </div>

@@ -30,51 +30,60 @@
                 <label class="layui-form-label">日期范围</label>
 
                 <div class="layui-input-inline">
-                    <input class="layui-input" name="add_time_begin" placeholder="开始时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                    <input class="layui-input" name="add_time_begin" placeholder="开始时间" value="{{$request->add_time_begin}}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
                 </div>
 
                 <div class="layui-input-inline">
-                    <input class="layui-input" name="add_time_end" placeholder="截止时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                    <input class="layui-input" name="add_time_end" placeholder="截止时间" value="{{$request->add_time_end}}" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
                 </div>
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="pay_status" lay-filter="pay_status">
                         <option value="">支付状态</option>
-                        <option value="0">未支付</option>
-                        <option value="1">已支付</option>
+                        <option value="" >-请选择-</option>
+                        <option value="0" @if($request->pay_status == '0') selected @endif>未支付</option>
+                        <option value="1" @if($request->pay_status == '1') selected @endif>已支付</option>
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="pay_code" lay-filter="pay_code">
                         <option value="">支付方式</option>
+                        <option value="" >-请选择-</option>
                         @foreach($payMethod as $v)
-                        <option value="{{$v->id}}">{{$v->pay_name}}</option>
+                            @if($v->id == $request->pay_code)
+                                <option value="{{$v->id}}" selected>{{$v->pay_name}}</option>
+                            @else
+                                <option value="{{$v->id}}">{{$v->pay_name}}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="shipping_status" lay-filter="shipping_status">
                         <option value="">发货状态</option>
-                        <option value="0">未发货</option>
-                        <option value="1">已发货</option>
+                        <option value="" >-请选择-</option>
+                        <option value="0" @if($request->shipping_status == '0') selected @endif>未发货</option>
+                        <option value="1" @if($request->shipping_status == '1') selected @endif>已发货</option>
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="order_status" lay-filter="order_status">
                         <option value>订单状态</option>
-                        <option value="0">待确认</option>
-                        <option value="1">已确认</option>
-                        <option value="2">已收货</option>
-                        <option value="3">已完成</option>
-                        <option value="-1">已取消</option>
-                        <option value="-2">无效订单</option>
-                        <option value="-3">已作废</option>
+                        <option value="" >-请选择-</option>
+                        <option value="0" @if($request->order_status == '0') selected @endif>待确认</option>
+                        <option value="1" @if($request->order_status == '1') selected @endif>已确认</option>
+                        <option value="2" @if($request->order_status == '2') selected @endif>已收货</option>
+                        <option value="3" @if($request->order_status == '3') selected @endif>已完成</option>
+                        <option value="-1" @if($request->order_status == '-1') selected @endif>已取消</option>
+                        <option value="-2" @if($request->order_status == '-2') selected @endif>无效订单</option>
+                        <option value="-3" @if($request->order_status == '-3') selected @endif>已作废</option>
                     </select>
                 </div>
                 <div class="layui-input-inline" style="width: 100px;">
                     <select name="keytype" lay-filter="keytype">
                         <option value>请选择</option>
-                        <option value="0">收货人</option>
-                        <option value="1">订单编号</option>
+                        <option value="" >-请选择-</option>
+                        <option value="0" @if($request->keytype == '0') selected @endif>收货人</option>
+                        <option value="1" @if($request->keytype == '1') selected @endif>订单编号</option>
                     </select>
                 </div>
                 <div class="layui-input-inline">
@@ -145,9 +154,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-4">
-            {{--{{$specs->links()}}--}}
-{{--            {!! $ordersList->render() !!}--}}
-{{--            {!! $ordersList->appends($request->only(['keywords']))->render() !!}--}}
+{{--            {{$specs->links()}}--}}
+            {{--{!! $ordersList->render() !!}--}}
+            {!! $ordersList->appends($request->only(['keywords','add_time_begin','add_time_end','pay_status','pay_code','shipping_status','order_status','keytype']))->render() !!}
         </div>
     </div>
 </div>

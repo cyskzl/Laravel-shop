@@ -6,6 +6,7 @@ use App\Models\DelveryMethod;
 use App\Models\OrdersDetails;
 use App\Models\Orders;
 use App\Models\PayMethod;
+use App\Models\ReceivingAddress;
 use App\Models\Region;
 use App\Models\UserLogin;
 use App\Models\UserRegister;
@@ -31,48 +32,53 @@ class OrdersController extends Controller
         //判断是否有权限访问列表
 		$this->perms->adminPerms('admin, orders', 'orders_list');
 
-//        if ($request->input('keytype') == 0){
-//            $user = UserLogin::where('login_name',$request->input('keywords'))->get();
-//            $user = $user[0]->user_id;
-//            dd($user);
-//        }
 
+        $ordersList = Orders::with(['users'=>function($query){
 
-//        $ordersList = Orders::with(['users'=>function($query){
-//
-//            $query->select('id','email','tel');
-//
-//        }])->where(function ($query) use ($request){
-//            $query->where('pay_status',$request->input('pay_status'))
-//                ->where('pay_code',$request->input('pay_code'))
-//                ->where('shipping_status',$request->input('shipping_status'))
-//                ->where('order_status',$request->input('order_status'));
-//        })->where(function ($query) use ($request){
-//            if ($request->input('keytype') == '0'){
-//                $user = UserLogin::where('login_name',$request->input('keywords'))->get();
-//                if (!empty($user[0]->user_id)){
-//                    $query->where('user_id',$user[0]->user_id);
-//                }else{
-//                    $query->where('user_id',0);
-//                }
-//            }
-//        })->where(function ($query) use ($request){
-//            if ($request->input('keytype') == '1'){
-//                $query->where('sn',$request->input('keywords'));
-//            }
-//        })->where(function ($query) use($request){
-//            if ($request->input('add_time_begin') && $request->input('add_time_end')){
-//                $query->whereBetween('created_at',[$request->input('add_time_begin'),$request->input('add_time_end')]);
-//                return;
-//            }
-//
-//            if ($request->input('add_time_begin')){
-//                $query->whereBetween('created_at',[$request->input('add_time_begin'),date('Y-m-d H:i:s')]);
-//            }
-//        })->get();
+            $query->select('id','email','tel');
 
-        $ordersList = Orders::all();
+        }])->where(function ($query) use ($request){
 
+            if ($request->input('pay_status')){
+                $query->where('pay_status',$request->input('pay_status'));
+            }
+
+            if ($request->input('pay_code')){
+                $query->where('pay_code',$request->input('pay_code'));
+            }
+
+            if ($request->input('shipping_status')){
+                $query->where('shipping_status',$request->input('shipping_status'));
+            }
+
+            if ($request->input('order_status')){
+                $query->where('order_status',$request->input('order_status'));
+            }
+
+        })->where(function ($query) use ($request){
+
+            if ($request->input('keytype') == '0'){
+                $query->where('consignee',$request->input('keywords'));
+                }
+        })->where(function ($query) use ($request){
+            if ($request->input('keytype') == '1'){
+                $query->where('sn',$request->input('keywords'));
+            }
+        })->where(function ($query) use($request){
+            if ($request->input('add_time_begin') && $request->input('add_time_end')){
+                $query->whereBetween('created_at',[$request->input('add_time_begin'),$request->input('add_time_end')]);
+                return;
+            }
+
+            if ($request->input('add_time_begin') && $request->input('add_time_end') == ""){
+                $query->whereBetween('created_at',[$request->input('add_time_begin'),date('Y-m-d H:i:s')]);
+            }
+
+            if ($request->input('add_time_begin') == "" && $request->input('add_time_end')){
+                $query->where('created_at','>',[$request->input('add_time_begin')]);
+            }
+
+        })->paginate(10);
 
         //查出来的总数据条数
         $sum = count($ordersList);
@@ -103,12 +109,15 @@ class OrdersController extends Controller
 //            $query->where('id',$id);
 //        })->get();
 
-        $ordergoods = Orders::find($id)->with('ordergood')->get();
 
+        $ordergoods = Orders::where('id',$id)->with(['orderDetails'=>function($query){
+            $query->leftjoin('goods','goods.goods_id','=','orders_details.goods_id')
+            ->select('order_id','orders_details.goods_info','orders_details.goods_price','orders_details.goods_num');
+        }])->first();
+
+            
         //查询出来的的数据是在0下标，直接获取后使用更方便。
-        $ordergoods = $ordergoods[0];
 
-//        dd($ordergoods);
 
         $regions = Region::whereIn('id',[$ordergoods->country,$ordergoods->province,$ordergoods->city,$ordergoods->district,$ordergoods->twon])->get()->toArray();
 
@@ -120,8 +129,6 @@ class OrdersController extends Controller
         }
 
         $region = trim($regionname,',');
-
-//        dd($region);
 
         return view('admin.main.orders.show',compact('ordergoods','region'));
     }
@@ -154,11 +161,10 @@ class OrdersController extends Controller
 		$this->perms->adminPerms('admin, orders', 'edit_orders');
 
         //获取订单信息和订单详情信息。ordergood 关联到订单详情模型。
-        $ordergoods = Orders::find($id)->with('ordergood')->get();
-
-
-        //查询出来的的数据是在0下标，直接获取后使用更方便。
-        $ordergoods = $ordergoods[0];
+        $ordergoods = Orders::where('id',$id)->with(['orderDetails'=>function($query){
+            $query->leftjoin('goods','goods.goods_id','=','orders_details.goods_id')
+                ->select('order_id','orders_details.goods_info','orders_details.goods_price','orders_details.goods_num','orders_details.spec_key_name');
+        }])->first();
 
 
         $province = Region::where('parent_id',0)->get();

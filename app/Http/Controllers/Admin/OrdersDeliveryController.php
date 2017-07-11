@@ -38,7 +38,6 @@ class OrdersDeliveryController extends Controller
 
 //        dd($deliveryList);
 
-
         return view('admin.main.orders.delivery_info.index',compact('deliveryList'));
     }
 
