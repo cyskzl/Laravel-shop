@@ -57,6 +57,7 @@ class OrdersController extends Controller
 
         })->where(function ($query) use ($request){
 
+
             if ($request->input('keytype') == '0'){
                 $query->where('consignee',$request->input('keywords'));
                 }
