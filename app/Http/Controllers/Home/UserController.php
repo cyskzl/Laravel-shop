@@ -16,6 +16,7 @@ class UserController extends Controller
     {
         $cateId = $request->session()->get('Index');
         // dd(bcrypt('dasuan'));
+
         return view('home.login',compact('cateId'));
     }
 

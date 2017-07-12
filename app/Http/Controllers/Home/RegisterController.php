@@ -273,14 +273,17 @@ class RegisterController extends Controller
 
         $code = 'SMS_71285782';
 
+//        $phone = 0;
 
         $result = $sms->send("$phone","$name","$content","$code");
+        
+        $resultobj = json_encode($result);
+
+        $resultarr = json_decode($resultobj,true);
 
 
-
-        $resultarr = get_object_vars($result);
-
-        //判断方法不行。需要修改。否者没有值会报错 不往下面执行. By:yang
+//        return '{"error":0}';
+        
         if ($resultarr['result']['err_code'] == 0){
 
             return '{"error":0}';

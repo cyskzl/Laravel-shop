@@ -37,17 +37,13 @@ class OrderController extends Controller
 
         if ($request->session()->has('orders')){
 
-
-
             $goodsdata = $request->session()->get('orders');
-
 
             if (array_key_exists('address',$goodsdata)){
 
                 //销毁发货地址
                 unset($goodsdata['address']);
             }
-
 
             $sum = 0;
             $goodsid = array();
@@ -62,7 +58,6 @@ class OrderController extends Controller
                     array_push($specGoods,$v['key1_key2']);
                     array_push($goodsnum,$v['num']);
                 }
-
 
             }
 
@@ -86,6 +81,7 @@ class OrderController extends Controller
 
 //            SELECT goods.goods_id,goods_name,spec_goods_price.price,spec_goods_price.`key` FROM goods LEFT JOIN spec_goods_price ON goods.goods_id = spec_goods_price.goods_id where goods.goods_id = 86 and spec_goods_price.`key` = '22_24'
 
+            //查询商品信息
             foreach ($goodsid as $k=>$value){
 
                 $goods = Goods::where('goods.goods_id',$value)
@@ -486,6 +482,7 @@ class OrderController extends Controller
                $id = Goods::where('goods_id',$value)->where('is_on_sale',1)->get();
 
                if (count($id)<1){
+
                    array_push($goodsid,$value);
                }
             }
@@ -516,6 +513,7 @@ class OrderController extends Controller
 
                 if ($value){
 
+                    //查询规格表的库存，如果数量不少于当前提交的数量则可以查出商品信息。
                     $goodsnum =  SpecGoodsPrice::where('goods_id',$id[$k])->where('key',$value)->where('store_count','>',$num[$k])->get();
 
                     if (count($goodsnum)<1){
@@ -537,6 +535,8 @@ class OrderController extends Controller
     //ajax获取发货方式
     public function toDelivery(Request $request,$id)
     {
+
+        //获取启动的发货方式
         $data = DelveryMethod::where('id',$id)->where('enabled',1)->first();
 
 
@@ -545,6 +545,7 @@ class OrderController extends Controller
             //存入session
             $request->session()->set('addorders.delivery',$data->toArray());
 
+            //返回获取到的数据
             return $data->price;
 
         }
@@ -562,38 +563,55 @@ class OrderController extends Controller
 
             $ordremodel = new Orders();
 
+            //订单编号
             $ordremodel->sn = $sn;
 
+            //用户id
             $ordremodel->user_id = $goodsdata['address']->user_id;
 
+            //收货人
             $ordremodel->consignee = $goodsdata['address']->consignee;
 
+            //邮箱
             $ordremodel->email = $goodsdata['address']->email;
 
+            //地址省份
             $ordremodel->province = $goodsdata['address']->province;
 
+            //地址城市
             $ordremodel->city = $goodsdata['address']->city;
+            //地址区县
             $ordremodel->district = $goodsdata['address']->district;
+            //地址乡镇街区
             $ordremodel->twon = $goodsdata['address']->twon;
+            //详细地址
             $ordremodel->address = $goodsdata['address']->detailed_address;
 
+            //邮编
             $ordremodel->zipcode = $goodsdata['address']->zipcode;
+            //手机号码
             $ordremodel->mobile = $goodsdata['address']->mobile;
 
+            //商品总价
             $ordremodel->goods_price = $goodsdata['sum'];
 
+            //邮费
             $ordremodel->shipping_price = $goodsdata['delivery']['price'];
+            //物流id号
             $ordremodel->shipping_code = $goodsdata['delivery']['id'];
-            $ordremodel->shipping_name = $goodsdata['delivery']['name'];
+            //物流名称
             $ordremodel->shipping_name = $goodsdata['delivery']['name'];
 
-            //应付金额
+            //获取应付金额
             $order_amount = $goodsdata['sum'] + $goodsdata['delivery']['price'];
+
+            //应付款金额
             $ordremodel->order_amount = $order_amount;
 
             //订单总额
             $ordremodel->total_amount = $goodsdata['sum'] + $goodsdata['delivery']['price'];
 
+            //用户备注
             $ordremodel->user_note = $request->input('user_note');
 
             if ($ordremodel->save()){
@@ -660,19 +678,23 @@ class OrderController extends Controller
     //生产订单号
     public function createSn()
     {
+        //获取日期时间到秒
         $snone = date('YmdHis');
 
+        //redis 自增ID获取
         $sntow = Redis::incr('ordresn');
 
+        //如果到了99999则销毁这个key，下次获取就是1
         if ($sntow == 99999){
             Redis::del('ordresn');
         }
 
-
+        //redis获取的id转成5位数值
         $sntow = sprintf("%05d", $sntow);
 
         if ($sntow){
 
+            //返回日期和5位数值合并的号码 例如：20170711194200001
             return $snone.$sntow;
         }
 
