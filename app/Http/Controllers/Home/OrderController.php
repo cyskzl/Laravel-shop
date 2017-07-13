@@ -514,7 +514,7 @@ class OrderController extends Controller
                 if ($value){
 
                     //查询规格表的库存，如果数量不少于当前提交的数量则可以查出商品信息。
-                    $goodsnum =  SpecGoodsPrice::where('goods_id',$id[$k])->where('key',$value)->where('store_count','>',$num[$k])->get();
+                    $goodsnum =  SpecGoodsPrice::where('goods_id',$id[$k])->where('key',$value)->where('store_count','>=',$num[$k])->get();
 
                     if (count($goodsnum)<1){
                         array_push($goodsid,$id[$k]);
@@ -614,10 +614,13 @@ class OrderController extends Controller
             //用户备注
             $ordremodel->user_note = $request->input('user_note');
 
+
+            //判断提交成功  ???  /在事务里面需要判断么?   By:Yang;
             if ($ordremodel->save()){
 
                 $orderid = $ordremodel->id;
 
+                //提交订单详情表
                 foreach ($goodsdata['order'] as $value){
 
                     $detailsModel = new OrdersDetails();
@@ -640,15 +643,13 @@ class OrderController extends Controller
 
                     $detailsModel->goods_price = $value['price'];
 
-                    $detailsModel->cost_price = $value['price'];
-
+                    //商品成本价需要修改.by Yang
                     $detailsModel->cost_price = $value['cost_price'];
 
                     $detailsModel->spec_key = $value['key'];
-                    
-                    $detailsModel->spec_key = $value['key'];
 
                     $spec_key_name = '';
+
 
                     foreach ($value['item'] as $v){
 
@@ -665,10 +666,34 @@ class OrderController extends Controller
                 $info['sn'] = $sn;
                 $info['order_amount'] = $order_amount;
 
+
+                //查询商品规格信息表
+                $specgoods = SpecGoodsPrice::where('goods_id',$value['goods_id'])->where('key',$value['key'])->first();
+
+                //获取库存信息
+                $store_count = $specgoods->store_count;
+
+                //判断库存是否小于购买数量
+                if ($store_count >= $value['num']){
+
+                    $specgoods->decrement('store_count',$value['num']);
+                }else{
+
+                    return false;
+                }
+
+                //购买数量刚好是库存数量 商品数量为0则下架
+                if ($store_count == $value['num']){
+                    //调用商品下架方法;
+                    $this->goodsIsSale($value['goods_id']);
+                }
+
+
                 return $info;
             }
 
         });
+
 
         return $status;
 
@@ -801,6 +826,21 @@ class OrderController extends Controller
         });
 
         return $status;
+
+    }
+
+    //商品下架
+    public function goodsIsSale($id)
+    {
+        $goodsStatus = Goods::where('goods_id',$id)->update(['is_on_sale'=>0]);
+
+        if ($goodsStatus){
+
+            return true;
+        }else{
+
+            return false;
+        }
 
     }
 
