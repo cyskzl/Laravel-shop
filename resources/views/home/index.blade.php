@@ -8,6 +8,20 @@
 		span {
 			display: block;
 		}
+		.layui-flow-more a {
+			height: 32px;
+			line-height: 32px;
+			width: 100%;
+			display: flow-root;
+		}
+		.layui-flow-more {
+			margin: 10px 0;
+			text-align: center;
+			color: #999;
+			font-size: 14px;
+			display: flow-root;
+			width: 100%;
+		}
 	</style>
 	@endsection
 
