@@ -188,7 +188,7 @@ class OrdersController extends Controller
      */
     public function update(Request $request,$id)
     {
-        dd($request);
+
         // 修改付款状态为付款
         if($request->mode == 1){
            $order =  Orders::find($id);

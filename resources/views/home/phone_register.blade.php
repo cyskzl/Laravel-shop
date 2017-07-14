@@ -146,24 +146,24 @@
 
                     data = JSON.parse(data);
 
-                    console.log(data);
+                    console.log(data.error);
 
                     switch (data.error){
-                        case '0':
+                        case 0:
                             settime(than);
                             break;
-                        case '1':
+                        case 1:
                             $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码不合法</p>');
                             return false;
                             break;
-                        case '2':
+                        case 2:
                             $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">手机号码已注册</p>');
                             return false;
                             break;
-                        case '3':
+                        case 3:
                             than.html("重新发送");
                             break;
-                        case '4':
+                        case 4:
                             $('#phone').css('border-color','red').before('<p style="text-align: center;color: red">请勿重复获取验证码</p>');
                             return false;
                             break;

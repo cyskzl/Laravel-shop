@@ -11,6 +11,18 @@
     <link rel="stylesheet" href="{{asset('/templates/home/css/123/1.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/123/2.css')}}"/>
     <link rel="stylesheet" href="{{asset('/templates/home/css/personal.css')}}"/>
+    <style>
+        .order_submit_btn {
+            float: right;
+            width: 180px;
+            line-height: 38px;
+            background-color: #626161;
+            font-size: 14px;
+            text-align: center;
+            color: #ffffff;
+            margin: 0 100px auto;
+        }
+    </style>
 @endsection
 
 @section('main')
@@ -42,6 +54,10 @@
                 <!--  /widget/order-info/order-info.tpl -->
                 <div class="m order-info-mod">
                     <div class="order-info mc">
+                        <div style="width: 100%;height: 20px;border-bottom: 1px #CCCCCC solid;font-size: 18px; line-height: 10px;">
+                            <span style="margin-left: 20px">订单状态：</span>
+                            <span style="color:crimson "><b>待发货</b></span>
+                        </div>
                         <div class="ui-switchable-body">
                             <div class="ui-switchable-panel-main">
                                 <div class="ui-switchable-panel">
@@ -328,11 +344,12 @@
                 </div>
             </div>
         </div>
-        @if($orderData->order_status == 0 && $orderData->order_status == 0)
-        <a href="/home/paymethodsubmit/{{$orderData->sn}}">点击付款</a>
-        <button>取消订单</button>
+        @if($orderData->order_status == 0 && $orderData->pay_status == 0)
+        <a href="/home/paymethodsubmit/{{$orderData->sn}}" class="order_submit_btn">点击付款</a>
+        @elseif($orderData->order_status == 1 && $orderData->pay_status == 1||$orderData->pay_status == 0 ||$orderData->order_status == 0)
+            <button class="order_submit_btn">取消订单</button>
             @elseif($orderData->shipping_status >0 && $orderData->order_status >0 && $orderData->order_status > 0)
-        <button>点击退货</button>
+        <button class="order_submit_btn">点击退货</button>
             @endif
     </div>
 
