@@ -643,7 +643,7 @@ class OrderController extends Controller
 
                     $detailsModel->goods_price = $value['price'];
 
-                    //商品成本价需要修改.by Yang
+                    //商品成本价
                     $detailsModel->cost_price = $value['cost_price'];
 
                     $detailsModel->spec_key = $value['key'];
